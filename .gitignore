@@ -1,6 +1,8 @@
 HELP.md
 .gradle
-/build/
+/build
+!/buildSrc/src/.*
+!/buildSrc/build.gradle.kts
 !gradle/wrapper/gradle-wrapper.jar
 
 ### STS ###

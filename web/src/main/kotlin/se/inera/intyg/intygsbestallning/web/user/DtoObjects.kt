@@ -1,4 +1,4 @@
-package se.inera.intyg.intygsbestallning.user
+package se.inera.intyg.intygsbestallning.web.user
 
 data class User(
    val id: Long = 1,

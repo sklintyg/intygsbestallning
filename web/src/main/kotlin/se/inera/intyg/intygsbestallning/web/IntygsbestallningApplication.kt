@@ -1,4 +1,4 @@
-package se.inera.intyg.intygsbestallning
+package se.inera.intyg.intygsbestallning.web
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
