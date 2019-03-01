@@ -1,8 +1,14 @@
 package se.inera.intyg.intygsbestallning.persistence
 
-import java.time.LocalDateTime
+import javax.persistence.*
 
+@Entity
+@Table(name = "bestallning")
 data class Bestallning(
-   val id: String,
-   val skapatDatum: LocalDateTime
+
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   @Column(name = "id", nullable = false)
+   val id: Long? = null
+
 )

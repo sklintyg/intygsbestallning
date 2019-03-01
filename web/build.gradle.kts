@@ -15,3 +15,7 @@ dependencies {
   // Spring Boot test starters
   testImplementation("org.springframework.boot:spring-boot-starter-test:${Dependencies.springBootVersion}")
 }
+
+//springBoot {
+//  mainClassName = "se.inera.intyg.intygsbestallning.web.IntygsbestallningApplication"
+//}

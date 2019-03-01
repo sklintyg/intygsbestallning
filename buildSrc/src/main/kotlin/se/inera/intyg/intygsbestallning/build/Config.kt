@@ -10,7 +10,10 @@ object Config {
   }
 
   object Dependencies {
+    const val kotlinVersion = "1.3.21"
     const val springBootVersion = "2.1.3.RELEASE"
+    const val h2Version = "1.4.198"
+    const val liquibaseVersion = "3.6.3"
   }
 
   object TestDependencies {
