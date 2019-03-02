@@ -1,6 +1,5 @@
 package se.inera.intyg.intygsbestallning.web.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,13 +7,20 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import se.inera.intyg.intygsbestallning.persistence.Bestallning;
 import se.inera.intyg.intygsbestallning.persistence.BestallningRepository;
+import se.inera.intyg.intygsbestallning.persistence.Utredning;
+import se.inera.intyg.intygsbestallning.persistence.UtredningRepository;
 
 @RestController
 @RequestMapping("/users")
 public class Controller {
 
-    @Autowired
     private BestallningRepository bestallningRepository;
+    private UtredningRepository utredningRepository;
+
+    public Controller(BestallningRepository bestallningRepository, UtredningRepository utredningRepository) {
+        this.bestallningRepository = bestallningRepository;
+        this.utredningRepository = utredningRepository;
+    }
 
     @GetMapping
     public ResponseEntity users() {
@@ -31,10 +37,18 @@ public class Controller {
                 .address(defaultAddress)
                 .build();
 
-
-        var bestallning = new Bestallning();
+        var bestallning = new Bestallning.Builder()
+                .vardenhetHsaId("1")
+                .vardenehetOrgId("1")
+                .build();
 
         bestallningRepository.save(bestallning);
+
+        var utredning = new Utredning.Builder()
+                .bestallning(bestallning)
+                .build();
+
+        utredningRepository.save(utredning);
 
         return ResponseEntity.ok(List.of(defaultUser, customUser, userWithBuildPattern));
     }
