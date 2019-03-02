@@ -21,6 +21,8 @@ allprojects {
   }
 }
 
+apply(plugin = "se.inera.intyg.plugin.common")
+
 subprojects {
   apply(plugin = "org.gradle.maven")
   apply(plugin = "org.gradle.maven-publish")
