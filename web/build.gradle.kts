@@ -8,6 +8,7 @@ dependencies {
 
   // Project dependencies
   compile(project(":persistence"))
+  compile(project(":integration"))
 
   // Spring Boot starters
   implementation("org.springframework.boot:spring-boot-starter-web:${Dependencies.springBootVersion}")
@@ -15,7 +16,3 @@ dependencies {
   // Spring Boot test starters
   testImplementation("org.springframework.boot:spring-boot-starter-test:${Dependencies.springBootVersion}")
 }
-
-//springBoot {
-//  mainClassName = "se.inera.intyg.intygsbestallning.web.IntygsbestallningApplication"
-//}

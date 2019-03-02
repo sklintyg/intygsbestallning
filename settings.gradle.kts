@@ -8,13 +8,15 @@ pluginManagement {
 }
 rootProject.name = "intygsbestallning"
 
-include(":web")
+include(":integration")
 include(":persistence")
+include(":web")
 
 fun getProjectDirName(project: String): String {
 	return when(project) {
-		"web" ->"$rootDir/web"
+		"integration" ->"$rootDir/integration"
 		"persistence" ->"$rootDir/persistence"
+		"web" ->"$rootDir/web"
 		else -> throw IllegalArgumentException("Project module $project does not exist.")
 	}
 }
