@@ -13,3 +13,24 @@ spring:
 
   liquibase:
     change-log: classpath:/changelog/db-changelog-master.xml
+# Mail notifications
+mail:
+  host:
+  admin: ib-notifications@inera.se
+  from: ib-notifications@inera.se
+
+  username:
+  password:
+  protocol: smtps
+  defaultEncoding: UTF-8
+  smtps:
+    auth: true
+    starttls.enable: true
+    debug: false
+
+activemq:
+  broker:
+    url: vm://localhost?broker.persistent=false
+    username:
+    password:
+

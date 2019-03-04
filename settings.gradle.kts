@@ -9,6 +9,7 @@ pluginManagement {
 rootProject.name = "intygsbestallning"
 
 include(":common")
+include(":mail-sender")
 include(":integration")
 include(":persistence")
 include(":web")
@@ -16,6 +17,7 @@ include(":web")
 fun getProjectDirName(project: String): String {
 	return when(project) {
 		"common" ->"$rootDir/common"
+		"mail-sender" ->"$rootDir/mail-sender"
 		"integration" ->"$rootDir/integration"
 		"persistence" ->"$rootDir/persistence"
 		"web" ->"$rootDir/web"

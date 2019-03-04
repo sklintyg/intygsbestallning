@@ -9,6 +9,7 @@ dependencies {
   // Project dependencies
   compile(project(":persistence"))
   compile(project(":integration"))
+  compile(project(":mail-sender"))
 
   // Spring Boot starters
   implementation("org.springframework.boot:spring-boot-starter-web:${Dependencies.springBootVersion}")
