@@ -19,6 +19,7 @@
 package se.inera.intyg.intygsbestallning.mailsender.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import org.apache.camel.Body;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +28,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
-import se.inera.intyg.intygsbestallning.mailsender.model.NotificationEmail;
+import se.inera.intyg.intygsbesetallning.common.NotificationEmail;
 import se.inera.intyg.intygsbestallning.mailsender.exception.PermanentException;
 import se.inera.intyg.intygsbestallning.mailsender.exception.TemporaryException;
 
+import javax.annotation.PostConstruct;
 import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -72,6 +74,8 @@ public class MailSenderImpl implements MailSender {
 
     private NotificationEmail jsonToNotificationEmail(@Body String notificationEmailJson) throws PermanentException {
         try {
+            // Jackson gets upset when no parameterless  constructor is available...
+            objectMapper.registerModule(new KotlinModule());
             return objectMapper.readValue(notificationEmailJson, NotificationEmail.class);
         } catch (Exception e) {
             LOG.error("Error deserializing email notification TextMessage: " + e.getMessage());

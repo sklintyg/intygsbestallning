@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import se.inera.intyg.intygsbestallning.mailsender.model.NotificationEmail;
+import se.inera.intyg.intygsbesetallning.common.NotificationEmail;
 import se.inera.intyg.intygsbestallning.mailsender.config.MailSenderTestConfig;
 import se.inera.intyg.intygsbestallning.mailsender.service.stub.MailServiceStub;
 
@@ -82,10 +82,7 @@ public class MailSenderIntegrationTest {
     }
 
     private NotificationEmail buildNotificationEmail() {
-        return NotificationEmail.NotificationEmailBuilder.aNotificationEmail()
-                .withToAddress("some@inera.se")
-                .withSubject("Subject")
-                .withBody("Body").build();
+        return new NotificationEmail("some@inera.se", "Subject", "Body");
     }
 
 

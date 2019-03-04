@@ -11,6 +11,8 @@ dependencies {
 
     runtime("com.h2database:h2:${Dependencies.h2Version}")
 
+    compile(project(":common"))
+    compile("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+")
     compile("org.apache.camel:camel-spring-boot-starter:${Dependencies.camelBootStarterVersion}")
     compile("org.springframework.boot:spring-boot-starter-mail:${Dependencies.springBootVersion}")
     compile("org.springframework.boot:spring-boot-starter-activemq:${Dependencies.springBootVersion}")

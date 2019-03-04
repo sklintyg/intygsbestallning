@@ -29,7 +29,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.util.ReflectionTestUtils;
-import se.inera.intyg.intygsbestallning.mailsender.model.NotificationEmail;
+
+import se.inera.intyg.intygsbesetallning.common.NotificationEmail;
 import se.inera.intyg.intygsbestallning.mailsender.exception.PermanentException;
 import se.inera.intyg.intygsbestallning.mailsender.exception.TemporaryException;
 
@@ -89,11 +90,7 @@ public class MailSenderImplTest {
     }
 
     private String buildNotificationMailAsJson() throws JsonProcessingException {
-        NotificationEmail email = NotificationEmail.NotificationEmailBuilder.aNotificationEmail()
-                .withToAddress("some.mail@inera.se")
-                .withSubject("The subject")
-                .withBody("Feel it")
-                .build();
+        NotificationEmail email = new NotificationEmail("some.mail@inera.se","The subject","Feel it");
         return new ObjectMapper().writeValueAsString(email);
 
     }

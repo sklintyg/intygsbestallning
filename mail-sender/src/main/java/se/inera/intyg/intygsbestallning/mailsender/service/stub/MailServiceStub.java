@@ -23,10 +23,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import se.inera.intyg.intygsbesetallning.common.NotificationEmail;
 import se.inera.intyg.intygsbestallning.mailsender.exception.PermanentException;
 import se.inera.intyg.intygsbestallning.mailsender.exception.TemporaryException;
 import se.inera.intyg.intygsbestallning.mailsender.service.MailSender;
-import se.inera.intyg.intygsbestallning.mailsender.model.NotificationEmail;
 
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
