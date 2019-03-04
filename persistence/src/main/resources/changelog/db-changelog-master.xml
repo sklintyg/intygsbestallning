@@ -1,0 +1,34 @@
+<databaseChangeLog
+      xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+  <changeSet id="1" author="joakim anell">
+
+    <createTable tableName="utredning">
+      <column name="id" type="bigint" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="bestallning_id" type="bigint">
+        <constraints nullable="true"/>
+      </column>
+      <column name="vardenhet_id" type="bigint">
+        <constraints nullable="true"/>
+      </column>
+      <column name="avslutDatum" type="datetime">
+        <constraints nullable="true"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="bestallning">
+      <column name="id" type="bigint" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="ankomst_datum" type="varchar(64)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+  </changeSet>
+</databaseChangeLog>

@@ -20,6 +20,8 @@ class UserWithBuilderPattern private constructor(builder: UserWithBuilderPattern
     var lastName: String? = null
     var address: Address? = null
 
+
+
     fun id(id: Long) = apply { this.id = id }
     fun firstName(firstName: String) = apply { this.firstName = firstName }
     fun lastName(lastName: String) = apply { this.lastName = lastName }

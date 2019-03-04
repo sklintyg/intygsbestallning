@@ -1,18 +1,22 @@
-package se.inera.intyg.intygsbestallning.web.user;
+package se.inera.intyg.intygsbestallning.web.sample;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentResponseType;
 import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentType;
+import java.time.LocalDateTime;
 import java.util.List;
 import se.inera.intyg.intygsbestallning.integration.responders.OrderAssessmentResponderIntygsbestallning;
 import se.inera.intyg.intygsbestallning.persistence.Bestallning;
 import se.inera.intyg.intygsbestallning.persistence.BestallningRepository;
 import se.inera.intyg.intygsbestallning.persistence.Utredning;
 import se.inera.intyg.intygsbestallning.persistence.UtredningRepository;
+import se.inera.intyg.intygsbestallning.persistence.Vardenhet;
+import se.inera.intyg.intygsbestallning.web.user.Address;
+import se.inera.intyg.intygsbestallning.web.user.User;
+import se.inera.intyg.intygsbestallning.web.user.UserWithBuilderPattern;
 
 @RestController
 @RequestMapping("/users")
@@ -45,8 +49,11 @@ public class Controller {
                 .build();
 
         var bestallning = new Bestallning.Builder()
-                .vardenhetHsaId("1")
-                .vardenehetOrgId("1")
+                .ankomstDatum(LocalDateTime.now())
+                .build();
+
+        var vardenhet = new Vardenhet.Builder()
+                .enhetNamn("")
                 .build();
 
         //test repos
@@ -54,13 +61,14 @@ public class Controller {
 
         var utredning = new Utredning.Builder()
                 .bestallning(bestallning)
+                .vardenhet(vardenhet)
                 .build();
 
-        utredningRepository.save(utredning);
+        final Utredning save = utredningRepository.save(utredning);
 
         //test to access responder
-        var orderAssessmentResponseType = orderAssessmentResponder.orderAssessment("", new OrderAssessmentType());
+//        var orderAssessmentResponseType = orderAssessmentResponder.orderAssessment("", new OrderAssessmentType());
 
-        return ResponseEntity.ok(List.of(defaultUser, customUser, userWithBuildPattern));
+        return ResponseEntity.ok(List.of(save));
     }
 }

@@ -12,4 +12,4 @@ spring:
       enabled: true
 
   liquibase:
-    change-log: classpath:/changelog/db-changelog-master.yaml
+    change-log: classpath:/changelog/db-changelog-master.xml
