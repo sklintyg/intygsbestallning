@@ -7,8 +7,9 @@ plugins {
 dependencies {
 
   // Project dependencies
-  compile(project(":persistence"))
+  compile(project(":common"))
   compile(project(":integration"))
+  compile(project(":persistence"))
   compile(project(":mail-sender"))
 
   // Spring Boot starters

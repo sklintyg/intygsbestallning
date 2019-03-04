@@ -19,8 +19,10 @@ object Config {
     const val h2Version = "1.4.198"
     const val liquibaseVersion = "3.6.3"
     const val intygsbestallningCertificateOrderSchemasVersion = "1.0-RC5"
-    const val jaxWsVersion = "2.3.1"
+    const val jaxWsVersion = "2.2.3"
     const val javaxMailVersion = "1.5.2"
+    const val javaxServletApiVersion = "4.0.1"
+    const val guavaVersion = "27.0.1-jre"
 
   }
 

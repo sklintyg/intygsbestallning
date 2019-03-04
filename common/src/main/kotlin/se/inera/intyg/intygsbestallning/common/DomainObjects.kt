@@ -1,4 +1,4 @@
-package se.inera.intyg.intygsbesetallning.common
+package se.inera.intyg.intygsbestallning.common
 
 import java.time.LocalDateTime
 

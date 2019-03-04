@@ -13,6 +13,7 @@ spring:
 
   liquibase:
     change-log: classpath:/changelog/db-changelog-master.xml
+
 # Mail notifications
 mail:
   host:
@@ -34,3 +35,5 @@ activemq:
     username:
     password:
 
+cxf:
+  path: /services

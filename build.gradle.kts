@@ -1,9 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import se.inera.intyg.TagReleaseTask
-import se.inera.intyg.intygsbestallning.build.Config
 import se.inera.intyg.intygsbestallning.build.Config.Jvm
-import se.inera.intyg.intygsbestallning.build.Config.TestDependencies
 import se.inera.intyg.intygsbestallning.build.Config.Dependencies
+import se.inera.intyg.intygsbestallning.build.Config.TestDependencies
 
 plugins {
   id("org.gradle.maven")
@@ -34,6 +33,8 @@ subprojects {
   dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.springframework:spring-context:${Dependencies.springVersion}")
+    implementation("com.google.guava:guava:${Dependencies.guavaVersion}")
+
     testCompile("org.mockito:mockito-core:${TestDependencies.mockitoCoreVersion}")
     testCompile("org.junit.jupiter:junit-jupiter-api:${TestDependencies.junitVersion}")
   }

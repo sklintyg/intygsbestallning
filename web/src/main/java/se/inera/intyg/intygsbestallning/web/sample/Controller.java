@@ -1,14 +1,11 @@
 package se.inera.intyg.intygsbestallning.web.sample;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentType;
 import java.time.LocalDateTime;
 import java.util.List;
-import se.inera.intyg.intygsbestallning.integration.responders.OrderAssessmentResponderIntygsbestallning;
 import se.inera.intyg.intygsbestallning.persistence.Bestallning;
 import se.inera.intyg.intygsbestallning.persistence.BestallningRepository;
 import se.inera.intyg.intygsbestallning.persistence.Utredning;
@@ -24,9 +21,6 @@ public class Controller {
 
     private BestallningRepository bestallningRepository;
     private UtredningRepository utredningRepository;
-
-    @Autowired
-    private OrderAssessmentResponderIntygsbestallning orderAssessmentResponder;
 
     public Controller(BestallningRepository bestallningRepository, UtredningRepository utredningRepository) {
         this.bestallningRepository = bestallningRepository;
