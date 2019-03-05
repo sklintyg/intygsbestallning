@@ -9,8 +9,7 @@ pipeline {
 
         stage('build') {
             steps {
-                shgradle "--refresh-dependencies clean build testReport sonarqube -PcodeQuality " +
-                         "-DbuildVersion=" + buildVersion"
+                shgradle "--refresh-dependencies clean build"
             }
             post {
                 always {
