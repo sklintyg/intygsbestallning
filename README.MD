@@ -16,9 +16,8 @@ Efter att man har klonat repository navigera till den klonade katalogen intygsbe
 
 Det här kommandot kommer att bygga samtliga moduler i systemet. 
 
-När applikationen har byggt klart, kan man gå till `/web` och köra kommandot
+När applikationen har byggt klart, kan man gå till `/` och köra kommandot
 
-    $ cd web
-    $ ../gradlew bootRun
+    $ ./gradlew bootRun
 
 för att starta applikationen lokalt.
