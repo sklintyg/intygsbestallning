@@ -5,6 +5,7 @@ import se.riv.intygsbestallning.certificate.order.v1.IIType
 
 data class CreateUtredningRequest(
    val personnummer: String,
+   val intygTyp: IntygTyp,
    val vardenhet: String
 )
 

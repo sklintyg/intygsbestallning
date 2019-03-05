@@ -4,13 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.time.LocalDateTime;
 import java.util.List;
-import se.inera.intyg.intygsbestallning.persistence.Bestallning;
-import se.inera.intyg.intygsbestallning.persistence.BestallningRepository;
-import se.inera.intyg.intygsbestallning.persistence.Utredning;
-import se.inera.intyg.intygsbestallning.persistence.UtredningRepository;
-import se.inera.intyg.intygsbestallning.persistence.Vardenhet;
 import se.inera.intyg.intygsbestallning.web.user.Address;
 import se.inera.intyg.intygsbestallning.web.user.User;
 import se.inera.intyg.intygsbestallning.web.user.UserWithBuilderPattern;
@@ -18,14 +12,6 @@ import se.inera.intyg.intygsbestallning.web.user.UserWithBuilderPattern;
 @RestController
 @RequestMapping("/users")
 public class Controller {
-
-    private BestallningRepository bestallningRepository;
-    private UtredningRepository utredningRepository;
-
-    public Controller(BestallningRepository bestallningRepository, UtredningRepository utredningRepository) {
-        this.bestallningRepository = bestallningRepository;
-        this.utredningRepository = utredningRepository;
-    }
 
     @GetMapping
     public ResponseEntity users() {
@@ -42,27 +28,7 @@ public class Controller {
                 .address(defaultAddress)
                 .build();
 
-        var bestallning = new Bestallning.Builder()
-                .ankomstDatum(LocalDateTime.now())
-                .build();
 
-        var vardenhet = new Vardenhet.Builder()
-                .enhetNamn("")
-                .build();
-
-        //test repos
-        bestallningRepository.save(bestallning);
-
-        var utredning = new Utredning.Builder()
-                .bestallning(bestallning)
-                .vardenhet(vardenhet)
-                .build();
-
-        final Utredning save = utredningRepository.save(utredning);
-
-        //test to access responder
-//        var orderAssessmentResponseType = orderAssessmentResponder.orderAssessment("", new OrderAssessmentType());
-
-        return ResponseEntity.ok(List.of(save));
+        return ResponseEntity.ok(List.of(userWithBuildPattern));
     }
 }

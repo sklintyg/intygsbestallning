@@ -2,6 +2,8 @@ import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 
 dependencies {
 
+    implementation(project(":common"))
+
     // embedded database for dev
     runtime("com.h2database:h2:${Dependencies.h2Version}")
 

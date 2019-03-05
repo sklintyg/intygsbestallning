@@ -4,10 +4,12 @@ import org.springframework.stereotype.Component;
 import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentResponseType;
 import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentType;
 import se.riv.intygsbestallning.certificate.order.orderassessment.v1.rivtabp21.OrderAssessmentResponderInterface;
+import se.riv.intygsbestallning.certificate.order.v1.CVType;
 import se.riv.intygsbestallning.certificate.order.v1.CitizenType;
 import se.riv.intygsbestallning.certificate.order.v1.IIType;
 import java.util.Optional;
 import se.inera.intyg.intygsbestallning.common.CreateUtredningRequest;
+import se.inera.intyg.intygsbestallning.common.IntygTyp;
 
 @Component
 public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponderInterface {
@@ -45,6 +47,16 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
                 .map(IIType::getExtension)
                 .orElseThrow(() -> new IllegalArgumentException("careUnitId may not be null"));
 
-        return new CreateUtredningRequest(personnummer, vardenhet);
+        var certficateCodeType = Optional.ofNullable(request.getCertificateType())
+                .map(CVType::getCode)
+                .orElseThrow(() -> new IllegalArgumentException("certificateType may not be null"));
+
+        var intygTyp = IntygTyp.valueOf(certficateCodeType);
+
+        if (!intygTyp.getBestallningbar()) {
+            throw new IllegalArgumentException("certificateType: " + certficateCodeType + " is not bestallningbar");
+        }
+
+        return new CreateUtredningRequest(personnummer, intygTyp, vardenhet);
     }
 }
