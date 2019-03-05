@@ -21,3 +21,12 @@ När applikationen har byggt klart, kan man gå till `/` och köra kommandot
     $ ./gradlew bootRun
 
 för att starta applikationen lokalt.
+
+### Frontend
+För att köra med live-reload.
+
+    cd web/client
+    npm install
+    npm start
+    
+Läs mer på i [README-filen](web/client/README.md) för frontend
