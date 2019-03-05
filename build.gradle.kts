@@ -13,7 +13,7 @@ plugins {
 
 allprojects {
   group = "se.inera.intyg.intygsbestallning"
-  version = System.getProperty("buildVersion") ?: "0-SNAPSHOT"
+  version = System.getenv("buildVersion") ?: "0-SNAPSHOT"
 
   repositories {
     mavenLocal()
