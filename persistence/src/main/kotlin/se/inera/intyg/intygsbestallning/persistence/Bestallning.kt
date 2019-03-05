@@ -5,15 +5,15 @@ import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
-@Table(name = "bestallning")
+@Table(name = "BESTALLNING")
 class Bestallning private constructor(builder: Bestallning.Builder) {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "id", nullable = false)
+  @Column(name = "ID", nullable = false)
   val id: Long? = null
 
-  @Column(name = "ankomst_datum", nullable = false)
+  @Column(name = "ANKOMST_DATUM", nullable = false)
   val ankomstDatum: LocalDateTime
 
   init {

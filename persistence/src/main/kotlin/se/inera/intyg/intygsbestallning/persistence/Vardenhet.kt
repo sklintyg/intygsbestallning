@@ -3,21 +3,21 @@ package se.inera.intyg.intygsbestallning.persistence
 import javax.persistence.*
 
 @Entity
-@Table(name = "vardenhet")
+@Table(name = "VARDENHET")
 class Vardenhet private constructor(builder: Vardenhet.Builder) {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "id", nullable = false)
+  @Column(name = "ID", nullable = false)
   val id: Long? = null
 
-  @Column(name = "enhet_namn", nullable = false)
+  @Column(name = "ENHET_NAMN", nullable = false)
   val enhetNamn: String
 
-  @Column(name = "epost")
+  @Column(name = "EPOST")
   val epost: String? = null
 
-  @Column(name = "standard_svar")
+  @Column(name = "STANDARD_SVAR")
   val standardSvar: String? = null
 
   init {

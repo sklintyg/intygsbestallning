@@ -6,26 +6,26 @@
 
   <changeSet id="1" author="joakim anell">
 
-    <createTable tableName="utredning">
-      <column name="id" type="bigint" autoIncrement="true">
+    <createTable tableName="UTREDNING">
+      <column name="ID" type="bigint" autoIncrement="true">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="bestallning_id" type="bigint">
+      <column name="BESTALLNING_ID" type="bigint">
         <constraints nullable="true"/>
       </column>
-      <column name="vardenhet_id" type="bigint">
+      <column name="VARDENHET_ID" type="bigint">
         <constraints nullable="true"/>
       </column>
-      <column name="avslutDatum" type="datetime">
+      <column name="AVSLUT_DATUM" type="datetime">
         <constraints nullable="true"/>
       </column>
     </createTable>
 
-    <createTable tableName="bestallning">
-      <column name="id" type="bigint" autoIncrement="true">
+    <createTable tableName="BESTALLNING">
+      <column name="ID" type="bigint" autoIncrement="true">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="ankomst_datum" type="varchar(64)">
+      <column name="ANKOMST_DATUM" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
     </createTable>

@@ -3,20 +3,20 @@ package se.inera.intyg.intygsbestallning.persistence
 import javax.persistence.*
 
 @Entity
-@Table(name = "utredning")
+@Table(name = "UTREDNING")
 class Utredning private constructor(builder: Utredning.Builder) {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "id", nullable = false)
+  @Column(name = "ID", nullable = false)
   val id: Long? = null
 
   @OneToOne(cascade = [CascadeType.ALL])
-  @JoinColumn(name = "bestallning_id")
+  @JoinColumn(name = "BESTALLNING_ID")
   val bestallning: Bestallning?
 
   @OneToOne(cascade = [CascadeType.ALL])
-  @JoinColumn(name = "vardenhet_id")
+  @JoinColumn(name = "VARDENHET_ID")
   val vardenhet: Vardenhet
 
   init {
