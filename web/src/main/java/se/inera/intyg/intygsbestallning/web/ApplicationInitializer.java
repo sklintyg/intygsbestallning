@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 import se.inera.intyg.intygsbestallning.common.CommonConfig;
 import se.inera.intyg.intygsbestallning.integration.IntegrationConfig;
+import se.inera.intyg.intygsbestallning.integration.server.ServerIntegrationConfig;
 import se.inera.intyg.intygsbestallning.mailsender.config.MailSenderConfig;
 import se.inera.intyg.intygsbestallning.persistence.PersistenceConfig;
 

@@ -1,6 +1,5 @@
-package se.inera.intyg.intygsbestallning.integration;
+package se.inera.intyg.intygsbestallning.integration.server;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentResponseType;
 import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentType;
@@ -12,11 +11,11 @@ import se.inera.intyg.intygsbestallning.common.CreateUtredningRequest;
 import se.inera.intyg.intygsbestallning.common.utredning.CreateUtredningService;
 
 @Component
-public class OrderAssessmentResponderIntygsbestallning implements OrderAssessmentResponderInterface {
+public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponderInterface {
 
     private CreateUtredningService createUtredningService;
 
-    public OrderAssessmentResponderIntygsbestallning(CreateUtredningService createUtredningService) {
+    public OrderAssessmentIntygsbestallning(CreateUtredningService createUtredningService) {
         this.createUtredningService = createUtredningService;
     }
 

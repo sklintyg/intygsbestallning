@@ -44,7 +44,6 @@ public class MailServiceImpl implements MailService {
     private String fromAddress;
 
     @Autowired
-    @Qualifier("jmsNotificationMailTemplate")
     private JmsTemplate jmsTemplate;
 
     private ObjectMapper objectMapper = new ObjectMapper();

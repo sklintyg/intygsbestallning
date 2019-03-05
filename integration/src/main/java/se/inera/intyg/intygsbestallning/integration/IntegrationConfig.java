@@ -1,27 +1,11 @@
 package se.inera.intyg.intygsbestallning.integration;
 
-import org.apache.cxf.Bus;
-import org.apache.cxf.jaxws.EndpointImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import se.inera.intyg.intygsbestallning.integration.client.ClientIntegrationConfig;
+import se.inera.intyg.intygsbestallning.integration.server.ServerIntegrationConfig;
 
 @Configuration
-@ComponentScan(basePackages = "se.inera.intyg.intygsbestallning.integration")
+@Import({ClientIntegrationConfig.class, ServerIntegrationConfig.class, IntegrationProperties.class})
 public class IntegrationConfig {
-
-
-    @Autowired
-    private Bus bus;
-
-    @Autowired
-    private OrderAssessmentResponderIntygsbestallning orderAssessmentResponder;
-
-    @Bean
-    public EndpointImpl orderAssessmentResponderEndpoint() {
-        EndpointImpl endpoint = new EndpointImpl(bus, orderAssessmentResponder);
-        endpoint.publish("/order-assessment-responder");
-        return endpoint;
-    }
 }
