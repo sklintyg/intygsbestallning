@@ -15,6 +15,9 @@ dependencies {
   // Spring Boot starters
   implementation("org.springframework.boot:spring-boot-starter-web:${Dependencies.springBootVersion}")
 
+  implementation("javax.xml.ws:jaxws-api:${Dependencies.jaxWsVersion}")
+  implementation("javax.servlet:javax.servlet-api:${Dependencies.javaxServletApiVersion}")
+
   // Spring Boot test starters
   testImplementation("org.springframework.boot:spring-boot-starter-test:${Dependencies.springBootVersion}")
 }

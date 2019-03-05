@@ -1,4 +1,4 @@
-package se.inera.intyg.intygsbestallning.common.utredning;
+package se.inera.intyg.intygsbestallning.web.utredning;
 
 import org.springframework.stereotype.Service;
 import se.inera.intyg.intygsbestallning.common.CreateUtredningRequest;

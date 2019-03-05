@@ -30,7 +30,7 @@ import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import se.inera.intyg.intygsbesetallning.common.NotificationEmail;
+import se.inera.intyg.intygsbestallning.NotificationEmail;
 import se.inera.intyg.intygsbestallning.mailsender.exception.PermanentException;
 import se.inera.intyg.intygsbestallning.mailsender.exception.TemporaryException;
 

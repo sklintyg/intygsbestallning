@@ -1,4 +1,4 @@
-package se.inera.intyg.intygsbestallning.integration.server;
+package se.inera.intyg.intygsbestallning.web.utredning;
 
 import org.springframework.stereotype.Component;
 import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentResponseType;
@@ -8,7 +8,6 @@ import se.riv.intygsbestallning.certificate.order.v1.CitizenType;
 import se.riv.intygsbestallning.certificate.order.v1.IIType;
 import java.util.Optional;
 import se.inera.intyg.intygsbestallning.common.CreateUtredningRequest;
-import se.inera.intyg.intygsbestallning.common.utredning.CreateUtredningService;
 
 @Component
 public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponderInterface {

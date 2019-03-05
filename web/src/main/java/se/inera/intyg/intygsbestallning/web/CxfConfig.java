@@ -1,21 +1,21 @@
-package se.inera.intyg.intygsbestallning.integration.server;
+package se.inera.intyg.intygsbestallning.web;
 
 import org.apache.cxf.Bus;
 import org.apache.cxf.jaxws.EndpointImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import se.inera.intyg.intygsbestallning.web.utredning.OrderAssessmentIntygsbestallning;
 
 @Configuration
-@ComponentScan(basePackages = "se.inera.intyg.intygsbestallning.integration.server")
-public class ServerIntegrationConfig {
+public class CxfConfig {
 
-    @Autowired
     private Bus bus;
-
-    @Autowired
     private OrderAssessmentIntygsbestallning orderAssessment;
+
+    public CxfConfig(Bus bus, OrderAssessmentIntygsbestallning orderAssessment) {
+        this.bus = bus;
+        this.orderAssessment = orderAssessment;
+    }
 
     @Bean
     public EndpointImpl orderAssessmentEndpoint() {

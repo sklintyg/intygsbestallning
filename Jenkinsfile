@@ -15,7 +15,7 @@ pipeline {
                 always {
                     publishHTML target: [
                         allowMissing: true,
-                        alwaysLinkToLastBuild: true,
+                        alwaysLinkToLastBuild   : true,
                         keepAll: true,
                         reportDir: 'build/reports/allTests',
                         reportFiles: 'index.html',

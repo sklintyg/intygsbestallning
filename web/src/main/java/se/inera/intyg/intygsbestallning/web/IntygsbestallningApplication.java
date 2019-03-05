@@ -8,7 +8,7 @@ import se.inera.intyg.intygsbestallning.integration.IntegrationConfig;
 import se.inera.intyg.intygsbestallning.persistence.PersistenceConfig;
 
 @SpringBootApplication
-@Import({PersistenceConfig.class, CommonConfig.class, IntegrationConfig.class})
+@Import({PersistenceConfig.class, CommonConfig.class, IntegrationConfig.class, CxfConfig.class})
 public class IntygsbestallningApplication {
     public static void main(String[] args) {
         SpringApplication.run(IntygsbestallningApplication.class, args);

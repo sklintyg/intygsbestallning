@@ -35,6 +35,8 @@ subprojects {
     implementation("org.springframework:spring-context:${Dependencies.springVersion}")
     implementation("com.google.guava:guava:${Dependencies.guavaVersion}")
 
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:${Dependencies.springBootVersion}")
+
     testCompile("org.mockito:mockito-core:${TestDependencies.mockitoCoreVersion}")
     testCompile("org.junit.jupiter:junit-jupiter-api:${TestDependencies.junitVersion}")
   }

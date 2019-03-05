@@ -1,5 +1,15 @@
 package se.inera.intyg.intygsbestallning.web.user
 
+import se.inera.intyg.intygsbestallning.common.AccepteraBestallningRequest
+
+data class AccepteraBestallning(
+   val fritextForklaring: String? = null
+)
+
+fun AccepteraBestallning.fromDto(id: String): AccepteraBestallningRequest {
+  return AccepteraBestallningRequest(id, this.fritextForklaring)
+}
+
 data class User(
    val id: Long = 1,
    val firstName: String = "Tolvan",

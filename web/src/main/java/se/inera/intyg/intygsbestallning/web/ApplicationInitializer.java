@@ -9,7 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 import se.inera.intyg.intygsbestallning.common.CommonConfig;
 import se.inera.intyg.intygsbestallning.integration.IntegrationConfig;
-import se.inera.intyg.intygsbestallning.integration.server.ServerIntegrationConfig;
 import se.inera.intyg.intygsbestallning.mailsender.config.MailSenderConfig;
 import se.inera.intyg.intygsbestallning.persistence.PersistenceConfig;
 
@@ -23,7 +22,8 @@ public class ApplicationInitializer implements WebApplicationInitializer {
                 CommonConfig.class,
                 IntegrationConfig.class,
                 MailSenderConfig.class,
-                PersistenceConfig.class);
+                PersistenceConfig.class,
+                CxfConfig.class);
 
                 servletContext.addListener(new ContextLoaderListener(appContext));
 
