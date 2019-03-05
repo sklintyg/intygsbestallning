@@ -1,16 +1,10 @@
 package se.inera.intyg.intygsbestallning.common.utredning;
 
-import org.springframework.stereotype.Component;
 import se.inera.intyg.intygsbestallning.common.BestallningEvent;
 import se.inera.intyg.intygsbestallning.common.BestallningStatus;
-import se.inera.intyg.intygsbestallning.common.Utredning;
 
-@Component
-public class BestallningStatusResolver implements StatusResolver {
+public interface BestallningStatusResolver {
 
-    @Override
-    public BestallningStatus getNextStatus(Utredning utredning, BestallningEvent event) {
+    BestallningStatus getNextStatus(BestallningEvent event);
 
-        return null;
-    }
 }

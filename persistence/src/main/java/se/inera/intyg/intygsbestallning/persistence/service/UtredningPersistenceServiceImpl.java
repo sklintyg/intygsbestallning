@@ -1,7 +1,9 @@
-package se.inera.intyg.intygsbestallning.persistence;
+package se.inera.intyg.intygsbestallning.persistence.service;
 
 import org.springframework.stereotype.Service;
 import se.inera.intyg.intygsbestallning.common.Utredning;
+import se.inera.intyg.intygsbestallning.persistence.entity.UtredningEntity;
+import se.inera.intyg.intygsbestallning.persistence.repository.UtredningRepository;
 
 @Service
 public class UtredningPersistenceServiceImpl implements UtredningPersistenceService {
@@ -15,8 +17,8 @@ public class UtredningPersistenceServiceImpl implements UtredningPersistenceServ
     @Override
     public Utredning saveNewUtredning(Utredning utredning) {
 
-        var utredningEntity = UtredningEntityKt.toEntity(utredning);
+        var utredningEntity = UtredningEntity.Factory.toEntity(utredning);
 
-        return UtredningEntityKt.toDomain(utredningRepository.save(utredningEntity));
+        return UtredningEntity.Factory.toDomain(utredningRepository.save(utredningEntity));
     }
 }

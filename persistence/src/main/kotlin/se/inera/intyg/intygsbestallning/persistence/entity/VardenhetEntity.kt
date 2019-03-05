@@ -1,11 +1,11 @@
-package se.inera.intyg.intygsbestallning.persistence
+package se.inera.intyg.intygsbestallning.persistence.entity
 
 import se.inera.intyg.intygsbestallning.common.Vardenhet
 import javax.persistence.*
 
 @Entity
 @Table(name = "VARDENHET")
-class VardenhetEntity private constructor(builder: VardenhetEntity.Builder) {
+class VardenhetEntity private constructor(builder: Builder) {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,21 +35,24 @@ class VardenhetEntity private constructor(builder: VardenhetEntity.Builder) {
     fun standardSvar(standardSvar: String?) = apply { this.standardSvar = standardSvar }
     fun build() = VardenhetEntity(this)
   }
+
+  companion object Factory {
+
+    fun toDomain(vardenhetEntity: VardenhetEntity): Vardenhet {
+      return Vardenhet(
+         id = vardenhetEntity.id!!,
+         enhetNamn = vardenhetEntity.enhetNamn,
+         epost = vardenhetEntity.epost,
+         standardSvar = vardenhetEntity.standardSvar)
+    }
+
+    fun toEntity(vardenhet: Vardenhet): VardenhetEntity {
+      return VardenhetEntity.Builder()
+         .enhetNamn(vardenhet.enhetNamn)
+         .epost(vardenhet.epost)
+         .standardSvar(vardenhet.standardSvar)
+         .build()
+    }
+  }
 }
 
-fun VardenhetEntity.toDomain(): Vardenhet {
-
-  return Vardenhet(
-     id = id!!,
-     enhetNamn = enhetNamn,
-     epost = epost,
-     standardSvar = standardSvar)
-}
-
-fun Vardenhet.toEntity(): VardenhetEntity {
-  return VardenhetEntity.Builder()
-     .enhetNamn(this.enhetNamn)
-     .epost(this.epost)
-     .standardSvar(this.standardSvar)
-     .build()
-}

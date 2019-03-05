@@ -1,5 +1,7 @@
 package se.inera.intyg.intygsbestallning.web.utredning;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentResponseType;
 import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentType;
@@ -7,12 +9,15 @@ import se.riv.intygsbestallning.certificate.order.orderassessment.v1.rivtabp21.O
 import se.riv.intygsbestallning.certificate.order.v1.CVType;
 import se.riv.intygsbestallning.certificate.order.v1.CitizenType;
 import se.riv.intygsbestallning.certificate.order.v1.IIType;
+import java.lang.invoke.MethodHandles;
 import java.util.Optional;
 import se.inera.intyg.intygsbestallning.common.CreateUtredningRequest;
 import se.inera.intyg.intygsbestallning.common.IntygTyp;
 
 @Component
 public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponderInterface {
+
+    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().getClass());
 
     private CreateUtredningService createUtredningService;
 
@@ -22,6 +27,9 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
 
     @Override
     public OrderAssessmentResponseType orderAssessment(String logicalAddress, OrderAssessmentType orderAssessmentType) {
+
+        LOG.info("Received request for OrderAssessment");
+
         var createUtredningRequest = fromType(orderAssessmentType);
         createUtredningService.createUtredning(createUtredningRequest);
 

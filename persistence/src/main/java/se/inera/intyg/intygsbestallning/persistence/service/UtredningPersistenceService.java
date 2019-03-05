@@ -1,4 +1,4 @@
-package se.inera.intyg.intygsbestallning.persistence;
+package se.inera.intyg.intygsbestallning.persistence.service;
 
 import se.inera.intyg.intygsbestallning.common.Utredning;
 

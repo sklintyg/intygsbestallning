@@ -5,10 +5,17 @@ import java.time.LocalDateTime
 data class Bestallning(
    val id: Long? = null,
    val ankomstDatum: LocalDateTime,
-   val status: BestallningStatus)
+   val status: BestallningStatus,
+   val handelser: List<Handelse>) {
 
-fun newBestallning(): Bestallning {
-  return Bestallning(ankomstDatum = LocalDateTime.now(), status = BestallningStatus.OLAST)
+  companion object Factory {
+    fun newBestallning(): Bestallning {
+      return Bestallning(
+         ankomstDatum = LocalDateTime.now(),
+         status = BestallningStatus.OLAST,
+         handelser = listOf(Handelse.skapa()))
+    }
+  }
 }
 
 enum class BestallningStatus {
@@ -21,6 +28,7 @@ enum class BestallningStatus {
 }
 
 enum class BestallningEvent {
+  SKAPA,
   LAS,
   AVVISA,
   AVVISA_RADERA,
@@ -28,23 +36,47 @@ enum class BestallningEvent {
   KLARMARKERA
 }
 
+data class Handelse(
+   val id: Long? = null,
+   val event: BestallningEvent,
+   val skapad: LocalDateTime,
+   val anvandare: String? = null,
+   val beskrivning: String,
+   val kommentar: String? = null
+) {
+  companion object Factory {
+    fun skapa() : Handelse {
+      return Handelse(event = BestallningEvent.SKAPA, skapad = LocalDateTime.now(), beskrivning = "Beställning mottagen")
+    }
+  }
+}
+
 data class Utredning(
    val id: Long? = null,
    val bestallning: Bestallning,
    val avslutDatum: LocalDateTime? = null,
    val vardenhet: Vardenhet
-)
-
-fun newUtredning(bestallning: Bestallning, vardenhet: Vardenhet): Utredning {
-  return Utredning(bestallning = bestallning, vardenhet = vardenhet)
+) {
+  companion object Factory {
+    fun newUtredning(bestallning: Bestallning, vardenhet: Vardenhet): Utredning {
+      return Utredning(bestallning = bestallning, vardenhet = vardenhet)
+    }
+  }
 }
+
 
 data class Vardenhet(
    val id: Long? = null,
    val enhetNamn: String,
    val epost: String? = null,
    val standardSvar: String? = null
-)
+) {
+  companion object Factory {
+    fun newVardenhet(enhetNamn: String, epost: String?, standardSvar: String?): Vardenhet {
+      return Vardenhet(enhetNamn = enhetNamn, epost = epost, standardSvar = standardSvar)
+    }
+  }
+}
 
 data class Invanare(
    val personnummer: String,

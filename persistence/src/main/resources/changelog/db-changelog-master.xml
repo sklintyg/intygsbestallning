@@ -7,7 +7,7 @@
   <changeSet id="1" author="joakim anell">
 
     <createTable tableName="UTREDNING">
-      <column name="ID" type="bigint" autoIncrement="true">
+      <column name="ID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
         <constraints primaryKey="true" nullable="false"/>
       </column>
       <column name="BESTALLNING_ID" type="bigint">
@@ -22,7 +22,7 @@
     </createTable>
 
     <createTable tableName="BESTALLNING">
-      <column name="ID" type="bigint" autoIncrement="true">
+      <column name="ID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
         <constraints primaryKey="true" nullable="false"/>
       </column>
       <column name="ANKOMST_DATUM" type="datetime">
@@ -34,7 +34,7 @@
     </createTable>
 
     <createTable tableName="VARDENHET">
-      <column name="ID" type="bigint" autoIncrement="true">
+      <column name="ID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
         <constraints primaryKey="true" nullable="false"/>
       </column>
       <column name="ENHET_NAMN" type="varchar(64)">
@@ -46,8 +46,38 @@
       <column name="STANDARD_SVAR" type="varchar(64)">
         <constraints nullable="true"/>
       </column>
-
     </createTable>
+
+    <createTable tableName="HANDELSE">
+      <column name="ID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="BESTALLNING_ID" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="EVENT" type="varchar(64)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="SKAPAD" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ANVANDARE" type="varchar(64)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="BESKRIVNING" type="varchar(64)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KOMMENTAR" type="varchar(64)">
+        <constraints nullable="true"/>
+      </column>
+    </createTable>
+
+    <addForeignKeyConstraint
+          baseColumnNames="BESTALLNING_ID"
+          baseTableName="HANDELSE"
+          constraintName="HANDELSE_BESTALLNING_FK"
+          referencedColumnNames="ID"
+          referencedTableName="BESTALLNING"/>
 
   </changeSet>
 </databaseChangeLog>
