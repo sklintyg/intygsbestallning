@@ -4,11 +4,11 @@ import org.springframework.stereotype.Service;
 import se.inera.intyg.intygsbestallning.common.Utredning;
 
 @Service
-public class BestallningPersistenceServiceImpl implements BestallningPersistenceService {
+public class UtredningPersistenceServiceImpl implements UtredningPersistenceService {
 
     private final UtredningRepository utredningRepository;
 
-    public BestallningPersistenceServiceImpl(UtredningRepository utredningRepository) {
+    public UtredningPersistenceServiceImpl(UtredningRepository utredningRepository) {
         this.utredningRepository = utredningRepository;
     }
 
