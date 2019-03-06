@@ -4,7 +4,7 @@ pipeline {
     }
 
     agent {
-        docker { image "gradle/5.2.1-jdk11-slim" }
+        docker { image "gradle:5.2.1-jdk11-slim" }
     }
     stages {
 
