@@ -5,20 +5,20 @@ import java.time.LocalDateTime
 data class Bestallning(
    val id: Long? = null,
    val ankomstDatum: LocalDateTime,
-   val status: BestallningStatus,
-   val handelser: List<Handelse>) {
+   var status: BestallningStatus? = BestallningStatus.UNDEFINED,
+   var handelser: List<Handelse>? = mutableListOf()) {
 
   companion object Factory {
     fun newBestallning(): Bestallning {
       return Bestallning(
          ankomstDatum = LocalDateTime.now(),
-         status = BestallningStatus.OLAST,
          handelser = listOf(Handelse.skapa()))
     }
   }
 }
 
 enum class BestallningStatus {
+  UNDEFINED,
   OLAST,
   LAST,
   AVVISAD,

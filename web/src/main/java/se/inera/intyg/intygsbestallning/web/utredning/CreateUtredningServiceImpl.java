@@ -8,6 +8,7 @@ import se.inera.intyg.intygsbestallning.common.Bestallning;
 import se.inera.intyg.intygsbestallning.common.CreateUtredningRequest;
 import se.inera.intyg.intygsbestallning.common.Utredning;
 import se.inera.intyg.intygsbestallning.common.Vardenhet;
+import se.inera.intyg.intygsbestallning.common.utredning.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.persistence.service.UtredningPersistenceService;
 
 @Service
@@ -15,10 +16,13 @@ public class CreateUtredningServiceImpl implements CreateUtredningService {
 
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().getClass());
 
-    private final UtredningPersistenceService utredningPersistenceService;
+    private UtredningPersistenceService utredningPersistenceService;
+    private BestallningStatusResolver bestallningStatusResolver;
 
-    public CreateUtredningServiceImpl(UtredningPersistenceService utredningPersistenceService) {
+    public CreateUtredningServiceImpl(UtredningPersistenceService utredningPersistenceService,
+                                      BestallningStatusResolver bestallningStatusResolver) {
         this.utredningPersistenceService = utredningPersistenceService;
+        this.bestallningStatusResolver = bestallningStatusResolver;
     }
 
     @Override
@@ -28,6 +32,8 @@ public class CreateUtredningServiceImpl implements CreateUtredningService {
 
         var bestallning = Bestallning.Factory.newBestallning();
         var utredning = Utredning.Factory.newUtredning(bestallning, new Vardenhet(null, "", null, null));
+
+        bestallningStatusResolver.setStatus(utredning);
 
         utredningPersistenceService.saveNewUtredning(utredning);
     }

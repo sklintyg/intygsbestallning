@@ -17,7 +17,7 @@ class BestallningEntity private constructor(builder: Builder) {
   @Column(name = "ANKOMST_DATUM", nullable = false)
   val ankomstDatum: LocalDateTime
 
-  @Enumerated
+  @Enumerated(EnumType.STRING)
   @Column(name = "STATUS", nullable = false)
   val status: BestallningStatus
 
@@ -37,7 +37,7 @@ class BestallningEntity private constructor(builder: Builder) {
     var handelser: List<HandelseEntity> = mutableListOf()
 
     fun ankomstDatum(ankomstDatum: LocalDateTime) = apply { this.ankomstDatum = ankomstDatum }
-    fun status(status: BestallningStatus) = apply { this.status = status }
+    fun status(status: BestallningStatus?) = apply { this.status = status }
     fun handelser(handelser: List<HandelseEntity>) = apply { this.handelser = handelser }
     fun build() = BestallningEntity(this)
   }
@@ -56,7 +56,7 @@ class BestallningEntity private constructor(builder: Builder) {
       return BestallningEntity.Builder()
          .status(bestallning.status)
          .ankomstDatum(bestallning.ankomstDatum)
-         .handelser(bestallning.handelser.map { HandelseEntity.toEntity(it) })
+         .handelser(bestallning.handelser!!.map { HandelseEntity.toEntity(it) })
          .build()
     }
   }

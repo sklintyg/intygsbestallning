@@ -1,31 +1,68 @@
 package se.inera.intyg.intygsbestallning.common.utredning;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import se.inera.intyg.intygsbestallning.common.BestallningEvent;
+import java.lang.invoke.MethodHandles;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Objects;
 import se.inera.intyg.intygsbestallning.common.BestallningStatus;
+import se.inera.intyg.intygsbestallning.common.Handelse;
 import se.inera.intyg.intygsbestallning.common.Utredning;
 
 @Component
 public class BestallningStatusResolverImpl implements BestallningStatusResolver {
 
-    @Override
-    public BestallningStatus getNextStatus(BestallningEvent event) {
+    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-        switch (event) {
+    @Override
+    public void setStatus(Utredning utredning) {
+
+        var nuvarandeStatus = utredning.getBestallning().getStatus();
+
+        var senasteHandelse = Collections.max(
+                Objects.requireNonNull(utredning.getBestallning().getHandelser()), Comparator.comparing(Handelse::getSkapad));
+
+        switch (senasteHandelse.getEvent()) {
             case SKAPA:
-                return BestallningStatus.OLAST;
+                if (nuvarandeStatus != BestallningStatus.UNDEFINED) {
+                    throw new IllegalStateException("Can not update state from UNDEFINED unless latest handelse is of typ SKAPA");
+                }
+                utredning.getBestallning().setStatus(BestallningStatus.OLAST);
+                break;
             case LAS:
-                return BestallningStatus.LAST;
+                if (nuvarandeStatus != BestallningStatus.OLAST) {
+                    throw new IllegalStateException("Can not update state from OLAST unless latest handelse is of typ LAST");
+                }
+                utredning.getBestallning().setStatus(BestallningStatus.LAST);
+                break;
             case AVVISA:
-                return BestallningStatus.AVVISAD;
+                if (nuvarandeStatus != BestallningStatus.LAST) {
+                    throw new IllegalStateException("Can not update state from LAST to AVVISA unless latest handelse is of typ AVVISAD");
+                }
+                utredning.getBestallning().setStatus(BestallningStatus.AVVISAD);
+                break;
             case AVVISA_RADERA:
-                return BestallningStatus.AVVISAD_RADERAD;
+                if (nuvarandeStatus != BestallningStatus.LAST) {
+                    throw new IllegalStateException("Can not update state from LAST to AVVISAD_RADERAD unless latest handelse is of typ AVVISA_RADERA");
+                }
+                utredning.getBestallning().setStatus(BestallningStatus.AVVISAD_RADERAD);
+                break;
             case ACCEPTERA:
-                return BestallningStatus.ACCEPTERAD;
+                if (nuvarandeStatus != BestallningStatus.LAST) {
+                    throw new IllegalStateException("Can not update state from LAST to ACCEPTERA unless latest handelse is of typ ACCEPTERAD");
+                }
+                utredning.getBestallning().setStatus(BestallningStatus.ACCEPTERAD);
+                break;
             case KLARMARKERA:
-                return BestallningStatus.KLARMARKERAD;
+                if (nuvarandeStatus != BestallningStatus.LAST) {
+                    throw new IllegalStateException("Can not update state from ACCEPTEDAD to KLARMARKERAD unless latest handelse is of typ KLARMARKERA");
+                }
+                utredning.getBestallning().setStatus(BestallningStatus.KLARMARKERAD);
+                break;
             default:
-                throw new IllegalArgumentException("Not a valid bestallningEvent: " + event);
+                throw new IllegalArgumentException("Not a valid bestallningEvent: " + senasteHandelse);
         }
     }
 }

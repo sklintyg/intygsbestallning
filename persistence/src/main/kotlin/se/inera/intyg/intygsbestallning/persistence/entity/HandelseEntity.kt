@@ -13,7 +13,7 @@ class HandelseEntity private constructor(builder: Builder) {
   @Column(name = "ID", nullable = false)
   val id: Long? = null
 
-  @Enumerated
+  @Enumerated(EnumType.STRING)
   @Column(name = "EVENT", nullable = false)
   val event: BestallningEvent
 
