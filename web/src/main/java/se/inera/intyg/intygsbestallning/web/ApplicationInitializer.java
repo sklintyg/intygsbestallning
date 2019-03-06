@@ -23,7 +23,7 @@ public class ApplicationInitializer implements WebApplicationInitializer {
                 IntegrationConfig.class,
                 MailSenderConfig.class,
                 PersistenceConfig.class,
-                CxfConfig.class);
+                WebConfig.class);
 
                 servletContext.addListener(new ContextLoaderListener(appContext));
 

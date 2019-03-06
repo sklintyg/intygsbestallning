@@ -7,12 +7,12 @@ import org.springframework.context.annotation.Configuration;
 import se.inera.intyg.intygsbestallning.web.utredning.OrderAssessmentIntygsbestallning;
 
 @Configuration
-public class CxfConfig {
+public class WebConfig {
 
     private Bus bus;
     private OrderAssessmentIntygsbestallning orderAssessment;
 
-    public CxfConfig(Bus bus, OrderAssessmentIntygsbestallning orderAssessment) {
+    public WebConfig(Bus bus, OrderAssessmentIntygsbestallning orderAssessment) {
         this.bus = bus;
         this.orderAssessment = orderAssessment;
     }
