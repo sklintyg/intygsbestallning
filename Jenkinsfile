@@ -3,8 +3,9 @@ pipeline {
         buildVersion = "0.0.1.${BUILD_NUMBER}"
     }
 
-    agent any
-
+    agent {
+        docker { image "adoptopenjdk/openjdk11" }
+    }
     stages {
 
         stage('build') {
