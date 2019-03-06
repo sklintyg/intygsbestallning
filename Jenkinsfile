@@ -10,7 +10,7 @@ pipeline {
 
         stage('build') {
             steps {
-                shgradle "--refresh-dependencies clean build -P client"
+                sh "gradle --refresh-dependencies clean build -P client"
             }
             post {
                 always {
@@ -28,7 +28,7 @@ pipeline {
 
         stage('tag and upload') {
             steps {
-                shgradle "uploadArchives tagRelease"
+                sh "gradle uploadArchives tagRelease"
             }
         }
     }
