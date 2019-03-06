@@ -22,13 +22,18 @@ När applikationen har byggt klart, kan man gå till `/` och köra kommandot
 
 för att starta applikationen lokalt.
 
-
 För att starta applikationen i debugläge används:
 
     $ ./gradlew bootRun --debug-jvm
     
 Applikationen kommer då att starta upp med debugPort = **5005**. Det är denna port du ska använda när du sätter upp din 
 debug-konfiguration i din utvecklingsmiljö.
+
+För att starta applicationen och även bygga frontend-klienten med alla statiska filer, kör kommandot
+
+    $ ./gradlew bootRun -P client
+
+för att starta applikationen lokalt.
 
 ### H2
 Du hittar databasen lokalt på `http://localhost:8080/h2-console

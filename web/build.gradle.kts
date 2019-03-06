@@ -2,6 +2,8 @@
 import com.moowork.gradle.node.npm.NpmTask
 import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 
+val buildClient = project.hasProperty("client")
+
 plugins {
   id("org.springframework.boot") version "2.1.3.RELEASE"
   id("com.moowork.node") version "1.2.0"
@@ -50,17 +52,19 @@ tasks {
     into("${project.buildDir}/resources/main/static")
   }
 
-  bootJar {
-    from("client/build/") {
-      into("static")
+  if (buildClient) {
+    bootJar {
+      from("client/build/") {
+        into("static")
+      }
     }
-  }
 
-  "bootRun" {
-    dependsOn(copyReactbuild)
-  }
+    "bootRun" {
+      dependsOn(copyReactbuild)
+    }
 
-  "bootJar" {
-    dependsOn(buildReactApp)
+    "bootJar" {
+      dependsOn(buildReactApp)
+    }
   }
 }
