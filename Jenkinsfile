@@ -3,12 +3,18 @@ pipeline {
         buildVersion = "0.0.1.${BUILD_NUMBER}"
     }
 
-    agent any
+    agent {
+        docker {
+            image "gradle:5.2.1-jdk11-slim"
+            args "-v /var/lib/jenkins/jobs/intyg-intygsbeställning/workspace/build/reports/allTests:/home/gradle/build/reports/allTests" +
+                 "-v /var/lib/jenkins/jobs/intyg-intygsbestallning/builds/${BUILD_NUMBER}/htmlreports:/home/gradle/build/${BUILD_NUMBER}/htmlreports"
+        }
+    }
 
     stages {
         stage('build') {
             steps {
-                shgradle "--refresh-dependencies clean build"
+                sh "gradle --refresh-dependencies clean build"
             }
             post {
                 always {
@@ -26,7 +32,7 @@ pipeline {
 
         stage('tag and upload') {
             steps {
-                shgradle "uploadArchives tagRelease"
+                sh "gradle uploadArchives tagRelease"
             }
         }
     }
