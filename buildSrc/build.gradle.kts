@@ -3,5 +3,7 @@ plugins {
 }
 
 repositories {
-    mavenCentral()
+    mavenLocal()
+    maven("https://build-inera.nordicmedtest.se/nexus/repository/releases/")
+    maven("http://repo.maven.apache.org/maven2")
 }
