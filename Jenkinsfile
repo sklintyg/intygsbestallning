@@ -3,14 +3,12 @@ pipeline {
         buildVersion = "0.0.1.${BUILD_NUMBER}"
     }
 
-    agent {
-        docker { image "gradle:5.2.1-jdk11-slim" }
-    }
-    stages {
+    agent any
 
+    stages {
         stage('build') {
             steps {
-                sh "gradle --refresh-dependencies clean build -P client"
+                shgradle "--refresh-dependencies clean build"
             }
             post {
                 always {
@@ -28,7 +26,7 @@ pipeline {
 
         stage('tag and upload') {
             steps {
-                sh "gradle uploadArchives tagRelease"
+                shgradle "uploadArchives tagRelease"
             }
         }
     }
