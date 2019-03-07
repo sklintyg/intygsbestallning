@@ -32,7 +32,5 @@ object Config {
     const val awaitilityVersion = "1.4.0"
     const val dbUnitVersion = "2.4.9"
     const val springockitoVersion = "1.0.8"
-    const val googleGuavaVersion = "24.1-jre"
-
   }
 }
