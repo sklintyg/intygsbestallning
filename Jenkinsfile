@@ -1,40 +1,25 @@
-pipeline {
-    environment {
-        buildVersion = "0.0.1.${BUILD_NUMBER}"
+#!groovy
+node {
+
+    def buildVersion = "0.0.1.${BUILD_NUMBER}"
+
+    def java11tool = tool name: 'jdk11', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
+    def javaHome= "${java11tool}/jdk-11.0.2+9"
+
+    def gradletool = tool name: 'gradle', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
+    def gradle = "${gradletool}/gradle-5.2.1/bin/gradle -Dorg.gradle.java.home=/${javaHome}"
+
+    stage('build') {
+            try {
+                sh "${gradle} --refresh-dependencies clean build"
+              } finally {
+                publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/allTests', \
+                    reportFiles: 'index.html', reportName: 'JUnit results'
+            }
     }
 
-    agent {
-        docker {
-            image "gradle:5.2.1-jdk11-slim"
-            args "-v /var/lib/jenkins/jobs/intyg-intygsbeställning/workspace/build/reports/allTests:/home/gradle/build/reports/allTests" +
-                 "-v /var/lib/jenkins/jobs/intyg-intygsbestallning/builds/${BUILD_NUMBER}/htmlreports:/home/gradle/build/${BUILD_NUMBER}/htmlreports"
-        }
+    stage('tag and upload') {
+            sh "${gradle} uploadArchives"
     }
 
-    stages {
-        stage('build') {
-            steps {
-                sh "gradle --refresh-dependencies clean build"
-            }
-            post {
-                always {
-                    publishHTML target: [
-                        allowMissing: true,
-                        alwaysLinkToLastBuild   : true,
-                        keepAll: true,
-                        reportDir: 'build/reports/allTests',
-                        reportFiles: 'index.html',
-                        reportName: 'JUnit results'
-                    ]
-                }
-            }
-        }
-
-        stage('tag and upload') {
-            steps {
-                sh "gradle uploadArchives tagRelease"
-            }
-        }
-    }
 }
-
