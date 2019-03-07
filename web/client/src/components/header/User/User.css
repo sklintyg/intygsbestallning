@@ -1,0 +1,14 @@
+.ib-header-user {
+  flex: 1 1 auto;
+  min-width: 120px;
+  display: block;
+}
+
+.ib-header-user .user-name {
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+.ib-header-user .user-role {
+  white-space: nowrap;
+}
