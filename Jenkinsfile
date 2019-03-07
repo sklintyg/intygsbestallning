@@ -19,6 +19,6 @@ node {
     }
 
     stage('tag and upload') {
-        sh "${gradle} uploadArchives tagRelease -DbuildVersion=" + buildVersion + " -DinfraVersion=" + infraVersion
+        sh "${gradle} uploadArchives"
     }
 }
