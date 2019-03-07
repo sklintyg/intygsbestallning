@@ -4,7 +4,7 @@ import Unit from "./unit/Unit";
 import Actions from "./actions/Actions";
 
 import "./Header.css"
-import User from "./user/User";
+import User from "./anvandare/User";
 import staticUser from "./static-user";
 
 
