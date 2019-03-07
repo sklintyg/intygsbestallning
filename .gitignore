@@ -28,3 +28,6 @@ HELP.md
 /dist/
 /nbdist/
 /.nb-gradle/
+
+### OS X ###
+.DS_Store
