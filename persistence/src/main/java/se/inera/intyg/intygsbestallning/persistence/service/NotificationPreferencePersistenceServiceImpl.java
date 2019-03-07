@@ -1,7 +1,7 @@
 package se.inera.intyg.intygsbestallning.persistence.service;
 
 import org.springframework.stereotype.Service;
-import se.inera.intyg.intygsbestallning.common.notification.NotifieringPreference;
+import se.inera.intyg.intygsbestallning.common.domain.NotifieringPreference;
 import se.inera.intyg.intygsbestallning.persistence.entity.NotifieringPreferenceEntity;
 import se.inera.intyg.intygsbestallning.persistence.repository.NotificationPreferenceRepository;
 

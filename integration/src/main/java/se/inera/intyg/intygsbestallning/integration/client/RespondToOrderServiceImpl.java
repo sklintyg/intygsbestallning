@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import se.riv.intygsbestallning.certificate.order.respondtoorder.v1.rivtabp21.RespondToOrderResponderInterface;
 import se.riv.intygsbestallning.certificate.order.respondtoorderresponder.v1.RespondToOrderType;
 import se.riv.intygsbestallning.certificate.order.v1.IIType;
-import se.inera.intyg.intygsbestallning.common.AccepteraBestallningRequest;
+import se.inera.intyg.intygsbestallning.common.dto.AccepteraBestallningRequest;
 
 @Service
 public class RespondToOrderServiceImpl implements RespondToOrderService {

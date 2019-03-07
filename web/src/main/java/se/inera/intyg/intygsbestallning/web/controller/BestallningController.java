@@ -1,4 +1,4 @@
-package se.inera.intyg.intygsbestallning.web.bestallning;
+package se.inera.intyg.intygsbestallning.web.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import se.inera.intyg.intygsbestallning.web.user.AccepteraBestallning;
-import se.inera.intyg.intygsbestallning.web.user.DtoObjectsKt;
+import se.inera.intyg.intygsbestallning.common.dto.AccepteraBestallningRequest;
+import se.inera.intyg.intygsbestallning.web.AccepteraBestallning;
+import se.inera.intyg.intygsbestallning.web.service.bestallning.AccepteraBestallningService;
 
 @RestController
 @RequestMapping("/bestallningar")
@@ -26,7 +27,7 @@ public class BestallningController {
 
     @PostMapping("/{id}/acceptera")
     public ResponseEntity accepteraBestallning(@PathVariable String id, AccepteraBestallning accepteraBestallning) {
-        accepteraBestallningService.accepteraBestallning(DtoObjectsKt.fromDto(accepteraBestallning, id));
+        accepteraBestallningService.accepteraBestallning(new AccepteraBestallningRequest(id, accepteraBestallning.getFritextForklaring()));
         return ResponseEntity.ok().build();
     }
 }

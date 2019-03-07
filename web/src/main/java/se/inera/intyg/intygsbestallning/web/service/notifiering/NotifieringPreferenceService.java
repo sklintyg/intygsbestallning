@@ -16,13 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.persistence.part
+package se.inera.intyg.intygsbestallning.web.service.notifiering;
 
-/**
- * Created by marced on 2018-06-04.
- */
-enum class NotifieringMottagarTyp {
-    LANDSTING,
-    VARDENHET,
-    ALL
+
+import se.inera.intyg.intygsbestallning.common.domain.NotifieringPreference;
+
+import java.util.Optional;
+
+public interface NotifieringPreferenceService {
+    public Optional<NotifieringPreference> getNotificationPreference(String hsaId);
+
+    public NotifieringPreference setNotificationPreference(NotifieringPreference notificationPreference);
 }

@@ -18,7 +18,7 @@
  */
 package se.inera.intyg.intygsbestallning.persistence.entity
 
-import se.inera.intyg.intygsbestallning.common.notification.NotifieringPreference
+import se.inera.intyg.intygsbestallning.common.domain.NotifieringPreference
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id

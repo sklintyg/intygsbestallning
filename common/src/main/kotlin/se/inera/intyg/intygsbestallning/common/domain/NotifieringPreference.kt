@@ -16,18 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.persistence.part
-enum class NotifieringTyp private constructor(val label: String, notifieringMottagarTyp: NotifieringMottagarTyp) {
+package se.inera.intyg.intygsbestallning.common.domain
 
-
-    NY_INTYGSBESTALLNING("Ny intygsbeställning mottagen av vårdenhet", NotifieringMottagarTyp.VARDENHET),
-    VIDAREBEFODRAD_INTYGSBESTALLNING("Intygsbeställning har vidarebefodrats till en annan vårdenhet", NotifieringMottagarTyp.VARDENHET);
-
-
-    val id: String
-
-    init {
-        this.id = this.name
-    }
-
-}
+data class NotifieringPreference(
+        var hsaId: String,
+        var landstingEpost: String? = null
+)

@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.common.notification
+package se.inera.intyg.intygsbestallning.common.domain
 
-data class NotifieringPreference(
-        var hsaId: String,
-        var landstingEpost: String? = null
-)
+enum class NotifieringTyp(val label: String, val notifieringMottagarTyp: NotifieringMottagarTyp) {
+  NY_INTYGSBESTALLNING("Ny intygsbeställning mottagen av vårdenhet", NotifieringMottagarTyp.VARDENHET),
+  VIDAREBEFODRAD_INTYGSBESTALLNING("Intygsbeställning har vidarebefodrats till en annan vårdenhet", NotifieringMottagarTyp.VARDENHET);
+}

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.service.user;
+package se.inera.intyg.intygsbestallning.web.service.user;
 
 import se.inera.intyg.intygsbestallning.web.auth.IbUser;
 

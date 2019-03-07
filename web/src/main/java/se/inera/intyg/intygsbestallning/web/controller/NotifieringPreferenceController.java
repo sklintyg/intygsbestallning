@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import se.inera.intyg.intygsbestallning.common.notification.NotifieringPreference;
 import se.inera.intyg.intygsbestallning.web.notification.NotificationPreferenceDto;
-import se.inera.intyg.intygsbestallning.web.notifiering.NotifieringPreferenceService;
+import se.inera.intyg.intygsbestallning.web.service.notifiering.NotifieringPreferenceService;
 
 @RestController
 @RequestMapping("/api/notifiering/preference")

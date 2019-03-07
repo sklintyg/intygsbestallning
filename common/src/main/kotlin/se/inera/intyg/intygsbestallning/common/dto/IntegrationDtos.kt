@@ -1,4 +1,6 @@
-package se.inera.intyg.intygsbestallning.common
+package se.inera.intyg.intygsbestallning.common.dto
+
+import se.inera.intyg.intygsbestallning.common.domain.IntygTyp
 
 data class CreateUtredningRequest(
    val personnummer: String,

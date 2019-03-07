@@ -1,4 +1,4 @@
-package se.inera.intyg.intygsbestallning.web.utredning;
+package se.inera.intyg.intygsbestallning.web.service.utredning;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +11,8 @@ import se.riv.intygsbestallning.certificate.order.v1.CitizenType;
 import se.riv.intygsbestallning.certificate.order.v1.IIType;
 import java.lang.invoke.MethodHandles;
 import java.util.Optional;
-import se.inera.intyg.intygsbestallning.common.CreateUtredningRequest;
-import se.inera.intyg.intygsbestallning.common.IntygTyp;
+import se.inera.intyg.intygsbestallning.common.domain.IntygTyp;
+import se.inera.intyg.intygsbestallning.common.dto.CreateUtredningRequest;
 
 @Component
 public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponderInterface {

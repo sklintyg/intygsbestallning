@@ -19,8 +19,8 @@
 package se.inera.intyg.intygsbestallning.persistence.entity
 
 
-import se.inera.intyg.intygsbestallning.persistence.part.NotifieringMottagarTyp
-import se.inera.intyg.intygsbestallning.persistence.part.NotifieringTyp
+import se.inera.intyg.intygsbestallning.common.domain.NotifieringMottagarTyp
+import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp
 import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.Entity

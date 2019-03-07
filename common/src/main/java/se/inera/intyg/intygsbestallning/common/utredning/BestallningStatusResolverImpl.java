@@ -7,9 +7,9 @@ import java.lang.invoke.MethodHandles;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Objects;
-import se.inera.intyg.intygsbestallning.common.BestallningStatus;
-import se.inera.intyg.intygsbestallning.common.Handelse;
-import se.inera.intyg.intygsbestallning.common.Utredning;
+import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
+import se.inera.intyg.intygsbestallning.common.domain.Handelse;
+import se.inera.intyg.intygsbestallning.common.domain.Utredning;
 
 @Component
 public class BestallningStatusResolverImpl implements BestallningStatusResolver {

@@ -1,6 +1,6 @@
 package se.inera.intyg.intygsbestallning.persistence.entity
 
-import se.inera.intyg.intygsbestallning.common.Vardenhet
+import se.inera.intyg.intygsbestallning.common.domain.Vardenhet
 import javax.persistence.*
 
 @Entity

@@ -16,14 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.web.notifiering;
+package se.inera.intyg.intygsbestallning.web.service.notifiering;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.inera.intyg.intygsbestallning.common.Utredning;
+import se.inera.intyg.intygsbestallning.common.domain.Utredning;
 import se.inera.intyg.intygsbestallning.common.service.mail.MailService;
-import se.inera.intyg.intygsbestallning.persistence.part.NotifieringMottagarTyp;
-import se.inera.intyg.intygsbestallning.web.notification.NotificationPreferenceDto;
 
 import javax.mail.MessagingException;
 import java.lang.invoke.MethodHandles;

@@ -1,13 +1,13 @@
-package se.inera.intyg.intygsbestallning.web.utredning;
+package se.inera.intyg.intygsbestallning.web.service.utredning;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import java.lang.invoke.MethodHandles;
-import se.inera.intyg.intygsbestallning.common.Bestallning;
-import se.inera.intyg.intygsbestallning.common.CreateUtredningRequest;
-import se.inera.intyg.intygsbestallning.common.Utredning;
-import se.inera.intyg.intygsbestallning.common.Vardenhet;
+import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
+import se.inera.intyg.intygsbestallning.common.domain.Utredning;
+import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
+import se.inera.intyg.intygsbestallning.common.dto.CreateUtredningRequest;
 import se.inera.intyg.intygsbestallning.common.utredning.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.persistence.service.UtredningPersistenceService;
 

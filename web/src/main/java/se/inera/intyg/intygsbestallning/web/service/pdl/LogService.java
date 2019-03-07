@@ -19,7 +19,7 @@
 package se.inera.intyg.intygsbestallning.web.service.pdl;
 
 import java.util.List;
-import se.inera.intyg.intygsbestallning.common.Bestallning;
+import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.web.pdl.PdlLogEvent;
 
 public interface LogService {

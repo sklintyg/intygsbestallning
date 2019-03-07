@@ -1,7 +1,7 @@
 package se.inera.intyg.intygsbestallning.persistence.service;
 
 import org.springframework.stereotype.Service;
-import se.inera.intyg.intygsbestallning.common.Utredning;
+import se.inera.intyg.intygsbestallning.common.domain.Utredning;
 import se.inera.intyg.intygsbestallning.persistence.entity.UtredningEntity;
 import se.inera.intyg.intygsbestallning.persistence.repository.UtredningRepository;
 

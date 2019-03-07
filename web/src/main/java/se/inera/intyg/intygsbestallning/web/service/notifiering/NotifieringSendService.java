@@ -1,6 +1,6 @@
-package se.inera.intyg.intygsbestallning.web.notifiering;
+package se.inera.intyg.intygsbestallning.web.service.notifiering;
 
-import se.inera.intyg.intygsbestallning.common.Utredning;
+import se.inera.intyg.intygsbestallning.common.domain.Utredning;
 
 /**
  * Used for sending notifications by email to vardenhet users. Notifications will include a deep link to the related

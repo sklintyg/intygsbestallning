@@ -18,7 +18,7 @@
  */
 package se.inera.intyg.intygsbestallning.web.notification
 
-import se.inera.intyg.intygsbestallning.common.notification.NotifieringPreference
+import se.inera.intyg.intygsbestallning.common.domain.NotifieringPreference
 
 data class NotificationPreferenceDto constructor(
         val hsaId: String,

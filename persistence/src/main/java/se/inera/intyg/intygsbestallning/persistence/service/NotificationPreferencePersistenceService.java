@@ -1,6 +1,6 @@
 package se.inera.intyg.intygsbestallning.persistence.service;
 
-import se.inera.intyg.intygsbestallning.common.notification.NotifieringPreference;
+import se.inera.intyg.intygsbestallning.common.domain.NotifieringPreference;
 
 import java.util.Optional;
 

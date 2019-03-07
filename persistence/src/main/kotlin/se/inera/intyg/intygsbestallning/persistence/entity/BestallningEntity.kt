@@ -1,7 +1,7 @@
 package se.inera.intyg.intygsbestallning.persistence.entity
 
-import se.inera.intyg.intygsbestallning.common.Bestallning
-import se.inera.intyg.intygsbestallning.common.BestallningStatus
+import se.inera.intyg.intygsbestallning.common.domain.Bestallning
+import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus
 import java.time.LocalDateTime
 import javax.persistence.*
 

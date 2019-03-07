@@ -38,15 +38,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import se.inera.intyg.infra.logmessages.PdlLogMessage;
-import se.inera.intyg.intygsbestallning.common.Bestallning;
+import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
 import se.inera.intyg.intygsbestallning.common.exception.IbJMSException;
 import se.inera.intyg.intygsbestallning.common.json.CustomObjectMapper;
-import se.inera.intyg.intygsbestallning.service.user.UserService;
 
 import se.inera.intyg.intygsbestallning.web.pdl.LogMessage;
 import se.inera.intyg.intygsbestallning.web.pdl.PdlLogEvent;
 import se.inera.intyg.intygsbestallning.web.pdl.PdlLogMessageFactory;
+import se.inera.intyg.intygsbestallning.web.service.user.UserService;
 
 /**
  * Implementation of service for logging user actions according to PDL requirements.

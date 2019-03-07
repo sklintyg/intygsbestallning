@@ -1,7 +1,7 @@
-package se.inera.intyg.intygsbestallning.web.bestallning;
+package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
 import org.springframework.stereotype.Service;
-import se.inera.intyg.intygsbestallning.common.AccepteraBestallningRequest;
+import se.inera.intyg.intygsbestallning.common.dto.AccepteraBestallningRequest;
 import se.inera.intyg.intygsbestallning.integration.client.RespondToOrderService;
 
 @Service

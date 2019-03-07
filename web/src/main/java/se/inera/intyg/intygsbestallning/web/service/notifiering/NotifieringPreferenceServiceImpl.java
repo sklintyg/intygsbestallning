@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.web.notifiering;
+package se.inera.intyg.intygsbestallning.web.service.notifiering;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import se.inera.intyg.intygsbestallning.common.notification.NotifieringPreference;
+import se.inera.intyg.intygsbestallning.common.domain.NotifieringPreference;
 import se.inera.intyg.intygsbestallning.persistence.service.NotificationPreferencePersistenceService;
 
 import java.util.Optional;
