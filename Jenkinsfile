@@ -11,7 +11,7 @@ node {
 
     stage('build') {
             try {
-                sh "${gradle} --refresh-dependencies clean build"
+                sh "${gradle} --refresh-dependencies clean build -P client"
               } finally {
                 publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/allTests', \
                     reportFiles: 'index.html', reportName: 'JUnit results'
