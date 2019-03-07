@@ -12,10 +12,14 @@ plugins {
 dependencies {
 
   // Project dependencies
-  compile(project(":common"))
-  compile(project(":integration"))
-  compile(project(":persistence"))
-  compile(project(":mail-sender"))
+  implementation(project(":common"))
+  implementation(project(":integration"))
+  implementation(project(":persistence"))
+  implementation(project(":mail-sender"))
+
+  implementation("se.inera.intyg.infra:log-messages:${extra["intygInfraVersion"]}")
+  implementation("se.inera.intyg.infra:security-authorities:${extra["intygInfraVersion"]}")
+  implementation("se.inera.intyg.infra:security-common:${extra["intygInfraVersion"]}")
 
   // Spring Boot starters
   implementation("org.springframework.boot:spring-boot-starter-web:${Dependencies.springBootVersion}")

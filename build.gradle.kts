@@ -15,6 +15,10 @@ allprojects {
   group = "se.inera.intyg.intygsbestallning"
   version = System.getenv("buildVersion") ?: "0-SNAPSHOT"
 
+  extra.apply {
+    set("intygInfraVersion", System.getenv("infraVersion") ?: "0-SNAPSHOT")
+  }
+
   repositories {
     mavenLocal()
     maven("https://build-inera.nordicmedtest.se/nexus/repository/releases/")

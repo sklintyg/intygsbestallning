@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2018 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,13 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.web.service.pdl;
+package se.inera.intyg.intygsbestallning.common.exception;
 
-import java.util.List;
-import se.inera.intyg.intygsbestallning.common.Bestallning;
-import se.inera.intyg.intygsbestallning.web.pdl.PdlLogEvent;
-
-public interface LogService {
-    void log(Bestallning bestallning, PdlLogEvent logEvent);
-    void logList(List<? extends Bestallning> bestallningListItems, PdlLogEvent logEvent);
+public class IbJMSException extends IbServiceException {
+    public IbJMSException(IbErrorCodeEnum errorCode, String message) {
+        super(errorCode, message);
+    }
+    public IbJMSException(IbErrorCodeEnum errorCode, String message, Long errorEntityId) {
+        super(errorCode, message, errorEntityId);
+    }
 }
