@@ -20,18 +20,13 @@ package se.inera.intyg.intygsbestallning.persistence.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
-import se.inera.intyg.intygsbestallning.persistence.NotifieringPreferenceEntity;
+import se.inera.intyg.intygsbestallning.persistence.entity.NotifieringPreferenceEntity;
 
 import java.util.Optional;
 
 @Transactional(value = "transactionManager", readOnly = false)
-public interface NotifieringPreferenceRepository extends JpaRepository<NotifieringPreferenceEntity, String> {
+public interface NotificationPreferenceRepository extends JpaRepository<NotifieringPreferenceEntity, String> {
 
-    /**
-     * Finds an entity by it's hsaId.
-     *
-     * @param hsaId
-     * @return NotifieringPreference for this hsaId if exists.
-     */
     Optional<NotifieringPreferenceEntity> findByHsaId(String hsaId);
+
 }

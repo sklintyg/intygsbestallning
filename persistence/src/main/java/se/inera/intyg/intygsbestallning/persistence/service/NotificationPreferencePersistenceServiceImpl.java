@@ -2,23 +2,23 @@ package se.inera.intyg.intygsbestallning.persistence.service;
 
 import org.springframework.stereotype.Service;
 import se.inera.intyg.intygsbestallning.common.notification.NotifieringPreference;
-import se.inera.intyg.intygsbestallning.persistence.NotifieringPreferenceEntity;
-import se.inera.intyg.intygsbestallning.persistence.repository.NotifieringPreferenceRepository;
+import se.inera.intyg.intygsbestallning.persistence.entity.NotifieringPreferenceEntity;
+import se.inera.intyg.intygsbestallning.persistence.repository.NotificationPreferenceRepository;
 
 import java.util.Optional;
 
 @Service
 public class NotificationPreferencePersistenceServiceImpl implements NotificationPreferencePersistenceService {
 
-    private final NotifieringPreferenceRepository notifieringPreferenceRepository;
+    private final NotificationPreferenceRepository notifieringPreferenceRepository;
 
-    public NotificationPreferencePersistenceServiceImpl(NotifieringPreferenceRepository notifieringPreferenceRepository) {
+    public NotificationPreferencePersistenceServiceImpl(NotificationPreferenceRepository notifieringPreferenceRepository) {
         this.notifieringPreferenceRepository = notifieringPreferenceRepository;
     }
 
     @Override
     public NotifieringPreference saveNewNotificationPreference(NotifieringPreference notifieringPreference) {
-        var npe = NotifieringPreferenceEntity.Factory.toEntity(notifieringPreference);
+        var npe = NotifieringPreferenceEntity.Factory.fromDomain(notifieringPreference);
         return NotifieringPreferenceEntity.Factory.toDomain(notifieringPreferenceRepository.save(npe));
     }
 

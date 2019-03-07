@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.persistence
+package se.inera.intyg.intygsbestallning.persistence.entity
 
 import se.inera.intyg.intygsbestallning.common.notification.NotifieringPreference
 import javax.persistence.Column
@@ -60,8 +60,8 @@ class NotifieringPreferenceEntity private constructor(builder: Builder) {
             )
         }
 
-        fun toEntity(np: NotifieringPreference): NotifieringPreferenceEntity {
-            return NotifieringPreferenceEntity.Builder()
+        fun fromDomain(np: NotifieringPreference): NotifieringPreferenceEntity {
+            return Builder()
                     .hsaId(np.hsaId)
                     .landstingEpost(np.landstingEpost)
                     .build()

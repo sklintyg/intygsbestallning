@@ -18,7 +18,26 @@
  */
 package se.inera.intyg.intygsbestallning.web.notification
 
-data class NotificationPreferenceDto (
-        val hsaId: String? = null,
+import se.inera.intyg.intygsbestallning.common.notification.NotifieringPreference
+
+data class NotificationPreferenceDto constructor(
+        val hsaId: String,
         var landstingEpost: String? = null
-)
+) {
+    companion object Factory {
+
+        fun toDomain(npd: NotificationPreferenceDto): NotifieringPreference {
+            return NotifieringPreference(
+                    hsaId = npd.hsaId,
+                    landstingEpost = npd.landstingEpost
+            )
+        }
+
+        fun fromDomain(np: NotifieringPreference): NotificationPreferenceDto {
+            return NotificationPreferenceDto(
+                    hsaId = np.hsaId,
+                    landstingEpost = np.landstingEpost
+            )
+        }
+    }
+}
