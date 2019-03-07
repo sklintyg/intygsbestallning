@@ -1,5 +1,6 @@
 
 import com.moowork.gradle.node.npm.NpmTask
+import se.inera.intyg.TagReleaseTask
 import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 
 val buildClient = project.hasProperty("client")
@@ -55,7 +56,7 @@ tasks {
     from("client/build/")
     into("${project.buildDir}/resources/main/static")
   }
-
+  
   if (buildClient) {
     bootJar {
       from("client/build/") {

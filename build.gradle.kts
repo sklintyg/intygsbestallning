@@ -55,8 +55,6 @@ subprojects {
     withType<KotlinCompile> {
       kotlinOptions.jvmTarget = Jvm.kotlinJvmTarget
     }
-
-    withType<TagReleaseTask>()
   }
 }
 
@@ -74,4 +72,8 @@ publishing {
 
 dependencies {
   subprojects.forEach { archives(it) }
+}
+
+tasks.register<TagReleaseTask>("tagRelease") {
+  
 }

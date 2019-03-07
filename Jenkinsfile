@@ -1,7 +1,7 @@
 #!groovy
 node {
-
     def buildVersion = "0.0.1.${BUILD_NUMBER}"
+    def infraVersion = "3.8.0.+"
 
     def java11tool = tool name: 'jdk11', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
     def javaHome= "${java11tool}/jdk-11.0.2+9"
@@ -19,7 +19,6 @@ node {
     }
 
     stage('tag and upload') {
-            sh "${gradle} uploadArchives"
+        sh "${gradle} uploadArchives tagRelease -DbuildVersion=" + buildVersion + " -DinfraVersion=" + infraVersion
     }
-
 }
