@@ -43,8 +43,8 @@ import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
 import se.inera.intyg.intygsbestallning.common.exception.IbJMSException;
 import se.inera.intyg.intygsbestallning.common.json.CustomObjectMapper;
 
+import se.inera.intyg.intygsbestallning.web.pdl.LogEvent;
 import se.inera.intyg.intygsbestallning.web.pdl.LogMessage;
-import se.inera.intyg.intygsbestallning.web.pdl.PdlLogEvent;
 import se.inera.intyg.intygsbestallning.web.pdl.PdlLogMessageFactory;
 import se.inera.intyg.intygsbestallning.web.service.user.UserService;
 
@@ -76,14 +76,14 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public void log(Bestallning bestallning, PdlLogEvent logEvent) {
+    public void log(Bestallning bestallning, LogEvent logEvent) {
         LogMessage logMessage = getLogMessage(bestallning, logEvent);
         PdlLogMessage pdlLogMessage = pdlLogMessageFactory.buildLogMessage(logMessage, userService.getUser());
         send(pdlLogMessage);
     }
 
     @Override
-    public void logList(List<? extends Bestallning> bestallningListItems, PdlLogEvent logEvent) {
+    public void logList(List<? extends Bestallning> bestallningListItems, LogEvent logEvent) {
         if (bestallningListItems == null) {
             LOG.debug("No bestallningar for PDL logging, no logging.");
             return;
@@ -93,11 +93,11 @@ public class LogServiceImpl implements LogService {
         send(pdlLogMessage);
     }
 
-    private LogMessage getLogMessage(List<? extends Bestallning> bestallningListItems, PdlLogEvent logEvent) {
+    private LogMessage getLogMessage(List<? extends Bestallning> bestallningListItems, LogEvent logEvent) {
         return null;
     }
 
-    private LogMessage getLogMessage(Bestallning bestallning, PdlLogEvent logEvent) {
+    private LogMessage getLogMessage(Bestallning bestallning, LogEvent logEvent) {
         return null;
     }
 

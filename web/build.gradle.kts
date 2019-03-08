@@ -30,6 +30,8 @@ dependencies {
 
   // Spring Boot test starters
   testImplementation("org.springframework.boot:spring-boot-starter-test:${Dependencies.springBootVersion}")
+
+  testImplementation("org.jetbrains.kotlin:kotlin-test:${Dependencies.kotlinVersion}")
 }
 
 tasks.clean {
@@ -56,7 +58,7 @@ tasks {
     from("client/build/")
     into("${project.buildDir}/resources/main/static")
   }
-  
+
   if (buildClient) {
     bootJar {
       from("client/build/") {

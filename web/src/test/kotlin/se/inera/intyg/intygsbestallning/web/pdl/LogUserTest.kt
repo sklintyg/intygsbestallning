@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2018 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,18 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.web.model;
+package se.inera.intyg.intygsbestallning.web.pdl
 
-data class IbVardgivare(
-        override val id: String,
-        override val name: String,
-        val isSamordnare: Boolean
-) : IbSelectableHsaEntity {
+import kotlin.test.*
+import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.Test
 
-        var vardenheter: ArrayList<IbVardenhet> = arrayListOf()
+class LogUserTest {
 
-        override fun type() : IbSelectableHsaEntityType {
-            return IbSelectableHsaEntityType.VG
-        }
+  @Test
+  fun `Create LogUser with required values`() {
+    val logUser = LogUser("1", "2", "3")
+
+    assertNotNull(logUser)
+    assertEquals("1", logUser.userId)
+    assertEquals("2", logUser.enhetsId)
+    assertEquals("3", logUser.vardgivareId)
+  }
 
 }

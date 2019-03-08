@@ -19,8 +19,8 @@
 package se.inera.intyg.intygsbestallning.web.pdl;
 
 import se.inera.intyg.infra.logmessages.PdlLogMessage;
-import se.inera.intyg.intygsbestallning.web.pdl.LogMessage;
 import se.inera.intyg.intygsbestallning.web.auth.IbUser;
+import se.inera.intyg.intygsbestallning.web.pdl.LogMessage;
 
 import java.util.List;
 

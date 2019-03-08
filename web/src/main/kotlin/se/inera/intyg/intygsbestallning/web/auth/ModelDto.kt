@@ -16,8 +16,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.web.model;
+package se.inera.intyg.intygsbestallning.web.auth;
+
+interface IbSelectableHsaEntity {
+  val id: String
+  val name: String
+
+  fun type(): IbSelectableHsaEntityType
+}
+
+data class IbVardgivare(
+    override val id: String,
+    override val name: String,
+    val isSamordnare: Boolean
+) : IbSelectableHsaEntity {
+
+  var vardenheter: ArrayList<IbVardenhet> = arrayListOf()
+
+  override fun type() : IbSelectableHsaEntityType {
+    return IbSelectableHsaEntityType.VG
+  }
+}
+
+data class IbVardenhet(
+    override val id: String,
+    override val name: String,
+    val vardgivareOrgnr: String,
+    val parent: IbVardgivare
+) : IbSelectableHsaEntity {
+
+  override fun type() : IbSelectableHsaEntityType {
+    return IbSelectableHsaEntityType.VE
+  }
+}
 
 enum class IbSelectableHsaEntityType {
-    VG, VE;
+  VG, VE;
 }

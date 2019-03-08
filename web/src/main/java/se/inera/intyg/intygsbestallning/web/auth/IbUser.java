@@ -18,14 +18,17 @@
  */
 package se.inera.intyg.intygsbestallning.web.auth;
 
+import static se.inera.intyg.infra.security.authorities.AuthoritiesResolverUtil.toMap;
+import static se.inera.intyg.intygsbestallning.web.auth.authorities.AuthoritiesConstants.ROLE_BP_VARDADMIN;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import se.inera.intyg.infra.integration.hsa.model.SelectableVardenhet;
 import se.inera.intyg.infra.security.common.model.IntygUser;
 import se.inera.intyg.infra.security.common.model.Privilege;
 import se.inera.intyg.infra.security.common.model.Role;
-import se.inera.intyg.intygsbestallning.web.model.IbSelectableHsaEntity;
-import se.inera.intyg.intygsbestallning.web.model.IbVardenhet;
-import se.inera.intyg.intygsbestallning.web.model.IbVardgivare;
+import se.inera.intyg.intygsbestallning.web.auth.IbSelectableHsaEntity;
+import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
+import se.inera.intyg.intygsbestallning.web.auth.IbVardgivare;
 import se.inera.intyg.intygsbestallning.web.pdl.PdlActivityEntry;
 
 import java.io.Serializable;
@@ -34,8 +37,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static se.inera.intyg.infra.security.authorities.AuthoritiesResolverUtil.toMap;
-import static se.inera.intyg.intygsbestallning.web.auth.authorities.AuthoritiesConstants.ROLE_BP_VARDADMIN;
 
 /**
  * The IB user overrides a lot of the default behaviour. Since users can be logged

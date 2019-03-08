@@ -20,9 +20,9 @@ package se.inera.intyg.intygsbestallning.web.service.pdl;
 
 import java.util.List;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
-import se.inera.intyg.intygsbestallning.web.pdl.PdlLogEvent;
+import se.inera.intyg.intygsbestallning.web.pdl.LogEvent;
 
 public interface LogService {
-    void log(Bestallning bestallning, PdlLogEvent logEvent);
-    void logList(List<? extends Bestallning> bestallningListItems, PdlLogEvent logEvent);
+    void log(Bestallning bestallning, LogEvent logEvent);
+    void logList(List<? extends Bestallning> bestallningListItems, LogEvent logEvent);
 }

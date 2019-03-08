@@ -16,11 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.web.model;
+package se.inera.intyg.intygsbestallning.web.pdl;
 
-interface IbSelectableHsaEntity {
-    val id: String
-    val name: String
+public class PdlLogMessageFactoryTest {
 
-    fun type(): IbSelectableHsaEntityType
+    private PdlLogMessageFactoryImpl testee = new PdlLogMessageFactoryImpl();
+
 }
