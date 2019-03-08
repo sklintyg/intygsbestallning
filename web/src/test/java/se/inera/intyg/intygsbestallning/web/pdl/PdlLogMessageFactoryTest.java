@@ -18,6 +18,10 @@
  */
 package se.inera.intyg.intygsbestallning.web.pdl;
 
+import org.springframework.test.context.ContextConfiguration;
+import se.inera.intyg.intygsbestallning.web.WebTestConfig;
+
+@ContextConfiguration(classes = WebTestConfig.class)
 public class PdlLogMessageFactoryTest {
 
     private PdlLogMessageFactoryImpl testee = new PdlLogMessageFactoryImpl();
