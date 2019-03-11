@@ -1,18 +1,8 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import PropTypes from 'prop-types'
+import {Link} from 'react-router-dom';
 
-const BestallningarTable = () => {
-    const bestallningar = [
-      {
-          name: 'Test',
-          id: '123'
-      },
-      {
-        name: 'Test 2',
-        id: '1234'
-      }
-    ];
-
+const BestallningarList = ({bestallningar}) => {
     return (
       <div>
         <table>
@@ -31,6 +21,13 @@ const BestallningarTable = () => {
         </table>
       </div>
     )
+  }
+
+BestallningarList.propTypes = {
+  bestallningar: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired
+  }))
 };
 
-export default BestallningarTable;
+export default BestallningarList;
