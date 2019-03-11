@@ -8,3 +8,6 @@ infrastructure:
 
 resources:
   folder: ${resource.dir}
+
+putjanst:
+  logicaladdress: PUDEV

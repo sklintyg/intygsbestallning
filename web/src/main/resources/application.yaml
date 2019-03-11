@@ -12,9 +12,9 @@ spring:
   liquibase:
     change-log: classpath:/changelog/db-changelog-master.xml
   profiles:
-    active: default, myndighet-stub, dev, hsa-stub, caching-enabled
-  #main:
-    #allow-bean-definition-overriding: true
+    active: default, myndighet-stub, dev, caching-enabled
+  main:
+    allow-bean-definition-overriding: true
 
 # Mail notifications
 mail:
@@ -69,6 +69,10 @@ putjanst:
     url: ${ntjp.base.url}/strategicresourcemanagement/persons/person/GetPersonsForProfile/3/rivtabp21
 
 #Cache settings
+pu:
+  cache:
+    expiry: 86400
+
 hsa:
   healhcareunitmembers:
     cache:
@@ -85,6 +89,9 @@ hsa:
         folder: ${java.io.tmpdir}
 
 redis:
+  sentinel:
+    master:
+      name: master
   password:
   cache:
     default_entry_expiry_time_in_seconds: 86400

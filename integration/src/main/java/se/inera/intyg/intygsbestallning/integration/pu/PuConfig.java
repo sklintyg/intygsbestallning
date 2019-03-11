@@ -28,10 +28,10 @@ import org.springframework.context.annotation.ImportResource;
  */
 @Configuration
 @ImportResource("classpath:pu-services-config.xml")
-@Import(PuStubConfiguration.class)
-@ComponentScan({"se.inera.intyg.privatlakarportal.common"})
-public class PuConfiguration {
+@Import(PuStubConfig.class)
+@ComponentScan({"se.inera.intyg.infra.integration.pu"})
+public class PuConfig {
 
-    public PuConfiguration() { //NOSONAR
+    public PuConfig() { //NOSONAR
     }
 }

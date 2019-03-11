@@ -6,10 +6,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import se.inera.intyg.intygsbestallning.integration.client.ClientIntegrationConfig;
 import se.inera.intyg.intygsbestallning.integration.hsa.HsaConfig;
+import se.inera.intyg.intygsbestallning.integration.pu.PuConfig;
 
 @Configuration
 @EnableConfigurationProperties
 @ComponentScan(basePackages = "se.inera.intyg.intygsbestallning.integration")
-@Import({ClientIntegrationConfig.class, IntegrationProperties.class, CacheConfigurationFromInfra.class, HsaConfig.class})
+@Import({ClientIntegrationConfig.class,
+        IntegrationProperties.class,
+        CacheConfigurationFromInfra.class,
+        HsaConfig.class,
+        PuConfig.class})
 public class IntegrationConfig {
 }

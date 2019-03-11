@@ -29,10 +29,10 @@ import org.springframework.context.annotation.Profile;
  * Created by eriklupander on 2017-03-01.
  */
 @Configuration
-@ComponentScan({"se.inera.intyg.privatlakarportal.common"})
+@ComponentScan({"se.inera.intyg.infra.integration.pu"})
 @ImportResource("classpath:pu-stub-context.xml")
-@Profile({"dev", "pu-stub", "wc-pu-stub"})
-public class PuStubConfiguration {
+@Profile({"dev", "pu-stub"})
+public class PuStubConfig {
 
 }
 

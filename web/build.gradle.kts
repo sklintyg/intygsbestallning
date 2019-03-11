@@ -21,6 +21,8 @@ dependencies {
   // Spring Boot starters
   implementation("org.springframework.boot:spring-boot-starter-web:${Dependencies.springBootVersion}")
 
+  compile("org.springframework.boot:spring-boot-starter-data-redis:${Dependencies.springBootVersion}")
+
   implementation("javax.xml.ws:jaxws-api:${Dependencies.jaxWsVersion}")
   implementation("javax.servlet:javax.servlet-api:${Dependencies.javaxServletApiVersion}")
 
@@ -32,8 +34,6 @@ dependencies {
 
 
   implementation("org.springframework.security.extensions:spring-security-saml2-core:1.0.3.RELEASE")
-
-  compile("org.springframework.boot:spring-boot-starter-data-redis:${Dependencies.springBootVersion}")
 
   compile("org.springframework.boot:spring-boot-starter-actuator:${Dependencies.springBootVersion}")
 
