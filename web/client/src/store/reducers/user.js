@@ -1,11 +1,12 @@
 import {GET_USER, GET_USER_FAILURE, GET_USER_SUCCESS} from "../actions/UserActions";
 
-const initialUser = {
+const INITIAL_STATE = {
   isLoading: false,
   isAuthenticated: false,
   errorMessage: null
 };
-export default (state = initialUser, action) => {
+
+export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case GET_USER:
    return {...state, isLoading: true}
@@ -14,6 +15,7 @@ export default (state = initialUser, action) => {
   case GET_USER_FAILURE:
     return {...state, isLoading: false}
 
-  default: return state;
+  default:
+    return state;
   }
 }
