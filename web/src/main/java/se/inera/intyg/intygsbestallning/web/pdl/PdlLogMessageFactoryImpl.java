@@ -18,34 +18,27 @@
  */
 package se.inera.intyg.intygsbestallning.web.pdl;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import se.inera.intyg.infra.logmessages.ActivityPurpose;
-import se.inera.intyg.infra.logmessages.ActivityType;
 import se.inera.intyg.infra.logmessages.Enhet;
 import se.inera.intyg.infra.logmessages.Patient;
 import se.inera.intyg.infra.logmessages.PdlLogMessage;
 import se.inera.intyg.infra.logmessages.PdlResource;
-import se.inera.intyg.intygsbestallning.web.pdl.LogMessage;
-import se.inera.intyg.intygsbestallning.web.pdl.LogUser;
-import se.inera.intyg.intygsbestallning.web.pdl.LogEvent;
+import se.inera.intyg.intygsbestallning.common.property.PdlLoggingProperties;
 import se.inera.intyg.intygsbestallning.web.auth.IbSelectableHsaEntity;
 import se.inera.intyg.intygsbestallning.web.auth.IbSelectableHsaEntityType;
 import se.inera.intyg.intygsbestallning.web.auth.IbUser;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
-import se.inera.intyg.intygsbestallning.web.auth.IbVardgivare;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class PdlLogMessageFactoryImpl implements PdlLogMessageFactory {
 
-    @Value("${pdlLogging.systemId}")
-    private String systemId;
+    private PdlLoggingProperties pdlLoggingProperties;
 
-    @Value("${pdlLogging.systemName}")
-    private String systemName;
+    public PdlLogMessageFactoryImpl(PdlLoggingProperties pdlLoggingProperties) {
+        this.pdlLoggingProperties = pdlLoggingProperties;
+    }
 
     @Override
     public PdlLogMessage buildLogMessage(LogMessage logMessage,
@@ -73,8 +66,8 @@ public class PdlLogMessageFactoryImpl implements PdlLogMessageFactory {
                 logActivity.getEvent().getActivityType(),
                 logActivity.getPurpose());
 
-        pdlLogMessage.setSystemId(systemId);
-        pdlLogMessage.setSystemName(systemName);
+        pdlLogMessage.setSystemId(pdlLoggingProperties.getSystemId());
+        pdlLogMessage.setSystemName(pdlLoggingProperties.getSystemName());
 
         return pdlLogMessage;
     }
@@ -82,7 +75,7 @@ public class PdlLogMessageFactoryImpl implements PdlLogMessageFactory {
     private LogUser getLogUser(IbUser ibUser) {
         IbSelectableHsaEntity loggedInAt = ibUser.getCurrentlyLoggedInAt();
 
-        if (loggedInAt.type() == IbSelectableHsaEntityType.VE) {
+        if (loggedInAt != null && loggedInAt.type() == IbSelectableHsaEntityType.VE) {
             IbVardenhet ve = (IbVardenhet) loggedInAt;
             LogUser logUser = new LogUser(ibUser.getHsaId(), ve.getId(), ve.getParent().getId());
             logUser.setUserName(ibUser.getNamn());
@@ -92,7 +85,8 @@ public class PdlLogMessageFactoryImpl implements PdlLogMessageFactory {
             logUser.setVardgivareNamn(ve.getParent().getName());
             return logUser;
         } else {
-            throw new IllegalStateException("There cannot be any PDL logging for Samordnare given that they should never "
+            // TODO: Make better error message
+            throw new IllegalStateException("There cannot be any PDL logging for Vårdadministratör given that they should never "
                     + "see any PDL-eligible information.");
         }
     }

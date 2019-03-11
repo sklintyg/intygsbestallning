@@ -20,6 +20,7 @@ dependencies {
 
   // Spring Boot starters
   implementation("org.springframework.boot:spring-boot-starter-web:${Dependencies.springBootVersion}")
+  implementation("org.springframework.boot:spring-boot-starter-data-redis:${Dependencies.springBootVersion}")
 
   compile("org.springframework.boot:spring-boot-starter-data-redis:${Dependencies.springBootVersion}")
 

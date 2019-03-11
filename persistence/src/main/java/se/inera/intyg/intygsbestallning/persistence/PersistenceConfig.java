@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @ComponentScan(basePackages = "se.inera.intyg.intygsbestallning.persistence")
-@EntityScan(basePackages = {"se.inera.intyg.intygsbestallning.persistence"})
-@EnableJpaRepositories(basePackages = {"se.inera.intyg.intygsbestallning.persistence"})
+@EntityScan(basePackages = "se.inera.intyg.intygsbestallning.persistence")
+@EnableJpaRepositories(basePackages = "se.inera.intyg.intygsbestallning.persistence")
 public class PersistenceConfig {
 
 }

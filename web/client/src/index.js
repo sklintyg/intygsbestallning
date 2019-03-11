@@ -6,6 +6,8 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import configureStore from './store/configureStore';
 
+import 'normalize.css';
+
 const store = configureStore();
 
 const rootElement = document.getElementById('root');

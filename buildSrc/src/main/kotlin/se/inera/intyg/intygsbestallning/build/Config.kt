@@ -28,12 +28,13 @@ object Config {
     const val javaxServletApiVersion = "4.0.1"
     const val jaxWsVersion = "2.2.3"
 
-    const val intygsbestallningCertificateOrderSchemasVersion = "1.0-RC5"
+    const val intygsbestallningCertificateOrderSchemasVersion = "1.0-RC6"
   }
 
   object TestDependencies {
     const val mockitoCoreVersion = "2.24.5"
     const val junitVersion = "5.4.0"
+    const val junitPlatformVersion = "1.4.0"
     const val awaitilityVersion = "1.4.0"
     const val dbUnitVersion = "2.4.9"
     const val springockitoVersion = "1.0.8"

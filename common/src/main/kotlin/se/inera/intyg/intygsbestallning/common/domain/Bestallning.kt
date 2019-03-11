@@ -6,13 +6,15 @@ data class Bestallning(
    val id: Long? = null,
    val ankomstDatum: LocalDateTime,
    var status: BestallningStatus? = BestallningStatus.UNDEFINED,
-   var handelser: List<Handelse>? = mutableListOf()) {
+   var handelser: List<Handelse>? = mutableListOf(),
+   var notifieringar: List<Notifiering>? = mutableListOf()) {
 
   companion object Factory {
-    fun newBestallning(): Bestallning {
+    fun newBestallning(hsaId: String): Bestallning {
       return Bestallning(
          ankomstDatum = LocalDateTime.now(),
-         handelser = listOf(Handelse.skapa()))
+         handelser = listOf(Handelse.skapa()),
+         notifieringar = listOf(Notifiering.inKommenBestallning(hsaId)))
     }
   }
 }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import se.inera.intyg.intygsbestallning.common.dto.AccepteraBestallningRequest;
-import se.inera.intyg.intygsbestallning.web.AccepteraBestallning;
+import se.inera.intyg.intygsbestallning.web.dto.AccepteraBestallning;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.AccepteraBestallningService;
 
 @RestController

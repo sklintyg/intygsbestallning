@@ -13,6 +13,8 @@ import java.lang.invoke.MethodHandles;
 import java.util.Optional;
 import se.inera.intyg.intygsbestallning.common.domain.IntygTyp;
 import se.inera.intyg.intygsbestallning.common.dto.CreateUtredningRequest;
+import se.inera.intyg.intygsbestallning.common.property.IntegrationProperties;
+import se.inera.intyg.intygsbestallning.common.util.RivtaUtil;
 
 @Component
 public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponderInterface {
@@ -20,6 +22,7 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().getClass());
 
     private CreateUtredningService createUtredningService;
+    private IntegrationProperties integrationProperties;
 
     public OrderAssessmentIntygsbestallning(CreateUtredningService createUtredningService) {
         this.createUtredningService = createUtredningService;
@@ -30,14 +33,21 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
 
         LOG.info("Received request for OrderAssessment");
 
-        var createUtredningRequest = fromType(orderAssessmentType);
-        createUtredningService.createUtredning(createUtredningRequest);
+        try {
+            var createUtredningRequest = fromType(orderAssessmentType);
+            createUtredningService.createUtredning(createUtredningRequest);
+        } catch (final Exception e) {
+            LOG.error("Error in orderAssessment", e);
+            OrderAssessmentResponseType response = new OrderAssessmentResponseType();
+            response.setAssessmentId(RivtaUtil.anII(integrationProperties.getSourceSystemHsaId(), ""));
+            response.setResult(RivtaUtil.aResultTypeError(e));
+            return response;
+        }
 
         return null;
     }
 
     private CreateUtredningRequest fromType(OrderAssessmentType request) {
-
         if (request == null) {
             throw new IllegalArgumentException("request may not be null");
         }
@@ -49,7 +59,7 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
         var personnummer = Optional.ofNullable(request.getCitizen())
                 .map(CitizenType::getPersonalIdentity)
                 .map(IIType::getExtension)
-                .orElseThrow(() -> new IllegalArgumentException("extension may not be null"));
+                .orElseThrow(() -> new IllegalArgumentException("personummer may not be null"));
 
         var vardenhet = Optional.ofNullable(request.getCareUnitId())
                 .map(IIType::getExtension)

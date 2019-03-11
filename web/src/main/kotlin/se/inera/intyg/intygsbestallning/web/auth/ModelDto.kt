@@ -28,6 +28,7 @@ interface IbSelectableHsaEntity {
 data class IbVardgivare(
     override val id: String,
     override val name: String,
+    val orgNr: String,
     val isSamordnare: Boolean
 ) : IbSelectableHsaEntity {
 
@@ -41,7 +42,6 @@ data class IbVardgivare(
 data class IbVardenhet(
     override val id: String,
     override val name: String,
-    val vardgivareOrgnr: String,
     val parent: IbVardgivare
 ) : IbSelectableHsaEntity {
 

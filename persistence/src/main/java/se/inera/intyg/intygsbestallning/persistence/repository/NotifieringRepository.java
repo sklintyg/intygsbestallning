@@ -2,8 +2,8 @@ package se.inera.intyg.intygsbestallning.persistence.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import se.inera.intyg.intygsbestallning.persistence.entity.UtredningEntity;
+import se.inera.intyg.intygsbestallning.persistence.entity.NotifieringEntity;
 
 @Repository
-public interface UtredningRepository extends JpaRepository<UtredningEntity, Long> {
+public interface NotifieringRepository extends JpaRepository<NotifieringEntity, String> {
 }

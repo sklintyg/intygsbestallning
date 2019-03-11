@@ -20,31 +20,30 @@ package se.inera.intyg.intygsbestallning.web.service.notifiering;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.inera.intyg.intygsbestallning.common.domain.Utredning;
-import se.inera.intyg.intygsbestallning.common.service.mail.MailService;
-
+import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.lang.invoke.MethodHandles;
 import java.text.MessageFormat;
+import se.inera.intyg.intygsbestallning.common.domain.Utredning;
+import se.inera.intyg.intygsbestallning.common.service.mail.MailService;
 
+@Service
 public class NotifieringSendServiceImpl implements NotifieringSendService {
 
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    private final MailService mailService;
+    private MailService mailService;
 
-    private final NotifieringPreferenceService notifieringPreferenceService;
-
-    public NotifieringSendServiceImpl(
-            MailService mailService,
-            NotifieringPreferenceService notifieringPreferenceService) {
+    public NotifieringSendServiceImpl(MailService mailService) {
         this.mailService = mailService;
-        this.notifieringPreferenceService = notifieringPreferenceService;
     }
 
     @Override
     public void notifieraVardenhetsAnvandareNyIntygsbestallning(Utredning utredning) {
-
+        //TODO: Below.
+        //String templating, create emailbody, yadayada
+        //Send notifiering
+        //Persist notifiering
     }
 
     @Override
@@ -56,8 +55,6 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
         //String templating, create emailbody, yadayada
         //Send notifiering
         //Persist notifiering
-
-
     }
 
     private void sendNotifiering(String email, String subject, String body, Long utredningId) {

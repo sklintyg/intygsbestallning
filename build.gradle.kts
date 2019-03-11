@@ -41,8 +41,12 @@ subprojects {
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:${Dependencies.springBootVersion}")
 
-    testCompile("org.mockito:mockito-core:${TestDependencies.mockitoCoreVersion}")
-    testCompile("org.junit.jupiter:junit-jupiter-api:${TestDependencies.junitVersion}")
+    testImplementation("org.mockito:mockito-core:${TestDependencies.mockitoCoreVersion}")
+    testImplementation("org.mockito:mockito-junit-jupiter:${TestDependencies.mockitoCoreVersion}")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${TestDependencies.junitVersion}")
+    testImplementation("org.junit.platform:junit-platform-runner:${TestDependencies.junitPlatformVersion}")
+
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${TestDependencies.junitVersion}");
   }
 
   tasks {
@@ -75,5 +79,5 @@ dependencies {
 }
 
 tasks.register<TagReleaseTask>("tagRelease") {
-  
+
 }

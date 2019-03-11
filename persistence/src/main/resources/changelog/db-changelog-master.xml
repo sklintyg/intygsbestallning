@@ -82,55 +82,36 @@
   </changeSet>
 
   <changeSet id="2" author="cf">
-    <createTable tableName="SKICKAD_NOTIFIERING">
-      <column name="ID" type="bigint">
+    <createTable tableName="NOTIFIERING">
+      <column name="ID" type="bigint" incrementBy="1" startWith="1">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-
-      <column name="UTREDNING_ID" type="bigint">
+      <column name="BESTALLNING_ID" type="bigint">
         <constraints nullable="false"/>
       </column>
-
       <column name="TYP" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
-
       <column name="MOTTAGARE" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
-
       <column name="SKICKAD" type="datetime">
         <constraints nullable="false"/>
       </column>
     </createTable>
 
-    <addAutoIncrement columnDataType="bigint"
-        columnName="ID"
-        incrementBy="1"
-        startWith="1"
-        tableName="SKICKAD_NOTIFIERING"/>
-
     <addForeignKeyConstraint
-        baseTableName="SKICKAD_NOTIFIERING"
-        baseColumnNames="UTREDNING_ID"
-        constraintName="NOTIFIERING_TILLHOR_UTREDNING"
-        referencedTableName="UTREDNING"
+        baseTableName="NOTIFIERING"
+        baseColumnNames="BESTALLNING_ID"
+        constraintName="NOTIFIERING_BESTALLNING_FK"
+        referencedTableName="BESTALLNING"
         referencedColumnNames="ID"/>
-    <createIndex indexName="IDX_NOTIFIERING_TYP"
-        tableName="SKICKAD_NOTIFIERING" unique="false">
+
+    <createIndex indexName="NOTIFIERING_TYP_IDX"
+        tableName="NOTIFIERING" unique="false">
       <column name="TYP"/>
     </createIndex>
 
-    <createTable tableName="NOTIFIERING_PREFERENCE">
-
-      <column name="HSA_ID" type="varchar(64)">
-        <constraints primaryKey="true" nullable="false"/>
-      </column>
-
-      <column name="LANDSTING_EPOST" type="varchar(255)">
-        <constraints nullable="true"/>
-      </column>
-    </createTable>
   </changeSet>
 
 </databaseChangeLog>
