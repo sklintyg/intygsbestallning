@@ -48,3 +48,4 @@ integration:
 
 pdl:
   system-id: dev-id
+  system-name: dev-name
