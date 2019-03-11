@@ -5,18 +5,17 @@ import Actions from "./actions/Actions";
 
 import "./Header.css"
 import User from "./user/User";
-import staticUser from "./static-user";
 
 
-const Header = () => {
-  //Mocked user
-  const user = staticUser;
+const Header = ({namn}) => {
   return (
     <div className="header-wrapper">
       <div className="header">
         <Logo/>
-        <User username={user.namn} userrole={user.currentRole.desc}/>
-        <Unit vg={user.valdVardgivare} ve={user.valdVardenhet}/>
+        <User userName={namn} userRole={''}/>
+        { (false) ? <Unit vg={''} ve={''}/>: '' }
+
+
         <Actions/>
       </div>
     </div>

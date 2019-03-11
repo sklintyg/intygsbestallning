@@ -8,8 +8,8 @@ const User = (props) => {
       <img className="header-icon" src={icon} alt="user-logo" />
       <div className="vertical-container">
         <div className="single-text-row-container">
-          <span className="truncate-when-needed user-name">{props.username}</span>
-          <span className="user-role" id="ib-header-user-role">&nbsp;-&nbsp;{props.userrole}</span>
+          <span className="truncate-when-needed user-name">{props.userName}</span>
+          <span className="user-role" id="ib-header-user-role">&nbsp;-&nbsp;{props.userRole}</span>
         </div>
       </div>
     </div>

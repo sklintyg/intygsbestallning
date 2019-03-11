@@ -1,10 +1,14 @@
 import React, {Fragment} from 'react';
-import {HashRouter, Switch, NavLink} from 'react-router-dom'
+import {HashRouter, NavLink, Switch} from 'react-router-dom'
 import Route from 'react-router-dom/Route';
 import HomePage from "./pages/IndexPage";
 import ValjEnhetPage from "./pages/ValjEnhetPage";
 import BestallningarPage from "./pages/BestallningarPage";
 import BestallningPage from "./pages/BestallningPage";
+import {getUser} from "./store/actions/UserActions";
+import {connect} from "react-redux";
+import {compose, lifecycle} from "recompose";
+
 
 // TEST
 const TestLinks = () => (
@@ -36,4 +40,20 @@ const App = () => {
   )
 };
 
-export default App;
+const lifeCycleValues = {
+  componentWillMount() {
+    this.props.getUser();
+  }
+};
+
+// expose selected dispachable methods to App props
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    getUser: () => dispatch(getUser())
+  }
+};
+// enhance APP using compose with connect and lifecycle so we can use them in APp
+export default compose(
+  connect(null, mapDispatchToProps),
+  lifecycle(lifeCycleValues)
+)(App);
