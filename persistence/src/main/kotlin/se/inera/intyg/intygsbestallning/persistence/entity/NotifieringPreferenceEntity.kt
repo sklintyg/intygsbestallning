@@ -47,7 +47,7 @@ class NotifieringPreferenceEntity private constructor(builder: Builder) {
             private set
 
         fun hsaId(hsaId: String) = apply { this.hsaId = hsaId }
-        fun landstingEpost(landstingEpost: String?) = apply { this.landstingEpost }
+        fun landstingEpost(landstingEpost: String?) = apply { this.landstingEpost = landstingEpost }
         fun build() = NotifieringPreferenceEntity(this)
     }
 

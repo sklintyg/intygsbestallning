@@ -28,7 +28,7 @@ object Config {
     const val javaxServletApiVersion = "4.0.1"
     const val jaxWsVersion = "2.2.3"
 
-    const val intygsbestallningCertificateOrderSchemasVersion = "1.0-RC5"
+    const val intygsbestallningCertificateOrderSchemasVersion = "1.0-RC6"
   }
 
   object TestDependencies {
