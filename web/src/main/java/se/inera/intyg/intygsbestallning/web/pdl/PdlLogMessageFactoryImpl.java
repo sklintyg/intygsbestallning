@@ -19,7 +19,6 @@
 package se.inera.intyg.intygsbestallning.web.pdl;
 
 import org.springframework.stereotype.Service;
-import java.util.stream.Collectors;
 import se.inera.intyg.infra.logmessages.Enhet;
 import se.inera.intyg.infra.logmessages.Patient;
 import se.inera.intyg.infra.logmessages.PdlLogMessage;
@@ -29,6 +28,8 @@ import se.inera.intyg.intygsbestallning.web.auth.IbSelectableHsaEntity;
 import se.inera.intyg.intygsbestallning.web.auth.IbSelectableHsaEntityType;
 import se.inera.intyg.intygsbestallning.web.auth.IbUser;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
+
+import java.util.stream.Collectors;
 
 @Service
 public class PdlLogMessageFactoryImpl implements PdlLogMessageFactory {
@@ -74,7 +75,7 @@ public class PdlLogMessageFactoryImpl implements PdlLogMessageFactory {
     private LogUser getLogUser(IbUser ibUser) {
         IbSelectableHsaEntity loggedInAt = ibUser.getCurrentlyLoggedInAt();
 
-        if (loggedInAt.type() == IbSelectableHsaEntityType.VE) {
+        if (loggedInAt != null && loggedInAt.type() == IbSelectableHsaEntityType.VE) {
             IbVardenhet ve = (IbVardenhet) loggedInAt;
             LogUser logUser = new LogUser(ibUser.getHsaId(), ve.getId(), ve.getParent().getId());
             logUser.setUserName(ibUser.getNamn());
@@ -84,7 +85,8 @@ public class PdlLogMessageFactoryImpl implements PdlLogMessageFactory {
             logUser.setVardgivareNamn(ve.getParent().getName());
             return logUser;
         } else {
-            throw new IllegalStateException("There cannot be any PDL logging for Samordnare given that they should never "
+            // TODO: Make better error message
+            throw new IllegalStateException("There cannot be any PDL logging for Vårdadministratör given that they should never "
                     + "see any PDL-eligible information.");
         }
     }
