@@ -34,6 +34,7 @@ object Config {
   object TestDependencies {
     const val mockitoCoreVersion = "2.24.5"
     const val junitVersion = "5.4.0"
+    const val junitPlatformVersion = "1.4.0"
     const val awaitilityVersion = "1.4.0"
     const val dbUnitVersion = "2.4.9"
     const val springockitoVersion = "1.0.8"
