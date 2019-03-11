@@ -1,0 +1,10 @@
+ntjp:
+  base:
+    url: localhost:8080/services/stubs
+
+infrastructure:
+  directory:
+    logicalAddress:
+
+resources:
+  folder: ${resource.dir}

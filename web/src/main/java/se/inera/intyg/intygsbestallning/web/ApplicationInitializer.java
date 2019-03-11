@@ -8,9 +8,13 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 import se.inera.intyg.intygsbestallning.common.CommonConfig;
+import se.inera.intyg.intygsbestallning.integration.CacheConfigurationFromInfra;
 import se.inera.intyg.intygsbestallning.integration.IntegrationConfig;
+import se.inera.intyg.intygsbestallning.integration.hsa.HsaConfig;
+import se.inera.intyg.intygsbestallning.integration.pu.PuConfiguration;
 import se.inera.intyg.intygsbestallning.mailsender.config.MailSenderConfig;
 import se.inera.intyg.intygsbestallning.persistence.PersistenceConfig;
+import se.inera.intyg.intygsbestallning.web.auth.SecurityConfig;
 
 public class ApplicationInitializer implements WebApplicationInitializer {
 
@@ -19,11 +23,12 @@ public class ApplicationInitializer implements WebApplicationInitializer {
         AnnotationConfigWebApplicationContext appContext = new AnnotationConfigWebApplicationContext();
 
         appContext.register(
-                CommonConfig.class,
                 IntegrationConfig.class,
+                CommonConfig.class,
                 MailSenderConfig.class,
                 PersistenceConfig.class,
-                WebConfig.class);
+                WebConfig.class,
+                SecurityConfig.class);
 
                 servletContext.addListener(new ContextLoaderListener(appContext));
 
