@@ -1,4 +1,4 @@
-package se.inera.intyg.intygsbestallning.common.utredning;
+package se.inera.intyg.intygsbestallning.common.resolver;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

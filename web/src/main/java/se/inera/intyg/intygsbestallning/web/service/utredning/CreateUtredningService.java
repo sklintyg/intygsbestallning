@@ -5,5 +5,5 @@ import se.inera.intyg.intygsbestallning.common.dto.CreateUtredningRequest;
 
 public interface CreateUtredningService {
 
-    void createUtredning(CreateUtredningRequest createUtredning);
+    Long createUtredning(CreateUtredningRequest createUtredning);
 }
