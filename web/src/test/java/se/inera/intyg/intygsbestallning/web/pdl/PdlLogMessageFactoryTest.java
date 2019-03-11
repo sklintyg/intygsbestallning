@@ -24,6 +24,9 @@ import se.inera.intyg.intygsbestallning.web.WebTestConfig;
 @ContextConfiguration(classes = WebTestConfig.class)
 public class PdlLogMessageFactoryTest {
 
-    private PdlLogMessageFactoryImpl testee = new PdlLogMessageFactoryImpl();
+    private PdlLogMessageFactoryImpl testee;
 
+    public PdlLogMessageFactoryTest(PdlLogMessageFactoryImpl testee) {
+        this.testee = testee;
+    }
 }

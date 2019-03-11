@@ -18,34 +18,26 @@
  */
 package se.inera.intyg.intygsbestallning.web.pdl;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import se.inera.intyg.infra.logmessages.ActivityPurpose;
-import se.inera.intyg.infra.logmessages.ActivityType;
+import java.util.stream.Collectors;
 import se.inera.intyg.infra.logmessages.Enhet;
 import se.inera.intyg.infra.logmessages.Patient;
 import se.inera.intyg.infra.logmessages.PdlLogMessage;
 import se.inera.intyg.infra.logmessages.PdlResource;
-import se.inera.intyg.intygsbestallning.web.pdl.LogMessage;
-import se.inera.intyg.intygsbestallning.web.pdl.LogUser;
-import se.inera.intyg.intygsbestallning.web.pdl.LogEvent;
+import se.inera.intyg.intygsbestallning.common.property.PdlLoggingProperties;
 import se.inera.intyg.intygsbestallning.web.auth.IbSelectableHsaEntity;
 import se.inera.intyg.intygsbestallning.web.auth.IbSelectableHsaEntityType;
 import se.inera.intyg.intygsbestallning.web.auth.IbUser;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
-import se.inera.intyg.intygsbestallning.web.auth.IbVardgivare;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PdlLogMessageFactoryImpl implements PdlLogMessageFactory {
 
-    @Value("${pdlLogging.systemId}")
-    private String systemId;
+    private PdlLoggingProperties pdlLoggingProperties;
 
-    @Value("${pdlLogging.systemName}")
-    private String systemName;
+    public PdlLogMessageFactoryImpl(PdlLoggingProperties pdlLoggingProperties) {
+        this.pdlLoggingProperties = pdlLoggingProperties;
+    }
 
     @Override
     public PdlLogMessage buildLogMessage(LogMessage logMessage,
@@ -73,8 +65,8 @@ public class PdlLogMessageFactoryImpl implements PdlLogMessageFactory {
                 logActivity.getEvent().getActivityType(),
                 logActivity.getPurpose());
 
-        pdlLogMessage.setSystemId(systemId);
-        pdlLogMessage.setSystemName(systemName);
+        pdlLogMessage.setSystemId(pdlLoggingProperties.getSystemId());
+        pdlLogMessage.setSystemName(pdlLoggingProperties.getSystemName());
 
         return pdlLogMessage;
     }

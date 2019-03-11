@@ -5,10 +5,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import se.inera.intyg.intygsbestallning.common.property.IntegrationProperties;
+import se.inera.intyg.intygsbestallning.common.property.PdlLoggingProperties;
 
 @Configuration
 @ComponentScan(basePackages = "se.inera.intyg.intygsbestallning.common")
 @EnableConfigurationProperties
-@Import({ IntegrationProperties.class })
+@Import({ IntegrationProperties.class, PdlLoggingProperties.class })
 public class CommonConfig {
 }

@@ -45,3 +45,6 @@ integration:
   respond-to-order-url: intygsbestallning/certificate/order/RespondToOrder/1/rivtabp21
   certificate-type-code-system: b64ea353-e8f6-4832-b563-fc7d46f29548
   source-system-hsa-id: dev-hsaid
+
+pdl:
+  system-id: dev-id

@@ -9,8 +9,10 @@ data class Utredning(
    val vardenhet: Vardenhet
 ) {
   companion object Factory {
-    fun newUtredning(bestallning: Bestallning, vardenhet: Vardenhet): Utredning {
-      return Utredning(bestallning = bestallning, vardenhet = vardenhet)
+    fun newUtredning(hsaId: String, vardenhet: Vardenhet): Utredning {
+      return Utredning(
+         bestallning = Bestallning.newBestallning(hsaId = hsaId),
+         vardenhet = vardenhet)
     }
   }
 }

@@ -10,6 +10,7 @@ import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
 import se.inera.intyg.intygsbestallning.common.dto.CreateUtredningRequest;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.persistence.service.UtredningPersistenceService;
+import se.inera.intyg.intygsbestallning.web.service.notifiering.NotifieringSendService;
 
 @Service
 public class CreateUtredningServiceImpl implements CreateUtredningService {
@@ -18,11 +19,14 @@ public class CreateUtredningServiceImpl implements CreateUtredningService {
 
     private UtredningPersistenceService utredningPersistenceService;
     private BestallningStatusResolver bestallningStatusResolver;
+    private NotifieringSendService notifieringSendService;
 
     public CreateUtredningServiceImpl(UtredningPersistenceService utredningPersistenceService,
-                                      BestallningStatusResolver bestallningStatusResolver) {
+                                      BestallningStatusResolver bestallningStatusResolver,
+                                      NotifieringSendService notifieringSendService) {
         this.utredningPersistenceService = utredningPersistenceService;
         this.bestallningStatusResolver = bestallningStatusResolver;
+        this.notifieringSendService = notifieringSendService;
     }
 
     @Override
@@ -30,11 +34,14 @@ public class CreateUtredningServiceImpl implements CreateUtredningService {
 
         LOG.debug("Creating new utredning");
 
-        var bestallning = Bestallning.Factory.newBestallning();
-        var utredning = Utredning.Factory.newUtredning(bestallning, new Vardenhet(null, "", null, null));
+        //TODO: Lookup HSAID
 
+        var hsaId = "hsaId";
+        var utredning = Utredning.Factory.newUtredning(hsaId, new Vardenhet(null, "", null, null));
         bestallningStatusResolver.setStatus(utredning);
+
         utredningPersistenceService.saveNewUtredning(utredning);
+        notifieringSendService.notifieraVardenhetsAnvandareNyIntygsbestallning(utredning);
 
         return utredning.getId();
     }

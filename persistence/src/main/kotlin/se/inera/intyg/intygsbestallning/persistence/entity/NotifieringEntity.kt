@@ -19,7 +19,8 @@
 package se.inera.intyg.intygsbestallning.persistence.entity
 
 
-import se.inera.intyg.intygsbestallning.common.domain.NotifieringMottagarTyp
+import se.inera.intyg.intygsbestallning.common.domain.Handelse
+import se.inera.intyg.intygsbestallning.common.domain.Notifiering
 import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp
 import java.time.LocalDateTime
 import javax.persistence.Column
@@ -31,8 +32,8 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name = "SKICKAD_NOTIFIERING")
-class SkickadNotifieringEntity private constructor(builder: Builder) {
+@Table(name = "NOTIFIERING")
+class NotifieringEntity private constructor(builder: Builder) {
 
     @Id
     @GeneratedValue
@@ -43,15 +44,8 @@ class SkickadNotifieringEntity private constructor(builder: Builder) {
     @Column(name = "TYP", nullable = false)
     private val typ: NotifieringTyp?
 
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "MOTTAGARE", nullable = false)
-    private val mottagare: NotifieringMottagarTyp?
-
     @Column(name = "MOTTAGARE_HSA_ID", nullable = false)
     private val mottagareHsaId: String?
-
-    @Column(name = "ERSATTS", nullable = false, columnDefinition = "tinyint(1) default 0")
-    private val ersatts: Boolean?
 
     @Column(name = "SKICKAD")
     private val skickad: LocalDateTime?
@@ -59,32 +53,31 @@ class SkickadNotifieringEntity private constructor(builder: Builder) {
     init {
         this.id = builder.id
         this.typ = builder.typ
-        this.mottagare = builder.mottagare
         this.mottagareHsaId = builder.mottagareHsaId
-        this.ersatts = builder.ersatts
         this.skickad = builder.skickad
     }
 
     class Builder {
         var id: Long? = null
-            private set
         var typ: NotifieringTyp? = null
-            private set
-        var mottagare: NotifieringMottagarTyp? = null
-            private set
         var mottagareHsaId: String? = null
-            private set
-        var ersatts: Boolean? = null
-            private set
         var skickad: LocalDateTime? = null
-            private set
 
         fun id(id: Long?) = apply { this.id = id }
         fun typ(typ: NotifieringTyp?) = apply { this.typ = typ }
-        fun mottagare(mottagare: NotifieringMottagarTyp?) = apply { this.mottagare = mottagare }
         fun mottagareHsaId(mottagareHsaId: String?) = apply { this.mottagareHsaId = mottagareHsaId }
-        fun ersatts(ersatts: Boolean?) = apply { this.ersatts = ersatts }
         fun skickad(skickad: LocalDateTime?) = apply { this.skickad = skickad }
-        fun build() = SkickadNotifieringEntity(this)
+        fun build() = NotifieringEntity(this)
+    }
+
+    companion object Factory {
+        fun toEntity(notifiering: Notifiering): NotifieringEntity {
+            return NotifieringEntity.Builder()
+               .id(notifiering.id)
+               .typ(notifiering.typ)
+               .mottagareHsaId(notifiering.mottagareHsaId)
+               .skickad(notifiering.skickad)
+               .build()
+        }
     }
 }
