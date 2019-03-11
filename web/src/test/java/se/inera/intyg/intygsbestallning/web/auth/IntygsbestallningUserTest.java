@@ -34,7 +34,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-public class IbUserTest {
+public class IntygsbestallningUserTest {
 
     private static final String VG_1 = "VG_1";
     private static final String VG_1_NAME = "Vårdgivare 1";
@@ -48,7 +48,7 @@ public class IbUserTest {
 
     @Test
     public void testGetTotaltAntalVardenheter() throws Exception {
-        IbUser user = new IbUser("HSA1111", "Per Nilsson");
+        IntygsbestallningUser user = new IntygsbestallningUser("HSA1111", "Per Nilsson");
         List<Vardgivare> vgList = new ArrayList<>();
         vgList.addAll(buildVardgivare(VG_1, VG_1_NAME));
         vgList.addAll(buildVardgivare(VG_2, VG_2_NAME));
@@ -60,7 +60,7 @@ public class IbUserTest {
     @Test
     public void serializeToDisk() {
         try {
-            IbUser user = new IbUser("HSA1111", "Per Nilsson");
+            IntygsbestallningUser user = new IntygsbestallningUser("HSA1111", "Per Nilsson");
             user.setVardgivare(buildVardgivare(VG_1, VG_1_NAME));
 
             // Write to disk
@@ -75,7 +75,7 @@ public class IbUserTest {
         try {
             FileInputStream fis = new FileInputStream("tempdata.ser");
             ObjectInputStream ois = new ObjectInputStream(fis);
-            IbUser user = (IbUser) ois.readObject();
+            IntygsbestallningUser user = (IntygsbestallningUser) ois.readObject();
             ois.close();
 
             assertEquals(user.getHsaId(), "HSA1111");

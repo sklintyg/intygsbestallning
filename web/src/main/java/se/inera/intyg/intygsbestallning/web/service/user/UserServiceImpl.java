@@ -22,18 +22,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import se.inera.intyg.infra.security.common.model.IntygUser;
 import se.inera.intyg.infra.security.common.service.CareUnitAccessHelper;
-import se.inera.intyg.intygsbestallning.web.auth.IbUser;
-import se.inera.intyg.intygsbestallning.web.service.user.UserService;
+import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Override
-    public IbUser getUser() {
+    public IntygsbestallningUser getUser() {
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             return null;
         }
 
-        return (IbUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return (IntygsbestallningUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     /**
@@ -46,7 +45,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean isUserLoggedInOnEnhetOrUnderenhet(String enhetsId) {
-        IbUser user = getUser();
+        IntygsbestallningUser user = getUser();
         return CareUnitAccessHelper.userIsLoggedInOnEnhetOrUnderenhet(user, enhetsId);
     }
 

@@ -31,11 +31,11 @@ import se.inera.intyg.infra.security.common.exception.GenericAuthenticationExcep
 import se.inera.intyg.infra.security.common.model.IntygUser;
 import se.inera.intyg.infra.security.siths.BaseSakerhetstjanstAssertion;
 import se.inera.intyg.infra.security.siths.BaseUserDetailsService;
+import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
+import se.inera.intyg.intygsbestallning.web.auth.IbVardgivare;
 import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
 import se.inera.intyg.intygsbestallning.web.auth.authorities.AuthoritiesConstants;
 import se.inera.intyg.intygsbestallning.web.auth.exceptions.MissingIBSystemRoleException;
-import se.inera.intyg.intygsbestallning.web.auth.model.IbVardenhet;
-import se.inera.intyg.intygsbestallning.web.auth.model.IbVardgivare;
 import se.riv.infrastructure.directory.v1.PersonInformationType;
 
 import java.util.ArrayList;

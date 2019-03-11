@@ -19,11 +19,8 @@
 package se.inera.intyg.intygsbestallning.web.pdl;
 
 import se.inera.intyg.infra.logmessages.PdlLogMessage;
-import se.inera.intyg.intygsbestallning.web.auth.IbUser;
-import se.inera.intyg.intygsbestallning.web.pdl.LogMessage;
-
-import java.util.List;
+import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
 
 public interface PdlLogMessageFactory {
-    PdlLogMessage buildLogMessage(LogMessage logMessage, IbUser ibUser);
+    PdlLogMessage buildLogMessage(LogMessage logMessage, IntygsbestallningUser ibUser);
 }

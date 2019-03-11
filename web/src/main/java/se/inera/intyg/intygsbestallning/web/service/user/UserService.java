@@ -18,11 +18,11 @@
  */
 package se.inera.intyg.intygsbestallning.web.service.user;
 
-import se.inera.intyg.intygsbestallning.web.auth.IbUser;
+import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
 
 public interface UserService {
 
-    IbUser getUser();
+    IntygsbestallningUser getUser();
 
     /**
      * Method determine if the supplied enhetsId is a Vardenhet or Mottagning identifier.

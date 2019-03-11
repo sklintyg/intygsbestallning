@@ -19,15 +19,11 @@
 package se.inera.intyg.intygsbestallning.web.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import se.inera.intyg.infra.integration.hsa.model.SelectableVardenhet;
 import se.inera.intyg.infra.security.common.model.IntygUser;
 import se.inera.intyg.infra.security.common.model.Privilege;
 import se.inera.intyg.infra.security.common.model.Role;
-
-import se.inera.intyg.intygsbestallning.web.auth.model.IbSelectableHsaEntity;
-import se.inera.intyg.intygsbestallning.web.auth.model.IbVardenhet;
-import se.inera.intyg.intygsbestallning.web.auth.model.IbVardgivare;
+import se.inera.intyg.intygsbestallning.web.pdl.PdlActivityEntry;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -57,6 +53,9 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
 
     private IbSelectableHsaEntity currentlyLoggedInAt;
 
+    // Handles PDL logging state
+    private Map<String, List<PdlActivityEntry>> storedActivities;
+
     // All known roles. Do NOT expose!!!
     @JsonIgnore
     private List<Role> possibleRoles;
@@ -66,6 +65,7 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
      */
     public IntygsbestallningUser(String hsaId, String namn) {
         super(hsaId);
+        this.storedActivities = new HashMap<>();
         this.hsaId = hsaId;
         this.namn = namn;
     }
@@ -75,11 +75,11 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
     }
 
     /**
-     * Copy-constructor that takes a populated {@link IntygUser} and the relayState (eg FMU or BP).
+     * Copy-constructor that takes a populated {@link IntygUser}.
      *
      * @param intygUser
      *            User principal, typically constructed in the
-     *            {@link SAMLUserDetailsService}
+     *            {@link org.springframework.security.saml.userdetails.SAMLUserDetailsService}
      *            implementor.
      */
     public IntygsbestallningUser(IntygUser intygUser) {
@@ -99,58 +99,9 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
         this.authorities = intygUser.getAuthorities();
         this.origin = intygUser.getOrigin();
 
+        this.storedActivities = new HashMap<>();
+
         this.miuNamnPerEnhetsId = intygUser.getMiuNamnPerEnhetsId();
-    }
-
-    @Override
-    public int getTotaltAntalVardenheter() {
-        // count all hasid's in the datastructure
-        return (int) getVardgivare().stream().flatMap(vg -> vg.getHsaIds().stream()).count();
-    }
-
-
-    /**
-     * For IB, we select from the systemAuthorities tree rather than the traditional VG -> VE -> E tree.
-     *
-     * We also sets the currentRole based on the selection.
-     *
-     * @param vgOrVeHsaId
-     * @return
-     */
-    @Override
-    public boolean changeValdVardenhet(String vgOrVeHsaId) {
-        Map<String, Role> roleMap = new HashMap<>();
-        return changeValdVardenhetForBP(vgOrVeHsaId, roleMap);
-    }
-
-    private boolean changeValdVardenhetForBP(String vgOrVeHsaId, Map<String, Role> roleMap) {
-        for (IbVardgivare ibVg : systemAuthorities) {
-            for (IbVardenhet ibVardenhet : ibVg.getVardenheter()) {
-                if (ibVardenhet.getId().equalsIgnoreCase(vgOrVeHsaId)) {
-                    this.currentlyLoggedInAt = ibVardenhet;
-                    this.currentRole = selectRole(possibleRoles, ROLE_BP_VARDADMIN);
-                    roleMap.put(currentRole.getName(), currentRole);
-                    this.roles = roleMap;
-                    this.authorities = toMap(currentRole.getPrivileges(), Privilege::getName);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private Role selectRole(List<Role> roles, String roleName) {
-        for (Role r : roles) {
-            if (r.getName().equals(roleName)) {
-                return r;
-            }
-        }
-        throw new IllegalStateException("Tried to set unknown role '" + roleName + "'");
-    }
-
-    @Override
-    public String getSelectedMedarbetarUppdragNamn() {
-        return null;
     }
 
     public List<IbVardgivare> getSystemAuthorities() {
@@ -177,7 +128,22 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
         this.currentlyLoggedInAt = currentlyLoggedInAt;
     }
 
+    public Map<String, List<PdlActivityEntry>> getStoredActivities() {
+        return storedActivities;
+    }
+
+    public void setStoredActivities(Map<String, List<PdlActivityEntry>> storedActivities) {
+        this.storedActivities = storedActivities;
+    }
+
+    // Do not expose, only set method is allowed
+    public void setPossibleRoles(List<Role> possibleRoles) {
+        this.possibleRoles = possibleRoles;
+    }
+
+
     // Overridden stuff not used by IB
+
     @Override
     @JsonIgnore
     public SelectableVardenhet getValdVardgivare() {
@@ -208,6 +174,11 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
         return new ArrayList<>();
     }
 
+    @Override
+    public String getSelectedMedarbetarUppdragNamn() {
+        return null;
+    }
+
     /**
      * IB users are never lakare, override this for compatibility reasons.
      *
@@ -218,12 +189,48 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
         return false;
     }
 
-    // Do not expose.
-    public void setPossibleRoles(List<Role> possibleRoles) {
-        this.possibleRoles = possibleRoles;
+
+    @Override
+    public int getTotaltAntalVardenheter() {
+        // count all hasid's in the datastructure
+        return (int) getVardgivare().stream().flatMap(vg -> vg.getHsaIds().stream()).count();
     }
 
+    /**
+     * For IB, we select from the systemAuthorities tree rather than the traditional VG -> VE -> E tree.
+     *
+     * We also sets the currentRole based on the selection.
+     *
+     * @param vgOrVeHsaId
+     * @return
+     */
+    @Override
+    public boolean changeValdVardenhet(String vgOrVeHsaId) {
+        for (IbVardgivare ibVg : systemAuthorities) {
+            for (IbVardenhet ibVardenhet : ibVg.getVardenheter()) {
+                if (ibVardenhet.getId().equalsIgnoreCase(vgOrVeHsaId)) {
+                    this.currentlyLoggedInAt = ibVardenhet;
+                    this.currentRole = selectRole(possibleRoles, ROLE_BP_VARDADMIN);
+                    this.authorities = toMap(currentRole.getPrivileges(), Privilege::getName);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     // private scope
+
+    private Role selectRole(List<Role> roles, String roleName) {
+        for (Role r : roles) {
+            if (r.getName().equals(roleName)) {
+                return r;
+            }
+        }
+        throw new IllegalStateException("Tried to set unknown role '" + roleName + "'");
+    }
+
     private void writeObject(java.io.ObjectOutputStream stream) throws java.io.IOException {
         stream.defaultWriteObject();
     }
