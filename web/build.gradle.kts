@@ -86,8 +86,4 @@ tasks {
       dependsOn(buildReactApp)
     }
   }
-
-  bootRun {
-    systemProperties = mapOf("resources.dir" to "$projectDir/src/main/resources")
-  }
 }

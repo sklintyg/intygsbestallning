@@ -1,6 +1,3 @@
-resources:
-  folder: ${resources.dir}
-
 spring:
   datasource:
     url: jdbc:h2:mem:dataSource;MODE=MySQL;DB_CLOSE_DELAY=-1
@@ -21,7 +18,7 @@ spring:
 
 # Mail notifications
 mail:
-  text-resource-path: ${resources.folder}/mail/texter/
+  text-resource-path: ${resources.folder}/texter/mail/
   host: ib-host
   admin: ib-notifications@inera.se
   from: ib-notifications@inera.se
