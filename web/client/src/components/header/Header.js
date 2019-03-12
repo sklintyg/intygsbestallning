@@ -1,22 +1,20 @@
 import React from 'react';
 import Logo from "./logo/Logo";
 import Unit from "./unit/Unit";
-import Actions from "./actions/Actions";
+import HeaderButtons from "./buttons/HeaderButtons";
 
 import "./Header.css"
 import User from "./user/User";
 
 
-const Header = ({namn}) => {
+const Header = ({isAuthenticated, namn, userRole, valdVardgivare, valdVardenhet, vardgivare}) => {
   return (
     <div className="header-wrapper">
       <div className="header">
         <Logo/>
-        <User userName={namn} userRole={''}/>
-        { (false) ? <Unit vg={''} ve={''}/>: '' }
-
-
-        <Actions/>
+        { isAuthenticated && <User userName={namn} userRole={userRole}/>}
+        { isAuthenticated && valdVardgivare && valdVardenhet && <Unit valdVardgivare={valdVardgivare} valdVardenhet={valdVardenhet}/>}
+        <HeaderButtons isAuthenticated={isAuthenticated} vardgivare={vardgivare}/>
       </div>
     </div>
   )
