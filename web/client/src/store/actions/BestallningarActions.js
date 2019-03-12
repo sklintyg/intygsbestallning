@@ -1,7 +1,7 @@
 import { normalize } from 'normalizr';
 import * as schema from './schema';
 import * as api from '../../api';
-import { getIsFetching } from '../reducers';
+import { getIsFetching } from '../reducers/bestallningar';
 
 export const fetchBestallningar = (filter) => (dispatch, getState) => {
   if (getIsFetching(getState(), filter)) {
