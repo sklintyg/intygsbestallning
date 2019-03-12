@@ -24,11 +24,9 @@ dependencies {
 
   implementation("javax.xml.ws:jaxws-api:${Dependencies.jaxWsVersion}")
   implementation("javax.servlet:javax.servlet-api:${Dependencies.javaxServletApiVersion}")
-<<<<<<< HEAD
+
   implementation("org.antlr:stringtemplate:${Dependencies.stringTemplateVersion}")
 
-||||||| merged common ancestors
-=======
   implementation("se.inera.intyg.infra:hsa-integration:0-SNAPSHOT")
   implementation("se.inera.intyg.infra:pu-integration:0-SNAPSHOT")
   implementation("se.inera.intyg.infra:security-siths:0-SNAPSHOT")
@@ -37,9 +35,6 @@ dependencies {
   implementation("org.springframework.security.extensions:spring-security-saml2-core:1.0.3.RELEASE")
 
   compile("org.springframework.boot:spring-boot-starter-actuator:${Dependencies.springBootVersion}")
-
-  implementation("org.antlr:stringtemplate:${Dependencies.stringTemplateVersion}")
->>>>>>> feature/lyfta-in-auth
 
   // Spring Boot test starters
   testImplementation("org.springframework.boot:spring-boot-starter-test:${Dependencies.springBootVersion}")
