@@ -1,14 +1,15 @@
 import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 
 dependencies {
-
+    // Project dependencies
     implementation(project(":common"))
 
-    // embedded database for dev
-    runtime("com.h2database:h2:${Dependencies.h2Version}")
+    // External dependencies
+    implementation(kotlin("reflect"))
 
-    implementation("org.jetbrains.kotlin:kotlin-reflect:${Dependencies.kotlinVersion}")
     implementation("org.liquibase:liquibase-core:${Dependencies.liquibaseVersion}")
-    
-    compile("org.springframework.boot:spring-boot-starter-data-jpa:${Dependencies.springBootVersion}")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    // Embedded database for development
+    runtime("com.h2database:h2:${Dependencies.h2Version}")
 }

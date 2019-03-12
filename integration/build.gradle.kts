@@ -4,10 +4,12 @@ dependencies {
   // Project dependencies
   implementation(project(":common"))
 
-  // External dependencies
-  implementation("javax.xml.ws:jaxws-api:${Dependencies.jaxWsVersion}")
-  implementation("javax.servlet:javax.servlet-api:${Dependencies.javaxServletApiVersion}")
-  implementation("se.inera.intyg.infra:hsa-integration:0-SNAPSHOT")
+  implementation("se.inera.intyg.infra:hsa-integration:${extra["intygInfraVersion"]}")
 
+  // External dependencies
   compile("org.apache.cxf:cxf-spring-boot-starter-jaxws:${Dependencies.cxfBootStarterVersion}")
+
+  implementation("jakarta.jws:jakarta.jws-api:1.1.1")
+  implementation("javax.xml.ws:jaxws-api:${Dependencies.jaxWsVersion}")
+  implementation("javax.servlet:javax.servlet-api:${Dependencies.jaxServletApiVersion}")
 }
