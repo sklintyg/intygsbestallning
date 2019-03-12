@@ -3,6 +3,7 @@ import {HashRouter, NavLink, Switch} from 'react-router-dom'
 import Route from 'react-router-dom/Route';
 import HomePage from "./pages/IndexPage";
 import ValjEnhetPage from "./pages/ValjEnhetPage";
+import BestallningarIndexPage from "./pages/BestallningarIndexPage";
 import BestallningarPage from "./pages/BestallningarPage";
 import BestallningPage from "./pages/BestallningPage";
 import {getUser} from "./store/actions/UserActions";
@@ -17,7 +18,7 @@ const TestLinks = () => (
       start
     </NavLink> | <NavLink to="/valj-enhet">
       valj-enhet
-    </NavLink> | <NavLink to="/bestallningar/all">
+    </NavLink> | <NavLink to="/bestallningar">
       bestallningar
     </NavLink>
   </nav>
@@ -32,7 +33,7 @@ const App = () => {
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route replace path="/valj-enhet" component={ValjEnhetPage} />
-            <Route replace path="/bestallningar" component={BestallningarWelcomePage} />
+            <Route exact path="/bestallningar" component={BestallningarIndexPage} />
             <Route replace path="/bestallningar/:filter" component={BestallningarPage} />
             <Route path="/bestallning/:id" component={BestallningPage} />
           </Switch>
