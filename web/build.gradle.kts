@@ -22,18 +22,13 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-web:${Dependencies.springBootVersion}")
   implementation("org.springframework.boot:spring-boot-starter-data-redis:${Dependencies.springBootVersion}")
 
-  compile("org.springframework.boot:spring-boot-starter-data-redis:${Dependencies.springBootVersion}")
-
   implementation("javax.xml.ws:jaxws-api:${Dependencies.jaxWsVersion}")
   implementation("javax.servlet:javax.servlet-api:${Dependencies.javaxServletApiVersion}")
-
   implementation("se.inera.intyg.infra:hsa-integration:0-SNAPSHOT")
   implementation("se.inera.intyg.infra:pu-integration:0-SNAPSHOT")
   implementation("se.inera.intyg.infra:security-siths:0-SNAPSHOT")
   implementation("se.inera.intyg.infra:log-messages:${extra["intygInfraVersion"]}")
   implementation("se.inera.intyg.infra:monitoring:0-SNAPSHOT")
-
-
   implementation("org.springframework.security.extensions:spring-security-saml2-core:1.0.3.RELEASE")
 
   compile("org.springframework.boot:spring-boot-starter-actuator:${Dependencies.springBootVersion}")
