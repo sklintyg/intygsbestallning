@@ -1,18 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 import BestallningarFilter from '../components/Bestallningar/BestallningarFilter';
 import BestallningarContainer from '../components/Bestallningar/BestallningarContainer';
 
-const BestallningarPage = () => {
-    return (
-        <div>
-            <div>Container wooh: </div>
-            <BestallningarFilter />
-            <BestallningarContainer />
-        </div>
-    )
-};
+const BestallningarPage = ({match}) => (
+    <div>
+        <div>Container wooh: {match.params.filter} </div>
+        <BestallningarFilter />
+        <BestallningarContainer />
+    </div>
+);
 
 BestallningarPage.propTypes = {
     params: PropTypes.shape({

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import * as actions from '../../store/actions';
 import { getVisibleBestallningar, getErrorMessage, getIsFetching } from '../../store/reducers';
 import BestallningarList from './BestallningarList';
@@ -20,7 +20,7 @@ class BestallningarContainer extends Component {
   }
 
   fetchData() {
-    const { filter, fetchBestallningar } = this.props;
+    const { fetchBestallningar, filter} = this.props;
     fetchBestallningar(filter);
   }
 
@@ -46,15 +46,16 @@ class BestallningarContainer extends Component {
 };
 
 BestallningarContainer.propTypes = {
-  filter: PropTypes.oneOf(['active', 'completed', 'rejected']).isRequired,
+  filter: PropTypes.string,
   errorMessage: PropTypes.string,
-  bestallning: PropTypes.array.isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  fetchBestallningar: PropTypes.func.isRequired,
+  bestallningar: PropTypes.array,
+  isFetching: PropTypes.bool,
+  fetchBestallningar: PropTypes.func,
 };
 
-const mapStateToProps = (state, { params }) => {
-  const filter = params.filter || 'all';
+const mapStateToProps = (state, { match }) => {
+  console.log(state, match.params.filter);
+  const filter = match.params.filter || 'all';
   return {
     isFetching: getIsFetching(state, filter),
     errorMessage: getErrorMessage(state, filter),
@@ -65,7 +66,7 @@ const mapStateToProps = (state, { params }) => {
 
 BestallningarContainer = withRouter(connect(
   mapStateToProps,
-  actions
+  actions,
 )(BestallningarContainer));
 
 export default BestallningarContainer;
