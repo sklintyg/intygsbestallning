@@ -11,7 +11,7 @@ const BestallningarList = ({bestallningar}) => {
               <tr key={bestallning.id}>
                 <td>{bestallning.name}</td>
                 <td>
-                  <Link to={`bestallning/${bestallning.id}`}>
+                  <Link to={`/bestallning/${bestallning.id}`}>
                     Visa
                   </Link>
                 </td>
