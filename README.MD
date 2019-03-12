@@ -9,6 +9,12 @@ Börja med att skapa en lokal klon av källkodsrepositoryt:
 
     $ git clone https://github.com/sklintyg/intygsbestallning.git
 
+På grund av att vi är beroende av sklintyg/infra för lite auth-relaterad kod måste man dessutom göra:
+
+    $ cd infra
+    $ checkout feature/spring5
+    $ ./gradlew build install
+
 Efter att man har klonat repository navigera till den klonade katalogen intygsbestallning och kör följande kommando:
 
     $ cd intygsbestallning
