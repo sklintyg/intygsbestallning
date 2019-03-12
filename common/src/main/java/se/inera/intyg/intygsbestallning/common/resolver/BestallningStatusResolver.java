@@ -1,9 +1,9 @@
 package se.inera.intyg.intygsbestallning.common.resolver;
 
-import se.inera.intyg.intygsbestallning.common.domain.Utredning;
+import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 
 public interface BestallningStatusResolver {
 
-    void setStatus(Utredning utredning);
+    void setStatus(Bestallning bestallning);
 
 }

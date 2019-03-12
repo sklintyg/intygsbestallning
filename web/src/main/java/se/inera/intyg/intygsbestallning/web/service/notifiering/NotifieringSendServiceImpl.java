@@ -24,8 +24,8 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.lang.invoke.MethodHandles;
 import java.text.MessageFormat;
+import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
-import se.inera.intyg.intygsbestallning.common.domain.Utredning;
 import se.inera.intyg.intygsbestallning.common.service.mail.MailService;
 import se.inera.intyg.intygsbestallning.common.service.mail.MailTextService;
 
@@ -43,13 +43,13 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
     }
 
     @Override
-    public void notifieraVardenhetsAnvandareNyIntygsbestallning(Utredning utredning) {
+    public void notifieraVardenhetsAnvandareNyIntygsbestallning(Bestallning bestallning) {
         var nyBestallning = NotifieringTyp.NY_INTYGSBESTALLNING;
         var mailContent = mailTextService.getMailContent(nyBestallning);
     }
 
     @Override
-    public void notifieraAnvandareHosVidarebefodradVardenhet(Utredning utredning) {
+    public void notifieraAnvandareHosVidarebefodradVardenhet(Bestallning bestallning) {
         var vidarebefodrad = NotifieringTyp.VIDAREBEFODRAD_INTYGSBESTALLNING;
         var mailContent = mailTextService.getMailContent(vidarebefodrad);
     }

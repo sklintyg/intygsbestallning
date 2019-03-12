@@ -1,4 +1,4 @@
-package se.inera.intyg.intygsbestallning.web.service.utredning;
+package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import se.riv.intygsbestallning.certificate.order.v1.IIType;
 import java.lang.invoke.MethodHandles;
 import java.util.Optional;
 import se.inera.intyg.intygsbestallning.common.domain.IntygTyp;
-import se.inera.intyg.intygsbestallning.common.dto.CreateUtredningRequest;
+import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.property.IntegrationProperties;
 import se.inera.intyg.intygsbestallning.common.util.RivtaUtil;
 
@@ -21,11 +21,11 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
 
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().getClass());
 
-    private CreateUtredningService createUtredningService;
+    private CreateBestallningService createBestallningService;
     private IntegrationProperties integrationProperties;
 
-    public OrderAssessmentIntygsbestallning(CreateUtredningService createUtredningService) {
-        this.createUtredningService = createUtredningService;
+    public OrderAssessmentIntygsbestallning(CreateBestallningService createBestallningService) {
+        this.createBestallningService = createBestallningService;
     }
 
     @Override
@@ -34,8 +34,8 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
         LOG.info("Received request for OrderAssessment");
 
         try {
-            var createUtredningRequest = fromType(orderAssessmentType);
-            createUtredningService.createUtredning(createUtredningRequest);
+            var createBestallningRequest = fromType(orderAssessmentType);
+            createBestallningService.create(createBestallningRequest);
         } catch (final Exception e) {
             LOG.error("Error in orderAssessment", e);
             OrderAssessmentResponseType response = new OrderAssessmentResponseType();
@@ -47,7 +47,7 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
         return null;
     }
 
-    private CreateUtredningRequest fromType(OrderAssessmentType request) {
+    private CreateBestallningRequest fromType(OrderAssessmentType request) {
         if (request == null) {
             throw new IllegalArgumentException("request may not be null");
         }
@@ -75,6 +75,6 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
             throw new IllegalArgumentException("certificateType: " + certficateCodeType + " is not bestallningbar");
         }
 
-        return new CreateUtredningRequest(personnummer, intygTyp, vardenhet);
+        return new CreateBestallningRequest(personnummer, intygTyp, vardenhet);
     }
 }

@@ -1,25 +1,25 @@
 package se.inera.intyg.intygsbestallning.web.service.notifiering;
 
-import se.inera.intyg.intygsbestallning.common.domain.Utredning;
+import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 
 /**
  * Used for sending notifications by email to vardenhet users. Notifications will include a deep link to the related
- * Utredning so that the user can quickly enter the application at the screen for the Utredning of interest.
+ * se.inera.intyg.intygsbestallning.common.domain.Bestallning so that the user can quickly enter the application at the screen for the se.inera.intyg.intygsbestallning.common.domain.Bestallning of interest.
  */
 public interface NotifieringSendService {
 
     /**
-     * Send deep link to specific Utredning to user at vardenhet when new intygsbestallning arrives.
+     * Send deep link to specific se.inera.intyg.intygsbestallning.common.domain.Bestallning to user at vardenhet when new intygsbestallning arrives.
      *
-     * @param utredning
+     * @param bestallning
      */
-    public void notifieraVardenhetsAnvandareNyIntygsbestallning(Utredning utredning);
+    void notifieraVardenhetsAnvandareNyIntygsbestallning(Bestallning bestallning);
 
     /**
-     * Send deep link to specific Utredning to user at vardenhet when intygsbestallning is forwarded (vidarebefodrad).
+     * Send deep link to specific Bestallning to user at vardenhet when intygsbestallning is forwarded (vidarebefodrad).
      * Note: notification is sent to the vardenhet receiving the forwarded intygsbestallning.
      *
-     * @param utredning
+     * @param bestallning
      */
-    public void notifieraAnvandareHosVidarebefodradVardenhet(Utredning utredning);
+    void notifieraAnvandareHosVidarebefodradVardenhet(Bestallning bestallning);
 }
