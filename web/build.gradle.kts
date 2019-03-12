@@ -28,6 +28,8 @@ dependencies {
 
   implementation("javax.xml.ws:jaxws-api:${Dependencies.jaxWsVersion}")
   implementation("javax.servlet:javax.servlet-api:${Dependencies.javaxServletApiVersion}")
+  implementation("org.antlr:stringtemplate:${Dependencies.stringTemplateVersion}")
+
 
   // Spring Boot test starters
   testImplementation("org.springframework.boot:spring-boot-starter-test:${Dependencies.springBootVersion}")
@@ -67,12 +69,16 @@ tasks {
       }
     }
 
-    "bootRun" {
+    bootRun {
       dependsOn(copyReactbuild)
     }
 
-    "bootJar" {
+    bootJar {
       dependsOn(buildReactApp)
     }
+  }
+
+  bootRun {
+    systemProperties = mapOf("resources.dir" to "$projectDir/src/main/resources")
   }
 }
