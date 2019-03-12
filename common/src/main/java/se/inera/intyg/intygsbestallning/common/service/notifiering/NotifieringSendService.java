@@ -1,4 +1,4 @@
-package se.inera.intyg.intygsbestallning.web.service.notifiering;
+package se.inera.intyg.intygsbestallning.common.service.notifiering;
 
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 
@@ -13,7 +13,7 @@ public interface NotifieringSendService {
      *
      * @param bestallning
      */
-    void notifieraVardenhetsAnvandareNyIntygsbestallning(Bestallning bestallning);
+    void nyBestallning(Bestallning bestallning);
 
     /**
      * Send deep link to specific Bestallning to user at vardenhet when intygsbestallning is forwarded (vidarebefodrad).
@@ -21,5 +21,5 @@ public interface NotifieringSendService {
      *
      * @param bestallning
      */
-    void notifieraAnvandareHosVidarebefodradVardenhet(Bestallning bestallning);
+    void vidarebefordrad(Bestallning bestallning);
 }

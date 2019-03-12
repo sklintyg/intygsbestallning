@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.web.service.notifiering;
+package se.inera.intyg.intygsbestallning.common.service.notifiering;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +26,6 @@ import java.lang.invoke.MethodHandles;
 import java.text.MessageFormat;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
-import se.inera.intyg.intygsbestallning.common.service.mail.MailService;
-import se.inera.intyg.intygsbestallning.common.service.mail.MailTextService;
 
 @Service
 public class NotifieringSendServiceImpl implements NotifieringSendService {
@@ -43,21 +41,21 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
     }
 
     @Override
-    public void notifieraVardenhetsAnvandareNyIntygsbestallning(Bestallning bestallning) {
+    public void nyBestallning(Bestallning bestallning) {
         var nyBestallning = NotifieringTyp.NY_INTYGSBESTALLNING;
         var mailContent = mailTextService.getMailContent(nyBestallning);
     }
 
     @Override
-    public void notifieraAnvandareHosVidarebefodradVardenhet(Bestallning bestallning) {
-        var vidarebefodrad = NotifieringTyp.VIDAREBEFODRAD_INTYGSBESTALLNING;
-        var mailContent = mailTextService.getMailContent(vidarebefodrad);
+    public void vidarebefordrad(Bestallning bestallning) {
+        var vidarebefordrad = NotifieringTyp.VIDAREBEFORDRAD_INTYGSBESTALLNING;
+        var mailContent = mailTextService.getMailContent(vidarebefordrad);
     }
 
-    private void sendNotifiering(String email, String subject, String body, Long utredningId) {
+    private void sendNotifiering(String email, String subject, String body, Long bestallningId) {
         try {
-            mailService.sendNotificationToUnit(email, subject, body);
-            LOG.info(MessageFormat.format("Sent notification: \"{0}\" to email: {1} for utredning: {2}.", subject, email, utredningId));
+            mailService.sendNotifieringToVardenhet(email, subject, body);
+            LOG.info(MessageFormat.format("Sent notification: \"{0}\" to email: {1} for bestalling: {2}.", subject, email, bestallningId));
         } catch (MessagingException e) {
             LOG.error(MessageFormat.format("Error sending notification by email: {0}", e.getMessage()));
         }

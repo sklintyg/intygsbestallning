@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.common.service.mail;
+package se.inera.intyg.intygsbestallning.common.service.notifiering;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,7 +48,7 @@ public class MailServiceImpl implements MailService {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public void sendNotificationToUnit(String mailAddress, String subject, String body) {
+    public void sendNotifieringToVardenhet(String mailAddress, String subject, String body) {
         jmsTemplate.send(session -> {
             try {
                 return session

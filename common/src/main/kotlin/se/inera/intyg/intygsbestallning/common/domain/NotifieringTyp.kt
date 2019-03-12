@@ -20,5 +20,5 @@ package se.inera.intyg.intygsbestallning.common.domain
 
 enum class NotifieringTyp(val label: String) {
   NY_INTYGSBESTALLNING("Ny intygsbeställning mottagen av vårdenhet"),
-  VIDAREBEFODRAD_INTYGSBESTALLNING("Intygsbeställning har vidarebefodrats till en annan vårdenhet");
+  VIDAREBEFORDRAD_INTYGSBESTALLNING("Intygsbeställning har vidarebefordrats till en annan vårdenhet");
 }

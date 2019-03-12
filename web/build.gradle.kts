@@ -24,9 +24,7 @@ dependencies {
 
   implementation("javax.xml.ws:jaxws-api:${Dependencies.jaxWsVersion}")
   implementation("javax.servlet:javax.servlet-api:${Dependencies.javaxServletApiVersion}")
-
-  implementation("org.antlr:stringtemplate:${Dependencies.stringTemplateVersion}")
-
+  
   implementation("se.inera.intyg.infra:hsa-integration:0-SNAPSHOT")
   implementation("se.inera.intyg.infra:pu-integration:0-SNAPSHOT")
   implementation("se.inera.intyg.infra:security-siths:0-SNAPSHOT")

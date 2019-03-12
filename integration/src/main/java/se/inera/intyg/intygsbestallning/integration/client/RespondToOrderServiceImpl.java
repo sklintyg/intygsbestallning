@@ -28,7 +28,7 @@ public class RespondToOrderServiceImpl implements RespondToOrderService {
 
     private RespondToOrderType createResponderType(AccepteraBestallningRequest request) {
 
-        var assessmentId = RivtaUtil.anII(integrationProperties.getSourceSystemHsaId(), request.getUtredningId());
+        var assessmentId = RivtaUtil.anII(integrationProperties.getSourceSystemHsaId(), request.getBestallningId());
 
         var respondToOrderType = new RespondToOrderType();
         respondToOrderType.setAssessmentId(assessmentId);

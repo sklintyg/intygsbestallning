@@ -1,23 +1,17 @@
-package se.inera.intyg.intygsbestallning.common.service.mail;
+package se.inera.intyg.intygsbestallning.common.service.notifiering;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.invoke.MethodHandles.lookup;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MoreCollectors;
 import io.vavr.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;

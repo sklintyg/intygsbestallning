@@ -15,10 +15,10 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
     }
 
     @Override
-    public Bestallning saveNewBestallning(Bestallning utredning) {
+    public Bestallning saveNewBestallning(Bestallning bestallning) {
 
-        var utredningEntity = BestallningEntity.Factory.toEntity(utredning);
+        var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning);
 
-        return BestallningEntity.Factory.toDomain(bestallningRepository.save(utredningEntity));
+        return BestallningEntity.Factory.toDomain(bestallningRepository.save(bestallningEntity));
     }
 }

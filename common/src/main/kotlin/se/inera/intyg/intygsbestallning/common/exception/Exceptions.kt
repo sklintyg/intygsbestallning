@@ -35,8 +35,7 @@ class IbNotFoundException : IbServiceException {
 }
 
 enum class NotFoundType(val errorText: String) {
-  UTREDNING("Felaktig utredningsid: %s. Utredningen existerar inte."),
-  BESOK("Felaktig beöksid: %s. Besöket existerar inte.")
+  BESTALLNING("Felaktig bestallningsid: %s. Bestallningen existerar inte.")
 }
 
 enum class IbErrorCodeEnum {

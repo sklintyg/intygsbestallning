@@ -9,6 +9,6 @@ data class CreateBestallningRequest(
 )
 
 data class AccepteraBestallningRequest(
-   val utredningId: String,
+   val bestallningId: String,
    val fritextForklaring: String? = null
 )

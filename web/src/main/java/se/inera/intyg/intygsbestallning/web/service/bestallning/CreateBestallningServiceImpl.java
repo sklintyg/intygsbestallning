@@ -9,7 +9,7 @@ import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
-import se.inera.intyg.intygsbestallning.web.service.notifiering.NotifieringSendService;
+import se.inera.intyg.intygsbestallning.common.service.notifiering.NotifieringSendService;
 
 @Service
 public class CreateBestallningServiceImpl implements CreateBestallningService {
@@ -40,7 +40,7 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
         bestallningStatusResolver.setStatus(bestallning);
 
         final Bestallning savedBestallning = bestallningPersistenceService.saveNewBestallning(bestallning);
-        notifieringSendService.notifieraVardenhetsAnvandareNyIntygsbestallning(savedBestallning);
+        notifieringSendService.nyBestallning(savedBestallning);
 
         return savedBestallning.getId();
     }

@@ -6,21 +6,6 @@
 
   <changeSet id="1" author="joakim anell">
 
-    <createTable tableName="UTREDNING">
-      <column name="ID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
-        <constraints primaryKey="true" nullable="false"/>
-      </column>
-      <column name="BESTALLNING_ID" type="bigint">
-        <constraints nullable="true"/>
-      </column>
-      <column name="VARDENHET_ID" type="bigint">
-        <constraints nullable="true"/>
-      </column>
-      <column name="AVSLUT_DATUM" type="datetime">
-        <constraints nullable="true"/>
-      </column>
-    </createTable>
-
     <createTable tableName="BESTALLNING">
       <column name="ID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
         <constraints primaryKey="true" nullable="false"/>
@@ -28,8 +13,14 @@
       <column name="ANKOMST_DATUM" type="datetime">
         <constraints nullable="false"/>
       </column>
+      <column name="AVSLUT_DATUM" type="datetime">
+        <constraints nullable="true"/>
+      </column>
       <column name="STATUS" type="varchar(64)">
         <constraints nullable="false"/>
+      </column>
+      <column name="VARDENHET_ID" type="bigint">
+        <constraints nullable="true"/>
       </column>
     </createTable>
 

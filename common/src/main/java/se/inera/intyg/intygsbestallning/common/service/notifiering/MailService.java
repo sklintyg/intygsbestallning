@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.common.service.mail;
+package se.inera.intyg.intygsbestallning.common.service.notifiering;
 
 import javax.mail.MessagingException;
 
 public interface MailService {
-    void sendNotificationToUnit(String mailAddress, String subject, String body) throws MessagingException;
+    void sendNotifieringToVardenhet(String mailAddress, String subject, String body) throws MessagingException;
 }
