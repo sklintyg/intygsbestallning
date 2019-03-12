@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import * as actions from '../../store/actions';
-import { getVisibleBestallningar, getErrorMessage, getIsFetching } from '../../store/reducers';
+import * as actions from '../../store/actions/BestallningarActions';
+import { getVisibleBestallningar, getErrorMessage, getIsFetching } from '../../store/reducers/bestallningar';
 import BestallningarList from './BestallningarList';
 import FetchError from '../FetchError';
 
