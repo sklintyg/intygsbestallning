@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import java.lang.invoke.MethodHandles;
-import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.Utredning;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
 import se.inera.intyg.intygsbestallning.common.dto.CreateUtredningRequest;
@@ -40,9 +39,9 @@ public class CreateUtredningServiceImpl implements CreateUtredningService {
         var utredning = Utredning.Factory.newUtredning(hsaId, new Vardenhet(null, "", null, null));
         bestallningStatusResolver.setStatus(utredning);
 
-        utredningPersistenceService.saveNewUtredning(utredning);
-        notifieringSendService.notifieraVardenhetsAnvandareNyIntygsbestallning(utredning);
+        final Utredning savedUtredning = utredningPersistenceService.saveNewUtredning(utredning);
+        notifieringSendService.notifieraVardenhetsAnvandareNyIntygsbestallning(savedUtredning);
 
-        return utredning.getId();
+        return savedUtredning.getId();
     }
 }

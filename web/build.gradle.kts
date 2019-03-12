@@ -33,6 +33,8 @@ dependencies {
 
   compile("org.springframework.boot:spring-boot-starter-actuator:${Dependencies.springBootVersion}")
 
+  implementation("org.antlr:stringtemplate:${Dependencies.stringTemplateVersion}")
+
   // Spring Boot test starters
   testImplementation("org.springframework.boot:spring-boot-starter-test:${Dependencies.springBootVersion}")
 
@@ -80,8 +82,12 @@ tasks {
       dependsOn(copyReactbuild)
     }
 
-    "bootJar" {
+    bootJar {
       dependsOn(buildReactApp)
     }
+  }
+
+  bootRun {
+    systemProperties = mapOf("resources.dir" to "$projectDir/src/main/resources")
   }
 }

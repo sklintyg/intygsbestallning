@@ -27,6 +27,8 @@ object Config {
     const val javaxMailVersion = "1.5.2"
     const val javaxServletApiVersion = "4.0.1"
     const val jaxWsVersion = "2.2.3"
+    const val stringTemplateVersion = "4.0.2"
+    const val vavrVersion = "0.10.0"
 
     const val intygsbestallningCertificateOrderSchemasVersion = "1.0-RC6"
   }

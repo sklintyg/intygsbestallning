@@ -24,8 +24,10 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.lang.invoke.MethodHandles;
 import java.text.MessageFormat;
+import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
 import se.inera.intyg.intygsbestallning.common.domain.Utredning;
 import se.inera.intyg.intygsbestallning.common.service.mail.MailService;
+import se.inera.intyg.intygsbestallning.common.service.mail.MailTextService;
 
 @Service
 public class NotifieringSendServiceImpl implements NotifieringSendService {
@@ -33,28 +35,23 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private MailService mailService;
+    private MailTextService mailTextService;
 
-    public NotifieringSendServiceImpl(MailService mailService) {
+    public NotifieringSendServiceImpl(MailService mailService, MailTextService mailTextService) {
         this.mailService = mailService;
+        this.mailTextService = mailTextService;
     }
 
     @Override
     public void notifieraVardenhetsAnvandareNyIntygsbestallning(Utredning utredning) {
-        //TODO: Below.
-        //String templating, create emailbody, yadayada
-        //Send notifiering
-        //Persist notifiering
+        var nyBestallning = NotifieringTyp.NY_INTYGSBESTALLNING;
+        var mailContent = mailTextService.getMailContent(nyBestallning);
     }
 
     @Override
     public void notifieraAnvandareHosVidarebefodradVardenhet(Utredning utredning) {
-        //final String vardenhetsHsaId = utredning.getVardenhet().getHsaId();
-        //final NotificationPreferenceDto preferens = notifieringPreferenceService.getNotificationPreference(vardenhetsHsaId, VE);
-
-        //TODO: Below.
-        //String templating, create emailbody, yadayada
-        //Send notifiering
-        //Persist notifiering
+        var vidarebefodrad = NotifieringTyp.VIDAREBEFODRAD_INTYGSBESTALLNING;
+        var mailContent = mailTextService.getMailContent(vidarebefodrad);
     }
 
     private void sendNotifiering(String email, String subject, String body, Long utredningId) {
