@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2018 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,11 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.web.pdl;
+package se.inera.intyg.intygsbestallning.integration.hsa;
 
-import se.inera.intyg.infra.logmessages.PdlLogMessage;
-import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportResource;
 
-public interface PdlLogMessageFactory {
-    PdlLogMessage buildLogMessage(LogMessage logMessage, IntygsbestallningUser ibUser);
+/**
+ * Created by eriklupander on 2016-05-18.
+ */
+@Configuration
+@ComponentScan("se.inera.intyg.infra.integration.hsa.services")
+@Import(HsaStubConfig.class)
+@ImportResource("classpath:hsa-services-config.xml")
+public class HsaConfig {
 }

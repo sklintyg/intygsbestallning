@@ -33,9 +33,9 @@ import se.inera.intyg.infra.security.common.model.Role;
 import se.inera.intyg.infra.security.common.model.UserOriginType;
 import se.inera.intyg.intygsbestallning.common.property.PdlLoggingProperties;
 import se.inera.intyg.intygsbestallning.web.WebTestConfig;
-import se.inera.intyg.intygsbestallning.web.auth.IbUser;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardgivare;
+import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
 import se.inera.intyg.intygsbestallning.web.auth.authorities.AuthoritiesConstants;
 
 import java.util.Collections;
@@ -172,8 +172,8 @@ public class PdlLogMessageFactoryTest {
         return user;
     }
 
-    private IbUser createIbUser() {
-        var ibUser = new IbUser(createDefaultUser());
+    private IntygsbestallningUser createIbUser() {
+        var ibUser = new IntygsbestallningUser(createDefaultUser());
         ibUser.setHsaId(USER_ID);
         ibUser.setNamn(USER_NAME);
         ibUser.setCurrentlyLoggedInAt(createIbVardenhet());
@@ -181,11 +181,11 @@ public class PdlLogMessageFactoryTest {
     }
 
     private IbVardgivare createIbVardgivare() {
-        return new IbVardgivare(VG_ID, VG_NAME, VG_ORGNR,false);
+        return new IbVardgivare(VG_ID, VG_NAME, false);
     }
 
     private IbVardenhet createIbVardenhet() {
-        return new IbVardenhet(VE_ID, VE_NAME, createIbVardgivare());
+        return new IbVardenhet(VE_ID, VE_NAME, createIbVardgivare(), VG_ORGNR);
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2018 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,11 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.web.pdl;
+package se.inera.intyg.intygsbestallning.web.monitoring;
 
-import se.inera.intyg.infra.logmessages.PdlLogMessage;
-import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
+import se.inera.intyg.infra.security.common.service.AuthenticationLogger;
 
-public interface PdlLogMessageFactory {
-    PdlLogMessage buildLogMessage(LogMessage logMessage, IntygsbestallningUser ibUser);
+/**
+ * Interface used when logging to monitoring file. Used to ensure that the log entries are uniform and easy to parse.
+ */
+public interface MonitoringLogService extends AuthenticationLogger {
+
+    @Override
+    void logUserLogin(String id, String authenticationScheme, String origin);
+
+    @Override
+    void logUserLogout(String id, String authenticationScheme);
+
+    void logUserViewedSjukfall(String userId, int numberOfSjukfall, String vardEnhet);
 }

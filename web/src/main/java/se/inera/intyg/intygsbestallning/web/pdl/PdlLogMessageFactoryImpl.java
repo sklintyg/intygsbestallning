@@ -26,8 +26,8 @@ import se.inera.intyg.infra.logmessages.PdlResource;
 import se.inera.intyg.intygsbestallning.common.property.PdlLoggingProperties;
 import se.inera.intyg.intygsbestallning.web.auth.IbSelectableHsaEntity;
 import se.inera.intyg.intygsbestallning.web.auth.IbSelectableHsaEntityType;
-import se.inera.intyg.intygsbestallning.web.auth.IbUser;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
+import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
 
 import java.util.stream.Collectors;
 
@@ -42,7 +42,7 @@ public class PdlLogMessageFactoryImpl implements PdlLogMessageFactory {
 
     @Override
     public PdlLogMessage buildLogMessage(LogMessage logMessage,
-                                         IbUser ibUser) {
+                                         IntygsbestallningUser ibUser) {
 
         LogUser logUser = getLogUser(ibUser);
         LogActivity logActivity = logMessage.getActivity();
@@ -72,7 +72,7 @@ public class PdlLogMessageFactoryImpl implements PdlLogMessageFactory {
         return pdlLogMessage;
     }
 
-    private LogUser getLogUser(IbUser ibUser) {
+    private LogUser getLogUser(IntygsbestallningUser ibUser) {
         IbSelectableHsaEntity loggedInAt = ibUser.getCurrentlyLoggedInAt();
 
         if (loggedInAt != null && loggedInAt.type() == IbSelectableHsaEntityType.VE) {

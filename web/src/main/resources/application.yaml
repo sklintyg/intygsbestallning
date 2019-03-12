@@ -12,20 +12,19 @@ spring:
   h2:
     console:
       enabled: true
-
   liquibase:
     change-log: classpath:/changelog/db-changelog-master.xml
-
   profiles:
-    active: default, myndighet-stub
+    active: default, myndighet-stub, dev, caching-enabled
+  main:
+    allow-bean-definition-overriding: true
 
 # Mail notifications
 mail:
-  text-resource-path: ${resources.folder}/mail/texter/
+  text-resource-path: ${resources.folder}/texter/mail/
   host: ib-host
   admin: ib-notifications@inera.se
   from: ib-notifications@inera.se
-
   username:
   password:
   protocol: smtps
@@ -34,6 +33,75 @@ mail:
     auth: true
     starttls.enable: true
     debug: false
+
+#AUTH
+authorities:
+  configuration:
+    file: file://${resources.folder}/security/authorities.yaml
+features:
+  configuration:
+    file: file://${resources.folder}/security/features.yaml
+
+#HSA integration
+infrastructure:
+  directory:
+    employee:
+      getemployee:
+        endpoint:
+          url: ${ntjp.base.url}/infrastructure/directory/employee/GetEmployeeIncludingProtectedPerson/1/rivtabp21
+    organization:
+      gethealthcareunitmembers:
+        endpoint:
+          url: ${ntjp.base.url}/infrastructure/directory/organization/GetHealthCareUnitMembers/1/rivtabp21
+      gethealthcareunit:
+        endpoint:
+          url: ${ntjp.base.url}/infrastructure/directory/organization/GetHealthCareUnit/1/rivtabp21
+      getunit:
+        endpoint:
+          url: ${ntjp.base.url}/infrastructure/directory/organization/GetUnit/1/rivtabp21
+    authorizationmanagement:
+      getcredentialsforpersonincludingprotectedpersonresponderinterface:
+        endpoint:
+          url: ${ntjp.base.url}/infrastructure/directory/authorizationmanagement/GetCredentialsForPersonIncludingProtectedPerson/1/rivtabp21
+
+pdlLogging:
+  systemName: Intygsbestallning
+  systemId: 12345
+
+putjanst:
+  endpoint:
+    url: ${ntjp.base.url}/strategicresourcemanagement/persons/person/GetPersonsForProfile/3/rivtabp21
+
+#Cache settings
+pu:
+  cache:
+    expiry: 86400
+
+hsa:
+  healhcareunitmembers:
+    cache:
+      expiry: 86400
+  healthcareunit:
+    cache:
+      expiry: 86400
+  unit:
+    cache:
+      expiry: 86400
+  stub:
+    additional:
+      identities:
+        folder: ${java.io.tmpdir}
+
+redis:
+  sentinel:
+    master:
+      name: master
+  password:
+  cache:
+    default_entry_expiry_time_in_seconds: 86400
+  port: 6379
+  host: 127.0.0.1
+
 
 activemq:
   broker:

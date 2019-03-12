@@ -18,18 +18,28 @@ dependencies {
   implementation(project(":persistence"))
   implementation(project(":mail-sender"))
 
-  implementation("se.inera.intyg.infra:log-messages:${extra["intygInfraVersion"]}")
-  implementation("se.inera.intyg.infra:security-authorities:${extra["intygInfraVersion"]}")
-  implementation("se.inera.intyg.infra:security-common:${extra["intygInfraVersion"]}")
-
   // Spring Boot starters
   implementation("org.springframework.boot:spring-boot-starter-web:${Dependencies.springBootVersion}")
   implementation("org.springframework.boot:spring-boot-starter-data-redis:${Dependencies.springBootVersion}")
 
   implementation("javax.xml.ws:jaxws-api:${Dependencies.jaxWsVersion}")
   implementation("javax.servlet:javax.servlet-api:${Dependencies.javaxServletApiVersion}")
+<<<<<<< HEAD
   implementation("org.antlr:stringtemplate:${Dependencies.stringTemplateVersion}")
 
+||||||| merged common ancestors
+=======
+  implementation("se.inera.intyg.infra:hsa-integration:0-SNAPSHOT")
+  implementation("se.inera.intyg.infra:pu-integration:0-SNAPSHOT")
+  implementation("se.inera.intyg.infra:security-siths:0-SNAPSHOT")
+  implementation("se.inera.intyg.infra:log-messages:${extra["intygInfraVersion"]}")
+  implementation("se.inera.intyg.infra:monitoring:0-SNAPSHOT")
+  implementation("org.springframework.security.extensions:spring-security-saml2-core:1.0.3.RELEASE")
+
+  compile("org.springframework.boot:spring-boot-starter-actuator:${Dependencies.springBootVersion}")
+
+  implementation("org.antlr:stringtemplate:${Dependencies.stringTemplateVersion}")
+>>>>>>> feature/lyfta-in-auth
 
   // Spring Boot test starters
   testImplementation("org.springframework.boot:spring-boot-starter-test:${Dependencies.springBootVersion}")
@@ -62,6 +72,11 @@ tasks {
     into("${project.buildDir}/resources/main/static")
   }
 
+  bootRun {
+    systemProperties = mapOf("resource.dir" to "${project.projectDir}/../src/main/resources")
+
+  }
+
   if (buildClient) {
     bootJar {
       from("client/build/") {
@@ -78,7 +93,4 @@ tasks {
     }
   }
 
-  bootRun {
-    systemProperties = mapOf("resources.dir" to "$projectDir/src/main/resources")
-  }
 }

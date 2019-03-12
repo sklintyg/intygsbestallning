@@ -16,27 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.web.service.user;
+package se.inera.intyg.intygsbestallning.web.auth.authorities.validation;
 
-import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
+import se.inera.intyg.infra.security.authorities.validation.AuthExpectationSpecImpl;
+import se.inera.intyg.infra.security.authorities.validation.AuthExpectationSpecification;
+import se.inera.intyg.infra.security.common.model.IntygUser;
 
-public interface UserService {
+import java.util.Optional;
 
-    IntygsbestallningUser getUser();
+/**
+ * Utility class that makes it easy to express and enforce authority constraint rules in backend code.
+ */
+public final class AuthoritiesValidator {
 
     /**
-     * Method determine if the supplied enhetsId is a Vardenhet or Mottagning identifier.
+     * Create a expectation context with just a user.
      *
-     * <ul>
-     *     <li>If the selectedVardenhet is a Vardenhet: The supplied enhetsId is for the Vardenhet or one of its Mottagningar.</li>
-     *     <li>If the selcetedVardenhet is a Mottagning: The supplied enhetsId is the Mottagning,
-     *     its parent Vardenhet or one of the sibling Mottagningar.</li>
-     * </ul>
-     *
-     * @param enhetsId
-     *      HSA-id of a vardenhet or mottagning.
+     * @param user
      * @return
-     *      true if match is found.
      */
-    boolean isUserLoggedInOnEnhetOrUnderenhet(String enhetsId);
+    public AuthExpectationSpecification given(IntygUser user) {
+        return new AuthExpectationSpecImpl(user, Optional.empty());
+    }
+
 }

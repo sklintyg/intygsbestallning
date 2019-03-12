@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2018 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -18,17 +18,11 @@
  */
 package se.inera.intyg.intygsbestallning.web.auth;
 
-import static se.inera.intyg.infra.security.authorities.AuthoritiesResolverUtil.toMap;
-import static se.inera.intyg.intygsbestallning.web.auth.authorities.AuthoritiesConstants.ROLE_BP_VARDADMIN;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import se.inera.intyg.infra.integration.hsa.model.SelectableVardenhet;
 import se.inera.intyg.infra.security.common.model.IntygUser;
 import se.inera.intyg.infra.security.common.model.Privilege;
 import se.inera.intyg.infra.security.common.model.Role;
-import se.inera.intyg.intygsbestallning.web.auth.IbSelectableHsaEntity;
-import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
-import se.inera.intyg.intygsbestallning.web.auth.IbVardgivare;
 import se.inera.intyg.intygsbestallning.web.pdl.PdlActivityEntry;
 
 import java.io.Serializable;
@@ -37,14 +31,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static se.inera.intyg.infra.security.authorities.AuthoritiesResolverUtil.toMap;
+import static se.inera.intyg.intygsbestallning.web.auth.authorities.AuthoritiesConstants.ROLE_BP_VARDADMIN;
 
 /**
- * The IB user overrides a lot of the default behaviour. Since users can be logged
- * in on both Vårdgivare and on Vårdenhet where the VG level doesn't require a
- * Medarbetaruppdrag (IB uses system roles), some data structures are quite
+ * The IB user overrides a lot of the default behaviour. Since users can be logged in on both Vårdgivare and on Vårdenhet
+ * where the VG level doesn't require a Medarbetaruppdrag (IB uses system roles), some data structures are quite
  * unused while others have been added.
+ *
+ * @author eriklupander
  */
-public class IbUser extends IntygUser implements Serializable {
+public class IntygsbestallningUser extends IntygUser implements Serializable {
 
     private static final long serialVersionUID = 8711015219408194075L;
 
@@ -66,26 +63,26 @@ public class IbUser extends IntygUser implements Serializable {
     /**
      * Typically used by unit tests.
      */
-    public IbUser(String hsaId, String namn) {
+    public IntygsbestallningUser(String hsaId, String namn) {
         super(hsaId);
         this.storedActivities = new HashMap<>();
         this.hsaId = hsaId;
         this.namn = namn;
     }
 
-    public static IbUser of(final String hsaId, final String namn) {
-        return new IbUser(hsaId, namn);
+    public static IntygsbestallningUser of(final String hsaId, final String namn) {
+        return new IntygsbestallningUser(hsaId, namn);
     }
 
     /**
-     * Copy-constructor that takes a populated {@link IntygUser} and the relayState (eg FMU or BP).
+     * Copy-constructor that takes a populated {@link IntygUser}.
      *
      * @param intygUser
      *            User principal, typically constructed in the
      *            {@link org.springframework.security.saml.userdetails.SAMLUserDetailsService}
      *            implementor.
      */
-    public IbUser(IntygUser intygUser) {
+    public IntygsbestallningUser(IntygUser intygUser) {
         super(intygUser.getHsaId());
         this.personId = intygUser.getPersonId();
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2018 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,11 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.web.pdl;
+package se.inera.intyg.intygsbestallning.web.auth.exceptions;
 
-import se.inera.intyg.infra.logmessages.PdlLogMessage;
-import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
+import org.springframework.security.core.AuthenticationException;
 
-public interface PdlLogMessageFactory {
-    PdlLogMessage buildLogMessage(LogMessage logMessage, IntygsbestallningUser ibUser);
+/**
+ * @author marced
+ */
+public class MissingIBSystemRoleException extends AuthenticationException {
+
+    private static final long serialVersionUID = 8343532271116838815L;
+
+    public MissingIBSystemRoleException(String hsaId) {
+        super("User with HSA-ID " + hsaId + " does not have systemRole FMU-VARDADMIN or FMU-SAMORDNARE");
+    }
 }

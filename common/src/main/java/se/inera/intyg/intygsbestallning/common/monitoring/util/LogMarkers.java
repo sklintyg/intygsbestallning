@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2018 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,11 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.web.pdl;
+package se.inera.intyg.intygsbestallning.common.monitoring.util;
 
-import se.inera.intyg.infra.logmessages.PdlLogMessage;
-import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
-public interface PdlLogMessageFactory {
-    PdlLogMessage buildLogMessage(LogMessage logMessage, IntygsbestallningUser ibUser);
+public final class LogMarkers {
+
+    public static final Marker VALIDATION = MarkerFactory.getMarker("Validation");
+    public static final Marker MONITORING = MarkerFactory.getMarker("Monitoring");
+    public static final Marker HSA = MarkerFactory.getMarker("HSA");
+
+
+    // constructors
+
+    private LogMarkers() {
+    }
+
 }

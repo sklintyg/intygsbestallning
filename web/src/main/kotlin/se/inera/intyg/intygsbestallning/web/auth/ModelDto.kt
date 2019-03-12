@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.web.auth;
+package se.inera.intyg.intygsbestallning.web.auth
 
 interface IbSelectableHsaEntity {
   val id: String
@@ -28,7 +28,6 @@ interface IbSelectableHsaEntity {
 data class IbVardgivare(
     override val id: String,
     override val name: String,
-    val orgNr: String,
     val isSamordnare: Boolean
 ) : IbSelectableHsaEntity {
 
@@ -42,7 +41,8 @@ data class IbVardgivare(
 data class IbVardenhet(
     override val id: String,
     override val name: String,
-    val parent: IbVardgivare
+    val parent: IbVardgivare,
+    val orgNrVargivare: String
 ) : IbSelectableHsaEntity {
 
   override fun type() : IbSelectableHsaEntityType {
