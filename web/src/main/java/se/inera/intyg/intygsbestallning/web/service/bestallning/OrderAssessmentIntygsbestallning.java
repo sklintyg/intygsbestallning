@@ -24,8 +24,11 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
     private CreateBestallningService createBestallningService;
     private IntegrationProperties integrationProperties;
 
-    public OrderAssessmentIntygsbestallning(CreateBestallningService createBestallningService) {
+    public OrderAssessmentIntygsbestallning(
+            CreateBestallningService createBestallningService,
+            IntegrationProperties integrationProperties) {
         this.createBestallningService = createBestallningService;
+        this.integrationProperties = integrationProperties;
     }
 
     @Override
@@ -36,6 +39,9 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
         try {
             var createBestallningRequest = fromType(orderAssessmentType);
             createBestallningService.create(createBestallningRequest);
+            OrderAssessmentResponseType response = new OrderAssessmentResponseType();
+            response.setAssessmentId(RivtaUtil.anII(integrationProperties.getSourceSystemHsaId(), ""));
+            response.setResult(RivtaUtil.aResultTypeOK());
         } catch (final Exception e) {
             LOG.error("Error in orderAssessment", e);
             OrderAssessmentResponseType response = new OrderAssessmentResponseType();
