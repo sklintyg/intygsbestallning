@@ -6,15 +6,15 @@ import { v4 } from 'node-uuid';
 const fakeDatabase = {
   bestallningar: [{
     id: v4(),
-    text: 'hey',
+    name: 'hey',
     completed: true,
   }, {
     id: v4(),
-    text: 'ho',
+    name: 'ho',
     completed: true,
   }, {
     id: v4(),
-    text: 'let’s go',
+    name: 'let’s go',
     completed: false,
   }],
 };
