@@ -13,7 +13,6 @@ import se.inera.intyg.intygsbestallning.integration.pu.PuConfig;
 @EnableConfigurationProperties
 @ComponentScan(basePackages = "se.inera.intyg.intygsbestallning.integration")
 @Import({ClientIntegrationConfig.class,
-        IntegrationProperties.class,
         CacheConfigurationFromInfra.class,
         HsaConfig.class,
         PuConfig.class})
