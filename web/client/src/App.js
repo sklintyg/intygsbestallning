@@ -17,7 +17,7 @@ const TestLinks = () => (
       start
     </NavLink> | <NavLink to="/valj-enhet">
       valj-enhet
-    </NavLink> | <NavLink to="/bestallningar">
+    </NavLink> | <NavLink to="/bestallningar/all">
       bestallningar
     </NavLink>
   </nav>
@@ -32,7 +32,8 @@ const App = () => {
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route replace path="/valj-enhet" component={ValjEnhetPage} />
-            <Route replace path="/bestallningar/(:filter)" component={BestallningarPage} />
+            <Route replace path="/bestallningar" component={BestallningarWelcomePage} />
+            <Route replace path="/bestallningar/:filter" component={BestallningarPage} />
             <Route path="/bestallning/:id" component={BestallningPage} />
           </Switch>
         </Fragment>

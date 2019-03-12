@@ -4,9 +4,9 @@ import createBestallningarList, * as fromList from './createBestallningarList';
 import user from "./user";
 
 const listBestallningarByFilter = combineReducers({
-  activeBestallningar: createBestallningarList('active'),
-  completedBestallningar: createBestallningarList('completed'),
-  rejectedBestallningar: createBestallningarList('rejected'),
+  active: createBestallningarList('active'),
+  completed: createBestallningarList('completed'),
+  rejected: createBestallningarList('rejected'),
 });
 
 const appReducer = combineReducers({
@@ -25,12 +25,12 @@ const reducers = (state, action) => {
 export default reducers;
 
 export const getVisibleBestallningar = (state, filter) => {
-  const ids = fromList.getIds(state.listByFilter[filter]);
+  const ids = fromList.getIds(state.listBestallningarByFilter[filter]);
   return ids.map(id => fromById.getBestallning(state.byId, id));
 };
 
 export const getIsFetching = (state, filter) =>
-  fromList.getIsFetching(state.listByFilter[filter]);
+  fromList.getIsFetching(state.listBestallningarByFilter[filter]);
 
 export const getErrorMessage = (state, filter) =>
-  fromList.getErrorMessage(state.listByFilter[filter]);
+  fromList.getErrorMessage(state.listBestallningarByFilter[filter]);
