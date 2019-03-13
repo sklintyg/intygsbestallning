@@ -5,6 +5,7 @@ import ValjEnhetPage from "./pages/ValjEnhetPage";
 import BestallningarIndexPage from "./pages/BestallningarIndexPage";
 import BestallningarPage from "./pages/BestallningarPage";
 import BestallningPage from "./pages/BestallningPage";
+import Header from "./components/header";
 import {getUser} from "./store/actions/UserActions";
 import {connect} from "react-redux";
 import {compose, lifecycle} from "recompose";
