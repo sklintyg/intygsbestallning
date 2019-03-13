@@ -26,6 +26,7 @@ dependencies {
   // External dependencies
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-data-redis")
+  implementation("org.springframework.boot:spring-boot-starter-actuator")
 
   implementation("jakarta.jws:jakarta.jws-api:1.1.1")
   implementation("javax.xml.ws:jaxws-api:${Dependencies.jaxVersion}")
@@ -34,11 +35,9 @@ dependencies {
 
   implementation("org.springframework.security.extensions:spring-security-saml2-core:1.0.3.RELEASE")
 
-  compile("org.springframework.boot:spring-boot-starter-actuator")
-  //compile("org.springframework.boot:spring-boot-starter-actuator:${Dependencies.springBootVersion}")
 
   // Test dependencies
-  testImplementation(kotlin("test", Dependencies.kotlinVersion))
+  testImplementation(kotlin("test"))
   testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

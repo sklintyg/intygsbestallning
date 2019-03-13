@@ -57,7 +57,7 @@ subprojects {
     compile("com.sun.xml.bind:jaxb-core:${Dependencies.jaxVersion}")
     compile("com.sun.xml.bind:jaxb-impl:${Dependencies.jaxVersion}")
 
-    implementation(kotlin("stdlib-jdk8", Dependencies.kotlinVersion))
+    implementation(kotlin("stdlib-jdk8"))
 
     implementation("org.springframework:spring-context")
 
