@@ -8,9 +8,9 @@ import se.inera.intyg.intygsbestallning.build.Config.TestDependencies
 
 plugins {
   kotlin("jvm") version "1.3.21"
+  maven
+  `maven-publish`
 
-  id("org.gradle.maven")
-  id("org.gradle.maven-publish")
   id("se.inera.intyg.plugin.common") version "2.0.3" apply false
   id("io.spring.dependency-management") version "1.0.7.RELEASE"
 }
@@ -43,7 +43,9 @@ subprojects {
   dependencyManagement {
     imports {
       mavenBom("org.springframework:spring-framework-bom:${Dependencies.springVersion}")
-      mavenBom("org.springframework.boot:spring-boot-dependencies:${Dependencies.springBootVersion}")
+      mavenBom("org.springframework.boot:spring-boot-dependencies:${Dependencies.springBootVersion}") {
+        bomProperty("kotlin.version", Dependencies.kotlinVersion)
+      }
       mavenBom("org.junit:junit-bom:${TestDependencies.junitVersion}")
     }
   }
@@ -55,7 +57,7 @@ subprojects {
     compile("com.sun.xml.bind:jaxb-core:${Dependencies.jaxVersion}")
     compile("com.sun.xml.bind:jaxb-impl:${Dependencies.jaxVersion}")
 
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib-jdk8", Dependencies.kotlinVersion))
 
     implementation("org.springframework:spring-context")
 

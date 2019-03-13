@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
 <mail>
-  <typ>NY_INTYGSBESTALLNING</typ>
+  <intyg>AF00213</intyg>
+  <typ>NY_INTYGSBESTALLNING_PAMINNELSE</typ>
   <arenderad>
     <arende>Förfrågan om Arbetsförmedlingens medicinska utlåtande</arende>
   </arenderad>

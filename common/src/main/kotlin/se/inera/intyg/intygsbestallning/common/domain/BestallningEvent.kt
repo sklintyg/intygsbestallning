@@ -6,5 +6,6 @@ enum class BestallningEvent {
   AVVISA,
   AVVISA_RADERA,
   ACCEPTERA,
-  KLARMARKERA
+  KLARMARKERA,
+  VIDAREBEFORDRAD
 }

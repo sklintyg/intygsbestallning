@@ -5,7 +5,7 @@ dependencies {
     implementation(project(":common"))
 
     // External dependencies
-    implementation(kotlin("reflect"))
+    implementation(kotlin("reflect", Dependencies.kotlinVersion))
 
     implementation("org.liquibase:liquibase-core:${Dependencies.liquibaseVersion}")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")

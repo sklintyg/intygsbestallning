@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 
 @JacksonXmlRootElement(localName = "mail")
 data class MailContent(
+   @JsonProperty(value = "intyg") val intyg: String,
    @JsonProperty(value = "typ") val typ: String,
    @JsonProperty(value = "arenderad") val arendeRad: ArendeRad,
    @JsonProperty(value = "halsning") val halsning: Halsning,

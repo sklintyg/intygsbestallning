@@ -38,7 +38,7 @@ dependencies {
   //compile("org.springframework.boot:spring-boot-starter-actuator:${Dependencies.springBootVersion}")
 
   // Test dependencies
-  testImplementation(kotlin("test"))
+  testImplementation(kotlin("test", Dependencies.kotlinVersion))
   testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

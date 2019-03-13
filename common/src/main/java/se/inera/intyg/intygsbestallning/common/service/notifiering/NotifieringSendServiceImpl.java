@@ -42,13 +42,13 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
 
     @Override
     public void nyBestallning(Bestallning bestallning) {
-        var nyBestallning = NotifieringTyp.NY_INTYGSBESTALLNING;
+        var nyBestallning = NotifieringTyp.NY_BESTALLNING;
         var mailContent = mailTextService.getMailContent(nyBestallning);
     }
 
     @Override
     public void vidarebefordrad(Bestallning bestallning) {
-        var vidarebefordrad = NotifieringTyp.VIDAREBEFORDRAD_INTYGSBESTALLNING;
+        var vidarebefordrad = NotifieringTyp.NY_BESTALLNING;
         var mailContent = mailTextService.getMailContent(vidarebefordrad);
     }
 

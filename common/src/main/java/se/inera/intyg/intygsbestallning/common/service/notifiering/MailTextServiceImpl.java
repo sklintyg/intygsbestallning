@@ -9,7 +9,6 @@ import com.google.common.collect.MoreCollectors;
 import io.vavr.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -30,11 +29,9 @@ public class MailTextServiceImpl implements MailTextService {
     private List<MailContent> mailContentList = newArrayList();
 
     private MailProperties mailProperties;
-    private ResourceLoader resourceLoader;
 
-    public MailTextServiceImpl(MailProperties mailProperties, ResourceLoader resourceLoader) {
+    public MailTextServiceImpl(MailProperties mailProperties) {
         this.mailProperties = mailProperties;
-        this.resourceLoader = resourceLoader;
     }
 
     @Override
@@ -51,10 +48,10 @@ public class MailTextServiceImpl implements MailTextService {
     }
 
     @PostConstruct
-    private void initTexts() throws IOException {
+    private void initTexts() {
         LOG.info("Starting: " + ACTION);
 
-        var result = Try.run(() -> loadResources(mailProperties.getTextResourcePath()));
+        var result = Try.run(this::loadResources);
         if (result.isFailure()) {
             LOG.error("Failure: " + ACTION);
             result.getCause().printStackTrace();
@@ -63,7 +60,7 @@ public class MailTextServiceImpl implements MailTextService {
         }
     }
 
-    private void loadResources(String pattern) throws IOException {
+    private void loadResources() throws IOException {
         var xmlMapper = new XmlMapper();
         var filePaths = Files.walk(Paths.get(mailProperties.getTextResourcePath()))
                 .filter(Files::isRegularFile)
@@ -77,15 +74,4 @@ public class MailTextServiceImpl implements MailTextService {
         }
         mailContentList.addAll(tempList);
     }
-
-//    private String convertToXml(File file) throws FileNotFoundException {
-//        //filename is filepath string
-//        var bufferedReader = new BufferedReader(new FileReader(file));
-//        String line;
-//        StringBuilder sb = new StringBuilder();
-//
-//        while((line=br.readLine())!= null){
-//            sb.append(line.trim());
-//        }
-//    }
 }
