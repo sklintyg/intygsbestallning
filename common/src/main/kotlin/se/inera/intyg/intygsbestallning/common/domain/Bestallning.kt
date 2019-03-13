@@ -4,6 +4,7 @@ import java.time.LocalDateTime
 
 data class Bestallning(
    val id: Long? = null,
+   val intygTyp: IntygTyp,
    val ankomstDatum: LocalDateTime,
    val avslutDatum: LocalDateTime? = null,
    var status: BestallningStatus? = BestallningStatus.UNDEFINED,
@@ -12,12 +13,13 @@ data class Bestallning(
    var notifieringar: List<Notifiering>? = mutableListOf()) {
 
   companion object Factory {
-    fun newBestallning(hsaId: String, vardenhet: Vardenhet): Bestallning {
+    fun newBestallning(hsaId: String, intygTyp: IntygTyp, vardenhet: Vardenhet): Bestallning {
       return Bestallning(
+         intygTyp = intygTyp,
          ankomstDatum = LocalDateTime.now(),
          vardenhet = vardenhet,
          handelser = listOf(Handelse.skapa()),
-         notifieringar = listOf(Notifiering.inKommenBestallning(hsaId)))
+         notifieringar = listOf(Notifiering.nyBestallning(hsaId)))
     }
   }
 }

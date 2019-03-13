@@ -26,7 +26,7 @@ dependencies {
   // External dependencies
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-data-redis")
-  implementation("org.springframework.boot:spring-boot-starter-actuator")
+//  implementation("org.springframework.boot:spring-boot-starter-actuator")
 
   implementation("jakarta.jws:jakarta.jws-api:1.1.1")
   implementation("javax.xml.ws:jaxws-api:${Dependencies.jaxVersion}")

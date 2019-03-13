@@ -2,6 +2,7 @@ package se.inera.intyg.intygsbestallning.persistence.entity
 
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus
+import se.inera.intyg.intygsbestallning.common.domain.IntygTyp
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -13,6 +14,10 @@ class BestallningEntity private constructor(builder: Builder) {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "ID", nullable = false)
   val id: Long? = null
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "INTYG_TYP", nullable = false)
+  val intygTyp: IntygTyp
 
   @Column(name = "ANKOMST_DATUM", nullable = false)
   val ankomstDatum: LocalDateTime
@@ -37,6 +42,7 @@ class BestallningEntity private constructor(builder: Builder) {
   val notifieringar: List<NotifieringEntity>
 
   init {
+    this.intygTyp = builder.intygTyp ?: throw IllegalArgumentException("intygTyp may not be null")
     this.ankomstDatum = builder.ankomstDatum ?: throw IllegalArgumentException("ankomstDatum may not be null")
     this.avslutDatum = builder.avslutDatum ?: throw IllegalArgumentException("avslutDatum may not be null")
     this.status = builder.status ?: throw IllegalArgumentException("status may not be null")
@@ -46,6 +52,7 @@ class BestallningEntity private constructor(builder: Builder) {
   }
 
   class Builder {
+    var intygTyp: IntygTyp? = null
     var ankomstDatum: LocalDateTime? = null
     var avslutDatum: LocalDateTime? = null
     var status: BestallningStatus? = null
@@ -53,6 +60,7 @@ class BestallningEntity private constructor(builder: Builder) {
     var handelser: List<HandelseEntity> = mutableListOf()
     var notifieringar: List<NotifieringEntity> = mutableListOf()
 
+    fun intygTyp(intygTyp: IntygTyp) = apply { this.intygTyp = intygTyp }
     fun ankomstDatum(ankomstDatum: LocalDateTime) = apply { this.ankomstDatum = ankomstDatum }
     fun avslutDatum(avslutDatum: LocalDateTime?) = apply { this.avslutDatum = avslutDatum }
     fun status(status: BestallningStatus?) = apply { this.status = status }
@@ -67,6 +75,7 @@ class BestallningEntity private constructor(builder: Builder) {
     fun toDomain(bestallningEntity: BestallningEntity): Bestallning {
       return Bestallning(
          id = bestallningEntity.id!!,
+         intygTyp = bestallningEntity.intygTyp,
          ankomstDatum = bestallningEntity.ankomstDatum,
          avslutDatum = bestallningEntity.avslutDatum,
          status = bestallningEntity.status,
@@ -76,9 +85,10 @@ class BestallningEntity private constructor(builder: Builder) {
 
     fun toEntity(bestallning: Bestallning): BestallningEntity {
       return BestallningEntity.Builder()
-         .status(bestallning.status)
+         .intygTyp(bestallning.intygTyp)
          .ankomstDatum(bestallning.ankomstDatum)
          .avslutDatum(bestallning.avslutDatum)
+         .status(bestallning.status)
          .handelser(bestallning.handelser!!.map { HandelseEntity.toEntity(it) })
          .notifieringar(bestallning.notifieringar!!.map { NotifieringEntity.toEntity(it) })
          .build()

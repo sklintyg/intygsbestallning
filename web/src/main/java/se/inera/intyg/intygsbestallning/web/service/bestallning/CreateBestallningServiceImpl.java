@@ -36,7 +36,11 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
         //TODO: Lookup HSAID
 
         var hsaId = "hsaId";
-        var bestallning = Bestallning.Factory.newBestallning(hsaId, new Vardenhet(null, "", null, null));
+        var bestallning = Bestallning.Factory.newBestallning(
+                hsaId,
+                createBestallningRequest.getIntygTyp(),
+                new Vardenhet(null, "", null, null));
+
         bestallningStatusResolver.setStatus(bestallning);
 
         final Bestallning savedBestallning = bestallningPersistenceService.saveNewBestallning(bestallning);

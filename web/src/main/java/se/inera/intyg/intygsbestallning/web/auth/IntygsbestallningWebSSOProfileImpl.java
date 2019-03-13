@@ -27,9 +27,6 @@ import org.springframework.security.saml.context.SAMLMessageContext;
 import org.springframework.security.saml.websso.WebSSOProfileOptions;
 import se.inera.intyg.infra.security.common.model.AuthConstants;
 
-/**
- * Created by eriklupander on 2016-05-30.
- */
 public class IntygsbestallningWebSSOProfileImpl extends org.springframework.security.saml.websso.WebSSOProfileImpl {
     /**
      * Returns AuthnRequest SAML message to be used to demand authentication from an IDP described using

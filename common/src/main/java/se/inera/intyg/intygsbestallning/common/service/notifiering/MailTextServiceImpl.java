@@ -15,7 +15,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import se.inera.intyg.intygsbestallning.common.domain.IntygTyp;
 import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
 import se.inera.intyg.intygsbestallning.common.mail.MailContent;
 import se.inera.intyg.intygsbestallning.common.property.MailProperties;
@@ -35,14 +38,14 @@ public class MailTextServiceImpl implements MailTextService {
     }
 
     @Override
-    public MailContent getMailContent(NotifieringTyp typ) {
+    public MailContent getMailContent(NotifieringTyp typ, IntygTyp intyg) {
 
         if (typ == null) {
             throw new IllegalArgumentException("typ may not be null");
         }
 
         return mailContentList.stream()
-                .filter(content -> content.getTyp().equals(typ.name()))
+                .filter(content -> content.getTyp().equals(typ.name()) && content.getIntyg().equals(intyg.name()))
                 .collect(MoreCollectors.toOptional())
                 .orElseThrow(() -> new IllegalArgumentException("Mail Content for type: " + typ + "does not exist"));
     }
