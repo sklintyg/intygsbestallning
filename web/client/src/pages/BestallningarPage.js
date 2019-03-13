@@ -1,8 +1,8 @@
 import React from "react";
 
-import BestallningarFilter from "../components/Bestallningar/BestallningarFilter";
-import BestallningarContainer from "../components/Bestallningar/BestallningarContainer";
-import Navbar from "../components/Navbar/Navbar"
+import BestallningarFilter from "../components/bestallningar/BestallningarFilter";
+import BestallningarContainer from "../components/bestallningar/BestallningarContainer";
+import Navbar from "../components/navbar/Navbar"
 
 const BestallningarPage = ({ match }) => (
   <div>
