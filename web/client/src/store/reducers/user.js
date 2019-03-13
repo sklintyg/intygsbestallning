@@ -1,4 +1,11 @@
-import {GET_USER, GET_USER_FAILURE, GET_USER_SUCCESS} from "../actions/UserActions";
+import {
+  GET_USER,
+  GET_USER_FAILURE,
+  GET_USER_SUCCESS,
+  SET_ENHET,
+  SET_ENHET_FAILURE,
+  SET_ENHET_SUCCESS
+} from "../actions/UserActions";
 
 const INITIAL_STATE = {
   isLoading: false,
@@ -22,7 +29,20 @@ export default (state = INITIAL_STATE, action) => {
     }
   case GET_USER_FAILURE:
     return {...state, isLoading: false}
-
+  case SET_ENHET:
+    return {...state, isLoading: true}
+  case SET_ENHET_SUCCESS:
+    return {...state,
+      isLoading: false,
+      isAuthenticated: true,
+      namn: action.payload.namn,
+      userRole: action.payload.currentRole.desc,
+      valdVardgivare: action.payload.valdVardgivare,
+      valdVardenhet: action.payload.valdVardenhet,
+      vardgivare: action.payload.vardgivare
+    }
+  case SET_ENHET_FAILURE:
+    return {...state, isLoading: false}
   default:
     return state;
   }

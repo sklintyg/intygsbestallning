@@ -7,7 +7,7 @@
       "desc": "Läkare"
     },
     "authenticationScheme": "urn:inera:webcert:siths:fake",
-    "valdVardenhet": {
+    "valdVardenhetX": {
       "id": "TSTNMT2321000156-1077",
       "namn": "NMT vg3 ve1"
     },

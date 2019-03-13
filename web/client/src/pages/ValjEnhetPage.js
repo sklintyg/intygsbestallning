@@ -1,9 +1,11 @@
 import React from 'react';
+import ValjEnhet from "../components/valjenhet";
 
 const ValjEnhetPage = () => {
     return (
         <div>
-            Välj enhet
+          Hej hej:
+            <ValjEnhet/>
         </div>
     )
 };

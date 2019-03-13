@@ -1,18 +1,19 @@
 import React from 'react';
-import { Route, Redirect} from 'react-router-dom';
-import { connect } from 'react-redux'
+import {Redirect, Route} from 'react-router-dom';
+import {connect} from 'react-redux'
 
 const mapStateToProps = (state) => {
   return {
-    authorized: state.user.authorized,
-    loading: state.user.loading
+    isAuthenticated: state.user.isAuthenticated,
+    isLoading: state.user.isLoading,
+    hasCurrentUnit: !!state.user.valdVardenhet
   };
 };
 
-export const SecuredRouteComponent = (props) => {
-  const {component: Component, path, authorized, loading} = props;
+const SecuredRoute = (props) => {
+  const {component: Component, path, isAuthenticated, isLoading, hasCurrentUnit, allowMissingUnit} = props;
 
-  if(!authorized && loading){
+  if(!isAuthenticated && isLoading){
     return (
       <div style={{textAlign:'center',marginTop:'1rem'}}>
         Loading...
@@ -20,20 +21,16 @@ export const SecuredRouteComponent = (props) => {
 }
 
   return (
-    <Route path={path} render={() => {
-      if (!authorized) {
-        return <Redirect to='/login' />;
+    <Route path={path} render={(props) => {
+      if (!isAuthenticated) {
+        return <Redirect to='/' />;
+      }
+      if (!hasCurrentUnit && !allowMissingUnit) {
+        return <Redirect to='/valj-enhet' />;
       }
 
-      return (
-        <div>
-          <div style={{margin: "18px"}}>
-            <Component />
-          </div>
-        </div>
-      )
-    }} />
-  );
+      return (<Component {...props}/>)
+    }} />);
 }
 
-export default connect(mapStateToProps)(SecuredRouteComponent);
+export default connect(mapStateToProps)(SecuredRoute);

@@ -1,4 +1,5 @@
-import { v4 } from 'node-uuid';
+import {v4} from 'node-uuid';
+import anvandare from "./anvandare";
 
 // This is a fake in-memory implementation of something
 // that would be implemented by calling a REST server.
@@ -17,6 +18,7 @@ const fakeDatabase = {
     name: 'let’s go',
     completed: false,
   }],
+  anvandare: anvandare
 };
 
 const delay = (ms) =>
@@ -35,3 +37,21 @@ export const fetchBestallningar = (filter) =>
         throw new Error(`Unknown filter: ${filter}`);
     }
   });
+
+// should actually return  return makeServerRequest('anvandare')
+export const fetchAnvandare = () =>
+  delay(500).then(() => {
+      return fakeDatabase.anvandare;
+
+    });
+// should actually return  return makeServerRequest('anvandare/andra-enhet')
+export const changeEnhet = (hsaId) =>
+  delay(500).then(() => {
+    fakeDatabase.anvandare.valdVardenhet = {id:'99', namn:'Nya enheten'};
+    return fakeDatabase.anvandare;
+
+  });
+
+
+
+
