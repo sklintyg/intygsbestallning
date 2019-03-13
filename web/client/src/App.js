@@ -13,8 +13,6 @@ import SecuredRoute from "./components/auth/securedRoute/SecuredRoute";
 import UnsecuredRoute from "./components/auth/unsecuredRoute/UnsecuredRoute";
 import {history} from "./store/configureStore";
 import {ConnectedRouter} from "connected-react-router";
-import Header from "./components/header";
-
 
 // TEST
 const TestLinks = () => (
