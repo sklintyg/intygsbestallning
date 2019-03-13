@@ -1,12 +1,10 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
-import './BestallningPage.css'
 
-const BestallningPage = ({match}) => {
+const BestallningPage = ({match, history}) => {
+    console.log(history);
     return (
-        
-        <div className='colorize'>
-            <div><Link to="/bestallningar">Tillbaka</Link></div>
+        <div>
+            <div onClick={ history.goBack }>Tillbaka</div>
             Beställning {match.params.id}
         </div>
     )
