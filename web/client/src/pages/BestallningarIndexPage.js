@@ -1,11 +1,12 @@
 import React from 'react';
-import Navbar from '../components/navbar/Navbar'
+import BestallningFilterBar from '../components/bestallningFilterBar/BestallningFilterBar'
+import BodyCenterWrapper from '../components/layout/body';
 
-const BestallningarIndexPage = ({match}) => (
-  <div>
-    <Navbar/>
+const BestallningarIndexPage = () => (
+  <BodyCenterWrapper>
+    <BestallningFilterBar/>
     Hej! Beställningar och pie chart etc. Klicka på ett filter ovan.
-  </div>
+  </BodyCenterWrapper>
 );
 
 export default BestallningarIndexPage;

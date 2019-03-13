@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as actions from '../../store/actions/bestallningar';
 import { getVisibleBestallningar, getErrorMessage, getIsFetching } from '../../store/reducers/bestallningar';
-import BestallningarList from './BestallningarList';
-import FetchError from '../FetchError';
+import BestallningList from './BestallningList';
+import FetchError from './FetchError';
 
-class BestallningarContainer extends Component {
+class BestallningarListContainer extends Component {
 
   componentDidMount() {
     this.fetchData();
@@ -40,12 +40,12 @@ class BestallningarContainer extends Component {
     }
 
     return (
-      <BestallningarList bestallningar={bestallningar}></BestallningarList>
+      <BestallningList bestallningar={bestallningar}></BestallningList>
     )
   }
 };
 
-BestallningarContainer.propTypes = {
+BestallningarListContainer.propTypes = {
   filter: PropTypes.string,
   errorMessage: PropTypes.string,
   bestallningar: PropTypes.array,
@@ -64,9 +64,9 @@ const mapStateToProps = (state, { match }) => {
   };
 };
 
-BestallningarContainer = withRouter(connect(
+BestallningarListContainer = withRouter(connect(
   mapStateToProps,
   actions,
-)(BestallningarContainer));
+)(BestallningarListContainer));
 
-export default BestallningarContainer;
+export default BestallningarListContainer;

@@ -1,6 +1,6 @@
 import { normalize } from 'normalizr';
 import * as schema from './schema';
-import * as api from '../../api/bestallningarList';
+import * as api from '../../api/bestallningList';
 import { getIsFetching } from '../reducers/bestallningar';
 
 export const fetchBestallningar = (filter) => (dispatch, getState) => {

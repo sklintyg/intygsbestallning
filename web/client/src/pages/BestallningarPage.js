@@ -1,16 +1,16 @@
 import React from "react";
 
-import BestallningarFilter from "../components/bestallningar/BestallningarFilter";
-import BestallningarContainer from "../components/bestallningar/BestallningarContainer";
-import Navbar from "../components/navbar/Navbar"
+import BestallningFilter from "../components/bestallningList/BestallningFilter";
+import BestallningListContainer from "../components/bestallningList/BestallningListContainer";
+import BestallningFilterBar from '../components/bestallningFilterBar/BestallningFilterBar'
+import BodyCenterWrapper from '../components/layout/body';
 
-const BestallningarPage = ({ match }) => (
-  <div>
-    <Navbar />
-    <div>F:{match.params.filter}</div>
-    <BestallningarFilter />
-    <BestallningarContainer />
-  </div>
+const BestallningarPage = () => (
+  <BodyCenterWrapper>
+    <BestallningFilterBar />
+    <BestallningFilter />
+    <BestallningListContainer />
+  </BodyCenterWrapper>
 );
 
 export default BestallningarPage;

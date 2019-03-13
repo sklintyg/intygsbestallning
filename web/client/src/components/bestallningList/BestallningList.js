@@ -1,11 +1,25 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import styled from 'styled-components'
+
+const Table = styled.table`
+
+  padding-top: 10px;
+
+  & th {
+    text-align: left;
+  }
+
+  & td {
+    background-color: #eee;
+    padding: 5px;
+  }
+`;
 
 const BestallningarList = ({ bestallningar }) => {
   return (
     <div>
-      <table>
+      <Table>
         <thead>
           <tr>
             <th>ID</th>
@@ -32,18 +46,9 @@ const BestallningarList = ({ bestallningar }) => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </div>
   );
-};
-
-BestallningarList.propTypes = {
-  bestallningar: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired
-    })
-  )
 };
 
 export default BestallningarList;
