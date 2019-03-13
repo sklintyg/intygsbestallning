@@ -44,7 +44,7 @@ class BestallningEntity private constructor(builder: Builder) {
   init {
     this.intygTyp = builder.intygTyp ?: throw IllegalArgumentException("intygTyp may not be null")
     this.ankomstDatum = builder.ankomstDatum ?: throw IllegalArgumentException("ankomstDatum may not be null")
-    this.avslutDatum = builder.avslutDatum ?: throw IllegalArgumentException("avslutDatum may not be null")
+    this.avslutDatum = builder.avslutDatum
     this.status = builder.status ?: throw IllegalArgumentException("status may not be null")
     this.vardenhet = builder.vardenhet ?: throw IllegalArgumentException("vardenhet may not be null")
     this.handelser = builder.handelser
@@ -89,6 +89,7 @@ class BestallningEntity private constructor(builder: Builder) {
          .ankomstDatum(bestallning.ankomstDatum)
          .avslutDatum(bestallning.avslutDatum)
          .status(bestallning.status)
+         .vardenhet(VardenhetEntity.toEntity(bestallning.vardenhet))
          .handelser(bestallning.handelser!!.map { HandelseEntity.toEntity(it) })
          .notifieringar(bestallning.notifieringar!!.map { NotifieringEntity.toEntity(it) })
          .build()
