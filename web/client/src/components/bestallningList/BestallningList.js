@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import styled from 'styled-components'
 
 const Table = styled.table`
-
   padding-top: 10px;
 
   & th {
@@ -16,9 +15,29 @@ const Table = styled.table`
   }
 `;
 
-const BestallningarList = ({ bestallningar }) => {
+const ResultLine = styled.div`
+  padding-top: 20px;
+`;
+
+const BestallningarList = ({ bestallningList, filter }) => {
+
+  if(bestallningList.bestallningList.length === 0){
+    return (
+      <ResultLine>Inget resultat hittades för den valda filtreringen. Överväg att ändra filtreringen för att utöka resultatet.</ResultLine>
+    )
+  }
+
+  let filterText = {
+    active: 'aktiva',
+    completed: 'klarmarkerade',
+    rejcted: 'avvisade',
+  }
+
+  filterText = filterText[filter]
+
   return (
     <div>
+      <ResultLine>Sökresultat: {bestallningList.bestallningList.length} av {bestallningList.totalCount} beställningar</ResultLine>
       <Table>
         <thead>
           <tr>
@@ -32,7 +51,7 @@ const BestallningarList = ({ bestallningar }) => {
           </tr>
         </thead>
         <tbody>
-          {bestallningar.map(bestallning => (
+          {bestallningList.bestallningList.map(bestallning => (
             <tr key={bestallning.id}>
               <td>{bestallning.id}</td>
               <td>{bestallning.intygName}</td>

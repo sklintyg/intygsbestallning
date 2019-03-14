@@ -7,11 +7,20 @@ export const fetchBestallningar = (filter) =>
   delay(500).then(() => {
     switch (filter) {
       case 'active':
-        return fakeDatabase.filter(t => t.status === 'ACCEPTERAD' || t.status === 'OLAST' || t.status === 'LAST');
+        return {
+          bestallningList: fakeDatabase.bestallningList.filter(t => t.status === 'ACCEPTERAD' || t.status === 'OLAST' || t.status === 'LAST'),
+          totalCount: fakeDatabase.bestallningList.length
+        }
       case 'completed':
-        return fakeDatabase.filter(t => t.status === 'KLARMARKERAD');
+        return {
+          bestallningList: fakeDatabase.bestallningList.filter(t => t.status === 'KLARMARKERAD'),
+          totalCount: fakeDatabase.bestallningList.length
+        }
       case 'rejected':
-        return fakeDatabase.filter(t => t.status === 'AVVISAD' || t.status === 'AVVISAD_RADERAD');
+        return {
+          bestallningList: fakeDatabase.bestallningList.filter(t => t.status === 'AVVISAD' || t.status === 'AVVISAD_RADERAD'),
+          totalCount: fakeDatabase.bestallningList.length
+        }
       default:
         throw new Error(`Unknown filter: ${filter}`);
     }

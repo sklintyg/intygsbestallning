@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as actions from '../../store/actions/bestallningar';
-import { getVisibleBestallningar, getErrorMessage, getIsFetching } from '../../store/reducers/bestallningar';
+import { getVisibleBestallningList, getErrorMessage, getIsFetching } from '../../store/reducers/bestallningList';
 import BestallningList from './BestallningList';
 import FetchError from './FetchError';
 
@@ -26,11 +26,11 @@ class BestallningarListContainer extends Component {
 
   render() {
 
-    const { isFetching, errorMessage, bestallningar } = this.props;
-    if (isFetching && !bestallningar.length) {
+    const { isFetching, errorMessage, bestallningList } = this.props;
+    if (isFetching && !bestallningList.length) {
       return <p>Loading...</p>;
     }
-    if (errorMessage && !bestallningar.length) {
+    if (errorMessage && !bestallningList.length) {
       return (
         <FetchError
           message={errorMessage}
@@ -40,7 +40,7 @@ class BestallningarListContainer extends Component {
     }
 
     return (
-      <BestallningList bestallningar={bestallningar}></BestallningList>
+      <BestallningList bestallningList={bestallningList} filter={this.props.filter}></BestallningList>
     )
   }
 };
@@ -48,18 +48,18 @@ class BestallningarListContainer extends Component {
 BestallningarListContainer.propTypes = {
   filter: PropTypes.string,
   errorMessage: PropTypes.string,
-  bestallningar: PropTypes.array,
+  bestallningList: PropTypes.object,
   isFetching: PropTypes.bool,
   fetchBestallningar: PropTypes.func,
 };
 
 const mapStateToProps = (state, { match }) => {
   console.log(state, match.params.filter);
-  const filter = match.params.filter || 'all';
+  const filter = match.params.filter || 'active';
   return {
     isFetching: getIsFetching(state, filter),
     errorMessage: getErrorMessage(state, filter),
-    bestallningar: getVisibleBestallningar(state, filter),
+    bestallningList: getVisibleBestallningList(state, filter),
     filter,
   };
 };
