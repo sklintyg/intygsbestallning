@@ -2,11 +2,13 @@ import { combineReducers } from 'redux'
 import bestallningar from './bestallningar';
 import user from "./user";
 import { connectRouter } from 'connected-react-router'
+import bestallning from './bestallning';
 
 const appReducer = (history) => combineReducers({
   bestallningar,
   user,
-  router: connectRouter(history)
+  router: connectRouter(history),
+  bestallning,
 });
 
 

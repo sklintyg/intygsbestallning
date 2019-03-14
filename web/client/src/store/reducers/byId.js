@@ -1,5 +1,5 @@
 const byId = (state = {}, action) => {
-  if (action.response) {
+  if (action.response && action.response.entities && action.response.entities.bestallningar) {
     return {
       ...state,
       ...action.response.entities.bestallningar,

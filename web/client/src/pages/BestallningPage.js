@@ -1,13 +1,12 @@
-import React from 'react';
+import React from "react";
 
-const BestallningPage = ({match, history}) => {
-    console.log(history);
-    return (
-        <div>
-            <div onClick={ history.goBack }>Tillbaka</div>
-            Beställning {match.params.id}
-        </div>
-    )
-};
+import BodyCenterWrapper from '../components/layout/body';
+import BestallningContainer from "../components/bestallning/bestallningContainer";
+
+const BestallningPage = () => (
+    <BodyCenterWrapper>
+        <BestallningContainer />
+    </BodyCenterWrapper>
+);
 
 export default BestallningPage;
