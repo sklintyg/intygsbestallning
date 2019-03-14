@@ -21,15 +21,17 @@ export const changeEnhet = (hsaId) =>
   delay(500).then(() => {
 
     // Manipulate fakeDatabase anvandare state and return the new one..
-    const newVardenhet = fakeDatabase.anvandare.vardgivare.reduce((arr, item) => arr.concat(item.vardenheter), []).find(
-      ve => ve.id === hsaId);
+    const newVardenhet = fakeDatabase.anvandare.vardgivare.reduce((arr, item) => arr.concat(item.vardenheter),
+      []).filter(
+      ve => ve.id === hsaId)[0];
 
-    const newVardgivare = fakeDatabase.anvandare.vardgivare.find(vg => vg.id === newVardenhet.vardgivareHsaId);
+    const newVardgivare = fakeDatabase.anvandare.vardgivare.filter(vg => vg.id === newVardenhet.vardgivareHsaId)[0];
 
     fakeDatabase.anvandare.valdVardenhet = newVardenhet;
 
     fakeDatabase.anvandare.valdVardgivare = newVardgivare;
     return fakeDatabase.anvandare;
 
-  })
-;
+  });
+
+
