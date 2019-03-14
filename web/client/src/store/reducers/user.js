@@ -5,7 +5,7 @@ import {
   SET_ENHET,
   SET_ENHET_FAILURE,
   SET_ENHET_SUCCESS
-} from "../actions/UserActions";
+} from "../actions/user";
 
 const INITIAL_STATE = {
   isLoading: false,

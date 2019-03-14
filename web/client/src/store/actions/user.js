@@ -1,4 +1,4 @@
-import {changeEnhet, fetchAnvandare} from "../../api";
+import {changeEnhet, fetchAnvandare} from "../../api/userApi";
 import { push } from 'connected-react-router'
 
 export const GET_USER = 'GET_USER';

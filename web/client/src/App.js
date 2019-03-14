@@ -1,12 +1,12 @@
 import React, {Fragment} from 'react';
 import {HashRouter, NavLink, Switch} from 'react-router-dom'
 import HomePage from "./pages/IndexPage";
-import ValjEnhetPage from "./pages/ValjEnhetPage";
+import SelectEnhetPage from "./pages/SelectEnhetPage";
 import BestallningarIndexPage from "./pages/BestallningarIndexPage";
 import BestallningarPage from "./pages/BestallningarPage";
 import BestallningPage from "./pages/BestallningPage";
 import Header from "./components/header";
-import {getUser} from "./store/actions/UserActions";
+import {getUser} from "./store/actions/user";
 import {connect} from "react-redux";
 import {compose, lifecycle} from "recompose";
 import SecuredRoute from "./components/auth/securedRoute/SecuredRoute";
@@ -37,7 +37,7 @@ const App = () => {
             <Header/>
             <Switch>
               <UnsecuredRoute exact path="/" component={HomePage}/>
-              <SecuredRoute allowMissingUnit={true} path="/valj-enhet" component={ValjEnhetPage} />
+              <SecuredRoute allowMissingUnit={true} path="/valj-enhet" component={SelectEnhetPage} />
               <SecuredRoute path="/bestallningar/:filter" component={BestallningarPage} />
               <SecuredRoute path="/bestallningar" component={BestallningarIndexPage} />
               <SecuredRoute path="/bestallning/:id" component={BestallningPage} />

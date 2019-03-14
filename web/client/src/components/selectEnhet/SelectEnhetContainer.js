@@ -1,7 +1,7 @@
 import {compose} from "recompose";
 import {connect} from "react-redux";
-import ValjEnhet from "./ValjEnhet";
-import {selectEnhet} from "../../store/actions/UserActions";
+import SelectEnhet from "./SelectEnhet";
+import {selectEnhet} from "../../store/actions/user";
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -16,5 +16,5 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 export default compose(
   connect(mapStateToProps, mapDispatchToProps)
-)(ValjEnhet);
+)(SelectEnhet);
 
