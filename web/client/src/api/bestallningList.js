@@ -1,4 +1,4 @@
-import fakeDatabase from './bestallningarDb';
+import bestallningarDb from './bestallningarDb';
 
 const delay = (ms) =>
   new Promise(resolve => setTimeout(resolve, ms));
@@ -8,18 +8,18 @@ export const fetchBestallningar = (filter) =>
     switch (filter) {
       case 'active':
         return {
-          bestallningList: fakeDatabase.bestallningList.filter(t => t.status === 'ACCEPTERAD' || t.status === 'OLAST' || t.status === 'LAST'),
-          totalCount: fakeDatabase.bestallningList.length
+          bestallningList: bestallningarDb.filter(t => t.status === 'ACCEPTERAD' || t.status === 'OLAST' || t.status === 'LAST'),
+          totalCount: bestallningarDb.length
         }
       case 'completed':
         return {
-          bestallningList: fakeDatabase.bestallningList.filter(t => t.status === 'KLARMARKERAD'),
-          totalCount: fakeDatabase.bestallningList.length
+          bestallningList: bestallningarDb.filter(t => t.status === 'KLARMARKERAD'),
+          totalCount: bestallningarDb.length
         }
       case 'rejected':
         return {
-          bestallningList: fakeDatabase.bestallningList.filter(t => t.status === 'AVVISAD' || t.status === 'AVVISAD_RADERAD'),
-          totalCount: fakeDatabase.bestallningList.length
+          bestallningList: bestallningarDb.filter(t => t.status === 'AVVISAD' || t.status === 'AVVISAD_RADERAD'),
+          totalCount: bestallningarDb.length
         }
       default:
         throw new Error(`Unknown filter: ${filter}`);
