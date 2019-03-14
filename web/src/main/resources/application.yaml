@@ -19,6 +19,7 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
+
 # Mail notifications
 mail:
   text-resource-path: ${resources.folder}/texter/mail/

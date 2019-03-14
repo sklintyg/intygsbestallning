@@ -1,5 +1,9 @@
 import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 
+plugins {
+    kotlin("plugin.jpa") version "1.3.21"
+}
+
 dependencies {
     // Project dependencies
     implementation(project(":common"))

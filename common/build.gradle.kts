@@ -6,8 +6,8 @@ dependencies {
     compile("se.inera.intyg.schemas:schemas-contract:${Dependencies.schemasContractVersion}")
 
     // External dependencies
-    implementation("com.fasterxml.jackson.core:jackson-databind")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    compile("com.fasterxml.jackson.core:jackson-databind")
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
 
