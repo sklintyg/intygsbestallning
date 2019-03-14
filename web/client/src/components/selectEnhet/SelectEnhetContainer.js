@@ -5,10 +5,11 @@ import {selectEnhet} from "../../store/actions/user";
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    vardgivare: state.user.vardgivare
+    vardgivare: state.user.vardgivare,
+    currentVardenhet: state.user.valdVardenhet
   }
 };
-// expose selected dispachable methods to App props
+// expose selected dispatchable methods to App props
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     selectEnhet: (hsaId) => dispatch(selectEnhet(hsaId))
