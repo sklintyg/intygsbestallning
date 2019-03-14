@@ -1,9 +1,10 @@
 package se.inera.intyg.intygsbestallning.common.dto
 
 import se.inera.intyg.intygsbestallning.common.domain.IntygTyp
+import se.inera.intyg.schemas.contract.Personnummer
 
 data class CreateBestallningRequest(
-   val personnummer: String,
+   val personnummer: Personnummer,
    val intygTyp: IntygTyp,
    val vardenhet: String
 )

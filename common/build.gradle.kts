@@ -3,6 +3,7 @@ import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 dependencies {
     // Project dependencies
     compile("se.riv.intygsbestallning.certificate.order:intygsbestallning-certificate-order-schemas:${Dependencies.intygsbestallningCertificateOrderSchemasVersion}")
+    compile("se.inera.intyg.schemas:schemas-contract:${Dependencies.schemasContractVersion}")
 
     // External dependencies
     implementation("com.fasterxml.jackson.core:jackson-databind")

@@ -6,4 +6,5 @@ import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
 
 @Repository
 public interface BestallningRepository extends JpaRepository<BestallningEntity, Long> {
+
 }

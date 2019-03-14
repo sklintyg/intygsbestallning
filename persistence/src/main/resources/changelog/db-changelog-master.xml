@@ -22,8 +22,11 @@
       <column name="STATUS" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
+      <column name="INVANARE_ID" type="bigint">
+        <constraints nullable="false"/>
+      </column>
       <column name="VARDENHET_ID" type="bigint">
-        <constraints nullable="true"/>
+        <constraints nullable="false"/>
       </column>
     </createTable>
 
@@ -41,6 +44,45 @@
         <constraints nullable="true"/>
       </column>
     </createTable>
+
+    <createTable tableName="INVANARE">
+      <column name="ID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="PERSON_ID" type="varchar(64)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="FORNAMN" type="varchar(64)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="MELLANNAMN" type="varchar(64)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="EFTERNAMN" type="varchar(64)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="BAKGRUND_NULAGE" type="varchar(64)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="SEKRETESSMARKERING" type="bit">
+        <constraints nullable="false"/>
+      </column>
+
+    </createTable>
+
+    <addForeignKeyConstraint
+          baseTableName="BESTALLNING"
+          baseColumnNames="INVANARE_ID"
+          constraintName="BESTALLNING_INVANARE_FK"
+          referencedTableName="INVANARE"
+          referencedColumnNames="ID"/>
+
+    <addForeignKeyConstraint
+          baseTableName="BESTALLNING"
+          baseColumnNames="VARDENHET_ID"
+          constraintName="BESTALLNING_VARDENHET_FK"
+          referencedTableName="VARDENHET"
+          referencedColumnNames="ID"/>
 
     <createTable tableName="HANDELSE">
       <column name="ID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">

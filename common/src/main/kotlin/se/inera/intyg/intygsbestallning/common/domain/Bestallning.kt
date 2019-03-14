@@ -8,15 +8,17 @@ data class Bestallning(
    val ankomstDatum: LocalDateTime,
    val avslutDatum: LocalDateTime? = null,
    var status: BestallningStatus? = BestallningStatus.UNDEFINED,
+   val invanare: Invanare,
    val vardenhet: Vardenhet,
    var handelser: List<Handelse>? = mutableListOf(),
    var notifieringar: List<Notifiering>? = mutableListOf()) {
 
   companion object Factory {
-    fun newBestallning(hsaId: String, intygTyp: IntygTyp, vardenhet: Vardenhet): Bestallning {
+    fun newBestallning(hsaId: String, invanare: Invanare, intygTyp: IntygTyp, vardenhet: Vardenhet): Bestallning {
       return Bestallning(
          intygTyp = intygTyp,
          ankomstDatum = LocalDateTime.now(),
+         invanare = invanare,
          vardenhet = vardenhet,
          handelser = listOf(Handelse.skapa()),
          notifieringar = listOf(Notifiering.nyBestallning(hsaId)))

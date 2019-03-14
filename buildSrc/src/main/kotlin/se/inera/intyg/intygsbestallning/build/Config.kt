@@ -10,7 +10,13 @@ object Config {
   }
 
   object Dependencies {
+
+    //Project dependencies
     const val intygPluginVersion = "2.0.3"
+    const val intygsbestallningCertificateOrderSchemasVersion = "1.0-RC6"
+    const val schemasContractVersion = "2.1.7"
+
+    //External dependencies
     const val nodePluginVersion = "1.2.0"
 
     const val kotlinVersion = "1.3.21"
@@ -29,14 +35,12 @@ object Config {
     const val jacksonVersion = "2.9.4"
     const val javaxJmsVersion = "1.1-rev-1"
     const val javaxMailVersion = "1.5.2"
-    //const val jaxWsVersion = "2.2.3"
     const val stringTemplateVersion = "4.0.2"
     const val vavrVersion = "0.10.0"
     const val jaxServletApiVersion = "4.0.1"
     const val jaxVersion = "2.3.0"
     const val jaxWsVersion = "2.3.0"
 
-    const val intygsbestallningCertificateOrderSchemasVersion = "1.0-RC6"
   }
 
   object TestDependencies {

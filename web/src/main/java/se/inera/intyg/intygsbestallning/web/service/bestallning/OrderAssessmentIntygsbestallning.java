@@ -15,6 +15,7 @@ import se.inera.intyg.intygsbestallning.common.domain.IntygTyp;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.property.IntegrationProperties;
 import se.inera.intyg.intygsbestallning.common.util.RivtaUtil;
+import se.inera.intyg.schemas.contract.Personnummer;
 
 @Component
 public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponderInterface {
@@ -62,10 +63,13 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
             throw new IllegalArgumentException("assessmentId may not be set");
         }
 
-        var personnummer = Optional.ofNullable(request.getCitizen())
+        var personnummerString = Optional.ofNullable(request.getCitizen())
                 .map(CitizenType::getPersonalIdentity)
                 .map(IIType::getExtension)
-                .orElseThrow(() -> new IllegalArgumentException("personummer may not be null"));
+                .orElseThrow(() -> new IllegalArgumentException("personalIdentity may not be null"));
+
+        var personnummer = Personnummer.createPersonnummer(personnummerString)
+                .orElseThrow(() -> new IllegalArgumentException("personIdentity must be a valid personnummer"));
 
         var vardenhet = Optional.ofNullable(request.getCareUnitId())
                 .map(IIType::getExtension)
