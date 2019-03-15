@@ -12,11 +12,9 @@ const bestallning = (state = {}, action) => {
 const fetching = (state = false, action) => {
     switch (action.type) {
         case 'FETCH_BESTALLNING_REQUEST':
-            console.log('REQUEST');
             return true;
         case 'FETCH_BESTALLNING_SUCCESS':
         case 'FETCH_BESTALLNING_FAILURE':
-            console.log('REQUEST_DONE');
             return false;
         default:
             return state;

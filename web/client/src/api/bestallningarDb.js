@@ -16,7 +16,8 @@ const bestallningar = [{
       intygName: 'Läkarintyg för läkares skull',
       patient: {
         id: '19121212-1212',
-        name: 'Bert Sunesson'
+        name: 'Bert Sunesson',
+        bakgrund: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum augue odio, eu semper dolor gravida vel.'
       }
     },{
       id: v4(),
@@ -26,7 +27,8 @@ const bestallningar = [{
       intygName: 'Läkarintyg för läkares skull',
       patient: {
         id: '19121212-1212',
-        name: 'Bert Sunesson'
+        name: 'Bert Sunesson',
+        bakgrund: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum augue odio, eu semper dolor gravida vel.'
       }
     },{
       id: v4(),
@@ -36,7 +38,8 @@ const bestallningar = [{
       intygName: 'Läkarintyg för läkares skull',
       patient: {
         id: '19121212-1212',
-        name: 'Bert Sunesson'
+        name: 'Bert Sunesson',
+        bakgrund: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum augue odio, eu semper dolor gravida vel.'
       }
     },{
       id: v4(),
@@ -46,7 +49,8 @@ const bestallningar = [{
       intygName: 'Läkarintyg för läkares skull',
       patient: {
         id: '19121212-1212',
-        name: 'Bert Sunesson'
+        name: 'Bert Sunesson',
+        bakgrund: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum augue odio, eu semper dolor gravida vel.'
       }
     },{
       id: v4(),
@@ -56,9 +60,20 @@ const bestallningar = [{
       intygName: 'Läkarintyg för läkares skull',
       patient: {
         id: '19121212-1212',
-        name: 'Bert Sunesson'
+        name: 'Bert Sunesson',
+        bakgrund: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum augue odio, eu semper dolor gravida vel.'
       }
     },
   ];
 
-  export default bestallningar
+export default bestallningar
+
+
+export const decorateForBestallning = (bList) => {
+  return bList.map(b => {
+    b.handlaggare = {name: 'Handläggarn Handläggarensson', epost: 'handlaggaren@af.se'};
+    b.kontor = {name: 'kontorsnamn', adress: 'kontorsadress'};
+    b.utredning = {id:'123'};
+    return b;
+  });
+};
