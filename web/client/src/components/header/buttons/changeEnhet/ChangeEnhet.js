@@ -1,7 +1,7 @@
 import React from 'react';
-import ValjEnhet from "../../../selectEnhet";
 import Modal from 'react-responsive-modal';
 import * as PropTypes from "prop-types";
+import SelectEnhet from "../../../selectEnhet";
 
 
 function ChangeEnhet(props) {
@@ -13,7 +13,7 @@ function ChangeEnhet(props) {
       <button onClick={handleOpen}>Byt enhet</button>
       <Modal open={isOpen} onClose={handleClose} center={true} modalId={'change-enhet-dialog'}>
         <h2>Välj enhet</h2>
-        <ValjEnhet />
+        <SelectEnhet />
 
       </Modal>
     </div>
