@@ -38,7 +38,7 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
         var hsaId = "hsaId";
 
         //TODO: Lookup Invanare
-        var invanare = new Invanare(createBestallningRequest.getPersonnummer(), null, null, null, null, null);
+        var invanare = new Invanare(createBestallningRequest.getPersonnummer(), "Tolvan", "Tolvenius", "Tolvansson", null, null);
 
         //TODO: Lookup Vardenhet
         var vardenhet = new Vardenhet(null, "", null, null);

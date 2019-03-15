@@ -5,6 +5,7 @@ import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus
 
 data class ListBestallningarQuery(
    val statusar: List<BestallningStatus>,
+   val textSearch: String?,
    val pageIndex: Int,
    val limit: Int)
 

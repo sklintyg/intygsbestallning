@@ -32,6 +32,7 @@ public class BestallningController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getBestallningar(
             @RequestParam(value = "status", required = false) List<BestallningStatus> statusar,
+            @RequestParam(value = "textSearch", required = false) String textSearch,
             @RequestParam(value = "index", required = false) Integer index,
             @RequestParam(value = "limit", required = false) Integer limit) {
 
@@ -47,8 +48,7 @@ public class BestallningController {
             limit = 50;
         }
 
-
-        var result = listBestallningService.listByQuery(new ListBestallningarQuery(statusar, index, limit));
+        var result = listBestallningService.listByQuery(new ListBestallningarQuery(statusar, textSearch, index, limit));
         return ResponseEntity.ok(result);
     }
 
