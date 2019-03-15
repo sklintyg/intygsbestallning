@@ -13,6 +13,7 @@ import SecuredRoute from "./components/auth/securedRoute/SecuredRoute";
 import UnsecuredRoute from "./components/auth/unsecuredRoute/UnsecuredRoute";
 import {history} from "./store/configureStore";
 import {ConnectedRouter} from "connected-react-router";
+import {closeAllModals} from "./store/actions/modal";
 
 // TEST
 const TestLinks = () => (
@@ -51,13 +52,26 @@ const App = () => {
 const lifeCycleValues = {
   componentWillMount() {
     this.props.getUser();
-  }
+  },
+  componentDidMount() {
+    this.unlisten = history.listen( location =>  {
+      console.log('Route path changed to: ' + location.pathname);
+      this.props.closeAllModals();
+    })
+  },
+    componentWillUnmount() {
+      this.unlisten();
+    }
+
 };
 
 // expose selected dispachable methods to App props
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    getUser: () => dispatch(getUser())
+    getUser: () => dispatch(getUser()),
+    closeAllModals: () => dispatch(closeAllModals())
+
+
   }
 };
 

@@ -1,7 +1,9 @@
 import React from 'react';
-import './HeaderButtons.css';
+import ChangeEnhet from "./changeEnhet";
+import styled from "styled-components";
+import {HeaderSectionContainer} from "../headerStyles";
 
-//Todo: this could be a property from backend in user object?
+//TODO: this could be a property from backend in user object?
 const canChangeEnhet = (vardgivare) => {
   let enheter = 0;
   if (vardgivare) {
@@ -16,30 +18,44 @@ const canChangeEnhet = (vardgivare) => {
   }
   return enheter > 1;
 };
+
+
+const ActionButton = styled.div`
+ text-align: center;
+  background-color: transparent;
+  border: none;
+  width: 100%;
+
+  color: #F2F2F2;
+  
+`
+const ComponentWrapper = styled.div`
+ display: flex;
+  flex: 0 1 auto;
+  justify-content: flex-end;
+  
+`
+
+
+
 const HeaderButtons = ({isAuthenticated, vardgivare}) => {
   return (
-    <div className="ib-header-actions">
+    <ComponentWrapper>
       { isAuthenticated && canChangeEnhet(vardgivare) &&
-      <div className="header-section-container d-lg-none">
-        <button type="button" className="action-button text-nowrap" id="changeSystemRoleLinkBtn">
-          Byt roll
-        </button>
-      </div>}
+      <HeaderSectionContainer>
+        <ChangeEnhet className="action-button text-nowrap" id="changeSystemRoleLinkBtn"/>
+      </HeaderSectionContainer>}
 
-      <div className="header-section-container hidden-sm hidden-xs">
-        <button type="button" className="action-button text-nowrap" id="aboutLinkBtn">
-         Om tjänsten
-        </button>
-      </div>
+      <HeaderSectionContainer>
+        <ActionButton id="aboutLinkBtn"> Om tjänsten </ActionButton>
+      </HeaderSectionContainer>
 
       { isAuthenticated &&
-      <div className="header-section-container hidden-sm hidden-xs">
-        <button type="button" className="action-button last text-nowrap" id="logoutLinkBtn">
-          Logga ut
-        </button>
-      </div>
+      <HeaderSectionContainer>
+        <ActionButton id="logoutLinkBtn"> Logga ut  </ActionButton>
+      </HeaderSectionContainer>
       }
-    </div>
+    </ComponentWrapper>
   )
 };
 

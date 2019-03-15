@@ -1,5 +1,6 @@
 import {changeEnhet, fetchAnvandare} from "../../api/userApi";
-import { push } from 'connected-react-router'
+import {push} from 'connected-react-router'
+import {closeAllModals} from "./modal";
 
 export const GET_USER = 'GET_USER';
 export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
@@ -36,12 +37,15 @@ export const selectEnhet = (hsaId) => {
       type: SET_ENHET
     });
     return changeEnhet(hsaId).then(json => {
-      dispatch({
-        type: SET_ENHET_SUCCESS,
-        payload: json
-      });
+        dispatch({
+          type: SET_ENHET_SUCCESS,
+          payload: json
+        });
 
-      dispatch(push('/bestallningar'))
+        dispatch(push('/bestallningar'));
+
+      dispatch(closeAllModals());
+
       }
     ).catch(
       error => dispatch({
