@@ -2,6 +2,9 @@ import {
   GET_USER,
   GET_USER_FAILURE,
   GET_USER_SUCCESS,
+  LOGOUT_FAILURE,
+  LOGOUT_SUCCESS,
+  LOGOUT_USER,
   SET_ENHET,
   SET_ENHET_FAILURE,
   SET_ENHET_SUCCESS
@@ -16,11 +19,13 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case GET_USER:
-   return {...state, isLoading: true}
+    return {...state, isLoading: true}
   case GET_USER_SUCCESS:
-    return {...state,
+    return {
+      ...state,
       isLoading: false,
       isAuthenticated: true,
+      errorMessage: '',
       namn: action.payload.namn,
       userRole: action.payload.currentRole.desc,
       valdVardgivare: action.payload.valdVardgivare,
@@ -28,11 +33,34 @@ export default (state = INITIAL_STATE, action) => {
       vardgivare: action.payload.vardgivare
     }
   case GET_USER_FAILURE:
-    return {...state, isLoading: false}
+    return {
+      ...state,
+      isLoading: false,
+      isAuthenticated: false,
+      errorMessage: action.payload
+    }
+
+
+  case LOGOUT_USER:
+    return {...state, isLoading: true}
+  case LOGOUT_SUCCESS:
+    return {
+      isLoading: false,
+      isAuthenticated: false
+    }
+  case LOGOUT_FAILURE:
+    return {
+      ...state,
+      isLoading: false,
+      errorMessage: action.payload
+    }
+
+
   case SET_ENHET:
     return {...state, isLoading: true}
   case SET_ENHET_SUCCESS:
-    return {...state,
+    return {
+      ...state,
       isLoading: false,
       isAuthenticated: true,
       namn: action.payload.namn,
@@ -42,7 +70,11 @@ export default (state = INITIAL_STATE, action) => {
       vardgivare: action.payload.vardgivare
     }
   case SET_ENHET_FAILURE:
-    return {...state, isLoading: false}
+    return {
+      ...state,
+      isLoading: false,
+      errorMessage: action.payload
+    }
   default:
     return state;
   }

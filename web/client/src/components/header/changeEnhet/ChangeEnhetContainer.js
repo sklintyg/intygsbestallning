@@ -1,7 +1,7 @@
 import {compose} from "recompose";
 import {connect} from "react-redux";
 import ChangeEnhet from "./ChangeEnhet";
-import { openModal, closeModal } from "../../../../store/actions/modal";
+import { openModal, closeModal } from "../../../store/actions/modal";
 
 const mapStateToProps = (state, ownProps) => {
   return {

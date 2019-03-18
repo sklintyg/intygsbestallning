@@ -1,8 +1,9 @@
 import styled from 'styled-components'
+import ibValues from '../style/IbValues'
 
 const BodyCenterWrapper = styled.section`
   margin: auto;
-  max-width: 1440px;
+  max-width: ${ibValues.maxContentWidth};
   padding: 20px;
 `;
 

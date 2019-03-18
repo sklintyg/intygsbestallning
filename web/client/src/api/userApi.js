@@ -16,6 +16,11 @@ export const fetchAnvandare = () =>
     return fakeDatabase.anvandare;
 
   });
+export const logoutUser = () =>
+  delay(1500).then(() => {
+    return {};
+
+  });
 // should actually return  return makeServerRequest('anvandare/andra-enhet')
 export const changeEnhet = (hsaId) =>
   delay(500).then(() => {
