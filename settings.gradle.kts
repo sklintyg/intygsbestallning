@@ -1,9 +1,17 @@
 import java.lang.IllegalArgumentException
+import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 
 pluginManagement {
 	repositories {
 		maven("https://build-inera.nordicmedtest.se/nexus/repository/releases/")
 		gradlePluginPortal()
+	}
+	resolutionStrategy {
+		eachPlugin {
+			if (requested.id.id.startsWith("org.jetbrains.kotlin.")) {
+				useVersion(Dependencies.kotlinVersion)
+			}
+		}
 	}
 }
 rootProject.name = "intygsbestallning"

@@ -7,7 +7,7 @@ import se.inera.intyg.intygsbestallning.build.Config.Jvm
 import se.inera.intyg.intygsbestallning.build.Config.TestDependencies
 
 plugins {
-  kotlin("jvm") version "1.3.21"
+  kotlin("jvm")
   maven
   `maven-publish`
 
