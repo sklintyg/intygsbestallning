@@ -42,12 +42,12 @@ const Config = (bestallning) => {
     rubrik: 'Kontaktuppgifter arbetsförmedlingen',
     delfragor: [{
       etikett: 'Arbetsförmedlare',
-      text: bestallning.handlaggare.name + '/n' + 
-            bestallning.handlaggare.epost + '/n' + 
+      text: bestallning.handlaggare.name + '\n' + 
+            bestallning.handlaggare.epost + '\n' + 
             bestallning.handlaggare.telefonnummer
     },{
       etikett: 'Arbetsförmedlingskontor', 
-      text: bestallning.kontor.name + '/n' +
+      text: bestallning.kontor.name + '\n' +
             bestallning.kontor.adress
     }]
   }
@@ -56,7 +56,7 @@ const Config = (bestallning) => {
     rubrik: 'Fakturainformation', 
     delfragor: [{
       etikett: 'Information',
-      text: 'Följande uppgifter ska användas för att fakturera Arbetsförmedlingen för ett utfärdat medicinskt utlåtande./n'+
+      text: 'Följande uppgifter ska användas för att fakturera Arbetsförmedlingen för ett utfärdat medicinskt utlåtande.\n'+
             'Arbetsförmedlingen betalar för utlåtandet, högst 2200 kr inklusive moms.'
     },{
       etikett: 'Utrednings-ID', 
@@ -69,8 +69,8 @@ const Config = (bestallning) => {
       text: '25%'
     },{
       etikett: 'Skicka fakturan till', 
-      text: 'Arbetsförmedlingen/n'+
-            'Skanningscentralen/n'+
+      text: 'Arbetsförmedlingen\n'+
+            'Skanningscentralen\n'+
             '681 85 Kristinehamn'
     }]
   }
