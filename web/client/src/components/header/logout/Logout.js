@@ -1,13 +1,22 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import * as PropTypes from "prop-types";
 import {ActionButton} from "../styles";
+import IbColors from "../../style/IbColors";
 
 const Logout = (props) => {
   const {handleLogout} = props;
 
 
   return (
-      <ActionButton onClick={handleLogout} id="logoutBtn">Logga ut</ActionButton>
+    <Fragment>
+      <ActionButton onClick={handleLogout} id="logoutBtn">
+        <svg xmlns="http://www.w3.org/2000/svg" fill={IbColors.IB_COLOR_20} width="24" height="24" viewBox="0 0 24 24">
+          <path
+            d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+        </svg>
+        <br />
+        Logga ut</ActionButton>
+    </Fragment>
   );
 }
 

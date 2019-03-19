@@ -4,17 +4,14 @@ import {HeaderSectionContainer} from "../styles";
 import IbColors from "../../style/IbColors";
 
 const ComponentWrapper = styled(HeaderSectionContainer)`
+  
   flex: 1;
   height: 100%;
   min-width: 200px;
   max-width: 200px;
   background-color: ${IbColors.IB_COLOR_19}
-  display: flex;
-  align-items: center;
   justify-content: center;
 
-  border-width: 0 6px 0 0;
-  border-style: solid;
   border-image: linear-gradient(to left, rgba(0, 0, 0, 0.1), rgba(42, 48, 78, 0.1)) 1 100%;
   color: ${IbColors.IB_COLOR_20};
   

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import dividerImage from './divider-border.png'
+import IbColors from "../../style/IbColors";
 
 export const HeaderSectionContainer = styled.div`
   display: flex;
@@ -12,14 +13,14 @@ export const HeaderSectionContainer = styled.div`
   border-image-repeat: round;
   
 `
-
-export const HeaderIcon = styled.img`
-  padding-right: 8px;
+export const HeaderSectionContainerHoverable = styled(HeaderSectionContainer)`
+  &:hover {
+      background-color: ${IbColors.IB_COLOR_21}
+    }
 `
 
 export const VerticalContainer = styled.div`
   flex: 0 1 auto;
-
   display: flex;
   flex-direction: column;
   min-width: 1px;
@@ -30,12 +31,18 @@ export const SingleTextRowContainer = styled.div`
  min-width: 1px;
 `
 export const ActionButton = styled.button`
-  text-align: center
-  background-color: transparent
-  border: none
-  cursor: pointer
-  color: #F2F2F2
-  margin: 8px
+  text-align: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: ${IbColors.IB_COLOR_20};
+  padding: 8px;
+  height: 100%;
+  min-width: 90px;
+  white-space: nowrap;
+  
+ 
   
 `
 
