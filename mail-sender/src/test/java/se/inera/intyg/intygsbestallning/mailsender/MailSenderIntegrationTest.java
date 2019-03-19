@@ -18,8 +18,8 @@
  */
 package se.inera.intyg.intygsbestallning.mailsender;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Throwables;
 import org.apache.camel.test.spring.CamelSpringJUnit4ClassRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +32,7 @@ import se.inera.intyg.intygsbestallning.common.service.NotificationEmail;
 import se.inera.intyg.intygsbestallning.mailsender.config.MailSenderTestConfig;
 import se.inera.intyg.intygsbestallning.mailsender.service.stub.MailServiceStub;
 
+import javax.jms.JMSException;
 import java.util.concurrent.TimeUnit;
 
 import static com.jayway.awaitility.Awaitility.await;
@@ -90,8 +91,8 @@ public class MailSenderIntegrationTest {
         jmsTemplate.send(session -> {
             try {
                 return session.createTextMessage(objectMapper.writeValueAsString(message));
-            } catch (Exception e) {
-                throw Throwables.propagate(e);
+            } catch (JMSException | JsonProcessingException e) {
+                throw new RuntimeException(e);
             }
         });
     }
