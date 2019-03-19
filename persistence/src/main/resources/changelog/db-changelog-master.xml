@@ -34,7 +34,13 @@
       <column name="ID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="ENHET_NAMN" type="varchar(64)">
+      <column name="HSA_ID" type="varchar(64)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="VARDGIVARE_HSA_ID" type="varchar(64)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="NAMN" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
       <column name="EPOST" type="varchar(64)">

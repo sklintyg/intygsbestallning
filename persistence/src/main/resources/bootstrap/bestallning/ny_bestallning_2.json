@@ -1,0 +1,32 @@
+{
+  "intygTyp": "AF00213",
+  "ankomstDatum": "2019-03-19T19:37:50.411229",
+  "avslutDatum": null,
+  "status": "OLAST",
+  "invanare": {
+    "personId": "20121212-1212",
+    "fornamn": "LillTolvan",
+    "mellannamn": "Tolvenius",
+    "efternamen": "Tolvansson",
+    "bakgrundNulage": null,
+    "sektretessMarkering": false
+  },
+  "vardenhet": {
+    "id": 3,
+    "hsaId": "TSTNMT2321000156-105N",
+    "vardgivareHsaId": "IFV1239877878-1041",
+    "namn": "Intygsbeställning-Enhet2",
+    "epost": null,
+    "standardSvar": null
+  },
+  "handelser": [
+    {
+      "event": "SKAPA",
+      "skapad": "2019-03-19T19:37:50.413032",
+      "anvandare": null,
+      "beskrivning": "Beställning mottagen",
+      "kommentar": null
+    }
+  ],
+  "notifieringar": []
+}

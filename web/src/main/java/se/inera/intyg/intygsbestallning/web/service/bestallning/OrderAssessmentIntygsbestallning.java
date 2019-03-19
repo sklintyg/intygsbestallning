@@ -3,6 +3,7 @@ package se.inera.intyg.intygsbestallning.web.service.bestallning;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentResponseType;
 import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentType;
 import se.riv.intygsbestallning.certificate.order.orderassessment.v1.rivtabp21.OrderAssessmentResponderInterface;
@@ -18,6 +19,7 @@ import se.inera.intyg.intygsbestallning.common.util.RivtaUtil;
 import se.inera.intyg.schemas.contract.Personnummer;
 
 @Component
+@Transactional
 public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponderInterface {
 
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().getClass());
@@ -85,6 +87,14 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
             throw new IllegalArgumentException("certificateType: " + certficateCodeType + " is not bestallningbar");
         }
 
-        return new CreateBestallningRequest(personnummer, intygTyp, vardenhet);
+        return new CreateBestallningRequest(
+                personnummer,
+                request.getCitizen().getFirstName(),
+                request.getCitizen().getMiddleName(),
+                request.getCitizen().getLastName(),
+                request.getCitizen().getSituationBackground(),
+                null,
+                intygTyp,
+                vardenhet);
     }
 }

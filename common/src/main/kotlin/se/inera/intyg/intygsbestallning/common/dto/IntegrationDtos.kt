@@ -5,6 +5,11 @@ import se.inera.intyg.schemas.contract.Personnummer
 
 data class CreateBestallningRequest(
    val personnummer: Personnummer,
+   val fornamn: String? = null,
+   val mellannamn: String? = null,
+   val efternamen: String? = null,
+   val bakgrundNulage: String? = null,
+   val sektretessMarkering: Boolean? = false,
    val intygTyp: IntygTyp,
    val vardenhet: String
 )

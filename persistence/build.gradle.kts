@@ -13,6 +13,7 @@ dependencies {
 
     implementation("org.liquibase:liquibase-core:${Dependencies.liquibaseVersion}")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("io.vavr:vavr:${Dependencies.vavrVersion}")
 
     // Embedded database for development
     runtime("com.h2database:h2:${Dependencies.h2Version}")

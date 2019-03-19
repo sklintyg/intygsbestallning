@@ -4,6 +4,7 @@ import com.google.common.collect.MoreCollectors;
 import kotlin.Pair;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,20 +18,43 @@ import se.inera.intyg.intygsbestallning.common.domain.IntygTyp;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarResult;
 import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
+import se.inera.intyg.intygsbestallning.persistence.entity.InvanareEntity;
+import se.inera.intyg.intygsbestallning.persistence.entity.VardenhetEntity;
 import se.inera.intyg.intygsbestallning.persistence.repository.BestallningRepository;
+import se.inera.intyg.intygsbestallning.persistence.repository.InvanareRepository;
+import se.inera.intyg.intygsbestallning.persistence.repository.VardenhetRepository;
 
 @Service
+@Transactional
 public class BestallningPersistenceServiceImpl implements BestallningPersistenceService {
 
-    private final BestallningRepository bestallningRepository;
+    private BestallningRepository bestallningRepository;
+    private InvanareRepository invanareRepository;
+    private VardenhetRepository vardenhetRepository;
 
-    public BestallningPersistenceServiceImpl(BestallningRepository bestallningRepository) {
+    public BestallningPersistenceServiceImpl(BestallningRepository bestallningRepository,
+                                             InvanareRepository invanareRepository,
+                                             VardenhetRepository vardenhetRepository) {
         this.bestallningRepository = bestallningRepository;
+        this.invanareRepository = invanareRepository;
+        this.vardenhetRepository = vardenhetRepository;
     }
 
     @Override
     public Bestallning saveNewBestallning(Bestallning bestallning) {
-        var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning);
+
+        var invanareEntity = InvanareEntity.Factory.toEntity(bestallning.getInvanare());
+        if (invanareEntity.getId() == null) {
+            invanareRepository.save(invanareEntity);
+        }
+
+        var vardenhetEntity = VardenhetEntity.Factory.toEntity(bestallning.getVardenhet());
+        if (vardenhetEntity.getId() == null) {
+            vardenhetRepository.save(vardenhetEntity);
+        }
+
+        var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning, invanareEntity, vardenhetEntity);
+
         return BestallningEntity.Factory.toDomain(bestallningRepository.save(bestallningEntity));
     }
 
@@ -70,9 +94,7 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
     }
 
     private Optional<Long> getValidLong(String potentialLongString) {
-
         if (potentialLongString != null) {
-
             try {
                 return Optional.of(Long.valueOf(potentialLongString));
             } catch (NumberFormatException ex) {
@@ -82,15 +104,12 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
         return Optional.empty();
     }
 
-
     private Optional<Enum<?>> getValidTyp(String potentialIntygTypString, Class<? extends Enum<?>> enumType) {
-
         if (potentialIntygTypString != null) {
             return Arrays.stream(enumType.getEnumConstants())
                     .filter(e -> e.name().equalsIgnoreCase(potentialIntygTypString))
                     .collect(MoreCollectors.toOptional());
         }
-
         return Optional.empty();
     }
 

@@ -11,7 +11,7 @@ class InvanareEntity private constructor(builder: Builder) {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "ID", nullable = false)
-  val id: Long? = null
+  val id: Long?
 
   @Column(name = "PERSON_ID", nullable = false)
   val personId: String
@@ -27,11 +27,12 @@ class InvanareEntity private constructor(builder: Builder) {
 
   @Column(name = "BAKGRUND_NULAGE")
   var bakgrundNulage: String? = null
-  @Column(name = "SEKRETESSMARKERING", nullable = false)
 
+  @Column(name = "SEKRETESSMARKERING", nullable = false)
   var sekretessMarkering: Boolean
 
   init {
+    this.id = builder.id
     this.personId = builder.personId ?: throw IllegalArgumentException("personId may not be null")
     this.fornamn = builder.fornamn
     this.mellannamn = builder.mellannamn
@@ -41,7 +42,9 @@ class InvanareEntity private constructor(builder: Builder) {
        ?: throw IllegalArgumentException("sekretessMarkering may not be null")
   }
 
+
   class Builder {
+    var id: Long? = null
     var personId: String? = null
     var fornamn: String? = null
     var mellannamn: String? = null
@@ -49,6 +52,7 @@ class InvanareEntity private constructor(builder: Builder) {
     var bakgrundNulage: String? = null
     var sekretessMarkering: Boolean? = false
 
+    fun id(id: Long?) = apply { this.id = id }
     fun personId(personId: String) = apply { this.personId = personId }
     fun fornamn(fornamn: String?) = apply { this.fornamn = fornamn }
     fun mellannamn(mellannamn: String?) = apply { this.mellannamn = mellannamn }
@@ -62,6 +66,7 @@ class InvanareEntity private constructor(builder: Builder) {
 
     fun toDomain(invanareEntity: InvanareEntity): Invanare {
       return Invanare(
+         id = invanareEntity.id,
          personId = Personnummer.createPersonnummer(invanareEntity.personId).get(),
          fornamn = invanareEntity.fornamn,
          mellannamn = invanareEntity.mellannamn,
@@ -72,12 +77,13 @@ class InvanareEntity private constructor(builder: Builder) {
 
     fun toEntity(invanare: Invanare): InvanareEntity {
       return InvanareEntity.Builder()
-         .personId(personId = invanare.personId.personnummerWithDash)
-         .fornamn(fornamn = invanare.fornamn)
-         .mellannamn(mellannamn = invanare.mellannamn)
-         .efternamn(efternamn = invanare.efternamen)
-         .bakgrundNulage(bakgrundNulage = invanare.bakgrundNulage)
-         .sekretessMarkering(sekretessMarkering = invanare.sektretessMarkering ?: false)
+         .id(invanare.id)
+         .personId(invanare.personId.personnummerWithDash)
+         .fornamn(invanare.fornamn)
+         .mellannamn(invanare.mellannamn)
+         .efternamn(invanare.efternamen)
+         .bakgrundNulage(invanare.bakgrundNulage)
+         .sekretessMarkering(invanare.sektretessMarkering ?: false)
          .build()
     }
   }
