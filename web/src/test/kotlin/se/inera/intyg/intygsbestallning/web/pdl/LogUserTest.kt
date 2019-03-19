@@ -18,9 +18,9 @@
  */
 package se.inera.intyg.intygsbestallning.web.pdl
 
-import kotlin.test.*
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 class LogUserTest {
 

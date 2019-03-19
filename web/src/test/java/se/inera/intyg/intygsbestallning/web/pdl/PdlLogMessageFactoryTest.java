@@ -129,8 +129,8 @@ public class PdlLogMessageFactoryTest {
     }
 
     private IntygUser createDefaultUser() {
-        return createUser(AuthoritiesConstants.ROLE_BP_VARDADMIN,
-                createPrivilege(AuthoritiesConstants.PRIVILEGE_HANTERA_BESTALLNING,
+        return createUser(AuthoritiesConstants.ROLE_VARDADMIN,
+                createPrivilege(AuthoritiesConstants.PRIVILEGE_LISTA_BESTALLNINGAR,
                         Collections.EMPTY_LIST,
                         Collections.EMPTY_LIST),
                 Collections.EMPTY_MAP,
