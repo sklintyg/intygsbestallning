@@ -6,30 +6,32 @@ import * as actions from "../../store/actions/bestallningList";
 import {
   getVisibleBestallningList,
   getErrorMessage,
-  getIsFetching} from "../../store/reducers/bestallningList";
+  getIsFetching
+} from "../../store/reducers/bestallningList";
 import BestallningList from "./BestallningList";
 import FetchError from "./FetchError";
 
 class BestallningarListContainer extends Component {
-
   componentDidMount() {
     this.fetchData();
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.categoryFilter !== prevProps.categoryFilter
-      || this.props.textFilter !== prevProps.textFilter) {
+    if (
+      this.props.categoryFilter !== prevProps.categoryFilter ||
+      this.props.textFilter !== prevProps.textFilter
+    ) {
       this.fetchData();
     }
   }
 
   fetchData() {
-    const { fetchBestallningList, categoryFilter, textFilter} = this.props;
+    const { fetchBestallningList, categoryFilter, textFilter } = this.props;
     fetchBestallningList(categoryFilter, textFilter);
   }
 
   render() {
-    const { isFetching, errorMessage, bestallningList, textFilter } = this.props;
+    const { isFetching, errorMessage, bestallningList } = this.props;
     if (isFetching && !bestallningList.length) {
       return <p>Loading...</p>;
     }
@@ -41,10 +43,7 @@ class BestallningarListContainer extends Component {
 
     return (
       <div>
-        <BestallningList
-          bestallningList={bestallningList}
-          filter={this.props.categoryFilter}
-        />
+        <BestallningList bestallningList={bestallningList} />
       </div>
     );
   }
@@ -64,7 +63,7 @@ const mapStateToProps = (state, { match }) => {
     bestallningList: getVisibleBestallningList(state, categoryFilter),
     categoryFilter,
     isFetching: getIsFetching(state, categoryFilter),
-    errorMessage: getErrorMessage(state, categoryFilter),
+    errorMessage: getErrorMessage(state, categoryFilter)
   };
 };
 

@@ -19,21 +19,13 @@ const ResultLine = styled.div`
   padding-top: 20px;
 `;
 
-const BestallningarList = ({ bestallningList, filter }) => {
+const BestallningarList = ({ bestallningList }) => {
 
   if(bestallningList.bestallningList.length === 0){
     return (
       <ResultLine>Inget resultat hittades för den valda filtreringen. Överväg att ändra filtreringen för att utöka resultatet.</ResultLine>
     )
   }
-
-  let filterText = {
-    active: 'aktiva',
-    completed: 'klarmarkerade',
-    rejcted: 'avvisade',
-  }
-
-  filterText = filterText[filter]
 
   return (
     <div>

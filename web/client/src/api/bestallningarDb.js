@@ -4,7 +4,6 @@ const bestallningDb = [{
       id: v4(),
       status: 'OLAST',
       ankomstDatum: '2019-03-12',
-      avslutDatum: '',
       intygName: 'Läkarintyg för läkares skull',
       patient: {
         id: '19121212-1212',
