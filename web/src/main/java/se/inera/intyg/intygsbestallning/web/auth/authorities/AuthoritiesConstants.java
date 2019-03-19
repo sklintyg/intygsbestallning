@@ -24,10 +24,14 @@ package se.inera.intyg.intygsbestallning.web.auth.authorities;
 public final class AuthoritiesConstants {
 
     // Known roles (these roles are copied from authorities.yaml which is the master authorities configuration)
-    public static final String ROLE_BP_VARDADMIN = "BP_VARDADMIN";
+    public static final String ROLE_VARDADMIN = "VARDADMIN";
 
     // Privileges
-    public static final String PRIVILEGE_HANTERA_BESTALLNING = "HANTERA_BESTALLNING";
+    public static final String PRIVILEGE_VISA_BESTALLNING = "VISA_BESTALLNING";
+    public static final String PRIVILEGE_RADERA_BESTALLNING = "RADERA_BESTALLNING";
+    public static final String PRIVILEGE_LISTA_BESTALLNINGAR = "LISTA_BESTALLNINGAR";
+    public static final String PRIVILEGE_ANDRA_STATUS_PA_BESTALLNING = "ANDRA_STATUS_PA_BESTALLNING";
+    public static final String PRIVILEGE_SKRIVA_UT = "SKRIVA_UT";
 
     // constructors
     private AuthoritiesConstants() {

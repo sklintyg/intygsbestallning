@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import static se.inera.intyg.infra.security.authorities.AuthoritiesResolverUtil.toMap;
-import static se.inera.intyg.intygsbestallning.web.auth.authorities.AuthoritiesConstants.ROLE_BP_VARDADMIN;
+import static se.inera.intyg.intygsbestallning.web.auth.authorities.AuthoritiesConstants.ROLE_VARDADMIN;
 
 /**
  * The IB user overrides a lot of the default behaviour. Since users can be logged in on both Vårdgivare and on Vårdenhet
@@ -210,7 +210,7 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
             for (IbVardenhet ibVardenhet : ibVg.getVardenheter()) {
                 if (ibVardenhet.getId().equalsIgnoreCase(vgOrVeHsaId)) {
                     this.currentlyLoggedInAt = ibVardenhet;
-                    this.currentRole = selectRole(possibleRoles, ROLE_BP_VARDADMIN);
+                    this.currentRole = selectRole(possibleRoles, ROLE_VARDADMIN);
                     this.authorities = toMap(currentRole.getPrivileges(), Privilege::getName);
                     return true;
                 }

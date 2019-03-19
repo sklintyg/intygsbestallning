@@ -33,7 +33,7 @@
 # ====================================================================================================
 ---
 version: 1.0
-released: 2019-03-13
+released: 2019-03-15
 changedby: Magnus Ekstrand
 
 
@@ -51,9 +51,6 @@ knownIntygstyper: []
 knownPrivileges:
   - &kp010 VISA_BESTALLNING
   - &kp020 RADERA_BESTALLNING
-  - &kp030 LISTA_BESTALLNINGAR
-  - &kp040 ANDRA_STATUS_PA_BESTALLNING
-  - &kp050 SKRIVA_UT
 
 # De roller som systemet har
 knownRoles:
@@ -69,30 +66,15 @@ requestOrigins: []
 # Rättigheter
 privileges:
   - &p010
-      name: *kp010
-      desc: Visa beställning
-      intygstyper: # Implicit alla
-      requestOrigins: # Implicit alla
+    name: *kp010
+    desc: Visa beställning
+    intygstyper: # Implicit alla
+    requestOrigins: # Implicit alla
   - &p020
-      name: *kp020
-      desc: Radera beställning
-      intygstyper: # Implicit alla
-      requestOrigins: # Implicit alla
-  - &p030
-      name: *kp030
-      desc: Lista beställningar
-      intygstyper: # Implicit alla
-      requestOrigins: # Implicit alla
-  - &p040
-      name: *kp040
-      desc: Ändra status på beställning
-      intygstyper: # Implicit alla
-      requestOrigins: # Implicit alla
-  - &p050
-      name: *kp050
-      desc: Skriva ut
-      intygstyper: # Implicit alla
-      requestOrigins: # Implicit alla
+    name: *kp020
+    desc: Radera beställning
+    intygstyper: # Implicit alla
+    requestOrigins: # Implicit alla
 
 # Roller
 roles:
@@ -102,9 +84,6 @@ roles:
     privileges:
       - *p010 # VISA_BESTALLNING
       - *p020 # RADERA_BESTALLNING
-      - *p030 # LISTA_BESTALLNINGAR
-      - *p040 # ANDRA_STATUS_PA_BESTALLNING
-      - *p050 # SKRIVA_UT
 
 # Legitimerade yrkesroller
 titles: []

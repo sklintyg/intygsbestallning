@@ -1,14 +1,12 @@
 ---
 
-# De intygstyper som systemet känner till
+# De intygstyper som applikationen känner till
 knownIntygstyper: []
 
-knownFeatures:
-  - &kf010 EXTERNFORFRAGAN_FAR_AVVISAS
-# Aktiverade features i IB
+# De features som applikationen känner till
+knownFeatures: []
+
+# Aktiverade features
 features:
-  - &f010
-    name: *kf010
-    desc: Styr om det är tillåtet att avvisa en externförfrågan.
-    global: true
+
 pilots:

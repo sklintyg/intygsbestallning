@@ -41,9 +41,6 @@ import se.riv.infrastructure.directory.v1.PersonInformationType;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author andreaskaltenbach
- */
 @Service
 public class IntygsbestallningUserDetailsService extends BaseUserDetailsService implements SAMLUserDetailsService {
 
@@ -130,7 +127,7 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
 
     @Override
     protected String getDefaultRole() {
-        return AuthoritiesConstants.ROLE_BP_VARDADMIN;
+        return AuthoritiesConstants.ROLE_VARDADMIN;
     }
 
     @Override

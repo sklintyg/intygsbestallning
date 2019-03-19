@@ -1,0 +1,11 @@
+---
+
+# De intygstyper som systemet känner till
+knownIntygstyper: []
+
+knownFeatures: []
+
+# Aktiverade features i Intygsbeställning
+features: []
+
+pilots: []
