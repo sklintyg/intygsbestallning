@@ -72,7 +72,7 @@ class InvanareEntity private constructor(builder: Builder) {
 
     fun toEntity(invanare: Invanare): InvanareEntity {
       return InvanareEntity.Builder()
-         .personId(personId = invanare.personId.personnummer)
+         .personId(personId = invanare.personId.personnummerWithDash)
          .fornamn(fornamn = invanare.fornamn)
          .mellannamn(mellannamn = invanare.mellannamn)
          .efternamn(efternamn = invanare.efternamen)

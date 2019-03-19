@@ -21,15 +21,18 @@ public interface BestallningRepository extends JpaRepository<BestallningEntity, 
                     "join b.handelser h " +
                     "join b.notifieringar n " +
                     "where (b.status in :statusar) " +
-                    "and (:textSearch is not null and (i.personId = :textSearch or upper(concat(trim(i.fornamn), ' ' , trim(i.efternamn))) like %:textSearch%) or upper(concat(trim(i.fornamn), ' ' , trim(i.mellannamn), ' ', trim(i.efternamn))) like %:textSearch% " +
+                    "and (:textSearch is null " +
+                    "or (:textSearch is not null and (i.personId like %:textSearch% or upper(concat(trim(i.fornamn), ' ' , trim(i.efternamn))) like %:textSearch%) or upper(concat(trim(i.fornamn), ' ' , trim(i.mellannamn), ' ', trim(i.efternamn))) like %:textSearch%) " +
                     "or (:id is not null and b.id = :id) " +
                     "or (:intygTyp is not null and b.intygTyp = :intygTyp) " +
+                    "or (:status is not null and b.status = :status) " +
                     "or (:ankomstDatumFrom is not null and (b.ankomstDatum between :ankomstDatumFrom and :ankomstDatumTo)))")
     Page<BestallningEntity> findByQuery(
             @Param("statusar") List<BestallningStatus> statusar,
             @Param("textSearch") String textSearch,
             @Param("id") Long id,
             @Param("intygTyp") IntygTyp intygTyp,
+            @Param("status") BestallningStatus bestallningStatus,
             @Param("ankomstDatumFrom") LocalDateTime ankomstDatumFrom,
             @Param("ankomstDatumTo") LocalDateTime ankomstDatumTo,
             Pageable pageable);

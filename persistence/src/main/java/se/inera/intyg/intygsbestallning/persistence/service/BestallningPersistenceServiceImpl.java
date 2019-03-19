@@ -1,5 +1,6 @@
 package se.inera.intyg.intygsbestallning.persistence.service;
 
+import com.google.common.collect.MoreCollectors;
 import kotlin.Pair;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -7,9 +8,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
+import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.IntygTyp;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarResult;
@@ -35,19 +38,22 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
     public ListBestallningarResult listBestallningar(ListBestallningarQuery query) {
         var pageRequest = PageRequest.of(query.getPageIndex(), query.getLimit());
 
-        var searchString = query.getTextSearch().toUpperCase();
+        var searchString = Optional.ofNullable(query.getTextSearch()).map(String::toUpperCase);
 
         var id = getValidLong(query.getTextSearch());
 
-        var intygTyp = getValidIntygTyp(query.getTextSearch());
+        var intygTyp = getValidTyp(query.getTextSearch(), IntygTyp.class);
+
+        var status = getValidTyp(query.getTextSearch(), BestallningStatus.class);
 
         var localDateTimeSearch = getValidLocalDatetimeInterval(query.getTextSearch());
 
         var pageResult = bestallningRepository.findByQuery(
                 query.getStatusar(),
-                searchString,
+                searchString.orElse(null),
                 id.orElse(null),
-                intygTyp.orElse(null),
+                (IntygTyp) intygTyp.orElse(null),
+                (BestallningStatus) status.orElse(null),
                 localDateTimeSearch.map(Pair::getFirst).orElse(null),
                 localDateTimeSearch.map(Pair::getSecond).orElse(null),
                 pageRequest);
@@ -77,16 +83,14 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
     }
 
 
-    private Optional<IntygTyp> getValidIntygTyp(String potentialIntygTypString) {
+    private Optional<Enum<?>> getValidTyp(String potentialIntygTypString, Class<? extends Enum<?>> enumType) {
 
         if (potentialIntygTypString != null) {
-
-            try {
-                return Optional.of(IntygTyp.valueOf(potentialIntygTypString));
-            } catch (IllegalArgumentException ex) {
-                return Optional.empty();
-            }
+            return Arrays.stream(enumType.getEnumConstants())
+                    .filter(e -> e.name().equalsIgnoreCase(potentialIntygTypString))
+                    .collect(MoreCollectors.toOptional());
         }
+
         return Optional.empty();
     }
 

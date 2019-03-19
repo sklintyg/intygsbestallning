@@ -1,5 +1,6 @@
 package se.inera.intyg.intygsbestallning.web.controller;
 
+import com.google.common.collect.Lists;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,12 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import javax.ws.rs.QueryParam;
-import java.util.List;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.dto.AccepteraBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.web.bestallning.AccepteraBestallning;
+import se.inera.intyg.intygsbestallning.web.bestallning.BestallningStatusKategori;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.AccepteraBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.ListBestallningService;
 
@@ -31,24 +31,28 @@ public class BestallningController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getBestallningar(
-            @RequestParam(value = "status", required = false) List<BestallningStatus> statusar,
+            @RequestParam(value = "category", required = false) BestallningStatusKategori kategori,
             @RequestParam(value = "textSearch", required = false) String textSearch,
-            @RequestParam(value = "index", required = false) Integer index,
+            @RequestParam(value = "pageIndex", required = false) Integer pageIndex,
             @RequestParam(value = "limit", required = false) Integer limit) {
 
-        if (statusar == null) {
-            statusar = List.of(BestallningStatus.values());
+        var statusar = Lists.<BestallningStatus>newArrayList();
+
+        if (kategori == null) {
+            statusar = Lists.newArrayList(BestallningStatus.values());
+        } else {
+            statusar = Lists.newArrayList(kategori.getList());
         }
 
-        if (index == null) {
-            index = 0;
+        if (pageIndex == null) {
+            pageIndex = 0;
         }
 
         if (limit == null) {
             limit = 50;
         }
 
-        var result = listBestallningService.listByQuery(new ListBestallningarQuery(statusar, textSearch, index, limit));
+        var result = listBestallningService.listByQuery(new ListBestallningarQuery(statusar, textSearch, pageIndex, limit));
         return ResponseEntity.ok(result);
     }
 

@@ -1,4 +1,12 @@
 package se.inera.intyg.intygsbestallning.web.bestallning
 
+import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus
+import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus.*
+
 data class AccepteraBestallning(val fritextForklaring: String? = null)
 
+enum class BestallningStatusKategori(var list: List<BestallningStatus>) {
+  AKTUELLA(listOf(OLAST, LAST, ACCEPTERAD)),
+  KLARA(listOf(KLARMARKERAD)),
+  AVVISADE(listOf(AVVISAD, AVVISAD_RADERAD))
+}
