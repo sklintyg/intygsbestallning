@@ -7,14 +7,14 @@ const createBestallningarList = filter => {
   ) => {
     switch (action.type) {
       case "FETCH_BESTALLNINGAR_SUCCESS":
-        return filter === action.filter ? action.response : state;
+        return filter === action.categoryFilter ? action.response : state;
       default:
         return state;
     }
   };
 
   const isFetching = (state = false, action) => {
-    if (filter !== action.filter) {
+    if (filter !== action.categoryFilter) {
       return state;
     }
     switch (action.type) {
@@ -29,7 +29,7 @@ const createBestallningarList = filter => {
   };
 
   const errorMessage = (state = null, action) => {
-    if (filter !== action.filter) {
+    if (filter !== action.categoryFilter) {
       return state;
     }
     switch (action.type) {
@@ -56,8 +56,19 @@ const listBestallningarByFilter = combineReducers({
   rejected: createBestallningarList('rejected'),
 });
 
+
+const textFilter = (state = '', action) => {
+  switch (action.type) {
+    case "SET_BESTALLNING_LIST_TEXT_FILTER":
+      return action.textFilter;
+    default:
+      return state;
+  }
+};
+
 const bestallningarReducer = combineReducers({
-  listBestallningarByFilter
+  listBestallningarByFilter,
+  textFilter
 });
 
 export default bestallningarReducer;
@@ -72,3 +83,6 @@ export const getIsFetching = (state, filter) =>
 
 export const getErrorMessage = (state, filter) =>
   state.bestallningList.listBestallningarByFilter[filter].errorMessage;
+
+export const getTextFilter = (state) =>
+  state.bestallningList.textFilter;

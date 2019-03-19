@@ -1,6 +1,6 @@
 import { v4 } from 'node-uuid';
 
-const bestallningar = [{
+const bestallningDb = [{
       id: v4(),
       status: 'OLAST',
       ankomstDatum: '2019-03-12',
@@ -14,46 +14,42 @@ const bestallningar = [{
       id: v4(),
       status: 'LAST',
       ankomstDatum: '2019-03-12',
-      avslutDatum: '',
       intygName: 'Läkarintyg för läkares skull',
       patient: {
-        id: '19121212-1212',
-        name: 'Bert Sunesson',
+        id: '20121212-1212',
+        name: 'Kalle Sunesson'
       }
     },{
       id: v4(),
       status: 'ACCEPTERAD',
       ankomstDatum: '2019-03-12',
-      avslutDatum: '',
       intygName: 'Läkarintyg för läkares skull',
       patient: {
         id: '19121212-1212',
-        name: 'Bert Sunesson',
+        name: 'Sara Sunesson'
       }
     },{
       id: v4(),
       status: 'AVVISAD',
       ankomstDatum: '2019-03-12',
-      avslutDatum: '',
       intygName: 'Läkarintyg för läkares skull',
       patient: {
         id: '19121212-1212',
-        name: 'Bert Sunesson',
+        name: 'Avlisa Sunesson'
       }
     },{
       id: v4(),
       status: 'KLARMARKERAD',
       ankomstDatum: '2019-03-12',
-      avslutDatum: '',
       intygName: 'Läkarintyg för läkares skull',
       patient: {
         id: '19121212-1212',
-        name: 'Bert Sunesson',
+        name: 'Klara Sunesson'
       }
     },
   ];
 
-export default bestallningar
+export default bestallningDb
 
 
 export const decorateForBestallning = (bList) => {

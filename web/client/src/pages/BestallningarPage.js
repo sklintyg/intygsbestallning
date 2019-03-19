@@ -1,15 +1,13 @@
 import React from "react";
 
-import BestallningFilter from "../components/bestallningList/BestallningFilter";
-import BestallningListContainer from "../components/bestallningList/BestallningListContainer";
 import BestallningFilterBar from '../components/bestallningFilterBar/BestallningFilterBar'
+import FilterListContainer from "../components/bestallningList/FilterListContainer";
 import BodyCenterWrapper from '../components/layout/body';
 
 const BestallningarPage = () => (
   <BodyCenterWrapper>
     <BestallningFilterBar />
-    <BestallningFilter />
-    <BestallningListContainer />
+    <FilterListContainer />
   </BodyCenterWrapper>
 );
 
