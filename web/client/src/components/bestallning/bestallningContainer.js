@@ -5,6 +5,7 @@ import * as actions from '../../store/actions/bestallning';
 import { getBestallning, getErrorMessage } from '../../store/reducers/bestallning';
 import BestallninFraga from './bestallningFraga';
 import Config from './af00213.v1.config';
+import BestallningActionBar from './bestallningActionBar';
 
 class BestallningContainer extends Component {
 
@@ -24,7 +25,7 @@ class BestallningContainer extends Component {
   }
 
   render() {
-    const { errorMessage, bestallning, id, history } = this.props;
+    const { errorMessage, bestallning, history } = this.props;
     const bestallningIsEmpty = Object.entries(bestallning).length === 0 && bestallning.constructor === Object;
 
     if (bestallningIsEmpty) {
@@ -48,16 +49,14 @@ class BestallningContainer extends Component {
         </div>
         <hr />
         <div>
-          <span>
-            <div>{id}</div>
-            <div>{bestallning.patient.id} - {bestallning.patient.name}</div>
-          </span>
-          <span><button>Acceptera</button></span>
-          <span><button>Avvisa</button></span>
-          <span><button>Vidarebefodra</button></span>
-          <span><button>Skriv ut</button></span>
+          <div>{bestallning.id}</div>
+          <div>{bestallning.patient.id} - {bestallning.patient.name}</div>
         </div>
+        <BestallningActionBar props={bestallning}/>
         {Config(bestallning).map((b, i) => <BestallninFraga key={i} props={b}/>)}
+        <div>
+          footer...
+        </div>
       </div>
     )
   }

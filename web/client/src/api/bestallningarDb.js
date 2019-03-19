@@ -71,8 +71,8 @@ export default bestallningar
 
 export const decorateForBestallning = (bList) => {
   return bList.map(b => {
-    b.handlaggare = {name: 'Handläggarn Handläggarensson', epost: 'handlaggaren@af.se'};
-    b.kontor = {name: 'kontorsnamn', adress: 'kontorsadress'};
+    b.handlaggare = {name: 'Handläggarn Handläggarensson', epost: 'handlaggaren@af.se', telefonnummer: '010 - 112233'};
+    b.kontor = {name: 'kontorsnamn', adress: 'kontorsadress', kostnadsstalle: '12345'};
     b.utredning = {id:'123'};
     return b;
   });

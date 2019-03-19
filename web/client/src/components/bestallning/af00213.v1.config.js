@@ -3,7 +3,7 @@ const Config = (bestallning) => {
     rubrik: 'Denna förfrågan avser',
     delfragor: [{
       etikett: 'Beställare',
-      text: 'Arbetsförmedlingen'
+      bild: 'AF_LOGO'
     }, {
       etikett: 'Information',
       text: 'Information om förfrågan'
@@ -63,7 +63,7 @@ const Config = (bestallning) => {
       text: bestallning.utredning.id
     },{
       etikett: 'Kostnadsställe', 
-      text: bestallning.kontor.kostnadstalle
+      text: bestallning.kontor.kostnadsstalle
     },{
       etikett: 'Moms', 
       text: '25%'

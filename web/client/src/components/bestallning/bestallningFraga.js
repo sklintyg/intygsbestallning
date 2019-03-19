@@ -1,5 +1,6 @@
 import React from 'react';
 import Styled from 'styled-components';
+import * as Resources from './resources';
 
 const Fraga = Styled.div`
   border: 1px solid lightgrey;
@@ -21,7 +22,8 @@ const BestallningFraga = ({ props }) => (
     {props.delfragor.map((c, i) => (
       <span key={i}>
         <h3>{c.etikett}</h3>
-        <Text>{c.text}</Text>
+        {c.text ? <Text>{c.text}</Text> : null}
+        {c.bild ? <img src={Resources[c.bild]} alt='none'/> : null}
       </span>
     ))}
   </Fraga>

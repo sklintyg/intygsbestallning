@@ -1,9 +1,12 @@
 import { combineReducers } from 'redux';
+import * as ActionConstants from '../actions/bestallning';
 
 const bestallning = (state = {}, action) => {
     switch (action.type) {
-        case 'FETCH_BESTALLNING_SUCCESS':
+        case ActionConstants.FETCH_BESTALLNING_SUCCESS:
             return action.response;
+        case ActionConstants.SETSTATUS_BESTALLNING_SUCCESS:
+            return {...state, status: action.response}
         default:
             return state;
     }
@@ -11,10 +14,10 @@ const bestallning = (state = {}, action) => {
 
 const fetching = (state = false, action) => {
     switch (action.type) {
-        case 'FETCH_BESTALLNING_REQUEST':
+        case ActionConstants.FETCH_BESTALLNING_REQUEST:
             return true;
-        case 'FETCH_BESTALLNING_SUCCESS':
-        case 'FETCH_BESTALLNING_FAILURE':
+        case ActionConstants.FETCH_BESTALLNING_SUCCESS:
+        case ActionConstants.FETCH_BESTALLNING_FAILURE:
             return false;
         default:
             return state;
@@ -23,10 +26,22 @@ const fetching = (state = false, action) => {
 
 const errorMessage = (state = null, action) => {
     switch (action.type) {
-        case 'FETCH_BESTALLNING_FAILURE':
+        case ActionConstants.FETCH_BESTALLNING_FAILURE:
             return action.message;
-        case 'FETCH_BESTALLNING_REQUEST':
-        case 'FETCH_BESTALLNING_SUCCESS':
+        case ActionConstants.FETCH_BESTALLNING_REQUEST:
+        case ActionConstants.FETCH_BESTALLNING_SUCCESS:
+            return null;
+        default:
+            return state;
+    }
+};
+
+const statusErrorMessage = (state = null, action) => {
+    switch (action.type) {
+        case ActionConstants.SETSTATUS_BESTALLNING_FAILURE:
+            return action.message;
+        case ActionConstants.SETSTATUS_BESTALLNING_REQUEST:
+        case ActionConstants.SETSTATUS_BESTALLNING_SUCCESS:
             return null;
         default:
             return state;
@@ -37,6 +52,7 @@ export default combineReducers({
     bestallning,
     fetching,
     errorMessage,
+    statusErrorMessage,
 });
 
 export const getBestallning = (state) =>
@@ -48,3 +64,8 @@ export const isFetching = (state) =>
 export const getErrorMessage = (state) =>
     state.bestallning.errorMessage;
 
+export const isSettingStatus = (state) =>
+    state.bestallning.settingStatus;
+
+export const getStatusErrorMessage = (state) =>
+    state.bestallning.statusErrorMessage;
