@@ -6,10 +6,15 @@ const Config = (bestallning) => {
       bild: 'AF_LOGO'
     }, {
       etikett: 'Information',
-      text: 'Information om förfrågan'
+      text: 'Arbetsförmedlingen behöver ett medicinskt utlåtande för att klargöra förutsättningarna för arbetssökande som har ett behov av fördjupat stöd. Bland annat för att kunna:\n' +
+      '- utreda och bedöma om den arbetssökande har en funktionsnedsättning som medför nedsatt arbetsförmåga\n' +
+      '- göra en lämplig anpassning för en arbetssökande som deltar i ett arbetsmarknadspolitiskt program och som har blivit sjuk\n' +
+      '- erbjuda (lämpliga) utredande, vägledande, rehabiliterande eller arbetsförberedande insatser\n' +
+      'Utfärda Arbetsförmedlingens medicinska utlåtande via journalsystemet eller Webcert.\n' +
+      'Arbetsförmedlingen betalar för utlåtandet, högst 2200 kr inklusive moms. Faktureringsuppgifter finns i slutet av beställningen.'
     }, {
       etikett: 'Samtycke',
-      text: 'Samtyckesbeskrivning eller nått liknande..'
+      text: 'Arbetsförmedlingen har erhållit samtycke från den arbetssökande om att skicka denna förfrågan.'
     }]
   };
 

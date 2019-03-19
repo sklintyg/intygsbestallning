@@ -3,21 +3,12 @@ import { v4 } from 'node-uuid';
 const bestallningar = [{
       id: v4(),
       status: 'OLAST',
-      //handelser: [],
-      //notifieringar: [],
       ankomstDatum: '2019-03-12',
       avslutDatum: '',
-      /*vardenhet: {
-        id: 'enhet1',
-        enhetNamn: 'Enheten',
-        epost: 'imälj',
-        standardSvar: 'Hej'
-      },*/
       intygName: 'Läkarintyg för läkares skull',
       patient: {
         id: '19121212-1212',
         name: 'Bert Sunesson',
-        bakgrund: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum augue odio, eu semper dolor gravida vel.'
       }
     },{
       id: v4(),
@@ -28,7 +19,6 @@ const bestallningar = [{
       patient: {
         id: '19121212-1212',
         name: 'Bert Sunesson',
-        bakgrund: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum augue odio, eu semper dolor gravida vel.'
       }
     },{
       id: v4(),
@@ -39,7 +29,6 @@ const bestallningar = [{
       patient: {
         id: '19121212-1212',
         name: 'Bert Sunesson',
-        bakgrund: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum augue odio, eu semper dolor gravida vel.'
       }
     },{
       id: v4(),
@@ -50,7 +39,6 @@ const bestallningar = [{
       patient: {
         id: '19121212-1212',
         name: 'Bert Sunesson',
-        bakgrund: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum augue odio, eu semper dolor gravida vel.'
       }
     },{
       id: v4(),
@@ -61,7 +49,6 @@ const bestallningar = [{
       patient: {
         id: '19121212-1212',
         name: 'Bert Sunesson',
-        bakgrund: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum augue odio, eu semper dolor gravida vel.'
       }
     },
   ];
@@ -74,6 +61,9 @@ export const decorateForBestallning = (bList) => {
     b.handlaggare = {name: 'Handläggarn Handläggarensson', epost: 'handlaggaren@af.se', telefonnummer: '010 - 112233'};
     b.kontor = {name: 'kontorsnamn', adress: 'kontorsadress', kostnadsstalle: '12345'};
     b.utredning = {id:'123'};
+    b.planeradeInsatser = 'Planerade insatser';
+    b.patient.bakgrund = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum augue odio, eu semper dolor gravida vel.';
+    b.syfte = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel ultricies dui. Pellentesque fringilla velit rhoncus, luctus nibh in, tempor turpis.'
     return b;
   });
 };
