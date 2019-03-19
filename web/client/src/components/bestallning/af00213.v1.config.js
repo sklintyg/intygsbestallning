@@ -1,86 +1,70 @@
-const Config = (bestallning) => {
-  const bestallare = {
-    rubrik: 'Denna förfrågan avser',
+import Label from './label';
+
+const Config = (bestallning, labels) => {
+  return [{
+    rubrik: Label('RBK_1', labels),
     delfragor: [{
-      etikett: 'Beställare',
+      etikett: Label('ETK_1.1', labels),
       bild: 'AF_LOGO'
     }, {
-      etikett: 'Information',
-      text: 'Arbetsförmedlingen behöver ett medicinskt utlåtande för att klargöra förutsättningarna för arbetssökande som har ett behov av fördjupat stöd. Bland annat för att kunna:\n' +
-      '- utreda och bedöma om den arbetssökande har en funktionsnedsättning som medför nedsatt arbetsförmåga\n' +
-      '- göra en lämplig anpassning för en arbetssökande som deltar i ett arbetsmarknadspolitiskt program och som har blivit sjuk\n' +
-      '- erbjuda (lämpliga) utredande, vägledande, rehabiliterande eller arbetsförberedande insatser\n' +
-      'Utfärda Arbetsförmedlingens medicinska utlåtande via journalsystemet eller Webcert.\n' +
-      'Arbetsförmedlingen betalar för utlåtandet, högst 2200 kr inklusive moms. Faktureringsuppgifter finns i slutet av beställningen.'
+      etikett: Label('ETK_1.2', labels),
+      text: Label('TEXT_1.2.1', labels)
     }, {
-      etikett: 'Samtycke',
-      text: 'Arbetsförmedlingen har erhållit samtycke från den arbetssökande om att skicka denna förfrågan.'
+      etikett: Label('ETK_1.3', labels),
+      text: Label('TEXT_1.3.1', labels)
     }]
-  };
-
-  const invanare = {
-    rubrik: 'Invånare',
+  },{
+    rubrik: Label('RBK_2', labels),
     delfragor: [{
-      etikett: 'Personnummer',
+      etikett: Label('ETK_2.1', labels),
       text: bestallning.patient.id
     },{
-      etikett: 'Namn', 
+      etikett: Label('ETK_2.2', labels), 
       text: bestallning.patient.name
     }]
-  };
-
-  const forfragan = {
-    rubrik: 'Förfrågan',
+  },{
+    rubrik: Label('RBK_3', labels),
     delfragor: [{
-      etikett: 'Syftet med förfrågan',
+      etikett: Label('ETK_3.1', labels),
       text: bestallning.syfte
     },{
-      etikett: 'Beskriv den arbetssökandes bakgrund och nuläge',
+      etikett: Label('ETK_3.2', labels),
       text: bestallning.patient.bakgrund
     },{
-      etikett: 'Planerade insatser hos Arbetsförmedlingen',
+      etikett: Label('ETK_3.3', labels),
       text: bestallning.planeradeInsatser
     }]
-  }
-
-  const kontakt = {
-    rubrik: 'Kontaktuppgifter arbetsförmedlingen',
+  },{
+    rubrik: Label('RBK_5', labels),
     delfragor: [{
-      etikett: 'Arbetsförmedlare',
+      etikett: Label('ETK_5.1', labels),
       text: bestallning.handlaggare.name + '\n' + 
             bestallning.handlaggare.epost + '\n' + 
             bestallning.handlaggare.telefonnummer
     },{
-      etikett: 'Arbetsförmedlingskontor', 
+      etikett: Label('ETK_5.2', labels), 
       text: bestallning.kontor.name + '\n' +
             bestallning.kontor.adress
     }]
-  }
-
-  const faktura = {
-    rubrik: 'Fakturainformation', 
+  },{
+    rubrik: Label('RBK_6', labels), 
     delfragor: [{
-      etikett: 'Information',
-      text: 'Följande uppgifter ska användas för att fakturera Arbetsförmedlingen för ett utfärdat medicinskt utlåtande.\n'+
-            'Arbetsförmedlingen betalar för utlåtandet, högst 2200 kr inklusive moms.'
+      etikett: Label('ETK_6.1', labels),
+      text: Label('TEXT_6.1.1', labels)
     },{
-      etikett: 'Utrednings-ID', 
+      etikett: Label('ETK_6.2', labels), 
       text: bestallning.utredning.id
     },{
-      etikett: 'Kostnadsställe', 
+      etikett: Label('ETK_6.3', labels), 
       text: bestallning.kontor.kostnadsstalle
     },{
-      etikett: 'Moms', 
-      text: '25%'
+      etikett: Label('ETK_6.4', labels), 
+      text: Label('TEXT_6.4.1', labels)
     },{
-      etikett: 'Skicka fakturan till', 
-      text: 'Arbetsförmedlingen\n'+
-            'Skanningscentralen\n'+
-            '681 85 Kristinehamn'
+      etikett: Label('ETK_6.5', labels), 
+      text: Label('TEXT_6.5.1', labels)
     }]
-  }
-
-  return [bestallare, invanare, forfragan, kontakt, faktura];
+  }]
 }
 
 export default Config

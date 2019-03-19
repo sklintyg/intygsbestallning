@@ -17,7 +17,6 @@ class BestallningActionBar extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div>
         {this.props.bestallning.status === 'LAST' ? <button onClick={this.accept}>Acceptera</button> : ''}
