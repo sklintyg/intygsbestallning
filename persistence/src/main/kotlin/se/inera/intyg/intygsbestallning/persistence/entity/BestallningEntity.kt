@@ -11,7 +11,7 @@ import javax.persistence.*
 class BestallningEntity private constructor(builder: Builder) {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", nullable = false)
   val id: Long?
 
