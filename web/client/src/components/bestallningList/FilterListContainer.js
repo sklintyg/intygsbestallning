@@ -5,6 +5,7 @@ import { fetchBestallningList } from './../../store/actions/bestallningList';
 import BestallningListContainer from "./BestallningListContainer";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import BestallningListPagination from './BestallningListPagination'
 
 class FilterListContainer extends Component {
 
@@ -27,6 +28,7 @@ class FilterListContainer extends Component {
       <div>
         <BestallningFilter onChange={this.handleFilterChange} />
         <BestallningListContainer textFilter={this.state.textFilter} />
+        <BestallningListPagination />
       </div>
     );
   }
