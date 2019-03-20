@@ -18,7 +18,7 @@ import se.inera.intyg.intygsbestallning.web.service.bestallning.AccepteraBestall
 import se.inera.intyg.intygsbestallning.web.service.bestallning.ListBestallningService;
 
 @RestController
-@RequestMapping("/bestallningar")
+@RequestMapping("/api/bestallningar")
 public class BestallningController {
 
     private AccepteraBestallningService accepteraBestallningService;
