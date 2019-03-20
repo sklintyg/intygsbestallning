@@ -41,6 +41,9 @@ För att starta applicationen och även bygga frontend-klienten med alla statisk
 
 för att starta applikationen lokalt.
 
+I nuläget kör applikationen med profilen **dev-security**, denna ger full access till allt.
+För att aktivera filter och SAML-auth etc finns just nu testprofilen **ib-security-test**
+
 ### H2
 Du hittar databasen lokalt på `http://localhost:8080/h2-console
 
