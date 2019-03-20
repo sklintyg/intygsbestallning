@@ -6,6 +6,18 @@ import { getBestallning, getErrorMessage, getBestallningLabels } from '../../sto
 import BestallningFraga from './bestallningFraga';
 import Config from './af00213.v1.config';
 import BestallningActionBar from './bestallningActionBar';
+import Styled from 'styled-components';
+
+const ScrollingContainer = Styled.div`
+  overflow-y: auto;
+  background: #eee;
+`
+
+const FlexColumnContainer = Styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`
 
 class BestallningContainer extends Component {
 
@@ -43,7 +55,7 @@ class BestallningContainer extends Component {
     }
 
     return (
-      <div>
+      <FlexColumnContainer>
         <div>
           <span onClick={history.goBack}>Tillbaka till lista</span>
           <span> :: Förfrågan av Intygstyp '{bestallning.intygName}'</span>
@@ -56,11 +68,13 @@ class BestallningContainer extends Component {
           <div>{bestallning.patient.id} - {bestallning.patient.name}</div>
         </div>
         <BestallningActionBar props={bestallning}/>
-        {Config(bestallning, labels.texter).map((b, i) => <BestallningFraga key={i} props={b}/>)}
-        <div>
-          footer...
-        </div>
-      </div>
+        <ScrollingContainer>
+          {Config(bestallning, labels.texter).map((b, i) => <BestallningFraga key={i} props={b}/>)}
+          <div>
+            footer...
+          </div>
+        </ScrollingContainer>
+      </FlexColumnContainer>
     )
   }
 };

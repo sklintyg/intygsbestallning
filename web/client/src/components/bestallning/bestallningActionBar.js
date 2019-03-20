@@ -5,23 +5,27 @@ import { withRouter } from 'react-router-dom';
 
 class BestallningActionBar extends Component {
   accept = () => {
-    this.props.setStatus(this.props.bestallning.id, 'ACCEPTED');
+    const { setStatus, bestallning } = this.props;
+    setStatus(bestallning.id, 'ACCEPTED');
   }
   
   reject = () => {
-    this.props.setStatus(this.props.bestallning.id, 'REJECTED');
+    const { setStatus, bestallning } = this.props;
+    setStatus(bestallning.id, 'REJECTED');
   }
   
   complete = () => {
-    this.props.setStatus(this.props.bestallning.id, 'COMPLETED');
+    const { setStatus, bestallning } = this.props;
+    setStatus(bestallning.id, 'COMPLETED');
   }
 
   render() {
+    const { bestallning } = this.props;
     return (
       <div>
-        {this.props.bestallning.status === 'LAST' ? <button onClick={this.accept}>Acceptera</button> : ''}
-        {this.props.bestallning.status === 'LAST' ? <button onClick={this.reject}>Avvisa</button> : ''}
-        {this.props.bestallning.status === 'ACCEPTERAD' ? <button onClick={this.complete}>Klarmakera</button> : ''}
+        { bestallning.status === 'LAST' ? <button onClick={ this.accept }>Acceptera</button> : null }
+        { bestallning.status === 'LAST' ? <button onClick={ this.reject }>Avvisa</button> : null }
+        { bestallning.status === 'ACCEPTERAD' ? <button onClick={ this.complete }>Klarmakera</button> : null }
         <button>Vidarebefodra</button>
         <button>Skriv ut</button>
       </div>
@@ -29,9 +33,9 @@ class BestallningActionBar extends Component {
   }
 };
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state, { props }) => {
   return {
-    bestallning: props.props
+    bestallning: props
   };
 };
 
