@@ -18,6 +18,7 @@
  */
 package se.inera.intyg.intygsbestallning.web.auth;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistryImpl;
 

@@ -5,6 +5,10 @@ ntjp:
 infrastructure:
   directory:
     logicalAddress:
+ib:
+  server: localhost:8990
+  host:
+    url: http://localhost:8990
 
 resources:
   folder: ${resource.dir}

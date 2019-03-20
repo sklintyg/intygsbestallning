@@ -38,7 +38,7 @@ public class FakeAuthenticationFilter extends AbstractAuthenticationProcessingFi
 
     private static final Logger LOG = LoggerFactory.getLogger(FakeAuthenticationFilter.class);
 
-    protected FakeAuthenticationFilter() {
+    public FakeAuthenticationFilter() {
         super("/fake");
         LOG.error("FakeAuthentication enabled. DO NOT USE IN PRODUCTION");
     }

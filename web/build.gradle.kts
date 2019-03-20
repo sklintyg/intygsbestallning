@@ -26,6 +26,7 @@ dependencies {
   // External dependencies
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-data-redis")
+  //implementation("org.springframework.boot:spring-boot-starter-actuator")
 
   implementation("jakarta.jws:jakarta.jws-api:1.1.1")
   implementation("javax.xml.ws:jaxws-api:${Dependencies.jaxVersion}")
@@ -66,7 +67,12 @@ tasks {
   }
 
   bootRun {
-    systemProperties = mapOf("resource.dir" to "${project.projectDir}/../src/main/resources")
+    systemProperties = mapOf(
+            "resource.dir" to "${project.projectDir}/../src/main/resources",
+            "certificate.folder" to "${project.projectDir}/../devops/openshift/test/env",
+            "config.dir" to "${project.projectDir}/../devops/openshift/test/config",
+            "credentials.file" to "${project.projectDir}/../devops/openshift/test/env/secret-env.properties"
+    )
 
   }
 
