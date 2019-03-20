@@ -10,14 +10,31 @@ data class ListBestallningarQuery(
    val statusar: List<BestallningStatus>,
    val textSearch: String?,
    val pageIndex: Int,
-   val limit: Int)
+   val limit: Int,
+   val sortableColumn: ListBestallningSortColumn,
+   val sortDirection: ListBestallningDirection)
+
+enum class ListBestallningSortColumn(val kolumn: String) {
+  ID("id"),
+  INTYG_TYP("intygTyp"),
+  ANKOMST_DATUM("ankomstDatum"),
+  STATUS("status"),
+  INVANARE_PERSON_ID("invanare.personId")
+}
+
+enum class ListBestallningDirection {
+  DESC,
+  ASC
+}
 
 data class ListBestallningarResult(
    val bestallningar: List<BestallningDto>,
    val pageIndex: Int? = 0,
    val totalPages: Int,
    val numberOfElements: Int,
-   val totalElements: Long
+   val totalElements: Long,
+   val sortableColumn: ListBestallningSortColumn,
+   val sortDirection: ListBestallningDirection
 ) {
   companion object Factory {
     fun toDto(
@@ -25,13 +42,17 @@ data class ListBestallningarResult(
        pageIndex: Int? = 0,
        totalPages: Int,
        numberOfElements: Int,
-       totalElements: Long): ListBestallningarResult {
+       totalElements: Long,
+       sortableColumn: ListBestallningSortColumn,
+       sortDirection: ListBestallningDirection): ListBestallningarResult {
       return ListBestallningarResult(
          bestallningar = bestallningar.map { BestallningDto.toDto(it) },
          pageIndex = pageIndex,
          totalPages = totalPages,
          numberOfElements = numberOfElements,
-         totalElements = totalElements)
+         totalElements = totalElements,
+         sortableColumn = sortableColumn,
+         sortDirection = sortDirection)
     }
   }
 }

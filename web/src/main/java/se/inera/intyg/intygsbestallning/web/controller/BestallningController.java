@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.dto.AccepteraBestallningRequest;
+import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
+import se.inera.intyg.intygsbestallning.common.dto.ListBestallningSortColumn;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.web.bestallning.AccepteraBestallning;
 import se.inera.intyg.intygsbestallning.web.bestallning.BestallningStatusKategori;
@@ -40,7 +42,9 @@ public class BestallningController {
             @RequestParam(value = "category", required = false) BestallningStatusKategori kategori,
             @RequestParam(value = "textSearch", required = false) String textSearch,
             @RequestParam(value = "pageIndex", required = false) Integer pageIndex,
-            @RequestParam(value = "limit", required = false) Integer limit) {
+            @RequestParam(value = "limit", required = false) Integer limit,
+            @RequestParam(value = "sortColumn", required = false) ListBestallningSortColumn sortableColumn,
+            @RequestParam(value = "sortDirection", required = false) ListBestallningDirection sortDirection) {
 
         var statusar = Lists.<BestallningStatus>newArrayList();
 
@@ -58,7 +62,17 @@ public class BestallningController {
             limit = 50;
         }
 
-        var result = listBestallningService.listByQuery(new ListBestallningarQuery(statusar, textSearch, pageIndex, limit));
+        if (sortableColumn == null) {
+            sortableColumn = ListBestallningSortColumn.ID;
+        }
+
+        if (sortDirection == null) {
+            sortDirection = ListBestallningDirection.ASC;
+        }
+
+        var result = listBestallningService.listByQuery(
+                new ListBestallningarQuery(statusar, textSearch, pageIndex, limit, sortableColumn, sortDirection));
+
         return ResponseEntity.ok(result);
     }
 

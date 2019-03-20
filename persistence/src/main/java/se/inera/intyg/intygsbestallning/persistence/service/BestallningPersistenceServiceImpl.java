@@ -3,6 +3,7 @@ package se.inera.intyg.intygsbestallning.persistence.service;
 import com.google.common.collect.MoreCollectors;
 import kotlin.Pair;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.IntygTyp;
+import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarResult;
 import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
@@ -60,7 +62,15 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
 
     @Override
     public ListBestallningarResult listBestallningar(ListBestallningarQuery query) {
-        var pageRequest = PageRequest.of(query.getPageIndex(), query.getLimit());
+
+        Sort sortRequest;
+        if (query.getSortDirection() == ListBestallningDirection.ASC) {
+            sortRequest = Sort.by(query.getSortableColumn().getKolumn()).ascending();
+        } else {
+            sortRequest = Sort.by(query.getSortableColumn().getKolumn()).descending();
+        }
+
+        var pageRequest = PageRequest.of(query.getPageIndex(), query.getLimit(), sortRequest);
 
         var searchString = Optional.ofNullable(query.getTextSearch()).map(String::toUpperCase);
 
@@ -71,6 +81,7 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
         var status = getValidTyp(query.getTextSearch(), BestallningStatus.class);
 
         var localDateTimeSearch = getValidLocalDatetimeInterval(query.getTextSearch());
+
 
         var pageResult = bestallningRepository.findByQuery(
                 query.getStatusar(),
@@ -90,7 +101,9 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
                 pageResult.getNumber(),
                 pageResult.getTotalPages(),
                 pageResult.getNumberOfElements(),
-                pageResult.getTotalElements());
+                pageResult.getTotalElements(),
+                query.getSortableColumn(),
+                query.getSortDirection());
     }
 
     @Override
