@@ -13,7 +13,7 @@ data class ListBestallningarQuery(
    val limit: Int)
 
 data class ListBestallningarResult(
-   val bestallningar: List<ListBestallningDto>,
+   val bestallningar: List<BestallningDto>,
    val pageIndex: Int? = 0,
    val totalPages: Int,
    val numberOfElements: Int,
@@ -27,7 +27,7 @@ data class ListBestallningarResult(
        numberOfElements: Int,
        totalElements: Long): ListBestallningarResult {
       return ListBestallningarResult(
-         bestallningar = bestallningar.map { ListBestallningDto.toDto(it) },
+         bestallningar = bestallningar.map { BestallningDto.toDto(it) },
          pageIndex = pageIndex,
          totalPages = totalPages,
          numberOfElements = numberOfElements,
@@ -36,36 +36,47 @@ data class ListBestallningarResult(
   }
 }
 
-data class ListBestallningDto(
+data class BestallningDto(
    val id: Long,
    val status: String,
    val ankomstDatum: LocalDate,
    val intygTyp: IntygTyp,
-   val invanare: ListBestallningInvanareDto
+   val invanare: BestallningInvanareDto
 ) {
   companion object Factory {
-    fun toDto(bestallning: Bestallning): ListBestallningDto {
-      return ListBestallningDto(
+    fun toDto(bestallning: Bestallning): BestallningDto {
+      return BestallningDto(
          id = bestallning.id!!,
          status = bestallning.status!!.beskrivning,
          ankomstDatum = bestallning.ankomstDatum.toLocalDate(),
          intygTyp = bestallning.intygTyp,
-         invanare = ListBestallningInvanareDto.toDto(bestallning.invanare)
+         invanare = BestallningInvanareDto.toDto(bestallning.invanare)
       )
     }
   }
 }
 
-data class ListBestallningInvanareDto(
+data class BestallningInvanareDto(
    val personId: String,
    val name: String
 ) {
   companion object Factory {
-    fun toDto(invanare: Invanare): ListBestallningInvanareDto {
-      return ListBestallningInvanareDto(
+    fun toDto(invanare: Invanare): BestallningInvanareDto {
+      return BestallningInvanareDto(
          personId = invanare.personId.personnummerWithDash,
          name = listOf(invanare.fornamn, invanare.mellannamn, invanare.efternamn).joinToString(separator = " ")
       )
+    }
+  }
+}
+
+data class AktuellBestallningDto(
+   val bestallning: BestallningDto,
+   val test: String = "hej"
+) {
+  companion object Factory {
+    fun toDto(bestallning: Bestallning): AktuellBestallningDto {
+      return AktuellBestallningDto(BestallningDto.toDto(bestallning))
     }
   }
 }

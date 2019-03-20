@@ -15,6 +15,7 @@ import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.web.bestallning.AccepteraBestallning;
 import se.inera.intyg.intygsbestallning.web.bestallning.BestallningStatusKategori;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.AccepteraBestallningService;
+import se.inera.intyg.intygsbestallning.web.service.bestallning.GetBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.ListBestallningService;
 
 @RestController
@@ -23,10 +24,15 @@ public class BestallningController {
 
     private AccepteraBestallningService accepteraBestallningService;
     private ListBestallningService listBestallningService;
+    private GetBestallningService getBestallningService;
 
-    public BestallningController(AccepteraBestallningService accepteraBestallningService, ListBestallningService listBestallningService) {
+    public BestallningController(
+            AccepteraBestallningService accepteraBestallningService,
+            ListBestallningService listBestallningService,
+            GetBestallningService getBestallningService) {
         this.accepteraBestallningService = accepteraBestallningService;
         this.listBestallningService = listBestallningService;
+        this.getBestallningService = getBestallningService;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -54,6 +60,25 @@ public class BestallningController {
 
         var result = listBestallningService.listByQuery(new ListBestallningarQuery(statusar, textSearch, pageIndex, limit));
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getBestallning(@PathVariable String id) {
+
+        Long idLong;
+        try {
+            idLong = Long.valueOf(id);
+        } catch (NumberFormatException ex) {
+            throw new IllegalArgumentException("Id could not be converted to Long value");
+        }
+
+        var aktuellBestallning = getBestallningService.getBestallningById(idLong);
+
+        if (aktuellBestallning.isPresent()) {
+            return ResponseEntity.ok(aktuellBestallning);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/{id}/acceptera")

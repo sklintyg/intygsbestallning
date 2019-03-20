@@ -93,6 +93,12 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
                 pageResult.getTotalElements());
     }
 
+    @Override
+    public Optional<Bestallning> getBestallningById(Long id) {
+        return bestallningRepository.findById(id)
+                .map(BestallningEntity.Factory::toDomain);
+    }
+
     private Optional<Long> getValidLong(String potentialLongString) {
         if (potentialLongString != null) {
             try {
