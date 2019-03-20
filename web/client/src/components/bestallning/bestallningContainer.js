@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/bestallning';
-import { getBestallning, getErrorMessage, getBestallningLabels } from '../../store/reducers/bestallning';
+import { getBestallning, getErrorMessage } from '../../store/reducers/bestallning';
 import BestallningFraga from './bestallningFraga';
-import Config from './af00213.v1.config';
 import BestallningActionBar from './bestallningActionBar';
 import Styled from 'styled-components';
 
@@ -32,15 +31,12 @@ class BestallningContainer extends Component {
   }
 
   fetchData() {
-    const { fetchBestallning, id, fetchBestallningLabels} = this.props;
-    fetchBestallning(id).then(b => {
-      //Hämta version och intygstyp från beställning
-      fetchBestallningLabels('af20013', '1.0');
-    });
+    const { fetchBestallning, id} = this.props;
+    fetchBestallning(id);
   }
 
   render() {
-    const { errorMessage, bestallning, history, labels } = this.props;
+    const { errorMessage, bestallning, history } = this.props;
     const bestallningIsEmpty = Object.entries(bestallning).length === 0 && bestallning.constructor === Object;
 
     if (bestallningIsEmpty) {
@@ -65,11 +61,11 @@ class BestallningContainer extends Component {
         <hr />
         <div>
           <div>{bestallning.id}</div>
-          <div>{bestallning.patient.id} - {bestallning.patient.name}</div>
+          <div>{bestallning.patient.id} - {bestallning.patient.namn}</div>
         </div>
         <BestallningActionBar props={bestallning}/>
         <ScrollingContainer>
-          {Config(bestallning, labels.texter).map((b, i) => <BestallningFraga key={i} props={b}/>)}
+          {bestallning.struktur.map((b, i) => <BestallningFraga key={i} props={b}/>)}
           <div>
             footer...
           </div>
@@ -86,7 +82,6 @@ const mapStateToProps = (state, { match, history }) => {
     history,
     bestallning: getBestallning(state),
     errorMessage: getErrorMessage(state),
-    labels: getBestallningLabels(state),
   };
 };
 

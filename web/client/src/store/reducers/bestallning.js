@@ -48,21 +48,11 @@ const statusErrorMessage = (state = null, action) => {
     }
 };
 
-const labels = (state = {}, action) => {
-    switch (action.type) {
-        case ActionConstants.FETCH_BESTALLNING_LABELS_SUCCESS:
-            return action.response;
-        default:
-            return state;
-    }
-};
-
 export default combineReducers({
     bestallning,
     fetching,
     errorMessage,
     statusErrorMessage,
-    labels,
 });
 
 export const getBestallning = (state) =>
@@ -79,9 +69,3 @@ export const isSettingStatus = (state) =>
 
 export const getStatusErrorMessage = (state) =>
     state.bestallning.statusErrorMessage;
-
-export const isFetchingLabels = (state) =>
-    state.bestallning.fetchingLabels;
-
-export const getBestallningLabels = (state) =>
-    state.bestallning.labels;
