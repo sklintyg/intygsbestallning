@@ -56,7 +56,7 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
                     createBestallningRequest.getPersonnummer(),
                     createBestallningRequest.getFornamn(),
                     createBestallningRequest.getMellannamn(),
-                    createBestallningRequest.getEfternamen(),
+                    createBestallningRequest.getEfternamn(),
                     createBestallningRequest.getBakgrundNulage(),
                     createBestallningRequest.getSektretessMarkering());
         } else {

@@ -7,6 +7,6 @@ data class AccepteraBestallning(val fritextForklaring: String? = null)
 
 enum class BestallningStatusKategori(var list: List<BestallningStatus>) {
   AKTUELLA(listOf(OLAST, LAST, ACCEPTERAD)),
-  KLARA(listOf(KLARMARKERAD)),
-  AVVISADE(listOf(AVVISAD, AVVISAD_RADERAD))
+  KLARA(listOf(KLAR)),
+  AVVISADE(listOf(AVVISAD, RADERAD))
 }

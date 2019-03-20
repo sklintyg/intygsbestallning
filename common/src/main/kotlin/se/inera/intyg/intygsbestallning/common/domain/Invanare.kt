@@ -7,7 +7,7 @@ data class Invanare(
    val personId: Personnummer,
    val fornamn: String? = null,
    val mellannamn: String? = null,
-   val efternamen: String? = null,
+   val efternamn: String? = null,
    val bakgrundNulage: String? = null,
    val sektretessMarkering: Boolean? = false) {
 
@@ -16,7 +16,7 @@ data class Invanare(
        personId: Personnummer,
        fornamn: String?,
        mellannamn: String?,
-       efternamen: String?,
+       efternamn: String?,
        bakgrundNulage: String?,
        sektretessMarkering: Boolean?) : Invanare {
 
@@ -24,7 +24,7 @@ data class Invanare(
          personId = personId,
          fornamn = fornamn,
          mellannamn = mellannamn,
-         efternamen = efternamen,
+         efternamn = efternamn,
          bakgrundNulage = bakgrundNulage,
          sektretessMarkering = sektretessMarkering
       )

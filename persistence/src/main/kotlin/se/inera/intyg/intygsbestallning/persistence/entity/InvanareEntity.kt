@@ -38,8 +38,7 @@ class InvanareEntity private constructor(builder: Builder) {
     this.mellannamn = builder.mellannamn
     this.efternamn = builder.efternamn
     this.bakgrundNulage = builder.bakgrundNulage
-    this.sekretessMarkering = builder.sekretessMarkering
-       ?: throw IllegalArgumentException("sekretessMarkering may not be null")
+    this.sekretessMarkering = builder.sekretessMarkering ?: throw IllegalArgumentException("sekretessMarkering may not be null")
   }
 
 
@@ -70,7 +69,7 @@ class InvanareEntity private constructor(builder: Builder) {
          personId = Personnummer.createPersonnummer(invanareEntity.personId).get(),
          fornamn = invanareEntity.fornamn,
          mellannamn = invanareEntity.mellannamn,
-         efternamen = invanareEntity.efternamn,
+         efternamn = invanareEntity.efternamn,
          bakgrundNulage = invanareEntity.bakgrundNulage,
          sektretessMarkering = invanareEntity.sekretessMarkering)
     }
@@ -81,7 +80,7 @@ class InvanareEntity private constructor(builder: Builder) {
          .personId(invanare.personId.personnummerWithDash)
          .fornamn(invanare.fornamn)
          .mellannamn(invanare.mellannamn)
-         .efternamn(invanare.efternamen)
+         .efternamn(invanare.efternamn)
          .bakgrundNulage(invanare.bakgrundNulage)
          .sekretessMarkering(invanare.sektretessMarkering ?: false)
          .build()

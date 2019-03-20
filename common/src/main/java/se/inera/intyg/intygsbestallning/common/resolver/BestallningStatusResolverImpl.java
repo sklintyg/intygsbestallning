@@ -45,9 +45,9 @@ public class BestallningStatusResolverImpl implements BestallningStatusResolver 
                 break;
             case AVVISA_RADERA:
                 if (nuvarandeStatus != BestallningStatus.LAST) {
-                    throw new IllegalStateException("Can not update state from LAST to AVVISAD_RADERAD unless latest handelse is of typ AVVISA_RADERA");
+                    throw new IllegalStateException("Can not update state from LAST to RADERAD unless latest handelse is of typ AVVISA_RADERA");
                 }
-                bestallning.setStatus(BestallningStatus.AVVISAD_RADERAD);
+                bestallning.setStatus(BestallningStatus.RADERAD);
                 break;
             case ACCEPTERA:
                 if (nuvarandeStatus != BestallningStatus.LAST) {
@@ -56,10 +56,10 @@ public class BestallningStatusResolverImpl implements BestallningStatusResolver 
                 bestallning.setStatus(BestallningStatus.ACCEPTERAD);
                 break;
             case KLARMARKERA:
-                if (nuvarandeStatus != BestallningStatus.LAST) {
-                    throw new IllegalStateException("Can not update state from ACCEPTEDAD to KLARMARKERAD unless latest handelse is of typ KLARMARKERA");
+                if (nuvarandeStatus != BestallningStatus.ACCEPTERAD) {
+                    throw new IllegalStateException("Can not update state from ACCEPTEDAD to KLAR unless latest handelse is of typ KLARMARKERA");
                 }
-                bestallning.setStatus(BestallningStatus.KLARMARKERAD);
+                bestallning.setStatus(BestallningStatus.KLAR);
                 break;
             default:
                 throw new IllegalArgumentException("Not a valid bestallningEvent: " + senasteHandelse);

@@ -85,7 +85,7 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
         var bestallningar = pageResult.get().map(BestallningEntity.Factory::toDomain)
                 .collect(Collectors.toList());
 
-        return new ListBestallningarResult(
+        return ListBestallningarResult.Factory.toDto(
                 bestallningar,
                 pageResult.getNumber(),
                 pageResult.getTotalPages(),
