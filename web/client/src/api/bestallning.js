@@ -30,33 +30,33 @@ const bestallningsConfig = (bestallning) => ({
         rubrik: 'Invånare',
         delfragor: [{
           etikett: 'Personnummer',
-          text: bestallning.patient.id
+          svar: bestallning.patient.id
         },{
           etikett: 'Namn', 
-          text: bestallning.patient.name
+          svar: bestallning.patient.name
         }]
       },{
         rubrik: 'Förfrågan',
         delfragor: [{
           etikett: 'Syftet med förfrågan',
-          text: bestallning.syfte
+          svar: bestallning.syfte
         },{
           etikett: 'Beskriv den arbetssökandes bakgrund och nuläge',
-          text: bestallning.patient.bakgrund
+          svar: bestallning.patient.bakgrund
         },{
           etikett: 'Planerade insatser hos Arbetsförmedlingen',
-          text: bestallning.planeradeInsatser
+          svar: bestallning.planeradeInsatser
         }]
       },{
         rubrik: 'Kontaktuppgifter arbetsförmedlingen',
         delfragor: [{
           etikett: 'Arbetsförmedlare',
-          text: bestallning.handlaggare.name + '\n' + 
+          svar: bestallning.handlaggare.name + '\n' + 
                 bestallning.handlaggare.epost + '\n' + 
                 bestallning.handlaggare.telefonnummer
         },{
           etikett: 'Arbetsförmedlingskontor', 
-          text: bestallning.kontor.name + '\n' +
+          svar: bestallning.kontor.name + '\n' +
                 bestallning.kontor.adress
         }]
       },{
@@ -67,10 +67,10 @@ const bestallningsConfig = (bestallning) => ({
           'Arbetsförmedlingen betalar för utlåtandet, högst 2200 kr inklusive moms.'
         },{
           etikett: 'Utrednings-ID', 
-          text: bestallning.utredning.id
+          svar: bestallning.utredning.id
         },{
           etikett: 'Kostnadsställe', 
-          text: bestallning.kontor.kostnadsstalle
+          svar: bestallning.kontor.kostnadsstalle
         },{
           etikett: 'Moms', 
           text: '25%'

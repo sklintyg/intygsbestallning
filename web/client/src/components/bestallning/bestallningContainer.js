@@ -8,9 +8,11 @@ import BestallningActionBar from './bestallningActionBar';
 import {FlexColumnContainer, ScrollingContainer, WorkareaContainer} from "../layout/body";
 import Footer from "../Footer/Footer";
 import styled from "styled-components";
+import Colors from '../style/IbColors';
 
 const CustomScrollingContainer = styled(ScrollingContainer)`
-  background-color:#eee
+  background-color:${Colors.IB_COLOR_27};
+  max-width: none;
 `
 
 class BestallningContainer extends Component {
@@ -63,8 +65,8 @@ class BestallningContainer extends Component {
           <WorkareaContainer>
             {bestallning.struktur.map((b, i) => <BestallningFraga key={i} props={b} />)}
           </WorkareaContainer>
+          <Footer />
         </CustomScrollingContainer>
-        <Footer />
       </FlexColumnContainer>
     )
   }
