@@ -4,9 +4,13 @@ import IbColors from "./IbColors";
 
 export const IB_TYPO_01 = styled.div`
   font-weight: medium;
-  font-size: 18px;
+  font-size: 25px;
 `
 
+export const IB_TYPO_02 = styled.div`
+  font-weight: medium;
+  font-size: 18px;
+`
 export const IB_TYPO_06 = styled.div`
   font-weight: medium;
   font-size: 14px;
