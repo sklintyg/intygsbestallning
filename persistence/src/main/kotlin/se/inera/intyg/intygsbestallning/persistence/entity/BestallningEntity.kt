@@ -91,7 +91,8 @@ class BestallningEntity private constructor(builder: Builder) {
          status = bestallningEntity.status,
          invanare = InvanareEntity.toDomain(bestallningEntity.invanare),
          vardenhet = VardenhetEntity.toDomain(bestallningEntity.vardenhet),
-         handelser = bestallningEntity.handelser.map { HandelseEntity.toDomain(it) })
+         handelser = bestallningEntity.handelser.map { HandelseEntity.toDomain(it) },
+         notifieringar = bestallningEntity.notifieringar.map { NotifieringEntity.toDomain(it) })
     }
 
     fun toEntity(bestallning: Bestallning): BestallningEntity {

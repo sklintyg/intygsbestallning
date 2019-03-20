@@ -28,49 +28,58 @@ import javax.persistence.*
 @Table(name = "NOTIFIERING")
 class NotifieringEntity private constructor(builder: Builder) {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "ID", nullable = false)
-    private val id: Long?
+  @Id
+  @GeneratedValue
+  @Column(name = "ID", nullable = false)
+  private val id: Long?
 
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "TYP", nullable = false)
-    private val typ: NotifieringTyp?
+  @Enumerated(value = EnumType.STRING)
+  @Column(name = "TYP", nullable = false)
+  private val typ: NotifieringTyp
 
-    @Column(name = "MOTTAGARE_HSA_ID", nullable = false)
-    private val mottagareHsaId: String?
+  @Column(name = "MOTTAGARE_HSA_ID", nullable = false)
+  private val mottagareHsaId: String
 
-    @Column(name = "SKICKAD")
-    private val skickad: LocalDateTime?
+  @Column(name = "SKICKAD")
+  private val skickad: LocalDateTime?
 
-    init {
-        this.id = builder.id
-        this.typ = builder.typ
-        this.mottagareHsaId = builder.mottagareHsaId
-        this.skickad = builder.skickad
+  init {
+    this.id = builder.id
+    this.typ = builder.typ ?: throw IllegalArgumentException("typ may not be null")
+    this.mottagareHsaId = builder.mottagareHsaId ?: throw IllegalArgumentException("mottagareHsaId may not be null")
+    this.skickad = builder.skickad
+  }
+
+  class Builder {
+    var id: Long? = null
+    var typ: NotifieringTyp? = null
+    var mottagareHsaId: String? = null
+    var skickad: LocalDateTime? = null
+
+    fun id(id: Long?) = apply { this.id = id }
+    fun typ(typ: NotifieringTyp?) = apply { this.typ = typ }
+    fun mottagareHsaId(mottagareHsaId: String?) = apply { this.mottagareHsaId = mottagareHsaId }
+    fun skickad(skickad: LocalDateTime?) = apply { this.skickad = skickad }
+    fun build() = NotifieringEntity(this)
+  }
+
+  companion object Factory {
+
+    fun toDomain(notifieringEntity: NotifieringEntity): Notifiering {
+      return Notifiering(
+         id = notifieringEntity.id,
+         typ = notifieringEntity.typ,
+         mottagareHsaId = notifieringEntity.mottagareHsaId,
+         skickad = notifieringEntity.skickad)
     }
 
-    class Builder {
-        var id: Long? = null
-        var typ: NotifieringTyp? = null
-        var mottagareHsaId: String? = null
-        var skickad: LocalDateTime? = null
-
-        fun id(id: Long?) = apply { this.id = id }
-        fun typ(typ: NotifieringTyp?) = apply { this.typ = typ }
-        fun mottagareHsaId(mottagareHsaId: String?) = apply { this.mottagareHsaId = mottagareHsaId }
-        fun skickad(skickad: LocalDateTime?) = apply { this.skickad = skickad }
-        fun build() = NotifieringEntity(this)
+    fun toEntity(notifiering: Notifiering): NotifieringEntity {
+      return NotifieringEntity.Builder()
+         .id(notifiering.id)
+         .typ(notifiering.typ)
+         .mottagareHsaId(notifiering.mottagareHsaId)
+         .skickad(notifiering.skickad)
+         .build()
     }
-
-    companion object Factory {
-        fun toEntity(notifiering: Notifiering): NotifieringEntity {
-            return NotifieringEntity.Builder()
-               .id(notifiering.id)
-               .typ(notifiering.typ)
-               .mottagareHsaId(notifiering.mottagareHsaId)
-               .skickad(notifiering.skickad)
-               .build()
-        }
-    }
+  }
 }

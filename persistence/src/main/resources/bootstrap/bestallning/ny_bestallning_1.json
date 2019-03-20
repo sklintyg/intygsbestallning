@@ -28,5 +28,11 @@
       "kommentar": null
     }
   ],
-  "notifieringar": []
+  "notifieringar": [
+    {
+      "typ": "NY_BESTALLNING",
+      "mottagareHsaId": "hsaId",
+      "skickad": null
+    }
+  ]
 }
