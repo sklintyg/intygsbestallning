@@ -43,7 +43,7 @@ public class BestallningController {
             @RequestParam(value = "textSearch", required = false) String textSearch,
             @RequestParam(value = "pageIndex", required = false) Integer pageIndex,
             @RequestParam(value = "limit", required = false) Integer limit,
-            @RequestParam(value = "sortColumn", required = false) ListBestallningSortColumn sortableColumn,
+            @RequestParam(value = "sortColumn", required = false) ListBestallningSortColumn sortColumn,
             @RequestParam(value = "sortDirection", required = false) ListBestallningDirection sortDirection) {
 
         var statusar = Lists.<BestallningStatus>newArrayList();
@@ -62,8 +62,8 @@ public class BestallningController {
             limit = 50;
         }
 
-        if (sortableColumn == null) {
-            sortableColumn = ListBestallningSortColumn.ID;
+        if (sortColumn == null) {
+            sortColumn = ListBestallningSortColumn.ID;
         }
 
         if (sortDirection == null) {
@@ -71,7 +71,7 @@ public class BestallningController {
         }
 
         var result = listBestallningService.listByQuery(
-                new ListBestallningarQuery(statusar, textSearch, pageIndex, limit, sortableColumn, sortDirection));
+                new ListBestallningarQuery(statusar, textSearch, pageIndex, limit, sortColumn, sortDirection));
 
         return ResponseEntity.ok(result);
     }
