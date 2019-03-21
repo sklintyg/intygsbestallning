@@ -9,10 +9,21 @@ import {FlexColumnContainer, ScrollingContainer, WorkareaContainer} from "../lay
 import Footer from "../Footer/Footer";
 import styled from "styled-components";
 import Colors from '../style/IbColors';
+import ibValues from '../style/IbValues';
 
 const CustomScrollingContainer = styled(ScrollingContainer)`
   background-color:${Colors.IB_COLOR_27};
   max-width: none;
+`
+const CustWorkareaContainer = styled.div`
+  margin: auto;
+  width: 100%;
+  max-width: ${ibValues.maxContentWidth};
+  padding: 10px 30px 20px;
+`
+const SomeDiv = styled.div`
+  box-shadow: 0px 5px 9px -6px #000;
+  position: relative;
 `
 
 class BestallningContainer extends Component {
@@ -49,18 +60,20 @@ class BestallningContainer extends Component {
 
     return (
       <FlexColumnContainer>
-        <WorkareaContainer>
-          <div>
-            <span onClick={history.goBack}>Tillbaka till lista</span>
-            <span> :: Förfrågan av Intygstyp '{bestallning.intygName}'</span>
-            <span> :: Status {bestallning.status}</span>
-            <span> :: Inkom {bestallning.ankomstDatum}</span>
-          </div>
-          <hr />
-          <div>{bestallning.id}</div>
-          <div>{bestallning.patient.id} - {bestallning.patient.namn}</div>
-          <BestallningActionBar props={bestallning} />
-        </WorkareaContainer>
+        <SomeDiv>
+          <CustWorkareaContainer>
+            <div>
+              <span onClick={history.goBack}>Tillbaka till lista</span>
+              <span> :: Förfrågan av Intygstyp '{bestallning.intygName}'</span>
+              <span> :: Status {bestallning.status}</span>
+              <span> :: Inkom {bestallning.ankomstDatum}</span>
+            </div>
+            <hr />
+            <div>{bestallning.id}</div>
+            <div>{bestallning.patient.id} - {bestallning.patient.namn}</div>
+            <BestallningActionBar props={bestallning} />
+          </CustWorkareaContainer>
+        </SomeDiv>
         <CustomScrollingContainer>
           <WorkareaContainer>
             {bestallning.struktur.map((b, i) => <BestallningFraga key={i} props={b} />)}
