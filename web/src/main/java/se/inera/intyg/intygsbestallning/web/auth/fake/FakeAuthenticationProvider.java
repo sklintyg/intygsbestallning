@@ -46,6 +46,7 @@ import java.util.Collections;
 public class FakeAuthenticationProvider extends BaseFakeAuthenticationProvider {
 
     private SAMLUserDetailsService userDetails;
+
     @Autowired
     private CommonAuthoritiesResolver commonAuthoritiesResolver;
 

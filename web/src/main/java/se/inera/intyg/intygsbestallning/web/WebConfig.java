@@ -1,10 +1,6 @@
 package se.inera.intyg.intygsbestallning.web;
 
-import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
@@ -13,15 +9,21 @@ import org.apache.cxf.jaxws.EndpointImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import java.time.LocalDateTime;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.view.InternalResourceView;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import se.inera.intyg.intygsbestallning.web.controller.LocalDateTimeDeserializer;
 import se.inera.intyg.intygsbestallning.web.controller.LocalDateTimeSerializer;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning;
 
+import java.time.LocalDateTime;
+
 @Configuration
 @ComponentScan(basePackages = "se.inera.intyg.intygsbestallning.web")
+@ImportResource({"classpath:META-INF/cxf/cxf.xml"})
 public class WebConfig {
 
     private Bus bus;
@@ -35,6 +37,16 @@ public class WebConfig {
     @Bean(name = "jacksonJsonProvider")
     public JacksonJaxbJsonProvider jacksonJsonProvider() {
         return new JacksonJaxbJsonProvider();
+    }
+
+    @Bean
+    public ViewResolver viewResolver() {
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setOrder(0);
+        viewResolver.setViewClass(InternalResourceView.class);
+        viewResolver.setPrefix("/");
+        viewResolver.setSuffix(".html");
+        return viewResolver;
     }
 
     @Bean

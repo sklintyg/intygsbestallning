@@ -13,7 +13,7 @@ plugins {
 dependencies {
   // Project dependencies
   implementation(project(":common"))
-  implementation(project(":integration"))
+  compile(project(":integration"))
   implementation(project(":persistence"))
   implementation(project(":mail-sender"))
 
@@ -36,8 +36,6 @@ dependencies {
   implementation("org.antlr:stringtemplate:${Dependencies.stringTemplateVersion}")
 
   implementation("org.springframework.security.extensions:spring-security-saml2-core:1.0.3.RELEASE")
-
-
   // Test dependencies
   testImplementation(kotlin("test"))
   testImplementation("org.springframework.boot:spring-boot-starter-test")

@@ -33,12 +33,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -75,12 +78,15 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
@@ -102,12 +108,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
 @EnableWebSecurity
 @PropertySource("file:${credentials.file}")
-@ComponentScan({"se.inera.intyg.infra.security.authorities", "se.inera.intyg.intygsbestallning.web.auth.config"})
-@Order
-public class BaseSecurityConfig extends WebSecurityConfigurerAdapter implements InitializingBean, DisposableBean {
+@ComponentScan({"se.inera.intyg.infra.security.authorities", "org.springframework.security.saml"})
+public class BaseSecurityConfig implements InitializingBean, DisposableBean {
 
     private MultiThreadedHttpConnectionManager multiThreadedHttpConnectionManager;
 
@@ -134,11 +138,8 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter implements 
     @Autowired
     private IntygsbestallningUserDetailsService userDetailsService;
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     // Initialization of the velocity engine
     @Bean
@@ -161,7 +162,6 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter implements 
     public HttpClient httpClient() {
         return new HttpClient(this.multiThreadedHttpConnectionManager);
     }
-
 
     // SAML 2.0 WebSSO Assertion Consumer
     @Bean
@@ -204,7 +204,7 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter implements 
     }
 
     @Bean
-    public FakeAuthenticationProvider ibAuthenticationProvider() {
+    public FakeAuthenticationProvider fakeAuthenticationProvider() {
         FakeAuthenticationProvider fakeAuthenticationProvider = new FakeAuthenticationProvider();
         fakeAuthenticationProvider.setUserDetails(userDetailsService);
         return fakeAuthenticationProvider;
@@ -343,11 +343,9 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter implements 
     @Bean
     public IntygsbestallningSAMLEntryPoint samlEntryPoint() {
         IntygsbestallningSAMLEntryPoint entryPoint = new IntygsbestallningSAMLEntryPoint();
-
         WebSSOProfileOptions options = new WebSSOProfileOptions();
         options.setIncludeScoping(false);
         options.setAuthnContexts(Lists.newArrayList("urn:oasis:names:tc:SAML:2.0:ac:classes:TLSClient"));
-
         entryPoint.setDefaultProfileOptions(options);
         return entryPoint;
     }
@@ -355,14 +353,14 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter implements 
     @Bean
     public FilterChainProxy samlFilter() throws Exception {
         List<SecurityFilterChain> chains = new ArrayList<>();
-        chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/login/**"),
-                samlEntryPoint()));
-        chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/logout/**"),
-                samlLogoutFilter()));
-        chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/SSO/**"),
-                samlWebSSOProcessingFilter()));
-        chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/SingleLogout/**"),
-                samlLogoutProcessingFilter()));
+        chains.add(new DefaultSecurityFilterChain(
+                new AntPathRequestMatcher("/saml/login/**"), samlEntryPoint()));
+        chains.add(new DefaultSecurityFilterChain(
+                new AntPathRequestMatcher("/saml/logout/**"), samlLogoutFilter()));
+        chains.add(new DefaultSecurityFilterChain(
+                new AntPathRequestMatcher("/saml/SSO/**"), samlWebSSOProcessingFilter()));
+        chains.add(new DefaultSecurityFilterChain(
+                new AntPathRequestMatcher("/saml/SingleLogout/**"), samlLogoutProcessingFilter()));
         return new FilterChainProxy(chains);
     }
 
@@ -391,9 +389,9 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter implements 
     }
 
     @Bean
-    public SAMLProcessingFilter samlWebSSOProcessingFilter() throws Exception {
+    public SAMLProcessingFilter samlWebSSOProcessingFilter() {
         SAMLProcessingFilter samlWebSSOProcessingFilter = new SAMLProcessingFilter();
-        samlWebSSOProcessingFilter.setAuthenticationManager(authenticationManager());
+        samlWebSSOProcessingFilter.setAuthenticationManager(authenticationManager);
         samlWebSSOProcessingFilter.setSessionAuthenticationStrategy(registerSessionAuthenticationStrategy());
         samlWebSSOProcessingFilter.setAuthenticationSuccessHandler(successRedirectHandler());
         samlWebSSOProcessingFilter.setAuthenticationFailureHandler(failureHandler());
@@ -401,9 +399,9 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter implements 
     }
 
     @Bean
-    public FakeAuthenticationFilter fakeAuthenticationFilter()  throws Exception {
+    public FakeAuthenticationFilter fakeAuthenticationFilter() {
         FakeAuthenticationFilter fakeAuthenticationFilter = new FakeAuthenticationFilter();
-        fakeAuthenticationFilter.setAuthenticationManager(authenticationManager());
+        fakeAuthenticationFilter.setAuthenticationManager(authenticationManager);
         fakeAuthenticationFilter.setSessionAuthenticationStrategy(registerSessionAuthenticationStrategy());
         fakeAuthenticationFilter.setAuthenticationSuccessHandler(fakeSuccessHandler());
         fakeAuthenticationFilter.setAuthenticationFailureHandler(failureHandler());
@@ -474,11 +472,6 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter implements 
         return extendedMetadata;
     }
 
-    // This is needed for some reason
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-    }
-
     @Override
     public void afterPropertiesSet() {
         init();
@@ -489,4 +482,114 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter implements 
         shutdown();
     }
 
+    @Configuration
+    @Order
+    public class SecurityConfig extends WebSecurityConfigurerAdapter {
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .antMatcher("/")
+                    .antMatcher("/index.html")
+                    .antMatcher("/app/**")
+                    .antMatcher("/assets/**")
+                    .antMatcher("/components/**")
+                    .antMatcher("/saml/web/**")
+                    .antMatcher("/saml2/web/**")
+                    .antMatcher("/services/**")
+                    .antMatcher("/api/config/**")
+                    .authorizeRequests().anyRequest().permitAll()
+                .and()
+                    .httpBasic();
+        }
+    }
+
+    @Configuration
+    @Profile("ib-security-test")
+    @Order(1)
+    public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
+
+        @Override
+        @Bean
+        public AuthenticationManager authenticationManagerBean() throws Exception {
+            return super.authenticationManagerBean();
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            // Unauthenticated requests matching samlRequestMatcher will be sent to saml login flow
+            http
+                .httpBasic()
+                    .authenticationEntryPoint(samlEntryPoint())
+                .and()
+                    .csrf().disable()
+                    .headers().frameOptions().disable()
+                .and()
+                    .addFilterAt(fakeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
+                    .addFilterAfter(samlFilter(), BasicAuthenticationFilter.class)
+                    .sessionManagement()
+                    .sessionAuthenticationStrategy(registerSessionAuthenticationStrategy())
+                .and()
+                    .requestMatcher(samlRequestMatcher())
+                    .authorizeRequests().antMatchers("/**").fullyAuthenticated()
+                .and()
+                    .requestCache()
+                    .requestCache(requestCache());
+
+            //Other unauthenticated requests will be returned as http status 403.
+            //This will allow frontend to act correctly on ajax requests
+            http
+                .httpBasic()
+                    .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
+                .and()
+                    .csrf().disable()
+                    .logout()
+                    .invalidateHttpSession(true)
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/#/app")
+                .and()
+                    .authorizeRequests().antMatchers("/**").fullyAuthenticated()
+                .and()
+                    .addFilterAt(fakeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
+                    .addFilterAfter(fakeAuthenticationFilter(), BasicAuthenticationFilter.class)
+                    .sessionManagement()
+                    .sessionAuthenticationStrategy(registerSessionAuthenticationStrategy());
+
+        }
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth
+                    .authenticationProvider(samlAuthenticationProvider())
+                    .authenticationProvider(fakeAuthenticationProvider());
+        }
+    }
+
+    /*@Configuration
+    @Profile("dev-security")
+    @Order(2)
+    public class DevSecurityConfig extends BaseSecurityConfig {
+        @Autowired
+        public AuthenticationManager authenticationManagerBean;
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            super.configure(http);
+            http
+                    .authorizeRequests().antMatchers("/h2-console/**").permitAll().and()
+                    .authorizeRequests().anyRequest().permitAll();
+
+            http
+                    .headers().frameOptions().disable();
+
+            http
+                    .csrf().disable();
+        }
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            super.configure(auth);
+            auth
+                    .authenticationProvider(fakeAuthenticationProvider());
+        }
+    }*/
 }

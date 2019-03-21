@@ -17,7 +17,7 @@ spring:
   liquibase:
     change-log: classpath:/changelog/db-changelog-master.xml
   profiles:
-    active: default, myndighet-stub, dev, caching-enabled, dev-security
+    active: default, myndighet-stub, dev, caching-enabled, ib-security-test, wc-hsa-stub
   main:
     allow-bean-definition-overriding: true
 

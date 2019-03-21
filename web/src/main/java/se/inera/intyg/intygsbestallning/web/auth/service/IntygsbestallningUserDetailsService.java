@@ -21,6 +21,9 @@ package se.inera.intyg.intygsbestallning.web.auth.service;
 import org.opensaml.saml2.core.Assertion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.springframework.stereotype.Service;
@@ -42,7 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class IntygsbestallningUserDetailsService extends BaseUserDetailsService implements SAMLUserDetailsService {
+public class IntygsbestallningUserDetailsService extends BaseUserDetailsService implements UserDetailsService {
 
     private static final Logger LOG = LoggerFactory.getLogger(IntygsbestallningUserDetailsService.class);
 
@@ -51,7 +54,7 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
         if (credential == null) {
             throw new GenericAuthenticationException("SAMLCredential has not been set.");
         }
-        LOG.info("ENTER - loadUserBySAML with relayState " + credential.getRelayState());
+        LOG.info("ENTER - loadUserBySAML");
         return super.loadUserBySAML(credential);
     }
 
@@ -135,4 +138,8 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
         return super.getAssertion(assertion);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
+    }
 }
