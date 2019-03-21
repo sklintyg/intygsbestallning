@@ -1,5 +1,6 @@
 import 'react-app-polyfill/ie11';
 import 'polyfill-array-includes';
+import 'typeface-roboto';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux'
