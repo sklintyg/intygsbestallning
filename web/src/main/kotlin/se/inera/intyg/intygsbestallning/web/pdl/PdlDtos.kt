@@ -18,11 +18,10 @@
  */
 package se.inera.intyg.intygsbestallning.web.pdl
 
-import java.time.LocalDateTime
-
 import se.inera.intyg.infra.logmessages.ActivityPurpose
 import se.inera.intyg.infra.logmessages.ActivityType
 import se.inera.intyg.infra.logmessages.ResourceType
+import java.time.LocalDateTime
 
 data class LogMessage(val activity: LogActivity, val resources: List<LogResource>)
 
