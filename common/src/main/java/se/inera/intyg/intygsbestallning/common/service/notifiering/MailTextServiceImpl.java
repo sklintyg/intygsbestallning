@@ -1,6 +1,5 @@
 package se.inera.intyg.intygsbestallning.common.service.notifiering;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.invoke.MethodHandles.lookup;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -15,13 +14,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import se.inera.intyg.intygsbestallning.common.domain.IntygTyp;
 import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
-import se.inera.intyg.intygsbestallning.common.mail.MailContent;
 import se.inera.intyg.intygsbestallning.common.property.MailProperties;
+import se.inera.intyg.intygsbestallning.common.text.mail.MailContent;
 
 @Service
 public class MailTextServiceImpl implements MailTextService {
@@ -29,7 +26,7 @@ public class MailTextServiceImpl implements MailTextService {
     private static final Logger LOG = LoggerFactory.getLogger(lookup().lookupClass());
     private static final String ACTION = "Initiate Intygsbestallning Mail Text Resources";
 
-    private List<MailContent> mailContentList = newArrayList();
+    private List<MailContent> mailContentList = Lists.newArrayList();
 
     private MailProperties mailProperties;
 

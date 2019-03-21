@@ -23,7 +23,7 @@ import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
 import se.inera.intyg.intygsbestallning.web.bestallning.AccepteraBestallning;
 import se.inera.intyg.intygsbestallning.web.bestallning.BestallningStatusKategori;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.AccepteraBestallningService;
-import se.inera.intyg.intygsbestallning.web.service.bestallning.GetBestallningService;
+import se.inera.intyg.intygsbestallning.web.service.bestallning.VisaBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.ListBestallningService;
 
 @RestController
@@ -32,15 +32,15 @@ public class BestallningController {
 
     private AccepteraBestallningService accepteraBestallningService;
     private ListBestallningService listBestallningService;
-    private GetBestallningService getBestallningService;
+    private VisaBestallningService visaBestallningService;
 
     public BestallningController(
             AccepteraBestallningService accepteraBestallningService,
             ListBestallningService listBestallningService,
-            GetBestallningService getBestallningService) {
+            VisaBestallningService visaBestallningService) {
         this.accepteraBestallningService = accepteraBestallningService;
         this.listBestallningService = listBestallningService;
-        this.getBestallningService = getBestallningService;
+        this.visaBestallningService = visaBestallningService;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -100,7 +100,7 @@ public class BestallningController {
             throw new IllegalArgumentException("Id could not be converted to Long value");
         }
 
-        var aktuellBestallning = getBestallningService.getBestallningById(idLong);
+        var aktuellBestallning = visaBestallningService.getBestallningById(idLong);
 
         if (aktuellBestallning.isPresent()) {
             return ResponseEntity.ok(aktuellBestallning);

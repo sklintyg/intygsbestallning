@@ -11,6 +11,7 @@ dependencies {
     compile("com.fasterxml.jackson.datatype:jackson-datatype-jdk8")
     compile("com.fasterxml.jackson.module:jackson-module-kotlin")
 
+
     implementation("io.vavr:vavr:${Dependencies.vavrVersion}")
     implementation("org.antlr:stringtemplate:${Dependencies.stringTemplateVersion}")
 

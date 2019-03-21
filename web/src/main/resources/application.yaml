@@ -37,6 +37,9 @@ mail:
     starttls.enable: true
     debug: false
 
+bestallning:
+  text-resource-path: ${resources.folder}/texter/bestallning/
+
 #AUTH
 authorities:
   configuration:

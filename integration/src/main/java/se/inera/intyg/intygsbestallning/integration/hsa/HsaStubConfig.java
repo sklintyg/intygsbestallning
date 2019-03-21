@@ -26,16 +26,15 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Profile;
 import se.inera.intyg.infra.integration.hsa.stub.HsaServiceStub;
 
-/**
- * Created by eriklupander on 2016-01-18.
- */
 @Configuration
 @ComponentScan("se.inera.intyg.infra.integration.hsa")
+@ComponentScan(basePackages = {"se.inera.intyg.infra.integration.hsa.services", "se.inera.intyg.infra.integration.hsa.stub"})
 @ImportResource("classpath:hsa-stub-context.xml")
 @Profile({ "dev", "hsa-stub" })
 public class HsaStubConfig {
+
     @Bean
-    HsaServiceStub hsaServiceStub() {
+    public HsaServiceStub hsaServiceStub() {
         return new HsaServiceStub();
     }
 

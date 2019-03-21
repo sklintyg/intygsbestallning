@@ -1,4 +1,4 @@
-package se.inera.intyg.intygsbestallning.common.mail
+package se.inera.intyg.intygsbestallning.common.text.mail
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement

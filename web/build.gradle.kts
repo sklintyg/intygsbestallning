@@ -66,10 +66,10 @@ tasks {
 
   bootRun {
     systemProperties = mapOf(
-            "resource.dir" to "${project.projectDir}/../src/main/resources",
-            "certificate.folder" to "${project.projectDir}/../devops/openshift/test/env",
-            "config.dir" to "${project.projectDir}/../devops/openshift/test/config",
-            "credentials.file" to "${project.projectDir}/../devops/openshift/test/env/secret-env.properties"
+       "resource.dir" to "${project.projectDir}/../src/main/resources",
+       "certificate.folder" to "${project.projectDir}/../devops/openshift/test/env",
+       "config.dir" to "${project.projectDir}/../devops/openshift/test/config",
+       "credentials.file" to "${project.projectDir}/../devops/openshift/test/env/secret-env.properties"
     )
 
   }

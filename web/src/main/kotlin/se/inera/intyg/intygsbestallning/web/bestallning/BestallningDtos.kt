@@ -5,7 +5,7 @@ import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus.*
 
 data class AccepteraBestallning(val fritextForklaring: String? = null)
 
-enum class BestallningStatusKategori(var list: List<BestallningStatus>) {
+enum class BestallningStatusKategori(val list: List<BestallningStatus>) {
   AKTUELLA(listOf(OLAST, LAST, ACCEPTERAD)),
   KLARA(listOf(KLAR)),
   AVVISADE(listOf(AVVISAD, RADERAD))
