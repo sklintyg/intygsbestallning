@@ -4,11 +4,20 @@ import styled from 'styled-components'
 import Footer from "../components/Footer/Footer";
 import {IB_TYPO_02} from "../components/style/IbTypography";
 import {FlexColumnContainer, ScrollingContainer, WorkareaContainer} from "../components/layout/body";
+import ibValues from "../components/style/IbValues";
 
+const CustomScrollingContainer = styled(ScrollingContainer)`
+  max-width: none;
+`
 
 const PageContainer = styled(WorkareaContainer)`
+  margin: auto;
+  width: 100%;
+  max-width: ${ibValues.maxContentWidth};
   display: flex;
   flex-direction: row;
+  min-height: calc(100vh - 290px);
+  padding-bottom: 60px;
   
   section {
   padding-right: 30px;
@@ -34,7 +43,7 @@ const Welcome = styled(IB_TYPO_02)`
 const HomePage = () => {
   return (
     <FlexColumnContainer>
-      <ScrollingContainer>
+      <CustomScrollingContainer>
         <PageContainer>
           <section><img src={landing} alt="Landningssida med illustration av stetoskop" /></section>
           <section>
@@ -50,8 +59,9 @@ const HomePage = () => {
             <button>Logga in</button>
           </section>
         </PageContainer>
-      </ScrollingContainer>
-      <Footer />
+        <Footer />
+      </CustomScrollingContainer>
+
     </FlexColumnContainer>
   )
 };
