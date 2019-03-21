@@ -18,7 +18,7 @@
  */
 package se.inera.intyg.intygsbestallning.web.auth;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import se.inera.intyg.infra.integration.hsa.model.Vardenhet;
 import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
 
