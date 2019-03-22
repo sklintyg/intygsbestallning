@@ -65,6 +65,7 @@ subprojects {
 
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.platform:junit-platform-runner")
+    testImplementation("io.github.benas:random-beans:${TestDependencies.randomBeansVersion}")
 
     testImplementation("org.mockito:mockito-core:${TestDependencies.mockitoCoreVersion}")
     testImplementation("org.mockito:mockito-junit-jupiter:${TestDependencies.mockitoCoreVersion}")
