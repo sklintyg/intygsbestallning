@@ -1,0 +1,7 @@
+pdl:
+  system-id: dev-id
+  system-name: dev-name
+
+spring:
+  main:
+    allow-bean-definition-overriding: true

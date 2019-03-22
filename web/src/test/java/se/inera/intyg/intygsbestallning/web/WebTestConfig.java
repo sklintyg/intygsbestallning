@@ -6,7 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @ComponentScan(basePackages = "se.inera.intyg.intygsbestallning.web")
-@PropertySource("classpath:test.yaml")
+@PropertySource("classpath:application-test.yaml")
 public class WebTestConfig {
 
 }
