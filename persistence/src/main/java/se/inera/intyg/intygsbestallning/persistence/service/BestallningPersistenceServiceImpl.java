@@ -1,18 +1,23 @@
 package se.inera.intyg.intygsbestallning.persistence.service;
 
 import com.google.common.collect.MoreCollectors;
-import kotlin.Pair;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
+import com.querydsl.core.types.Predicate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import javax.transaction.Transactional;
+import kotlin.Pair;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.IntygTyp;
@@ -111,6 +116,20 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
         return bestallningRepository.findById(id)
                 .map(BestallningEntity.Factory::toDomain);
     }
+
+    @Override
+    public Page<Bestallning> list(Predicate predicate, Pageable pageable) {
+        var page = bestallningRepository.findAll(predicate, pageable);
+        return map(page, BestallningEntity.Factory::toDomain);
+    }
+
+    <D, E> Page<D> map(Page<E> page, Function<E, D> mapper) {
+        return new PageImpl<>(
+                page.getContent().stream().map(mapper).collect(Collectors.toList()),
+                page.getPageable(),
+                page.getTotalElements());
+    }
+
 
     private Optional<Long> getValidLong(String potentialLongString) {
         if (potentialLongString != null) {

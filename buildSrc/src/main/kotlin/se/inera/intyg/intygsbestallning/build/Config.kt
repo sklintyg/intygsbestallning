@@ -40,6 +40,7 @@ object Config {
     const val jaxServletApiVersion = "4.0.1"
     const val jaxVersion = "2.3.0"
     const val jaxWsVersion = "2.3.0"
+    const val querydslVersion = "4.2.1"
 
   }
 

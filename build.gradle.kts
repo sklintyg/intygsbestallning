@@ -68,6 +68,8 @@ subprojects {
 
     testImplementation("org.mockito:mockito-core:${TestDependencies.mockitoCoreVersion}")
     testImplementation("org.mockito:mockito-junit-jupiter:${TestDependencies.mockitoCoreVersion}")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation(kotlin("test"))
   }
 
   tasks {

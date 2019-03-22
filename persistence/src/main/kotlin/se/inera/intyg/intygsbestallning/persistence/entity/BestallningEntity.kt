@@ -1,9 +1,12 @@
 package se.inera.intyg.intygsbestallning.persistence.entity
 
+import com.querydsl.core.annotations.PropertyType
+import com.querydsl.core.annotations.QueryType
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus
 import se.inera.intyg.intygsbestallning.common.domain.IntygTyp
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.persistence.*
 
 @Entity
@@ -45,6 +48,11 @@ class BestallningEntity private constructor(builder: Builder) {
   @JoinColumn(name = "BESTALLNING_ID", referencedColumnName = "ID", nullable = false)
   val notifieringar: List<NotifieringEntity>
 
+  // to be able to make a text search
+  @Transient
+  @QueryType(PropertyType.STRING)
+  var textSearch: String = ""
+
   init {
     this.id = builder.id
     this.intygTyp = builder.intygTyp ?: throw IllegalArgumentException("intygTyp may not be null")
@@ -81,7 +89,6 @@ class BestallningEntity private constructor(builder: Builder) {
   }
 
   companion object Factory {
-
     fun toDomain(bestallningEntity: BestallningEntity): Bestallning {
       return Bestallning(
          id = bestallningEntity.id!!,

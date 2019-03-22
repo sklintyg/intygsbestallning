@@ -1,6 +1,10 @@
 package se.inera.intyg.intygsbestallning.web.controller;
 
 import com.google.common.collect.Lists;
+import com.querydsl.core.types.Predicate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,11 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.dto.AccepteraBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningSortColumn;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
+import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
 import se.inera.intyg.intygsbestallning.web.bestallning.AccepteraBestallning;
 import se.inera.intyg.intygsbestallning.web.bestallning.BestallningStatusKategori;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.AccepteraBestallningService;
@@ -74,6 +80,14 @@ public class BestallningController {
                 new ListBestallningarQuery(statusar, textSearch, pageIndex, limit, sortColumn, sortDirection));
 
         return ResponseEntity.ok(result);
+    }
+
+    // Alternative Spring Rest Querydsl API
+    // Handling query conditions, paging and sorting
+    @GetMapping("/qdsl")
+    public ResponseEntity<Page<Bestallning>> list(@QuerydslPredicate(root = BestallningEntity.class) Predicate predicate,
+                                                  Pageable pageable) {
+        return ResponseEntity.ok(listBestallningService.list(predicate, pageable));
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
