@@ -1,8 +1,15 @@
+
+@import 'ibColors';
+
 // Override default variables before the import
 $font-family-sans-serif: Roboto, "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-$body-bg:       #fff;
-$primary:       #496CEC;
-//$secondary:     #eee;
+$font-size-base: 0.875rem; //This will set base font-size to equivalent of 14px ( default in browsers is 1rem = 16 px, so 16/14 = 0.875rem)
+
+$info: $ib-color-03;
+$primary: $ib-color-21;
+
+//We use icon to the left of actual alert-text, do decrease horizontal padding.
+$alert-padding-x: 0.5rem;
 
 // Import only what we use from Bootstrap scss components
 @import '~bootstrap/scss/_functions';
@@ -13,7 +20,7 @@ $primary:       #496CEC;
 @import '~bootstrap/scss/_type';
 //@import '~bootstrap/scss/_images';
 //@import '~bootstrap/scss/_code';
-//@import '~bootstrap/scss/_grid';
+@import '~bootstrap/scss/_grid';
 //@import '~bootstrap/scss/_tables';
 //@import '~bootstrap/scss/_forms';
 @import '~bootstrap/scss/_buttons';
@@ -24,7 +31,7 @@ $primary:       #496CEC;
 //@import '~bootstrap/scss/_custom-forms';
 //@import '~bootstrap/scss/_nav';
 //@import '~bootstrap/scss/_navbar';
-@import '~bootstrap/scss/_card';
+//@import '~bootstrap/scss/_card';
 //@import '~bootstrap/scss/_breadcrumb';
 @import '~bootstrap/scss/_pagination';
 //@import '~bootstrap/scss/_badge';
@@ -51,4 +58,6 @@ $primary:       #496CEC;
   justify-content:flex-start;
 }
 
-
+.alert-info {
+  color: $ib-color-06;
+}

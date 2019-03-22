@@ -28,23 +28,12 @@ export const IB_TYPO_06 = styled.div`
 
 export const IB_TYPO_07 = styled.div`
   font-weight: 400;
-  font-size: 14px;
 `
 
-//Base component for a internal link
-export const InternalLink = styled.a`
-  background: transparent
-  cursor: pointer
-  text-decoration: none;
-  font-size: 14px;
+export const TextNormal = styled(IB_TYPO_07)`
   color: ${IbColors.IB_COLOR_08}
-  
-  :hover {
-    text-decoration: underline;
-    color: ${IbColors.IB_COLOR_21}
-  }
-  
 `
+
 
 
 

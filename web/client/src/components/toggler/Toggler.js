@@ -4,8 +4,10 @@ import * as PropTypes from "prop-types";
 import {CollapseIcon, ExpandIcon} from "../style/IbSvgIcons";
 
 
-const TogglerTag = styled.a`
+const TogglerTag = styled.button`
   padding: 4px;
+  border: none;
+  background: transparent; 
 `
 const Toggler = ({expanded, handleToggle}) => (
   <TogglerTag onClick={handleToggle}>

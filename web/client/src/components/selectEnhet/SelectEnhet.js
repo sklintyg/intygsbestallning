@@ -6,7 +6,7 @@ import Vardgivare from "./Vardgivare";
 
 const ComponentWrapper = styled.div`
   padding: 8px;
-  max-width: 400px;
+  max-width: 500px;
   
 `
 
@@ -18,11 +18,11 @@ function SelectEnhet(props) {
   return (
     <ComponentWrapper>
       {vardgivare.map(vg => {
-          return (
-            <React.Fragment key={vg.id}>
-              <Vardgivare vg={vg} initiallyExpanded={true} currentVardenhet={currentVardenhet}
-                          handleSelect={handleSelect} />
-            </React.Fragment>
+          return (<Vardgivare key={vg.id}
+                              vg={vg}
+                              initiallyExpanded={true}
+                              currentVardenhet={currentVardenhet}
+                              handleSelect={handleSelect} />
           );
         }
       )}
