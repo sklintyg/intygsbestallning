@@ -23,7 +23,6 @@ import java.time.LocalDateTime;
 
 @Configuration
 @ComponentScan(basePackages = "se.inera.intyg.intygsbestallning.web")
-@ImportResource({"classpath:META-INF/cxf/cxf.xml"})
 public class WebConfig {
 
     private Bus bus;

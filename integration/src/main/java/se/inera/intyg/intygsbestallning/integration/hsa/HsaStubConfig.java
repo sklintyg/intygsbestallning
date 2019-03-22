@@ -30,7 +30,7 @@ import se.inera.intyg.infra.integration.hsa.stub.HsaServiceStub;
  * Created by eriklupander on 2016-01-18.
  */
 @Configuration
-@ComponentScan("se.inera.intyg.infra.integration.hsa.services")
+@ComponentScan("se.inera.intyg.infra.integration.hsa")
 @ImportResource("classpath:hsa-stub-context.xml")
 @Profile({ "dev", "hsa-stub" })
 public class HsaStubConfig {

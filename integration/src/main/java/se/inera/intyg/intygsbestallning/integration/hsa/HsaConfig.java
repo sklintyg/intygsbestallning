@@ -27,7 +27,7 @@ import org.springframework.context.annotation.ImportResource;
  * Created by eriklupander on 2016-05-18.
  */
 @Configuration
-@ComponentScan("se.inera.intyg.infra.integration.hsa.services")
+@ComponentScan("se.inera.intyg.infra.integration.hsa")
 @Import(HsaStubConfig.class)
 @ImportResource("classpath:hsa-services-config.xml")
 public class HsaConfig {

@@ -1,6 +1,6 @@
 ntjp:
   base:
-    url: localhost:8080/services/stubs
+    url: http://localhost:8080/services/stubs
 
 infrastructure:
   directory:
