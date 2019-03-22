@@ -1,6 +1,7 @@
 package se.inera.intyg.intygsbestallning.persistence.service;
 
 
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,13 @@ public class BestallningPersistenceServiceTest extends TestSupport {
 
     @Test
     public void findTest() {
-        var e1 = bestallningRepository.save(randomize(BestallningEntity.class));
-        var e2 = bestallningRepository.save(randomize(BestallningEntity.class));
+        bestallningRepository.saveAll(
+                random.objects(BestallningEntity.class, 2)
+                        .collect(Collectors.toList())
+        );
         var list = bestallningRepository.findAll();
         assertEquals(2, list.size());
     }
-
 
 
 }

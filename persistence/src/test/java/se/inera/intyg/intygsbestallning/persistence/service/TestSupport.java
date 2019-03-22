@@ -9,7 +9,7 @@ import static io.github.benas.randombeans.FieldPredicates.named;
 import static io.github.benas.randombeans.FieldPredicates.ofType;
 
 public abstract class TestSupport {
-    static EnhancedRandom random = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
+    public static EnhancedRandom random = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
             .randomizationDepth(10)
             .charset(Charsets.UTF_8)
             .excludeField(named("id").and(ofType(Long.class)))
