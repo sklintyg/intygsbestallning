@@ -20,9 +20,9 @@ package se.inera.intyg.intygsbestallning.common.json;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -30,26 +30,35 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class CustomObjectMapper extends ObjectMapper {
+public class CustomObjectMapper extends XmlMapper {
+
+    private static final long serialVersionUID = 1L;
 
     public CustomObjectMapper() {
         setSerializationInclusion(JsonInclude.Include.ALWAYS);
+
         configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        registerModule(new Module());
+
+        registerModule(new JaxbAnnotationModule());  // support the standard JAXB annotations
+        registerModule(new LocalDateTimeSezializerModule());
         registerModule(new Jdk8Module());
 
         setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
     }
 
-    private static final class Module extends SimpleModule {
-        private Module() {
+    private static final class LocalDateTimeSezializerModule extends SimpleModule {
+
+        private static final long serialVersionUID = 1L;
+
+        private LocalDateTimeSezializerModule() {
             addSerializer(LocalDateTime.class, LocalDateTimeSerializer.INSTANCE);
             addDeserializer(LocalDateTime.class, LocalDateTimeDeserializer.INSTANCE);
 
