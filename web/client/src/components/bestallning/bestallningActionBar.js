@@ -1,48 +1,34 @@
-import React, {Component} from 'react';
-import * as actions from '../../store/actions/bestallning';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import React, {Fragment} from 'react'
+import * as actions from '../../store/actions/bestallning'
+import { connect } from 'react-redux'
+import { Button } from 'reactstrap'
+import { compose } from 'recompose'
 
-class BestallningActionBar extends Component {
-  accept = () => {
-    const { setStatus, bestallning } = this.props;
+const BestallningActionBar = ({bestallning, setStatus}) => {
+
+  const accept = () => {
     setStatus(bestallning.id, 'ACCEPTED');
   }
   
-  reject = () => {
-    const { setStatus, bestallning } = this.props;
+  const reject = () => {
     setStatus(bestallning.id, 'REJECTED');
   }
   
-  complete = () => {
-    const { setStatus, bestallning } = this.props;
+  const complete = () => {
     setStatus(bestallning.id, 'COMPLETED');
   }
 
-  render() {
-    const { bestallning } = this.props;
-    return (
-      <div>
-        { bestallning.status === 'LAST' ? <button onClick={ this.accept }>Acceptera</button> : null }
-        { bestallning.status === 'LAST' ? <button onClick={ this.reject }>Avvisa</button> : null }
-        { bestallning.status === 'ACCEPTERAD' ? <button onClick={ this.complete }>Klarmakera</button> : null }
-        <button>Vidarebefodra</button>
-        <button>Skriv ut</button>
-      </div>
-    )
-  }
+  return (
+    <Fragment>
+      { bestallning.status === 'LAST' ? <Button onClick={accept}>Acceptera</Button> : null }
+      { bestallning.status === 'LAST' ? <Button onClick={reject}>Avvisa</Button> : null }
+      { bestallning.status === 'ACCEPTERAD' ? <Button outline={true} onClick={complete}>Klarmakera</Button> : null }
+      <Button>Vidarebefodra</Button>
+      <Button>Skriv ut</Button>
+    </Fragment>
+  )
 };
 
-const mapStateToProps = (state, { props }) => {
-  return {
-    bestallning: props
-  };
-};
-
-BestallningActionBar = withRouter(connect(
-  mapStateToProps,
-  actions,
-)(BestallningActionBar));
-
-
-export default BestallningActionBar;
+export default compose(
+  connect(null, actions)
+)(BestallningActionBar);

@@ -1,8 +1,8 @@
-import React from 'react';
-import Styled from 'styled-components';
-import * as Resources from './resources';
-import Colors from '../style/IbColors';
-import * as Typo from '../style/IbTypography';
+import React from 'react'
+import Styled from 'styled-components'
+import * as Resources from './resources'
+import Colors from '../style/IbColors'
+import * as Typo from '../style/IbTypography'
 
 const Fraga = Styled.div`
   width: 756px;
