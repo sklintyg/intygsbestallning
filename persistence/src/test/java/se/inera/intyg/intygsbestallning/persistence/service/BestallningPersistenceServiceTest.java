@@ -2,7 +2,6 @@ package se.inera.intyg.intygsbestallning.persistence.service;
 
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
@@ -12,9 +11,7 @@ import se.inera.intyg.intygsbestallning.persistence.repository.BestallningReposi
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-// FIXME: works in intellij but not from command line, so itäs disabled for now
 @TestContext
-@Disabled
 public class BestallningPersistenceServiceTest extends TestSupport {
 
     @Autowired

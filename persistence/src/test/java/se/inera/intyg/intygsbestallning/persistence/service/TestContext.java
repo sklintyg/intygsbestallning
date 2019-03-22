@@ -7,11 +7,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import javax.transaction.Transactional;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import se.inera.intyg.intygsbestallning.persistence.PersistenceConfig;
 
 @SpringJUnitConfig(PersistenceConfig.class)
+@ActiveProfiles("test")
 @EnableAutoConfiguration
 @TestPropertySource("classpath:test.properties")
 @Transactional
