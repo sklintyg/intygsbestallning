@@ -1,4 +1,4 @@
-package se.inera.intyg.intygsbestallning.persistence.service;
+package se.inera.intyg.intygsbestallning.persistence;
 
 
 import java.lang.annotation.ElementType;
@@ -19,5 +19,5 @@ import se.inera.intyg.intygsbestallning.persistence.PersistenceConfig;
 @Transactional
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(value = RetentionPolicy.RUNTIME)
-@interface TestContext {
+public @interface TestContext {
 }
