@@ -9,7 +9,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import configureStore from './store/configureStore';
 
-import './components/style/bootstrap-overrides.scss';
+import './components/styles/bootstrap-overrides.scss';
 
 const store = configureStore();
 ReactDOM.render(

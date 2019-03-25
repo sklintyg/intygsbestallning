@@ -4,11 +4,11 @@ import Unit from "./unit/Unit";
 
 import User from "./user/User";
 import styled from "styled-components";
-import IbColors from "../style/IbColors";
+import IbColors from "../styles/IbColors";
 import {HeaderSectionContainerHoverable} from "./styles";
 import ChangeEnhet from "./changeEnhet";
 import Logout from "./logout/LogoutContainer";
-import ibValues from '../style/IbValues'
+import ibValues from '../styles/IbValues'
 import About from "./about";
 
 const ComponentWrapper = styled.div`

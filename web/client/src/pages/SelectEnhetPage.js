@@ -1,9 +1,9 @@
 import React from 'react';
-import {FlexColumnContainer, ScrollingContainer, WorkareaContainer} from "../components/layout/body";
+import {FlexColumnContainer, ScrollingContainer, WorkareaContainer} from "../components/styles/ibLayout";
 import SelectEnhet from "../components/selectEnhet";
 import Footer from "../components/Footer/Footer";
 import styled from "styled-components";
-import ibValues from "../components/style/IbValues";
+import ibValues from "../components/styles/IbValues";
 
 const CustomScrollingContainer = styled(ScrollingContainer)`
   max-width: none;

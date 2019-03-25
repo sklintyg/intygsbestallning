@@ -5,10 +5,10 @@ import * as actions from '../../store/actions/bestallning'
 import { getBestallning, getErrorMessage } from '../../store/reducers/bestallning'
 import BestallningFraga from './bestallningFraga'
 import BestallningHeader from './bestallningHeader'
-import { FlexColumnContainer, ScrollingContainer, WorkareaContainer } from '../layout/body'
+import { FlexColumnContainer, ScrollingContainer, WorkareaContainer } from '../styles/ibLayout'
 import Footer from '../Footer/Footer'
 import styled from 'styled-components'
-import Colors from '../style/IbColors'
+import Colors from '../styles/IbColors'
 import { compose, lifecycle } from 'recompose'
 
 const CustomScrollingContainer = styled(ScrollingContainer)`

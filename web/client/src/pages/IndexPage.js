@@ -2,9 +2,9 @@ import React from 'react';
 import landing from './landningssida-min.png'
 import styled from 'styled-components'
 import Footer from "../components/Footer/Footer";
-import {IB_TYPO_02, TextNormal} from "../components/style/IbTypography";
-import {FlexColumnContainer, ScrollingContainer, WorkareaContainer} from "../components/layout/body";
-import ibValues from "../components/style/IbValues";
+import {IB_TYPO_02, TextNormal} from "../components/styles/IbTypography";
+import {FlexColumnContainer, ScrollingContainer, WorkareaContainer} from "../components/styles/ibLayout";
+import ibValues from "../components/styles/IbValues";
 import {Col, Container, Row} from "reactstrap";
 import LoginOptions from "../components/loginOptions/LoginOptionsContainer";
 import IbAlert from "../components/alert/Alert";

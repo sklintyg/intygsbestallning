@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import * as PropTypes from "prop-types";
 import {ActionButton} from "../styles";
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
-import {AboutIcon} from "../../style/IbSvgIcons";
+import {AboutIcon} from "../../styles/IbSvgIcons";
 
 
 const About = ({handleOpen, handleClose, isOpen}) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import IbColors from "../style/IbColors";
+import IbColors from "../styles/IbColors";
 
 
 export const ExpandIcon = () => (

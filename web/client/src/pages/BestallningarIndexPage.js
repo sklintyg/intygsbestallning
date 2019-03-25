@@ -1,6 +1,6 @@
 import React from 'react';
 import BestallningFilterBar from '../components/bestallningFilterBar/BestallningFilterBar'
-import {FlexColumnContainer, ScrollingContainer, WorkareaContainer} from '../components/layout/body';
+import {FlexColumnContainer, ScrollingContainer, WorkareaContainer} from '../components/styles/ibLayout';
 
 const BestallningarIndexPage = () => (
   <FlexColumnContainer>

@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import * as PropTypes from "prop-types";
 import styled from "styled-components";
-import {IB_TYPO_05, IB_TYPO_06} from "../style/IbTypography";
-import IbColors from "../style/IbColors";
+import {IB_TYPO_05, IB_TYPO_06} from "../styles/IbTypography";
+import IbColors from "../styles/IbColors";
 import Toggler from "../toggler/Toggler";
 import {Button} from "reactstrap";
 

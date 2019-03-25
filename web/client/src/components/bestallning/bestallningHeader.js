@@ -1,6 +1,6 @@
 import React from 'react'
 import BestallningActionBar from './bestallningActionBar'
-import ibValues from '../style/IbValues'
+import ibValues from '../styles/IbValues'
 import styled from 'styled-components'
 
 const CenterContainer = styled.div`

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import dividerImage from './divider-border.png'
-import IbColors from "../../style/IbColors";
+import IbColors from "../../styles/IbColors";
 
 export const HeaderSectionContainer = styled.div`
   display: flex;

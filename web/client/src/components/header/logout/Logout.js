@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import * as PropTypes from "prop-types";
 import {ActionButton} from "../styles";
-import {LogoutIcon} from "../../style/IbSvgIcons";
+import {LogoutIcon} from "../../styles/IbSvgIcons";
 
 const Logout = (props) => {
   const {handleLogout} = props;

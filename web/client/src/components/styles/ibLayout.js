@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import ibValues from '../style/IbValues'
+import ibValues from './IbValues'
 
 /**
  *

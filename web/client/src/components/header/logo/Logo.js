@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
 import {HeaderSectionContainer} from "../styles";
-import IbColors from "../../style/IbColors";
+import IbColors from "../../styles/IbColors";
 
 const ComponentWrapper = styled(HeaderSectionContainer)`
   

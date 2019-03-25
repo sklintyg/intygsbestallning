@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import * as PropTypes from "prop-types";
 import SelectEnhet from "../../selectEnhet";
 import {ActionButton} from "../styles";
-import {ChangeUnitIcon} from "../../style/IbSvgIcons";
+import {ChangeUnitIcon} from "../../styles/IbSvgIcons";
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 
 

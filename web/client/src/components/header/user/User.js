@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from "styled-components";
 import {HeaderSectionContainer, SingleTextRowContainer, VerticalContainer} from "../styles";
-import IbColors from "../../style/IbColors";
-import {UserIcon} from "../../style/IbSvgIcons";
+import IbColors from "../../styles/IbColors";
+import {UserIcon} from "../../styles/IbSvgIcons";
 
 
 const UserComponentWrapper = styled(HeaderSectionContainer)`

@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from "styled-components";
 import {HeaderSectionContainer, SingleTextRowContainer, VerticalContainer} from "../styles";
-import IbColors from "../../style/IbColors";
-import {UnitIcon} from "../../style/IbSvgIcons";
+import IbColors from "../../styles/IbColors";
+import {UnitIcon} from "../../styles/IbSvgIcons";
 
 const UnitComponentWrapper = styled(HeaderSectionContainer)`
   flex: 1 1 auto;

@@ -7,7 +7,6 @@ val buildClient = project.hasProperty("client")
 plugins {
   id("org.springframework.boot") version "2.1.3.RELEASE"
   id("com.moowork.node") version "1.2.0"
-  id ("com.github.ManifestClasspath") version "0.1.0-RELEASE"
 }
 
 dependencies {

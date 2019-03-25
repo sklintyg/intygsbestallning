@@ -1,8 +1,8 @@
 import React from 'react';
 import * as PropTypes from "prop-types";
-import {InfoIcon} from "../style/IbSvgIcons";
+import {InfoIcon} from "../styles/IbSvgIcons";
 import {Alert} from "reactstrap";
-import IbColors from "../style/IbColors";
+import IbColors from "../styles/IbColors";
 
 //TODO: Add support for other types of alert-icons, such as error!
 const IbAlert = ({type, children}) => {
