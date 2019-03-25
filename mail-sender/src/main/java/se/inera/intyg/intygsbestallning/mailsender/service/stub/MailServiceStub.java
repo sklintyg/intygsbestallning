@@ -28,7 +28,6 @@ import se.inera.intyg.intygsbestallning.mailsender.exception.PermanentException;
 import se.inera.intyg.intygsbestallning.mailsender.exception.TemporaryException;
 import se.inera.intyg.intygsbestallning.mailsender.service.MailSender;
 
-import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,9 +63,9 @@ public class MailServiceStub implements MailSender {
         try {
             notificationEmail = objectMapper.readValue(notificationEmailJson, NotificationEmail.class);
             mailStore.add(notificationEmail);
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOG.error("Error deserializing email notification TextMessage: " + e.getMessage());
-            throw new PermanentException("Unable to parse JSON TextMessage, this is a permanent error.");
+            throw new PermanentException("Unable to parse JSON TextMessage, this is a permanent error.", e);
         }
     }
 

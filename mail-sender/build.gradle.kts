@@ -13,6 +13,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.apache.camel:camel-jackson:${Dependencies.camelVersion}")
     implementation("org.apache.camel:camel-spring-javaconfig:${Dependencies.camelVersion}")
+    implementation("org.apache.camel:camel-jms:${Dependencies.camelVersion}")
 
     // Embedded database for development
     runtime("com.h2database:h2:${Dependencies.h2Version}")

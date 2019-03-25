@@ -80,4 +80,5 @@ public class MailSenderTestConfig extends CamelConfiguration {
         jmsTemplate.setSessionTransacted(true);
         return jmsTemplate;
     }
+
 }

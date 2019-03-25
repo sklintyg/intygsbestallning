@@ -1,9 +1,9 @@
 package se.inera.intyg.intygsbestallning.common.service
 
 data class NotificationEmail(
-   val toAddress: String,
-   val subject: String,
-   val body: String)
+   var toAddress: String? = null,
+   var subject: String? = null,
+   var body: String? = null)
 
 
 
