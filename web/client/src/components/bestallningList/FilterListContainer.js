@@ -1,49 +1,39 @@
-import React, { Component } from "react";
+import React, { useState, Fragment } from "react";
 import * as actions from "../../store/actions/bestallningList";
-import BestallningFilter from '../textSearch/TextSearch';
-import { fetchBestallningList } from './../../store/actions/bestallningList';
+import BestallningFilter from "../textSearch/TextSearch";
+import { fetchBestallningList } from "./../../store/actions/bestallningList";
 import BestallningListContainer from "./BestallningListContainer";
+import { compose } from "recompose";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import BestallningListPagination from './BestallningListPagination'
+import BestallningListPagination from "./BestallningListPagination";
 
-class FilterListContainer extends Component {
+const FilterListContainer = (props) => {
+  const [textFilter, setTextFilter] = useState("");
 
-  constructor(props){
-    super(props)
-
-    this.state = {
-      textFilter: ''
-    }
-  }
-
-  handleFilterChange = (textFilter) => {
-    const {categoryFilter} = this.props;
-    this.setState({textFilter})
-    fetchBestallningList(categoryFilter, textFilter)
-  }
-
-  render() {
-    return (
-      <div>
-        <BestallningFilter onChange={this.handleFilterChange} />
-        <BestallningListContainer textFilter={this.state.textFilter} />
-        <BestallningListPagination />
-      </div>
-    );
-  }
-}
+  const handleFilterChange = (textFilter) => {
+    const { categoryFilter } = props;
+    setTextFilter(textFilter);
+    fetchBestallningList(categoryFilter, textFilter);
+  };
+  return (
+    <Fragment>
+      <BestallningFilter onChange={handleFilterChange} />
+      <BestallningListContainer textFilter={textFilter} />
+      <BestallningListPagination />
+    </Fragment>
+  );
+};
 
 const mapStateToProps = (state, { match }) => {
   const categoryFilter = match.params.filter || "active";
-  return {categoryFilter}
+  return { categoryFilter };
 };
 
-FilterListContainer = withRouter(
+export default compose(
+  withRouter,
   connect(
     mapStateToProps,
     actions
-  )(FilterListContainer)
-);
-
-export default FilterListContainer;
+  )
+)(FilterListContainer);

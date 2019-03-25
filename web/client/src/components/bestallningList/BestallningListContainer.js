@@ -1,5 +1,6 @@
-import React, { Component } from "react";
+import React, {Fragment} from "react";
 import PropTypes from "prop-types";
+import { compose, lifecycle } from "recompose";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import * as actions from "../../store/actions/bestallningList";
@@ -11,27 +12,7 @@ import {
 import BestallningList from "./BestallningList";
 import FetchError from "./FetchError";
 
-class BestallningarListContainer extends Component {
-  componentDidMount() {
-    this.fetchData();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (
-      this.props.categoryFilter !== prevProps.categoryFilter ||
-      this.props.textFilter !== prevProps.textFilter
-    ) {
-      this.fetchData();
-    }
-  }
-
-  fetchData() {
-    const { fetchBestallningList, categoryFilter, textFilter } = this.props;
-    fetchBestallningList(categoryFilter, textFilter);
-  }
-
-  render() {
-    const { isFetching, errorMessage, bestallningList } = this.props;
+const BestallningarListContainer = ({ isFetching, errorMessage, bestallningList }) => {
     if (isFetching && !bestallningList.length) {
       return <p>Loading...</p>;
     }
@@ -42,11 +23,10 @@ class BestallningarListContainer extends Component {
     }
 
     return (
-      <div>
+      <Fragment>
         <BestallningList bestallningList={bestallningList} />
-      </div>
+      </Fragment>
     );
-  }
 }
 
 BestallningarListContainer.propTypes = {
@@ -55,6 +35,24 @@ BestallningarListContainer.propTypes = {
   bestallningList: PropTypes.object,
   isFetching: PropTypes.bool,
   fetchBestallningar: PropTypes.func
+};
+
+const fetchData = ({ fetchBestallningList, categoryFilter, textFilter }) => {
+  fetchBestallningList(categoryFilter, textFilter);
+}
+
+const lifeCycleValues = {
+  componentDidMount() {
+    fetchData(this.props);
+  },
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.categoryFilter !== prevProps.categoryFilter ||
+      this.props.textFilter !== prevProps.textFilter
+    ) {
+      fetchData(this.props);
+    }
+  }
 };
 
 const mapStateToProps = (state, { match }) => {
@@ -67,11 +65,8 @@ const mapStateToProps = (state, { match }) => {
   };
 };
 
-BestallningarListContainer = withRouter(
-  connect(
-    mapStateToProps,
-    actions
-  )(BestallningarListContainer)
-);
-
-export default BestallningarListContainer;
+export default compose(
+  withRouter,
+  connect(mapStateToProps, actions),
+  lifecycle(lifeCycleValues)
+)(BestallningarListContainer);
