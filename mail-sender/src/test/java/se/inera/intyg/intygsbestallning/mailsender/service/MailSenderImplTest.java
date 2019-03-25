@@ -20,22 +20,24 @@ package se.inera.intyg.intygsbestallning.mailsender.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import se.inera.intyg.intygsbestallning.common.service.NotificationEmail;
+import se.inera.intyg.intygsbestallning.common.mail.NotificationEmail;
 import se.inera.intyg.intygsbestallning.mailsender.exception.PermanentException;
 import se.inera.intyg.intygsbestallning.mailsender.exception.TemporaryException;
 
 import javax.mail.internet.MimeMessage;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -43,7 +45,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(JUnitPlatform.class)
+@ExtendWith(MockitoExtension.class)
 public class MailSenderImplTest {
 
     @InjectMocks
@@ -52,7 +55,7 @@ public class MailSenderImplTest {
     @Mock
     private JavaMailSender javaMailSender;
 
-    @Before
+    @BeforeEach
     public void init() {
         ReflectionTestUtils.setField(testee, "fromAddress", "somefrom@inera.se");
     }
@@ -66,27 +69,29 @@ public class MailSenderImplTest {
         verify(javaMailSender, times(1)).send(any(MimeMessage.class));
     }
 
-    @Test(expected = TemporaryException.class)
+    @Test
     public void testSendMailThrowsTemporaryExceptionWhenProblemWithSend() throws Exception {
         when(javaMailSender.createMimeMessage()).thenReturn(mock(MimeMessage.class));
         doThrow(new MailAuthenticationException("Faked problem")).when(javaMailSender).send(any(MimeMessage.class));
 
         String json = buildNotificationMailAsJson();
-        try {
+
+        assertThrows(TemporaryException.class, () -> {
             testee.process(json);
-        } finally {
-            verify(javaMailSender, times(1)).send(any(MimeMessage.class));
-        }
+        });
+
+        verify(javaMailSender, times(1)).send(any(MimeMessage.class));
     }
 
-    @Test(expected = PermanentException.class)
+    @Test
     public void testSendMailThrowsPermanentExceptionOnUnparsableJSON() throws Exception {
         String json = "this is not json}";
-        try {
+
+        assertThrows(PermanentException.class, () -> {
             testee.process(json);
-        } finally {
-            verify(javaMailSender, times(0)).send(any(MimeMessage.class));
-        }
+        });
+
+        verify(javaMailSender, times(0)).send(any(MimeMessage.class));
     }
 
     private String buildNotificationMailAsJson() throws JsonProcessingException {

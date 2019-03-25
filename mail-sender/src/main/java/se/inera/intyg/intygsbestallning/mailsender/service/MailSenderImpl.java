@@ -19,7 +19,6 @@
 package se.inera.intyg.intygsbestallning.mailsender.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import org.apache.camel.Body;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +27,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
-import se.inera.intyg.intygsbestallning.common.service.NotificationEmail;
+import se.inera.intyg.intygsbestallning.common.json.CustomObjectMapper;
+import se.inera.intyg.intygsbestallning.common.mail.NotificationEmail;
 import se.inera.intyg.intygsbestallning.mailsender.exception.PermanentException;
 import se.inera.intyg.intygsbestallning.mailsender.exception.TemporaryException;
 
@@ -51,7 +51,7 @@ public class MailSenderImpl implements MailSender {
     @Autowired
     private JavaMailSender mailSender;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new CustomObjectMapper();
 
     @Override
     public void process(@Body String notificationEmailJson) throws Exception {
@@ -61,9 +61,9 @@ public class MailSenderImpl implements MailSender {
         MimeMessage message = mailSender.createMimeMessage();
         message.setFrom(new InternetAddress(fromAddress));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(notificationEmail.getToAddress()));
-
         message.setSubject(notificationEmail.getSubject());
         message.setContent(notificationEmail.getBody(), "text/html; charset=utf-8");
+
         try {
             mailSender.send(message);
         } catch (Exception e) {
@@ -73,8 +73,6 @@ public class MailSenderImpl implements MailSender {
 
     private NotificationEmail jsonToNotificationEmail(@Body String notificationEmailJson) throws PermanentException {
         try {
-            // Jackson gets upset when no parameterless  constructor is available...
-            objectMapper.registerModule(new KotlinModule());
             return objectMapper.readValue(notificationEmailJson, NotificationEmail.class);
         } catch (Exception e) {
             LOG.error("Error deserializing email notification TextMessage: " + e.getMessage());

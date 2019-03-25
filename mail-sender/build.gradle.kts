@@ -10,7 +10,6 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-activemq")
     compile("org.apache.camel:camel-spring-boot-starter:${Dependencies.camelBootStarterVersion}")
 
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.apache.camel:camel-jackson:${Dependencies.camelVersion}")
     implementation("org.apache.camel:camel-spring-javaconfig:${Dependencies.camelVersion}")
     implementation("org.apache.camel:camel-jms:${Dependencies.camelVersion}")
@@ -22,10 +21,8 @@ dependencies {
     testImplementation("com.jayway.awaitility:awaitility:${TestDependencies.awaitilityVersion}")
     testImplementation("org.apache.camel:camel-test-spring:${Dependencies.camelVersion}")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("junit:junit:${TestDependencies.junit4Version}")
+
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
 }
 
-tasks {
-    test {
-        exclude("**/*Integration*")
-    }
-}

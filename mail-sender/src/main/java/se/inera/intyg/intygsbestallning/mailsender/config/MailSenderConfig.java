@@ -39,8 +39,10 @@ public class MailSenderConfig extends CamelConfiguration {
 
     @Value("${activemq.broker.url}")
     private String activeMqBrokerUrl;
+
     @Value("${activemq.broker.username}")
     private String activeMqBrokerUsername;
+
     @Value("${activemq.broker.password")
     private String activeMqBrokerPassword;
 

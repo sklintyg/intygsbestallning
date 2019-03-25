@@ -46,7 +46,7 @@ subprojects {
       mavenBom("org.springframework.boot:spring-boot-dependencies:${Dependencies.springBootVersion}") {
         bomProperty("kotlin.version", Dependencies.kotlinVersion)
       }
-      mavenBom("org.junit:junit-bom:${TestDependencies.junitVersion}")
+      mavenBom("org.junit:junit-bom:${TestDependencies.junit5Version}")
     }
   }
 
@@ -63,14 +63,16 @@ subprojects {
 
     implementation("com.google.guava:guava:${Dependencies.guavaVersion}")
 
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.platform:junit-platform-runner")
     testImplementation("io.github.benas:random-beans:${TestDependencies.randomBeansVersion}")
-
     testImplementation("org.mockito:mockito-core:${TestDependencies.mockitoCoreVersion}")
     testImplementation("org.mockito:mockito-junit-jupiter:${TestDependencies.mockitoCoreVersion}")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
     testImplementation(kotlin("test"))
+
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
   }
 
   tasks {

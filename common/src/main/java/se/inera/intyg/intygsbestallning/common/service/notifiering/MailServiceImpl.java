@@ -21,31 +21,23 @@ package se.inera.intyg.intygsbestallning.common.service.notifiering;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
-import se.inera.intyg.intygsbestallning.common.service.NotificationEmail;
 import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
 import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
+import se.inera.intyg.intygsbestallning.common.json.CustomObjectMapper;
+import se.inera.intyg.intygsbestallning.common.mail.NotificationEmail;
 
 /**
  * Puts an ObjectMessage representing the email on a queue, that will be picked up by the mail-sender Camel route.
- *
- * @author eriklupander
  */
 @Service
 public class MailServiceImpl implements MailService {
 
-    @Value("${mail.admin}")
-    private String adminMailAddress;
-
-    @Value("${mail.from}")
-    private String fromAddress;
-
     @Autowired
     private JmsTemplate jmsTemplate;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new CustomObjectMapper();
 
     @Override
     public void sendNotifieringToVardenhet(String mailAddress, String subject, String body) {

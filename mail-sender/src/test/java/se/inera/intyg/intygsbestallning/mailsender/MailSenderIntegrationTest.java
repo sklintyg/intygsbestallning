@@ -29,7 +29,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import se.inera.intyg.intygsbestallning.common.json.CustomObjectMapper;
-import se.inera.intyg.intygsbestallning.common.service.NotificationEmail;
+import se.inera.intyg.intygsbestallning.common.mail.NotificationEmail;
 import se.inera.intyg.intygsbestallning.mailsender.config.MailSenderTestConfig;
 import se.inera.intyg.intygsbestallning.mailsender.service.stub.MailServiceStub;
 
