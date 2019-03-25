@@ -43,10 +43,10 @@ bestallning:
 #AUTH
 authorities:
   configuration:
-    file: file://${resources.folder}/security/authorities.yaml
+    file: ${resources.folder}/security/authorities.yaml
 features:
   configuration:
-    file: file://${resources.folder}/security/features.yaml
+    file: ${resources.folder}/security/features.yaml
 
 #HSA integration
 infrastructure:
@@ -137,13 +137,13 @@ sakerhetstjanst:
   saml:
     responseSkew: 300
     truststore:
-      file: file://${certificate.folder}/ntjp.truststore.jks
+      file: file:${certificate.folder}/ntjp.truststore.jks
     entityId: ${ib.host.url}
     entityBaseUrl: ${ib.host.url}
     idp:
       metadata:
         url: https://idp2.acctest.sakerhetstjanst.inera.se:443/idp/saml
     keystore:
-      file: file://${certificate.folder}/login.certificate.jks
-
+      file: file:${certificate.folder}/login.certificate.jks
+      alias: verifiering.rehabstod.intygstjanster.sjunet.org
 

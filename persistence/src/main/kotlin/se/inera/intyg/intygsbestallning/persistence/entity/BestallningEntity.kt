@@ -32,11 +32,11 @@ class BestallningEntity private constructor(builder: Builder) {
   @Column(name = "STATUS", nullable = false)
   val status: BestallningStatus
 
-  @ManyToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+  @ManyToOne(cascade = [CascadeType.MERGE])
   @JoinColumn(name = "INVANARE_ID", nullable = false)
   val invanare: InvanareEntity
 
-  @ManyToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+  @ManyToOne(cascade = [CascadeType.MERGE])
   @JoinColumn(name = "VARDENHET_ID", nullable = false)
   var vardenhet: VardenhetEntity
 

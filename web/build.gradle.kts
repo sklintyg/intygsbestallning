@@ -1,6 +1,6 @@
 import com.moowork.gradle.node.npm.NpmTask
-import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 import org.gradle.internal.os.OperatingSystem
+import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 
 val buildClient = project.hasProperty("client")
 
@@ -16,13 +16,13 @@ dependencies {
   implementation(project(":persistence"))
   implementation(project(":mail-sender"))
 
-  implementation("se.inera.intyg.infra:hsa-integration:${extra["intygInfraVersion"]}")
-  implementation("se.inera.intyg.infra:log-messages:${extra["intygInfraVersion"]}")
-  implementation("se.inera.intyg.infra:monitoring:${extra["intygInfraVersion"]}")
-  implementation("se.inera.intyg.infra:pu-integration:${extra["intygInfraVersion"]}")
-  implementation("se.inera.intyg.infra:security-authorities:${extra["intygInfraVersion"]}")
-  implementation("se.inera.intyg.infra:security-common:${extra["intygInfraVersion"]}")
-  implementation("se.inera.intyg.infra:security-siths:${extra["intygInfraVersion"]}")
+  compile("se.inera.intyg.infra:hsa-integration:${extra["intygInfraVersion"]}")
+  compile("se.inera.intyg.infra:log-messages:${extra["intygInfraVersion"]}")
+  compile("se.inera.intyg.infra:monitoring:${extra["intygInfraVersion"]}")
+  compile("se.inera.intyg.infra:pu-integration:${extra["intygInfraVersion"]}")
+  compile("se.inera.intyg.infra:security-authorities:${extra["intygInfraVersion"]}")
+  compile("se.inera.intyg.infra:security-common:${extra["intygInfraVersion"]}")
+  compile("se.inera.intyg.infra:security-siths:${extra["intygInfraVersion"]}")
 
   // External dependencies
   implementation("org.springframework.boot:spring-boot-starter-web")
@@ -41,6 +41,7 @@ dependencies {
 tasks.clean {
   delete("client/build")
 }
+
 
 tasks {
   node {
@@ -63,14 +64,50 @@ tasks {
     into("${project.buildDir}/resources/main/static")
   }
 
+  val pathingJar by creating(Jar::class) {
+    dependsOn(configurations.runtime)
+    archiveAppendix.set("pathing")
+
+    doFirst {
+      manifest {
+        val classpath = configurations.runtimeClasspath.get().files
+           .map { it.toURI().toURL().toString().replaceFirst("file:/", "/") }
+           .joinToString(separator = " ")
+
+        val mainClass = "se.inera.intyg.intygsbestallning.web.IntygsbestallningApplication"
+
+        attributes["Class-Path"] = classpath
+        attributes["Main-Class"] = mainClass
+      }
+    }
+  }
+
+  if (OperatingSystem.current().isWindows) {
+    bootRun {
+      dependsOn(pathingJar)
+
+      doFirst {
+
+        classpath = files(
+           "${project.projectDir}/build/classes/java/main",
+           "${project.projectDir}/build/classes/kotlin/main",
+           "${project.projectDir}/src/main/resources",
+           "${project.projectDir}/build/main/resources",
+           "${project.rootProject.projectDir}/src/main/resources",
+           "${project.rootProject.projectDir}/devops/openshift/test/env",
+           "${project.rootProject.projectDir}/devops/openshift/test/config",
+           pathingJar.archiveFile)
+      }
+    }
+  }
+
   bootRun {
     systemProperties = mapOf(
-       "resource.dir" to "${project.projectDir}/../src/main/resources",
-       "certificate.folder" to "${project.projectDir}/../devops/openshift/test/env",
-       "config.dir" to "${project.projectDir}/../devops/openshift/test/config",
-       "credentials.file" to "${project.projectDir}/../devops/openshift/test/env/secret-env.properties"
+       "resource.dir" to "${project.rootProject.projectDir}/src/main/resources",
+       "certificate.folder" to "${project.rootProject.projectDir}/devops/openshift/test/env",
+       "config.dir" to "${project.rootProject.projectDir}/devops/openshift/test/config",
+       "credentials.file" to "${project.rootProject.projectDir}/devops/openshift/test/env/secret-env.properties"
     )
-
   }
 
   if (buildClient) {
