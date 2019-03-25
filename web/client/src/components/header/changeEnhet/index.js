@@ -1,3 +1,4 @@
-import ChangeEnhetContainer from "./ChangeEnhetContainer";
+import ChangeEnhet from "./ChangeEnhet";
+import modalContainer from "../../modalContainer/modalContainer";
 
-export default ChangeEnhetContainer;
+export default modalContainer('changeEnhet')(ChangeEnhet);

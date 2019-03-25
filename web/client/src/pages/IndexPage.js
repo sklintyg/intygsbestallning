@@ -44,13 +44,13 @@ const HomePage = () => {
               <Col xs="12" md="7"><img src={landing} alt="Landningssida med illustration av stetoskop" /></Col>
               <Col xs="12" md="5">
                 <Welcome as="h1">Välkommen till Intygsbeställning!</Welcome>
-                <TextNormal as={'p'}>Intygsbeställning är en tjänst för att hantera förfrågningar och beställningar av
+                <TextNormal as="p">Intygsbeställning är en tjänst för att hantera förfrågningar och beställningar av
                   medicinska utlåtanden och intyg till vården.</TextNormal>
-                <TextNormal as={'p'}>För att logga in behöver du ett giltigt e-tjänstekort
+                <TextNormal as="p">För att logga in behöver du ett giltigt e-tjänstekort
                   (exempelvis SITHS-kort) samt behörighet att ta del av förfrågningar och beställningar för din
                   vårdenhet. </TextNormal>
 
-                <IbAlert type={'info'}>De förfrågningar och beställningar som hanteras i Intygsbeställning
+                <IbAlert type="info">De förfrågningar och beställningar som hanteras i Intygsbeställning
                   är journalhandlingar och all aktivitet i tjänsten loggas i enlighet med Patientdatalagen.
                 </IbAlert>
                 <LoginOptions/>

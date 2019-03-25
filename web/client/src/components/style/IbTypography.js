@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import IbColors from "./IbColors";
 
 export const IB_TYPO_01 = styled.div`
-  font-weight: 300;
+  font-weight: 100;
   font-size: 25px;
 `
 

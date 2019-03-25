@@ -9,7 +9,7 @@ import {HeaderSectionContainerHoverable} from "./styles";
 import ChangeEnhet from "./changeEnhet";
 import Logout from "./logout/LogoutContainer";
 import ibValues from '../style/IbValues'
-import About from "./about/AboutContainer";
+import About from "./about";
 
 const ComponentWrapper = styled.div`
   display: block;

@@ -15,7 +15,7 @@ const About = ({handleOpen, handleClose, isOpen}) => {
         Om tjänsten
       </ActionButton>
       <Modal isOpen={isOpen} size={'lg'} backdrop={true} toggle={handleClose}>
-        <ModalHeader toggle={handleClose}>Välj enhet</ModalHeader>
+        <ModalHeader toggle={handleClose}>Om intygsbeställning</ModalHeader>
         <ModalBody>
           Om Intygsbeställning
         </ModalBody>
