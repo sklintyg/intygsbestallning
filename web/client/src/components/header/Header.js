@@ -1,15 +1,15 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import Logo from "./logo/Logo";
 import Unit from "./unit/Unit";
 
 import User from "./user/User";
 import styled from "styled-components";
 import IbColors from "../style/IbColors";
-import {ActionButton, HeaderSectionContainerHoverable} from "./styles";
+import {HeaderSectionContainerHoverable} from "./styles";
 import ChangeEnhet from "./changeEnhet";
 import Logout from "./logout/LogoutContainer";
 import ibValues from '../style/IbValues'
-import {AboutIcon} from "../style/IbSvgIcons";
+import About from "./about/AboutContainer";
 
 const ComponentWrapper = styled.div`
   display: block;
@@ -51,31 +51,28 @@ const canChangeEnhet = (vardgivare) => {
 };
 
 
-
 const Header = ({isAuthenticated, namn, userRole, valdVardgivare, valdVardenhet, vardgivare}) => {
   return (
     <ComponentWrapper>
       <StyledHeader>
-        <Logo />
+        <Logo className={(isAuthenticated ? 'd-none d-md-flex' : '')} />
         {isAuthenticated && <User id="currentUser" userName={namn} userRole={userRole} />}
         {isAuthenticated && valdVardgivare && valdVardenhet &&
         <Unit valdVardgivare={valdVardgivare} valdVardenhet={valdVardenhet} />}
         <HeaderActionsWrapper>
-          { isAuthenticated && canChangeEnhet(vardgivare) && valdVardenhet &&
+          {isAuthenticated && canChangeEnhet(vardgivare) && valdVardenhet &&
           <HeaderSectionContainerHoverable>
-            <ChangeEnhet/>
+            <ChangeEnhet />
           </HeaderSectionContainerHoverable>}
-
-          <HeaderSectionContainerHoverable>
-            <ActionButton id="aboutLinkBtn">
-              <AboutIcon/>
-              <br />Om tjänsten </ActionButton>
-          </HeaderSectionContainerHoverable>
-
-          { isAuthenticated &&
-          <HeaderSectionContainerHoverable>
-            <Logout/>
-          </HeaderSectionContainerHoverable>
+          {isAuthenticated &&
+            <Fragment>
+              <HeaderSectionContainerHoverable>
+                <About />
+              </HeaderSectionContainerHoverable>
+              <HeaderSectionContainerHoverable>
+                <Logout />
+              </HeaderSectionContainerHoverable>
+            </Fragment>
           }
         </HeaderActionsWrapper>
       </StyledHeader>
