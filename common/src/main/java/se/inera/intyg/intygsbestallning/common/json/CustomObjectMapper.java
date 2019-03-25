@@ -31,6 +31,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
+import com.fasterxml.jackson.module.kotlin.KotlinModule;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -50,6 +51,7 @@ public class CustomObjectMapper extends ObjectMapper {
         registerModule(new JaxbAnnotationModule());  // support the standard JAXB annotations
         registerModule(new LocalDateTimeSezializerModule());
         registerModule(new Jdk8Module());
+        registerModule(new KotlinModule());
 
         setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
     }
