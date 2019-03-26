@@ -16,6 +16,28 @@ const handleResponse = (config) => (response) => {
   return response.json();
 }
 
+export const buildUrlFromParams = (path, parameters) => {
+  let parameterList = []
+  if (parameters) {
+    Object.keys(parameters).forEach((key) => {
+      let value = parameters[key];
+
+      if (value) {
+   
+        parameterList.push(`${key}=${value}`);
+      }
+    });
+  }
+
+  let urlParameters = parameterList.join('&');
+
+  if (urlParameters) {
+    urlParameters = '?' + urlParameters;
+  }
+
+  return path + urlParameters;
+}
+
 export const makeServerRequest = (path, config={}) => {
     return fetch(`${ROOT_URL}${path}`).then(handleResponse(config));
 };

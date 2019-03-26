@@ -21,7 +21,7 @@ const ResultLine = styled.div`
 
 const BestallningarList = ({ bestallningList }) => {
 
-  if(bestallningList.bestallningList.length === 0){
+  if(bestallningList.bestallningar.length === 0){
     return (
       <ResultLine>Inget resultat hittades för den valda filtreringen. Överväg att ändra filtreringen för att utöka resultatet.</ResultLine>
     )
@@ -29,7 +29,7 @@ const BestallningarList = ({ bestallningList }) => {
 
   return (
     <div>
-      <ResultLine>Sökresultat: {bestallningList.bestallningList.length} av {bestallningList.totalCount} beställningar</ResultLine>
+      <ResultLine>Sökresultat: {bestallningList.bestallningar.length} av {bestallningList.totalCount} beställningar</ResultLine>
       <Table>
         <thead>
           <tr>
@@ -43,12 +43,12 @@ const BestallningarList = ({ bestallningList }) => {
           </tr>
         </thead>
         <tbody>
-          {bestallningList.bestallningList.map(bestallning => (
+          {bestallningList.bestallningar.map(bestallning => (
             <tr key={bestallning.id}>
               <td>{bestallning.id}</td>
-              <td>{bestallning.intygName}</td>
-              <td>{bestallning.patient.id}</td>
-              <td>{bestallning.patient.name}</td>
+              <td>{bestallning.intygTyp}</td>
+              <td>{bestallning.invanare.personId}</td>
+              <td>{bestallning.invanare.name}</td>
               <td>{bestallning.status}</td>
               <td>{bestallning.ankomstDatum}</td>
               <td>

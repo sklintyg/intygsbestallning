@@ -22,7 +22,7 @@ const UnsecuredRoute = (props) => {
   return (
     <Route {...rest} render={(props) => {
       if (isAuthenticated) {
-        return <Redirect to='/bestallningar/active' />;
+        return <Redirect to='/bestallningar/AKTUELLA' />;
       }
       return (<Component {...props}/>)
     }} />);

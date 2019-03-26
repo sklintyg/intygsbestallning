@@ -56,7 +56,7 @@ const lifeCycleValues = {
 };
 
 const mapStateToProps = (state, { match }) => {
-  const categoryFilter = match.params.filter || "active";
+  const categoryFilter = match.params.filter || 'AKTUELLA';
   return {
     bestallningList: getVisibleBestallningList(state, categoryFilter),
     categoryFilter,

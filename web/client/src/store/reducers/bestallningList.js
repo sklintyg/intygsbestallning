@@ -1,12 +1,12 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 
 const createBestallningarList = filter => {
   const bestallningList = (
-    state = { bestallningList: [], totalCount: 0 },
+    state = { bestallningar: [], 'pageIndex': 0, 'totalPages': 0, 'numberOfElements': 0, 'totalElements': 0, 'sortableColumn': 'ID', 'sortDirection': 'ASC' },
     action
   ) => {
     switch (action.type) {
-      case "FETCH_BESTALLNINGAR_SUCCESS":
+      case 'FETCH_BESTALLNINGAR_SUCCESS':
         return filter === action.categoryFilter ? action.response : state;
       default:
         return state;
@@ -18,10 +18,10 @@ const createBestallningarList = filter => {
       return state;
     }
     switch (action.type) {
-      case "FETCH_BESTALLNINGAR_REQUEST":
+      case 'FETCH_BESTALLNINGAR_REQUEST':
         return true;
-      case "FETCH_BESTALLNINGAR_SUCCESS":
-      case "FETCH_BESTALLNINGAR_FAILURE":
+      case 'FETCH_BESTALLNINGAR_SUCCESS':
+      case 'FETCH_BESTALLNINGAR_FAILURE':
         return false;
       default:
         return state;
@@ -33,10 +33,10 @@ const createBestallningarList = filter => {
       return state;
     }
     switch (action.type) {
-      case "FETCH_BESTALLNINGAR_FAILURE":
+      case 'FETCH_BESTALLNINGAR_FAILURE':
         return action.message;
-      case "FETCH_BESTALLNINGAR_REQUEST":
-      case "FETCH_BESTALLNINGAR_SUCCESS":
+      case 'FETCH_BESTALLNINGAR_REQUEST':
+      case 'FETCH_BESTALLNINGAR_SUCCESS':
         return null;
       default:
         return state;
@@ -51,15 +51,15 @@ const createBestallningarList = filter => {
 };
 
 const listBestallningarByFilter = combineReducers({
-  active: createBestallningarList('active'),
-  completed: createBestallningarList('completed'),
-  rejected: createBestallningarList('rejected'),
+  AKTUELLA: createBestallningarList('AKTUELLA'),
+  KLARA: createBestallningarList('KLARA'),
+  AVVISADE: createBestallningarList('AVVISADE'),
 });
 
 
 const textFilter = (state = '', action) => {
   switch (action.type) {
-    case "SET_BESTALLNING_LIST_TEXT_FILTER":
+    case 'SET_BESTALLNING_LIST_TEXT_FILTER':
       return action.textFilter;
     default:
       return state;

@@ -26,7 +26,7 @@ const FilterListContainer = (props) => {
 };
 
 const mapStateToProps = (state, { match }) => {
-  const categoryFilter = match.params.filter || "active";
+  const categoryFilter = match.params.filter || 'AKTUELLA';
   return { categoryFilter };
 };
 

@@ -1,4 +1,4 @@
-import bestallningarDb, {decorateForBestallning, bestallningsConfig} from "./bestallningarDb";
+import bestallningarDb, {decorateForBestallning, bestallningsConfig} from "./bestallningarFakeDb";
 import * as utils from '../store/actions/utils'
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
