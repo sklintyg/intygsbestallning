@@ -1,5 +1,5 @@
-import * as api from "../../api/bestallning";
-import { isFetching, isSettingStatus } from "../reducers/bestallning";
+import * as api from '../../api/bestallning'
+import { isFetching, isSettingStatus } from '../reducers/bestallning'
 
 export const FETCH_BESTALLNING_REQUEST = "FETCH_BESTALLNING_REQUEST";
 export const FETCH_BESTALLNING_SUCCESS = "FETCH_BESTALLNING_SUCCESS";

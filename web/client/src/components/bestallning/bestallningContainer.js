@@ -28,7 +28,7 @@ const BestallningContainer = ({ errorMessage, bestallning, history }) => {
         <BestallningHeader props={{ bestallning, history }}></BestallningHeader>
         <CustomScrollingContainer>
           <WorkareaContainer>
-            {bestallning.struktur.map((b, i) => <BestallningFraga key={i} props={b} />)}
+            {bestallning.fragor.map((b, i) => <BestallningFraga key={i} props={b} />)}
           </WorkareaContainer>
           <Footer />
         </CustomScrollingContainer>

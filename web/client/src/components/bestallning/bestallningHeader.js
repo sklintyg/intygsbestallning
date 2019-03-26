@@ -20,12 +20,12 @@ const BestallningHeader = ({props}) => (
     <CenterContainer>
       <div>
         <span onClick={props.history.goBack}>Tillbaka till lista</span>
-        <span> :: Förfrågan av Intygstyp '{props.bestallning.intygName}'</span>
+        <span> :: Förfrågan av Intygstyp '{props.bestallning.intygTyp}'</span>
         <span> :: Status {props.bestallning.status}</span>
         <span> :: Inkom {props.bestallning.ankomstDatum}</span>
       </div>
       <div>{props.bestallning.id}</div>
-      <div>{props.bestallning.patient.id} - {props.bestallning.patient.namn}</div>
+      <div>{props.bestallning.invanare.personId} - {props.bestallning.invanare.name}</div>
       <BestallningActionBar bestallning={props.bestallning} />
     </CenterContainer>
   </HeaderContainer>
