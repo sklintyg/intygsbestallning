@@ -12,9 +12,9 @@ import se.riv.intygsbestallning.certificate.order.v1.CitizenType;
 import se.riv.intygsbestallning.certificate.order.v1.IIType;
 import java.lang.invoke.MethodHandles;
 import java.util.Optional;
-import se.inera.intyg.intygsbestallning.common.domain.IntygTyp;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.property.IntegrationProperties;
+import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTextService;
 import se.inera.intyg.intygsbestallning.common.util.RivtaUtil;
 import se.inera.intyg.schemas.contract.Personnummer;
 
@@ -26,12 +26,15 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
 
     private CreateBestallningService createBestallningService;
     private IntegrationProperties integrationProperties;
+    private BestallningTextService bestallningTextService;
 
     public OrderAssessmentIntygsbestallning(
             CreateBestallningService createBestallningService,
-            IntegrationProperties integrationProperties) {
+            IntegrationProperties integrationProperties,
+            BestallningTextService bestallningTextService) {
         this.createBestallningService = createBestallningService;
         this.integrationProperties = integrationProperties;
+        this.bestallningTextService = bestallningTextService;
     }
 
     @Override
@@ -77,15 +80,11 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
                 .map(IIType::getExtension)
                 .orElseThrow(() -> new IllegalArgumentException("careUnitId may not be null"));
 
-        var certficateCodeType = Optional.ofNullable(request.getCertificateType())
+        var intygTyp = Optional.ofNullable(request.getCertificateType())
                 .map(CVType::getCode)
                 .orElseThrow(() -> new IllegalArgumentException("certificateType may not be null"));
 
-        var intygTyp = IntygTyp.valueOf(certficateCodeType);
-
-        if (!intygTyp.getBestallningbar()) {
-            throw new IllegalArgumentException("certificateType: " + certficateCodeType + " is not bestallningbar");
-        }
+        var intygVersion = bestallningTextService.getLatestVersionForBestallningsbartIntyg(intygTyp);
 
         return new CreateBestallningRequest(
                 personnummer,
@@ -95,6 +94,7 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
                 request.getCitizen().getSituationBackground(),
                 null,
                 intygTyp,
+                intygVersion,
                 vardenhet);
     }
 }

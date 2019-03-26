@@ -81,6 +81,7 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
                 hsaId,
                 invanare,
                 createBestallningRequest.getIntygTyp(),
+                createBestallningRequest.getIntygVersion(),
                 vardenhet);
 
         bestallningStatusResolver.setStatus(bestallning);

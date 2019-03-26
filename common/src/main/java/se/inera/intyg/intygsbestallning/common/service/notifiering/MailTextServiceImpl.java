@@ -35,14 +35,14 @@ public class MailTextServiceImpl implements MailTextService {
     }
 
     @Override
-    public MailContent getMailContent(NotifieringTyp typ, IntygTyp intyg) {
+    public MailContent getMailContent(NotifieringTyp typ, String intyg) {
 
         if (typ == null) {
             throw new IllegalArgumentException("typ may not be null");
         }
 
         return mailContentList.stream()
-                .filter(content -> content.getTyp().equals(typ.name()) && content.getIntyg().equals(intyg.name()))
+                .filter(content -> content.getTyp().equals(typ.name()) && content.getIntyg().equals(intyg))
                 .collect(MoreCollectors.toOptional())
                 .orElseThrow(() -> new IllegalArgumentException("Mail Content for type: " + typ + "does not exist"));
     }

@@ -6,7 +6,6 @@ import se.inera.intyg.intygsbestallning.common.domain.Bestallning
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus
 import se.inera.intyg.intygsbestallning.common.domain.IntygTyp
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import javax.persistence.*
 
 @Entity
@@ -18,9 +17,11 @@ class BestallningEntity private constructor(builder: Builder) {
   @Column(name = "ID", nullable = false)
   val id: Long?
 
-  @Enumerated(EnumType.STRING)
   @Column(name = "INTYG_TYP", nullable = false)
-  val intygTyp: IntygTyp
+  val intygTyp: String
+
+  @Column(name = "INTYG_VERSION", nullable = false)
+  val intygVersion: Double
 
   @Column(name = "ANKOMST_DATUM", nullable = false)
   val ankomstDatum: LocalDateTime
@@ -56,6 +57,7 @@ class BestallningEntity private constructor(builder: Builder) {
   init {
     this.id = builder.id
     this.intygTyp = builder.intygTyp ?: throw IllegalArgumentException("intygTyp may not be null")
+    this.intygVersion = builder.intygVersion ?: throw IllegalArgumentException("intygVersion may not be null")
     this.ankomstDatum = builder.ankomstDatum ?: throw IllegalArgumentException("ankomstDatum may not be null")
     this.avslutDatum = builder.avslutDatum
     this.status = builder.status ?: throw IllegalArgumentException("status may not be null")
@@ -67,7 +69,8 @@ class BestallningEntity private constructor(builder: Builder) {
 
   class Builder {
     var id: Long? = null
-    var intygTyp: IntygTyp? = null
+    var intygTyp: String? = null
+    var intygVersion: Double? = null
     var ankomstDatum: LocalDateTime? = null
     var avslutDatum: LocalDateTime? = null
     var status: BestallningStatus? = null
@@ -77,7 +80,8 @@ class BestallningEntity private constructor(builder: Builder) {
     var notifieringar: List<NotifieringEntity> = mutableListOf()
 
     fun id(id: Long?) = apply { this.id = id }
-    fun intygTyp(intygTyp: IntygTyp) = apply { this.intygTyp = intygTyp }
+    fun intygTyp(intygTyp: String) = apply { this.intygTyp = intygTyp }
+    fun intygVersion(intygVersion: Double) = apply { this.intygVersion = intygVersion }
     fun ankomstDatum(ankomstDatum: LocalDateTime) = apply { this.ankomstDatum = ankomstDatum }
     fun avslutDatum(avslutDatum: LocalDateTime?) = apply { this.avslutDatum = avslutDatum }
     fun status(status: BestallningStatus?) = apply { this.status = status }
@@ -93,6 +97,7 @@ class BestallningEntity private constructor(builder: Builder) {
       return Bestallning(
          id = bestallningEntity.id!!,
          intygTyp = bestallningEntity.intygTyp,
+         intygVersion = bestallningEntity.intygVersion,
          ankomstDatum = bestallningEntity.ankomstDatum,
          avslutDatum = bestallningEntity.avslutDatum,
          status = bestallningEntity.status,
@@ -106,6 +111,7 @@ class BestallningEntity private constructor(builder: Builder) {
       return BestallningEntity.Builder()
          .id(bestallning.id)
          .intygTyp(bestallning.intygTyp)
+         .intygVersion(bestallning.intygVersion)
          .ankomstDatum(bestallning.ankomstDatum)
          .avslutDatum(bestallning.avslutDatum)
          .status(bestallning.status)
@@ -120,6 +126,7 @@ class BestallningEntity private constructor(builder: Builder) {
       return BestallningEntity.Builder()
          .id(bestallning.id)
          .intygTyp(bestallning.intygTyp)
+         .intygVersion(bestallning.intygVersion)
          .ankomstDatum(bestallning.ankomstDatum)
          .avslutDatum(bestallning.avslutDatum)
          .status(bestallning.status)

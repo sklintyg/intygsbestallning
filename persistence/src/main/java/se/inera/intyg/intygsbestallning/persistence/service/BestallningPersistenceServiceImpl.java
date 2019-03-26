@@ -81,8 +81,6 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
 
         var id = getValidLong(query.getTextSearch());
 
-        var intygTyp = getValidTyp(query.getTextSearch(), IntygTyp.class);
-
         var status = getValidTyp(query.getTextSearch(), BestallningStatus.class);
 
         var localDateTimeSearch = getValidLocalDatetimeInterval(query.getTextSearch());
@@ -92,7 +90,6 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
                 query.getStatusar(),
                 searchString.orElse(null),
                 id.orElse(null),
-                (IntygTyp) intygTyp.orElse(null),
                 (BestallningStatus) status.orElse(null),
                 localDateTimeSearch.map(Pair::getFirst).orElse(null),
                 localDateTimeSearch.map(Pair::getSecond).orElse(null),

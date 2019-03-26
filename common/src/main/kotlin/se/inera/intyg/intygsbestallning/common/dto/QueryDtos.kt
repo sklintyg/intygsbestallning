@@ -62,7 +62,7 @@ data class BestallningDto(
    val id: Long,
    val status: String,
    val ankomstDatum: LocalDate,
-   val intygTyp: IntygTyp,
+   val intygTyp: String,
    val invanare: BestallningInvanareDto
 ) {
   companion object Factory {
@@ -96,7 +96,7 @@ data class VisaBestallningDto(
    val id: Long,
    val status: String,
    val ankomstDatum: LocalDate,
-   val intygTyp: IntygTyp,
+   val intygTyp: String,
    val invanare: BestallningInvanareDto,
    val fragor: List<Fraga>
 ) {

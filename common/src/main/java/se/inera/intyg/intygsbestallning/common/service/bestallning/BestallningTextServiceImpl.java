@@ -2,8 +2,6 @@ package se.inera.intyg.intygsbestallning.common.service.bestallning;
 
 import static java.lang.invoke.MethodHandles.lookup;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import com.google.common.collect.Lists;
@@ -17,9 +15,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
-import se.inera.intyg.intygsbestallning.common.domain.IntygTyp;
 import se.inera.intyg.intygsbestallning.common.property.BestallningProperties;
 import se.inera.intyg.intygsbestallning.common.text.bestallning.BestallningTexter;
 
@@ -51,18 +49,31 @@ public class BestallningTextServiceImpl implements BestallningTextService {
 
     @Override
     public BestallningTexter getBestallningTexter(Bestallning bestallning) {
-        return getBestallningTexter(bestallning.getIntygTyp(), "1.0"); //TODO: Version
-
-    }
-
-    private BestallningTexter getBestallningTexter(IntygTyp intygTyp, String version) {
-        return bestallningTexterList.stream()
-                .filter(texter -> texter.getTyp().equals(intygTyp.name()))
-                .filter(texter -> texter.getVersion().equals(version))
-                .collect(MoreCollectors.toOptional())
+        return getBestallningTexter(bestallning.getIntygTyp(), bestallning.getIntygVersion())
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Bestallning text resources for bestallning is not supported for Type: " +
-                                intygTyp.name() + " and Version: " + version));
+                                bestallning.getIntygTyp() + " and Version: " + "1.0"));
+    }
+
+    @Override
+    public Double getLatestVersionForBestallningsbartIntyg(String intygTyp) {
+        return getLatestVersionForTyp(intygTyp);
+    }
+
+    private Optional<BestallningTexter> getBestallningTexter(String intygTyp, Double version) {
+        return bestallningTexterList.stream()
+                .filter(texter -> texter.getTyp().equals(intygTyp))
+                .filter(texter -> texter.getVersion().equals(version.toString()))
+                .collect(MoreCollectors.toOptional());
+    }
+
+    private Double getLatestVersionForTyp(String intygTyp) {
+        return bestallningTexterList.stream()
+                .filter(texter -> texter.getTyp().equals(intygTyp))
+                .mapToDouble(texter -> Double.parseDouble(texter.getVersion()))
+                .max()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Bestallning text resources for bestallning is not supported for Type: " + intygTyp));
     }
 
     private void loadResources(String path) throws IOException {

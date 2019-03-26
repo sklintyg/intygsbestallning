@@ -22,11 +22,7 @@ public class ListBestallningServiceImpl implements ListBestallningService {
     @Override
     @Transactional(readOnly = true)
     public ListBestallningarResult listByQuery(ListBestallningarQuery query) {
-        var bestallningar = bestallningPersistenceService.listBestallningar(query);
-
-        //TODO: convert to DTO-response
-
-        return bestallningar;
+        return bestallningPersistenceService.listBestallningar(query);
     }
 
     @Override
