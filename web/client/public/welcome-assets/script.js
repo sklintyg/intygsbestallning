@@ -69,7 +69,7 @@ function updateUserList() {
 }
 
 function _getMedarbetaruppdrag(hsaId) {
-  return $scope.medarbetaruppdrag.filter(function(item) {
+  return medarbetaruppdrag.filter(function(item) {
     return item.hsaId === hsaId;
   })[0];
 }
