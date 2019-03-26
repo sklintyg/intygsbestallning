@@ -13,6 +13,9 @@ import se.riv.intygsbestallning.certificate.order.v1.IIType;
 import java.lang.invoke.MethodHandles;
 import java.util.Optional;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequest;
+import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequestHandlaggare;
+import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequestInvanare;
+import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequestKontor;
 import se.inera.intyg.intygsbestallning.common.property.IntegrationProperties;
 import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTextService;
 import se.inera.intyg.intygsbestallning.common.util.RivtaUtil;
@@ -86,13 +89,40 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
 
         var intygVersion = bestallningTextService.getLatestVersionForBestallningsbartIntyg(intygTyp);
 
-        return new CreateBestallningRequest(
+
+        var invanare = new CreateBestallningRequestInvanare(
                 personnummer,
                 request.getCitizen().getFirstName(),
                 request.getCitizen().getMiddleName(),
                 request.getCitizen().getLastName(),
-                request.getCitizen().getSituationBackground(),
-                null,
+                request.getCitizen().getSituationBackground());
+
+
+        CreateBestallningRequestKontor kontor;
+        if (request.getAuthorityAdministrativeOfficial().getOfficeAddress() != null) {
+            kontor = new CreateBestallningRequestKontor(
+                    request.getAuthorityAdministrativeOfficial().getOfficeName(),
+                    request.getAuthorityAdministrativeOfficial().getOfficeCostCenter(),
+                    request.getAuthorityAdministrativeOfficial().getOfficeAddress().getPostalAddress(),
+                    request.getAuthorityAdministrativeOfficial().getOfficeAddress().getPostalCode(),
+                    request.getAuthorityAdministrativeOfficial().getOfficeAddress().getPostalCity());
+        } else {
+            kontor = new CreateBestallningRequestKontor(
+                    request.getAuthorityAdministrativeOfficial().getOfficeName(), null,null, null, null);
+        }
+
+        var auktoritet =  new CreateBestallningRequestHandlaggare(
+                request.getAuthorityAdministrativeOfficial().getFullName(),
+                request.getAuthorityAdministrativeOfficial().getPhoneNumber(),
+                request.getAuthorityAdministrativeOfficial().getEmail(),
+                request.getAuthorityAdministrativeOfficial().getAuthority().getCode(),
+                kontor);
+
+        return new CreateBestallningRequest(
+                invanare,
+                auktoritet,
+                request.getPurpose(),
+                request.getPlannedActions(),
                 intygTyp,
                 intygVersion,
                 vardenhet);

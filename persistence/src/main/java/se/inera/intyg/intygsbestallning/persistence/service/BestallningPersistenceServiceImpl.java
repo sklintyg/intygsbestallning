@@ -38,9 +38,10 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
     private InvanareRepository invanareRepository;
     private VardenhetRepository vardenhetRepository;
 
-    public BestallningPersistenceServiceImpl(BestallningRepository bestallningRepository,
-                                             InvanareRepository invanareRepository,
-                                             VardenhetRepository vardenhetRepository) {
+    public BestallningPersistenceServiceImpl(
+            BestallningRepository bestallningRepository,
+            InvanareRepository invanareRepository,
+            VardenhetRepository vardenhetRepository) {
         this.bestallningRepository = bestallningRepository;
         this.invanareRepository = invanareRepository;
         this.vardenhetRepository = vardenhetRepository;
@@ -48,7 +49,6 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
 
     @Override
     public Bestallning saveNewBestallning(Bestallning bestallning) {
-
         var invanareEntity = InvanareEntity.Factory.toEntity(bestallning.getInvanare());
         if (invanareEntity.getId() == null) {
             invanareRepository.save(invanareEntity);
@@ -62,6 +62,13 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
         var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning, invanareEntity, vardenhetEntity);
 
         return BestallningEntity.Factory.toDomain(bestallningRepository.save(bestallningEntity));
+    }
+
+    @Override
+    public Bestallning updateBestallning(Bestallning bestallning) {
+        var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning);
+        bestallningRepository.save(bestallningEntity);
+        return BestallningEntity.Factory.toDomain(bestallningEntity);
     }
 
     @Override

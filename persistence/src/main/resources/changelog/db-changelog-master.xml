@@ -22,10 +22,19 @@
       <column name="AVSLUT_DATUM" type="datetime">
         <constraints nullable="true"/>
       </column>
+      <column name="SYFTE" type="varchar(64)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="PLANERADE_AKTIVITETER" type="varchar(64)">
+        <constraints nullable="true"/>
+      </column>
       <column name="STATUS" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
       <column name="INVANARE_ID" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="HANDLAGGARE_ID" type="bigint">
         <constraints nullable="false"/>
       </column>
       <column name="VARDENHET_ID" type="bigint">
@@ -79,6 +88,37 @@
 
     </createTable>
 
+    <createTable tableName="HANDLAGGARE">
+      <column name="ID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="FULLSTANDIGT_NAMN" type="varchar(64)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="TELEFONNUMMER" type="varchar(64)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="EMAIL" type="varchar(64)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="MYNDIGHET" type="varchar(64)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="KONTOR" type="varchar(64)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="ADRESS" type="varchar(64)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="POSTNUMMER" type="varchar(64)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="STAD" type="varchar(64)">
+        <constraints nullable="true"/>
+      </column>
+
+    </createTable>
+
     <addForeignKeyConstraint
           baseTableName="BESTALLNING"
           baseColumnNames="INVANARE_ID"
@@ -91,6 +131,13 @@
           baseColumnNames="VARDENHET_ID"
           constraintName="BESTALLNING_VARDENHET_FK"
           referencedTableName="VARDENHET"
+          referencedColumnNames="ID"/>
+
+    <addForeignKeyConstraint
+          baseTableName="BESTALLNING"
+          baseColumnNames="HANDLAGGARE_ID"
+          constraintName="BESTALLNING_HANDLAGGARE_FK"
+          referencedTableName="HANDLAGGARE"
           referencedColumnNames="ID"/>
 
     <createTable tableName="HANDELSE">
@@ -124,9 +171,6 @@
           referencedColumnNames="ID"
           referencedTableName="BESTALLNING"/>
 
-  </changeSet>
-
-  <changeSet id="2" author="cf">
     <createTable tableName="NOTIFIERING">
       <column name="ID" type="bigint" autoIncrement="true" incrementBy="1" startWith="1">
         <constraints primaryKey="true" nullable="false"/>

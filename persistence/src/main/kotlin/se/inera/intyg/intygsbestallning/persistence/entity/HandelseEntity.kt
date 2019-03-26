@@ -11,7 +11,7 @@ class HandelseEntity private constructor(builder: Builder) {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", nullable = false)
-  val id: Long? = null
+  val id: Long?
 
   @Enumerated(EnumType.STRING)
   @Column(name = "EVENT", nullable = false)
@@ -21,18 +21,21 @@ class HandelseEntity private constructor(builder: Builder) {
   val skapad: LocalDateTime
 
   @Column(name = "ANVANDARE")
-  val anvandare: String? = null
+  val anvandare: String?
 
   @Column(name = "BESKRIVNING", nullable = false)
   val beskrivning: String
 
   @Column(name = "KOMMENTAR")
-  val kommentar: String? = null
+  val kommentar: String?
 
   init {
+    this.id = builder.id
     this.event = builder.event ?: throw IllegalArgumentException("event may not be null")
     this.skapad = builder.skapad ?: throw IllegalArgumentException("skapad may not be null")
+    this.anvandare = builder.anvandare
     this.beskrivning = builder.beskrivning ?: throw IllegalArgumentException("beskrivning may not be null")
+    this.kommentar = builder.kommentar
   }
 
   class Builder {

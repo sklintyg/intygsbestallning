@@ -28,7 +28,7 @@ public interface BestallningRepository extends JpaRepository<BestallningEntity, 
         QuerydslPredicateExecutor<BestallningEntity>,
         QuerydslBinderCustomizer<QBestallningEntity> {
 
-    @Query(value =  "select b from BestallningEntity b " +
+    @Query(value =  "select distinct b from BestallningEntity b " +
                     "join b.invanare i " +
                     "join b.vardenhet v " +
                     "join b.handelser h " +

@@ -6,11 +6,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.lang.invoke.MethodHandles;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
+import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
 import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.common.service.notifiering.NotifieringSendService;
+import se.inera.intyg.intygsbestallning.persistence.repository.HandlaggareRepository;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
 import se.inera.intyg.intygsbestallning.persistence.service.InvanarePersistenceService;
 import se.inera.intyg.intygsbestallning.persistence.service.VardenhetPersistenceService;
@@ -48,19 +50,19 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
         //TODO: Lookup HSAID
         var hsaId = "hsaId";
 
-        var existingInvanare = invanarePersistenceService.getInvanareByPersonnummer(createBestallningRequest.getPersonnummer());
+        var existing = invanarePersistenceService.getInvanareByPersonnummer(createBestallningRequest.getInvanare().getPersonnummer());
 
         Invanare invanare;
-        if (existingInvanare.isEmpty()) {
+        if (existing.isEmpty()) {
             invanare = Invanare.Factory.newInvanare(
-                    createBestallningRequest.getPersonnummer(),
-                    createBestallningRequest.getFornamn(),
-                    createBestallningRequest.getMellannamn(),
-                    createBestallningRequest.getEfternamn(),
-                    createBestallningRequest.getBakgrundNulage(),
-                    createBestallningRequest.getSektretessMarkering());
+                    createBestallningRequest.getInvanare().getPersonnummer(),
+                    createBestallningRequest.getInvanare().getFornamn(),
+                    createBestallningRequest.getInvanare().getMellannamn(),
+                    createBestallningRequest.getInvanare().getEfternamn(),
+                    createBestallningRequest.getInvanare().getBakgrundNulage(),
+                    false);
         } else {
-            invanare = existingInvanare.get();
+            invanare = existing.get();
         }
 
         var existingVardenhet = vardenhetPersistenceService.getVardenhetByHsaId(createBestallningRequest.getVardenhet());
@@ -77,9 +79,21 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
             vardenhet = existingVardenhet.get();
         }
 
+        var handlaggare = Handlaggare.Factory.newHandlaggare(
+                createBestallningRequest.getHandlaggare().getNamn(),
+                createBestallningRequest.getHandlaggare().getTelefonNummer(),
+                createBestallningRequest.getHandlaggare().getEmail(),
+                createBestallningRequest.getHandlaggare().getMyndighet(),
+                createBestallningRequest.getHandlaggare().getKontor().getNamn(),
+                createBestallningRequest.getHandlaggare().getKontor().getKostnadsStalle(),
+                createBestallningRequest.getHandlaggare().getKontor().getPostAdress(),
+                createBestallningRequest.getHandlaggare().getKontor().getPostKod(),
+                createBestallningRequest.getHandlaggare().getKontor().getPostOrt());
+
         var bestallning = Bestallning.Factory.newBestallning(
                 hsaId,
                 invanare,
+                handlaggare,
                 createBestallningRequest.getIntygTyp(),
                 createBestallningRequest.getIntygVersion(),
                 vardenhet);

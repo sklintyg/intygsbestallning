@@ -3,6 +3,8 @@
   "intygVersion": 1.0,
   "ankomstDatum": "2019-03-19T19:37:50.411229",
   "avslutDatum": null,
+  "syfte": "ett syfte",
+  "planeradeAktiviteter": "planerade aktiviteter",
   "status": "OLAST",
   "invanare": {
     "personId": "19121212-1212",
@@ -11,6 +13,17 @@
     "efternamn": "Tolvansson",
     "bakgrundNulage": null,
     "sektretessMarkering": false
+  },
+  "handlaggare": {
+    "fullstandigtNamn": "Fullt Handlaggarnamn",
+    "telefonnummer": "0733-12345",
+    "email": "mail@adress.se",
+    "myndighet": "HSVARD",
+    "kontor": "Kontoret",
+    "kostnadsstalle": "Kostnads Ställe",
+    "adress": "Kostnadsvägen 11",
+    "postnummer": "12345",
+    "stad": "Kostnadsstaden"
   },
   "vardenhet": {
     "id": 1,

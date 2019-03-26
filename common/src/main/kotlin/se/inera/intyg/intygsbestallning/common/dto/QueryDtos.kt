@@ -125,7 +125,7 @@ data class VisaBestallningDto(
                   Delfraga(etikett = textMap.getValue(ETK_2_2), svar = listOfNotNull(
                      bestallning.invanare.fornamn,
                      bestallning.invanare.mellannamn,
-                     bestallning.invanare.efternamn).joinToString(separator = " ")))
+                     bestallning.invanare.efternamn).joinToString(separator = "\n")))
             ),
             Fraga(
                rubrik = textMap.getValue(RBK_3),
@@ -138,12 +138,12 @@ data class VisaBestallningDto(
                rubrik = textMap.getValue(RBK_5),
                delfragor = listOf(
                   Delfraga(etikett = textMap.getValue(ETK_5_1), svar = listOfNotNull(
-                     "kontoret",
-                     "hand@hand.se",
-                     "08-08080808").joinToString(separator = "\n")),
+                     bestallning.handlaggare.fullstandigtNamn,
+                     bestallning.handlaggare.email,
+                     bestallning.handlaggare.telefonnummer).joinToString(separator = "\n")),
                   Delfraga(etikett = textMap.getValue(ETK_5_2), svar = listOfNotNull(
-                     "NamnKontoret",
-                     "AdressKontoret").joinToString(separator = "\n"))
+                     bestallning.handlaggare.kontor,
+                     bestallning.handlaggare.adress).joinToString(separator = "\n"))
                )
             ),
             Fraga(
@@ -151,7 +151,7 @@ data class VisaBestallningDto(
                delfragor = listOf(
                   Delfraga(etikett = textMap.getValue(ETK_6_1), text = textMap.getValue(TEXT_6_1_1)),
                   Delfraga(etikett = textMap.getValue(ETK_6_2), svar = bestallning.id.toString()),
-                  Delfraga(etikett = textMap.getValue(ETK_6_3), svar = "Kostnadsställe"),
+                  Delfraga(etikett = textMap.getValue(ETK_6_3), svar = bestallning.handlaggare.kostnadsstalle),
                   Delfraga(etikett = textMap.getValue(ETK_6_4), text = textMap.getValue(TEXT_6_4_1)),
                   Delfraga(etikett = textMap.getValue(ETK_6_5), text = textMap.getValue(TEXT_6_5_1)))
             )

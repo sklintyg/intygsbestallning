@@ -28,6 +28,12 @@ class BestallningEntity private constructor(builder: Builder) {
   @Column(name = "AVSLUT_DATUM")
   var avslutDatum: LocalDateTime? = null
 
+  @Column(name = "SYFTE")
+  val syfte: String?
+
+  @Column(name = "PLANERADE_AKTIVITETER")
+  val planeradeAktiviteter: String?
+
   @Enumerated(EnumType.STRING)
   @Column(name = "STATUS", nullable = false)
   val status: BestallningStatus
@@ -35,6 +41,10 @@ class BestallningEntity private constructor(builder: Builder) {
   @ManyToOne(cascade = [CascadeType.MERGE])
   @JoinColumn(name = "INVANARE_ID", nullable = false)
   val invanare: InvanareEntity
+
+  @OneToOne(cascade = [CascadeType.PERSIST])
+  @JoinColumn(name = "HANDLAGGARE_ID", nullable = false)
+  val handlaggare: HandlaggareEntity
 
   @ManyToOne(cascade = [CascadeType.MERGE])
   @JoinColumn(name = "VARDENHET_ID", nullable = false)
@@ -59,8 +69,11 @@ class BestallningEntity private constructor(builder: Builder) {
     this.intygVersion = builder.intygVersion ?: throw IllegalArgumentException("intygVersion may not be null")
     this.ankomstDatum = builder.ankomstDatum ?: throw IllegalArgumentException("ankomstDatum may not be null")
     this.avslutDatum = builder.avslutDatum
+    this.syfte = builder.syfte
+    this.planeradeAktiviteter = builder.planeradeAktiviteter
     this.status = builder.status ?: throw IllegalArgumentException("status may not be null")
     this.invanare = builder.invanare ?: throw IllegalArgumentException("invanare may not be null")
+    this.handlaggare = builder.handlaggare ?: throw IllegalArgumentException("handlaggare may not be null")
     this.vardenhet = builder.vardenhet ?: throw IllegalArgumentException("vardenhet may not be null")
     this.handelser = builder.handelser
     this.notifieringar = builder.notifieringar
@@ -72,8 +85,11 @@ class BestallningEntity private constructor(builder: Builder) {
     var intygVersion: Double? = null
     var ankomstDatum: LocalDateTime? = null
     var avslutDatum: LocalDateTime? = null
+    var syfte: String? = null
+    var planeradeAktiviteter: String? = null
     var status: BestallningStatus? = null
     var invanare: InvanareEntity? = null
+    var handlaggare: HandlaggareEntity? = null
     var vardenhet: VardenhetEntity? = null
     var handelser: List<HandelseEntity> = mutableListOf()
     var notifieringar: List<NotifieringEntity> = mutableListOf()
@@ -83,8 +99,11 @@ class BestallningEntity private constructor(builder: Builder) {
     fun intygVersion(intygVersion: Double) = apply { this.intygVersion = intygVersion }
     fun ankomstDatum(ankomstDatum: LocalDateTime) = apply { this.ankomstDatum = ankomstDatum }
     fun avslutDatum(avslutDatum: LocalDateTime?) = apply { this.avslutDatum = avslutDatum }
+    fun syfte(syfte: String?) = apply { this.syfte = syfte }
+    fun planeradeAktiviteter(planeradeAktiviteter: String?) = apply { this.planeradeAktiviteter = planeradeAktiviteter }
     fun status(status: BestallningStatus?) = apply { this.status = status }
     fun invanare(invanare: InvanareEntity?) = apply { this.invanare = invanare }
+    fun handlaggare(handlaggare: HandlaggareEntity?) = apply { this.handlaggare = handlaggare }
     fun vardenhet(vardenhet: VardenhetEntity) = apply { this.vardenhet = vardenhet }
     fun handelser(handelser: List<HandelseEntity>) = apply { this.handelser = handelser }
     fun notifieringar(notifieringar: List<NotifieringEntity>) = apply { this.notifieringar = notifieringar }
@@ -99,8 +118,11 @@ class BestallningEntity private constructor(builder: Builder) {
          intygVersion = bestallningEntity.intygVersion,
          ankomstDatum = bestallningEntity.ankomstDatum,
          avslutDatum = bestallningEntity.avslutDatum,
+         syfte = bestallningEntity.syfte,
+         planeradeAktiviteter = bestallningEntity.planeradeAktiviteter,
          status = bestallningEntity.status,
          invanare = InvanareEntity.toDomain(bestallningEntity.invanare),
+         handlaggare = HandlaggareEntity.toDomain(bestallningEntity.handlaggare),
          vardenhet = VardenhetEntity.toDomain(bestallningEntity.vardenhet),
          handelser = bestallningEntity.handelser.map { HandelseEntity.toDomain(it) },
          notifieringar = bestallningEntity.notifieringar.map { NotifieringEntity.toDomain(it) })
@@ -115,21 +137,29 @@ class BestallningEntity private constructor(builder: Builder) {
          .avslutDatum(bestallning.avslutDatum)
          .status(bestallning.status)
          .invanare(InvanareEntity.toEntity(bestallning.invanare))
+         .handlaggare(HandlaggareEntity.toEntity(bestallning.handlaggare))
          .vardenhet(VardenhetEntity.toEntity(bestallning.vardenhet))
          .handelser(bestallning.handelser!!.map { HandelseEntity.toEntity(it) })
          .notifieringar(bestallning.notifieringar!!.map { NotifieringEntity.toEntity(it) })
          .build()
     }
 
-    fun toEntity(bestallning: Bestallning, invanareEntity: InvanareEntity, vardenhetEntity: VardenhetEntity): BestallningEntity {
+
+    fun toEntity(
+       bestallning: Bestallning,
+       invanareEntity: InvanareEntity,
+       vardenhetEntity: VardenhetEntity): BestallningEntity {
       return BestallningEntity.Builder()
          .id(bestallning.id)
          .intygTyp(bestallning.intygTyp)
          .intygVersion(bestallning.intygVersion)
          .ankomstDatum(bestallning.ankomstDatum)
          .avslutDatum(bestallning.avslutDatum)
+         .syfte(bestallning.syfte)
+         .planeradeAktiviteter(bestallning.planeradeAktiviteter)
          .status(bestallning.status)
          .invanare(invanareEntity)
+         .handlaggare(HandlaggareEntity.toEntity(bestallning.handlaggare))
          .vardenhet(vardenhetEntity)
          .handelser(bestallning.handelser!!.map { HandelseEntity.toEntity(it) })
          .notifieringar(bestallning.notifieringar!!.map { NotifieringEntity.toEntity(it) })

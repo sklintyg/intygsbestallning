@@ -11,6 +11,8 @@ import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarResult;
 public interface BestallningPersistenceService {
     Bestallning saveNewBestallning(Bestallning bestallning);
 
+    Bestallning updateBestallning(Bestallning bestallning);
+
     ListBestallningarResult listBestallningar(ListBestallningarQuery query);
 
     Optional<Bestallning> getBestallningById(Long id);

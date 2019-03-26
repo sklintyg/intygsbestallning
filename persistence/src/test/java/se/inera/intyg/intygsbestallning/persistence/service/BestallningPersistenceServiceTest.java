@@ -1,7 +1,9 @@
 package se.inera.intyg.intygsbestallning.persistence.service;
 
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
@@ -27,6 +29,7 @@ public class BestallningPersistenceServiceTest extends TestSupport {
         bestallningRepository.deleteAll();
     }
 
+    @Disabled
     @Test
     public void createBestallningarTest() {
         final int num  = 5;
