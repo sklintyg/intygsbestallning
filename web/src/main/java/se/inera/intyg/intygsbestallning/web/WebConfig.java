@@ -40,16 +40,6 @@ public class WebConfig {
     }
 
     @Bean
-    public ViewResolver viewResolver() {
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setOrder(0);
-        viewResolver.setViewClass(InternalResourceView.class);
-        viewResolver.setPrefix("/");
-        viewResolver.setSuffix(".html");
-        return viewResolver;
-    }
-
-    @Bean
     @Primary
     public ObjectMapper customObjectMapper(){
 

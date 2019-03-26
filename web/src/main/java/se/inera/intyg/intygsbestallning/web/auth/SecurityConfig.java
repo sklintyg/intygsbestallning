@@ -22,6 +22,7 @@ import com.google.common.collect.Lists;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.velocity.app.VelocityEngine;
+import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 import org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
@@ -31,6 +32,7 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -103,6 +105,7 @@ import se.inera.intyg.intygsbestallning.web.auth.service.IntygsbestallningUserDe
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -111,17 +114,35 @@ import java.util.Map;
 @EnableWebSecurity
 @PropertySource("file:${credentials.file}")
 @ComponentScan({"se.inera.intyg.infra.security.authorities", "org.springframework.security.saml"})
-public class BaseSecurityConfig implements InitializingBean, DisposableBean {
+public class SecurityConfig extends WebSecurityConfigurerAdapter implements InitializingBean, DisposableBean {
+
+    private static final String DEV_PROFILE = "dev-security";
+    private static final String TEST_PROFILE = "ib-security-test";
 
     private MultiThreadedHttpConnectionManager multiThreadedHttpConnectionManager;
 
+    @Autowired
+    public SecurityConfig(IntygsbestallningUserDetailsService userDetailsService, ApplicationContext context) {
+        this.userDetailsService = userDetailsService;
+        this.context = context;
+    }
+    private final IntygsbestallningUserDetailsService userDetailsService;
+
+    private final ApplicationContext context;
+
+    private List<String> profiles;
+
     private void init() {
         this.multiThreadedHttpConnectionManager = new MultiThreadedHttpConnectionManager();
+        this.profiles =  Arrays.asList(context.getEnvironment().getActiveProfiles());
     }
 
     private void shutdown() {
         this.multiThreadedHttpConnectionManager.shutdown();
     }
+
+    @Value("${config.folder}")
+    private String configFolder;
 
     @Value("${sakerhetstjanst.saml.keystore.file}")
     private Resource keyStoreFile;
@@ -131,15 +152,6 @@ public class BaseSecurityConfig implements InitializingBean, DisposableBean {
 
     @Value("${sakerhetstjanst.saml.keystore.password}")
     private String keystorePassword;
-
-    @Value("${config.folder}")
-    private String configFolder;
-
-    @Autowired
-    private IntygsbestallningUserDetailsService userDetailsService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
     // Initialization of the velocity engine
     @Bean
@@ -163,141 +175,10 @@ public class BaseSecurityConfig implements InitializingBean, DisposableBean {
         return new HttpClient(this.multiThreadedHttpConnectionManager);
     }
 
-    // SAML 2.0 WebSSO Assertion Consumer
-    @Bean
-    public WebSSOProfileConsumer webSSOprofileConsumer() {
-        return new WebSSOProfileConsumerImpl();
-    }
-
-    // SAML 2.0 Holder-of-Key WebSSO Assertion Consumer
-    @Bean
-    public WebSSOProfileConsumerHoKImpl hokWebSSOprofileConsumer() {
-        return new WebSSOProfileConsumerHoKImpl();
-    }
-
-    // SAML 2.0 Web SSO profile
-    @Bean
-    public WebSSOProfile webSSOprofile() {
-        return new WebSSOProfileImpl();
-    }
-
-    // SAML 2.0 Holder-of-Key Web SSO profile
-    @Bean
-    public WebSSOProfileConsumerHoKImpl hokWebSSOProfile() {
-        return new WebSSOProfileConsumerHoKImpl();
-    }
-
-    @Bean
-    public SingleLogoutProfile logoutprofile() {
-        return new SingleLogoutProfileImpl();
-    }
-
-
-    // SAML Authentication Provider responsible for validating of received SAML
-    // messages
-    @Bean
-    public SAMLAuthenticationProvider samlAuthenticationProvider() {
-        SAMLAuthenticationProvider samlAuthenticationProvider = new SAMLAuthenticationProvider();
-        samlAuthenticationProvider.setUserDetails(userDetailsService);
-        samlAuthenticationProvider.setForcePrincipalAsString(false);
-        return samlAuthenticationProvider;
-    }
-
-    @Bean
-    public FakeAuthenticationProvider fakeAuthenticationProvider() {
-        FakeAuthenticationProvider fakeAuthenticationProvider = new FakeAuthenticationProvider();
-        fakeAuthenticationProvider.setUserDetails(userDetailsService);
-        return fakeAuthenticationProvider;
-    }
-
-    // Keymanager stuff
-    @Bean
-    public JKSKeyManager keyManager() {
-        Map<String, String> map = new HashMap<>();
-        map.put(keystoreAlias, keystorePassword);
-        JKSKeyManager manager = new JKSKeyManager(keyStoreFile, keystorePassword, map, keystoreAlias);
-        return manager;
-    }
-
-    @Bean
-    public SAMLContextProviderLB contextProvider() {
-        SAMLContextProviderLB contextProvider = new SAMLContextProviderLB();
-        contextProvider.setScheme("https");
-        contextProvider.setServerName("${ib.server}");
-        contextProvider.setServerPort(443);
-        contextProvider.setIncludeServerPortInRequestURL(false);
-        contextProvider.setContextPath("/");
-        contextProvider.setKeyManager(keyManager());
-        return contextProvider;
-    }
-
-    // Processor bindings
-    private ArtifactResolutionProfile artifactResolutionProfile() {
-        final ArtifactResolutionProfileImpl artifactResolutionProfile =
-                new ArtifactResolutionProfileImpl(httpClient());
-        artifactResolutionProfile.setProcessor(new SAMLProcessorImpl(soapBinding()));
-        return artifactResolutionProfile;
-    }
-
-    @Bean
-    public HTTPArtifactBinding artifactBinding(ParserPool parserPool, VelocityEngine velocityEngine) {
-        return new HTTPArtifactBinding(parserPool, velocityEngine, artifactResolutionProfile());
-    }
-
-    @Bean
-    public HTTPSOAP11Binding soapBinding() {
-        return new HTTPSOAP11Binding(parserPool());
-    }
-
-    @Bean
-    public HTTPRedirectDeflateBinding redirectDeflateBinding() {
-        return new HTTPRedirectDeflateBinding(parserPool());
-    }
-
-    @Bean
-    public SAMLBinding httpPostBinding() {
-        return new HTTPPostBinding(parserPool(), velocityEngine());
-    }
-
-    // Processor
-    @Bean
-    public SAMLProcessorImpl processor() {
-        Collection<SAMLBinding> bindings = new ArrayList<>();
-        bindings.add(redirectDeflateBinding());
-        bindings.add(httpPostBinding());
-        bindings.add(artifactBinding(parserPool(), velocityEngine()));
-        return new SAMLProcessorImpl(bindings);
-    }
-
-    // Logger for SAML messages and events
-    @Bean
-    public SAMLDefaultLogger samlLogger() {
-        SAMLDefaultLogger logger = new SAMLDefaultLogger();
-        logger.setLogErrors(true);
-        logger.setLogMessages(true);
-        return logger;
-    }
-
     // Initialization of OpenSAML library
     @Bean
     public static SAMLBootstrap samlBootstrap() {
         return new SAMLBootstrap();
-    }
-
-    @Bean
-    public static HttpSessionRequestCache requestCache() {
-        HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
-        requestCache.setRequestMatcher(new RegexRequestMatcher("\\/maillink\\/.*", null));
-        return requestCache;
-    }
-
-    @Bean
-    public static SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler() {
-        SavedRequestAwareAuthenticationSuccessHandler handler = new SavedRequestAwareAuthenticationSuccessHandler();
-        handler.setDefaultTargetUrl("/#/app");
-        handler.setAlwaysUseDefaultTargetUrl(true);
-        handler.setRequestCache(requestCache());
-        return handler;
     }
 
     @Bean
@@ -323,14 +204,6 @@ public class BaseSecurityConfig implements InitializingBean, DisposableBean {
     }
 
     @Bean
-    public SAMLAuthenticationProvider authenticationProvider() {
-        SAMLAuthenticationProvider authenticationProvider = new SAMLAuthenticationProvider();
-        authenticationProvider.setUserDetails(userDetailsService);
-        authenticationProvider.setForcePrincipalAsString(false);
-        return authenticationProvider;
-    }
-
-    @Bean
     public OrRequestMatcher samlRequestMatcher() {
         ArrayList<RequestMatcher> matchers = Lists.newArrayList(
                 new AntPathRequestMatcher("/"),
@@ -341,6 +214,114 @@ public class BaseSecurityConfig implements InitializingBean, DisposableBean {
     }
 
     @Bean
+    public JKSKeyManager keyManager() {
+        Map<String, String> map = new HashMap<>();
+        map.put(keystoreAlias, keystorePassword);
+        return new JKSKeyManager(keyStoreFile, keystorePassword, map, keystoreAlias);
+    }
+
+    /* =====================================================
+     *
+     * SAML-stuff (prod, ib-security-test, ib-security-prod)
+     *
+     ===================================================== */
+    // SAML 2.0 WebSSO Assertion Consumer
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public WebSSOProfileConsumer webSSOprofileConsumer() {
+        return new WebSSOProfileConsumerImpl();
+    }
+
+    // SAML 2.0 Holder-of-Key WebSSO Assertion Consumer
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public WebSSOProfileConsumerHoKImpl hokWebSSOprofileConsumer() {
+        return new WebSSOProfileConsumerHoKImpl();
+    }
+
+    // SAML 2.0 Web SSO profile
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public WebSSOProfile webSSOprofile() {
+        return new WebSSOProfileImpl();
+    }
+
+    // SAML 2.0 Holder-of-Key Web SSO profile
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public WebSSOProfileConsumerHoKImpl hokWebSSOProfile() {
+        return new WebSSOProfileConsumerHoKImpl();
+    }
+
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public SingleLogoutProfile logoutprofile() {
+        return new SingleLogoutProfileImpl();
+    }
+
+    // Processor bindings
+    private ArtifactResolutionProfile artifactResolutionProfile() {
+        final ArtifactResolutionProfileImpl artifactResolutionProfile =
+                new ArtifactResolutionProfileImpl(httpClient());
+        artifactResolutionProfile.setProcessor(new SAMLProcessorImpl(soapBinding()));
+        return artifactResolutionProfile;
+    }
+
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public HTTPArtifactBinding artifactBinding(ParserPool parserPool, VelocityEngine velocityEngine) {
+        return new HTTPArtifactBinding(parserPool, velocityEngine, artifactResolutionProfile());
+    }
+
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public HTTPSOAP11Binding soapBinding() {
+        return new HTTPSOAP11Binding(parserPool());
+    }
+
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public HTTPRedirectDeflateBinding redirectDeflateBinding() {
+        return new HTTPRedirectDeflateBinding(parserPool());
+    }
+
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public SAMLBinding httpPostBinding() {
+        return new HTTPPostBinding(parserPool(), velocityEngine());
+    }
+
+    // Processor
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public SAMLProcessorImpl processor() {
+        Collection<SAMLBinding> bindings = new ArrayList<>();
+        bindings.add(redirectDeflateBinding());
+        bindings.add(httpPostBinding());
+        bindings.add(artifactBinding(parserPool(), velocityEngine()));
+        return new SAMLProcessorImpl(bindings);
+    }
+
+    // Logger for SAML messages and events
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public SAMLDefaultLogger samlLogger() {
+        SAMLDefaultLogger logger = new SAMLDefaultLogger();
+        logger.setLogErrors(true);
+        logger.setLogMessages(true);
+        return logger;
+    }
+
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public static HttpSessionRequestCache requestCache() {
+        HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+        requestCache.setRequestMatcher(new RegexRequestMatcher("\\/maillink\\/.*", null));
+        return requestCache;
+    }
+
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
     public IntygsbestallningSAMLEntryPoint samlEntryPoint() {
         IntygsbestallningSAMLEntryPoint entryPoint = new IntygsbestallningSAMLEntryPoint();
         WebSSOProfileOptions options = new WebSSOProfileOptions();
@@ -351,6 +332,20 @@ public class BaseSecurityConfig implements InitializingBean, DisposableBean {
     }
 
     @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public SAMLContextProviderLB contextProvider() {
+        SAMLContextProviderLB contextProvider = new SAMLContextProviderLB();
+        contextProvider.setScheme("https");
+        contextProvider.setServerName("${ib.server}");
+        contextProvider.setServerPort(443);
+        contextProvider.setIncludeServerPortInRequestURL(false);
+        contextProvider.setContextPath("/");
+        contextProvider.setKeyManager(keyManager());
+        return contextProvider;
+    }
+
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
     public FilterChainProxy samlFilter() throws Exception {
         List<SecurityFilterChain> chains = new ArrayList<>();
         chains.add(new DefaultSecurityFilterChain(
@@ -365,11 +360,13 @@ public class BaseSecurityConfig implements InitializingBean, DisposableBean {
     }
 
     @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
     public SecurityContextLogoutHandler logoutHandler() {
         return new SecurityContextLogoutHandler();
     }
 
     @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
     public SimpleUrlLogoutSuccessHandler successLogoutHandler() {
         SimpleUrlLogoutSuccessHandler successLogoutHandler = new SimpleUrlLogoutSuccessHandler();
         successLogoutHandler.setDefaultTargetUrl("/#/app");
@@ -378,30 +375,68 @@ public class BaseSecurityConfig implements InitializingBean, DisposableBean {
     }
 
     @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
     public SAMLLogoutProcessingFilter samlLogoutProcessingFilter() {
         return new SAMLLogoutProcessingFilter(successLogoutHandler(), logoutHandler());
     }
 
     @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
     public SAMLLogoutFilter samlLogoutFilter() {
         return new SAMLLogoutFilter(successLogoutHandler(), new LogoutHandler[] { logoutHandler() },
                 new LogoutHandler[] { logoutHandler() });
     }
 
     @Bean
-    public SAMLProcessingFilter samlWebSSOProcessingFilter() {
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public static SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler() {
+        SavedRequestAwareAuthenticationSuccessHandler handler = new SavedRequestAwareAuthenticationSuccessHandler();
+        handler.setDefaultTargetUrl("/#/app");
+        handler.setAlwaysUseDefaultTargetUrl(true);
+        handler.setRequestCache(requestCache());
+        return handler;
+    }
+
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public SAMLProcessingFilter samlWebSSOProcessingFilter() throws Exception {
         SAMLProcessingFilter samlWebSSOProcessingFilter = new SAMLProcessingFilter();
-        samlWebSSOProcessingFilter.setAuthenticationManager(authenticationManager);
+        samlWebSSOProcessingFilter.setAuthenticationManager(authenticationManager());
         samlWebSSOProcessingFilter.setSessionAuthenticationStrategy(registerSessionAuthenticationStrategy());
         samlWebSSOProcessingFilter.setAuthenticationSuccessHandler(successRedirectHandler());
         samlWebSSOProcessingFilter.setAuthenticationFailureHandler(failureHandler());
         return samlWebSSOProcessingFilter;
     }
 
+    // SAML Authentication Provider responsible for validating of received SAML
+    // messages
     @Bean
-    public FakeAuthenticationFilter fakeAuthenticationFilter() {
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public SAMLAuthenticationProvider samlAuthenticationProvider() {
+        SAMLAuthenticationProvider samlAuthenticationProvider = new SAMLAuthenticationProvider();
+        samlAuthenticationProvider.setUserDetails(userDetailsService);
+        samlAuthenticationProvider.setForcePrincipalAsString(false);
+        return samlAuthenticationProvider;
+    }
+
+    /* ===================================================
+    *
+    * Dev-security & ib-security-test
+    *
+    =====================================================*/
+    @Bean
+    @Profile({ "dev-security", "ib-security-test"})
+    public FakeAuthenticationProvider fakeAuthenticationProvider() {
+        FakeAuthenticationProvider fakeAuthenticationProvider = new FakeAuthenticationProvider();
+        fakeAuthenticationProvider.setUserDetails(userDetailsService);
+        return fakeAuthenticationProvider;
+    }
+
+    @Bean
+    @Profile({ "dev-security", "ib-security-test"})
+    public FakeAuthenticationFilter fakeAuthenticationFilter() throws Exception {
         FakeAuthenticationFilter fakeAuthenticationFilter = new FakeAuthenticationFilter();
-        fakeAuthenticationFilter.setAuthenticationManager(authenticationManager);
+        fakeAuthenticationFilter.setAuthenticationManager(authenticationManager());
         fakeAuthenticationFilter.setSessionAuthenticationStrategy(registerSessionAuthenticationStrategy());
         fakeAuthenticationFilter.setAuthenticationSuccessHandler(fakeSuccessHandler());
         fakeAuthenticationFilter.setAuthenticationFailureHandler(failureHandler());
@@ -409,7 +444,7 @@ public class BaseSecurityConfig implements InitializingBean, DisposableBean {
     }
 
     @Bean
-    @Profile({ "dev", "ib-security-test", "ib-security-dev"})
+    @Profile({ "dev-security", "ib-security-test"})
     public SimpleUrlAuthenticationSuccessHandler fakeSuccessHandler() {
         SimpleUrlAuthenticationSuccessHandler handler = new SimpleUrlAuthenticationSuccessHandler();
         handler.setDefaultTargetUrl("/#/app");
@@ -424,7 +459,7 @@ public class BaseSecurityConfig implements InitializingBean, DisposableBean {
     }
 
     @Bean
-    public ExtendedMetadataDelegate extendedMetadataDelegateSP() throws IOException, MetadataProviderException {
+    public ExtendedMetadataDelegate extendedMetadataDelegateSP() throws MetadataProviderException {
         File spMetadataFile = new File(configFolder + "/sp-sakerhetstjanst.xml");
         FilesystemMetadataProvider spMetadataProvider = new FilesystemMetadataProvider(spMetadataFile);
         spMetadataProvider.setParserPool(parserPool());
@@ -453,7 +488,7 @@ public class BaseSecurityConfig implements InitializingBean, DisposableBean {
     }
 
     @Bean
-    public ExtendedMetadataDelegate extendedMetadataDelegateIdp() throws IOException, MetadataProviderException {
+    public ExtendedMetadataDelegate extendedMetadataDelegateIdp() throws MetadataProviderException {
         File spMetadataFile = new File(configFolder + "/idp-sakerhetstjanst.xml");
         FilesystemMetadataProvider spMetadataProvider = new FilesystemMetadataProvider(spMetadataFile);
         spMetadataProvider.setParserPool(parserPool());
@@ -482,55 +517,65 @@ public class BaseSecurityConfig implements InitializingBean, DisposableBean {
         shutdown();
     }
 
-    @Configuration
-    @Order
-    public class SecurityConfig extends WebSecurityConfigurerAdapter {
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // These should always be permitted
+        http
+            .authorizeRequests()
+                .antMatchers("/welcome-assets/**").permitAll()
+                .antMatchers("/favicon.ico").permitAll()
+                .antMatchers("/index.html").permitAll()
+                .antMatchers("/app/**").permitAll()
+                .antMatchers("/assets/**").permitAll()
+                .antMatchers("/components/**").permitAll()
+                .antMatchers("/saml/web/**").permitAll()
+                .antMatchers("/saml2/web/**").permitAll()
+                .antMatchers("/services/**").permitAll()
+                .antMatchers("/api/config/**").permitAll();
+
+        if (profiles.contains(DEV_PROFILE)) {
             http
-                    .antMatcher("/")
-                    .antMatcher("/index.html")
-                    .antMatcher("/app/**")
-                    .antMatcher("/assets/**")
-                    .antMatcher("/components/**")
-                    .antMatcher("/saml/web/**")
-                    .antMatcher("/saml2/web/**")
-                    .antMatcher("/services/**")
-                    .antMatcher("/api/config/**")
-                    .authorizeRequests().anyRequest().permitAll()
-                .and()
-                    .httpBasic();
-        }
-    }
+                    .authorizeRequests()
+                    .antMatchers("/welcome.html").permitAll()
+                    .antMatchers("/api/stub/**").permitAll()
+                    .antMatchers("/api/test/**").permitAll();
 
-    @Configuration
-    @Profile("ib-security-test")
-    @Order(1)
-    public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
-
-        @Override
-        @Bean
-        public AuthenticationManager authenticationManagerBean() throws Exception {
-            return super.authenticationManagerBean();
+            http
+                    .authorizeRequests().antMatchers("/**").fullyAuthenticated()
+                    .and().httpBasic()
+                    .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
+                    .and()
+                    .csrf().disable()
+                    .logout()
+                    .invalidateHttpSession(true)
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/#/app")
+                    .and()
+                    .addFilterAt(fakeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
+                    .sessionManagement()
+                    .sessionAuthenticationStrategy(registerSessionAuthenticationStrategy());
         }
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
+        if (profiles.contains(TEST_PROFILE)) {
             // Unauthenticated requests matching samlRequestMatcher will be sent to saml login flow
             http
-                .httpBasic()
+                .requestMatcher(samlRequestMatcher())
+                    .authorizeRequests()
+                    .antMatchers("/fake").permitAll()
+                    .antMatchers("/**").fullyAuthenticated()
+                .and()
+                    .httpBasic()
                     .authenticationEntryPoint(samlEntryPoint())
                 .and()
                     .csrf().disable()
                     .headers().frameOptions().disable()
                 .and()
+                    .authorizeRequests().antMatchers("/**").fullyAuthenticated()
+                .and()
                     .addFilterAt(fakeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
                     .addFilterAfter(samlFilter(), BasicAuthenticationFilter.class)
                     .sessionManagement()
                     .sessionAuthenticationStrategy(registerSessionAuthenticationStrategy())
-                .and()
-                    .requestMatcher(samlRequestMatcher())
-                    .authorizeRequests().antMatchers("/**").fullyAuthenticated()
                 .and()
                     .requestCache()
                     .requestCache(requestCache());
@@ -547,49 +592,34 @@ public class BaseSecurityConfig implements InitializingBean, DisposableBean {
                     .logoutUrl("/logout")
                     .logoutSuccessUrl("/#/app")
                 .and()
-                    .authorizeRequests().antMatchers("/**").fullyAuthenticated()
+                    .authorizeRequests()
+                    .antMatchers("/fake").permitAll()
+                    .antMatchers("/**").fullyAuthenticated()
                 .and()
                     .addFilterAt(fakeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
                     .addFilterAfter(fakeAuthenticationFilter(), BasicAuthenticationFilter.class)
                     .sessionManagement()
                     .sessionAuthenticationStrategy(registerSessionAuthenticationStrategy());
+        }
+    }
 
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) {
+        if (profiles.contains(DEV_PROFILE)) {
+            auth
+                    .authenticationProvider(fakeAuthenticationProvider());
         }
 
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        if (profiles.contains(TEST_PROFILE)) {
             auth
                     .authenticationProvider(samlAuthenticationProvider())
                     .authenticationProvider(fakeAuthenticationProvider());
         }
     }
 
-    /*@Configuration
-    @Profile("dev-security")
-    @Order(2)
-    public class DevSecurityConfig extends BaseSecurityConfig {
-        @Autowired
-        public AuthenticationManager authenticationManagerBean;
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            super.configure(http);
-            http
-                    .authorizeRequests().antMatchers("/h2-console/**").permitAll().and()
-                    .authorizeRequests().anyRequest().permitAll();
-
-            http
-                    .headers().frameOptions().disable();
-
-            http
-                    .csrf().disable();
-        }
-
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            super.configure(auth);
-            auth
-                    .authenticationProvider(fakeAuthenticationProvider());
-        }
-    }*/
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 }

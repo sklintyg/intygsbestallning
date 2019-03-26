@@ -1,6 +1,5 @@
 package se.inera.intyg.intygsbestallning.web;
 
-import org.apache.cxf.transport.servlet.CXFServlet;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -17,7 +16,7 @@ import se.inera.intyg.intygsbestallning.common.CommonConfig;
 import se.inera.intyg.intygsbestallning.integration.IntegrationConfig;
 import se.inera.intyg.intygsbestallning.mailsender.config.MailSenderConfig;
 import se.inera.intyg.intygsbestallning.persistence.PersistenceConfig;
-import se.inera.intyg.intygsbestallning.web.auth.BaseSecurityConfig;
+import se.inera.intyg.intygsbestallning.web.auth.SecurityConfig;
 
 public class ApplicationInitializer implements WebApplicationInitializer {
 
@@ -31,7 +30,7 @@ public class ApplicationInitializer implements WebApplicationInitializer {
                 MailSenderConfig.class,
                 PersistenceConfig.class,
                 WebConfig.class,
-                BaseSecurityConfig.class);
+                SecurityConfig.class);
 
         servletContext.addListener(new ContextLoaderListener(appContext));
 
