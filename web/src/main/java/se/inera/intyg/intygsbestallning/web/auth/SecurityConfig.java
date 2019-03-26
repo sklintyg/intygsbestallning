@@ -18,11 +18,18 @@
  */
 package se.inera.intyg.intygsbestallning.web.auth;
 
-import com.google.common.collect.Lists;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.velocity.app.VelocityEngine;
-import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 import org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
@@ -35,14 +42,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.io.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -94,22 +98,15 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.stereotype.Component;
+
+import com.google.common.collect.Lists;
+
 import se.inera.intyg.infra.security.exception.HsaServiceException;
 import se.inera.intyg.infra.security.exception.MissingMedarbetaruppdragException;
 import se.inera.intyg.intygsbestallning.web.auth.exceptions.MissingIBSystemRoleException;
 import se.inera.intyg.intygsbestallning.web.auth.fake.FakeAuthenticationFilter;
 import se.inera.intyg.intygsbestallning.web.auth.fake.FakeAuthenticationProvider;
 import se.inera.intyg.intygsbestallning.web.auth.service.IntygsbestallningUserDetailsService;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @EnableWebSecurity
 @PropertySource("file:${credentials.file}")
@@ -369,7 +366,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     @Profile({"prod", "ib-security-test", "ib-security-prod"})
     public SimpleUrlLogoutSuccessHandler successLogoutHandler() {
         SimpleUrlLogoutSuccessHandler successLogoutHandler = new SimpleUrlLogoutSuccessHandler();
-        successLogoutHandler.setDefaultTargetUrl("/#/app");
+        successLogoutHandler.setDefaultTargetUrl("/");
         successLogoutHandler.setAlwaysUseDefaultTargetUrl(true);
         return successLogoutHandler;
     }
@@ -391,7 +388,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     @Profile({"prod", "ib-security-test", "ib-security-prod"})
     public static SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler() {
         SavedRequestAwareAuthenticationSuccessHandler handler = new SavedRequestAwareAuthenticationSuccessHandler();
-        handler.setDefaultTargetUrl("/#/app");
+        handler.setDefaultTargetUrl("/");
         handler.setAlwaysUseDefaultTargetUrl(true);
         handler.setRequestCache(requestCache());
         return handler;
@@ -447,7 +444,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     @Profile({ "dev-security", "ib-security-test"})
     public SimpleUrlAuthenticationSuccessHandler fakeSuccessHandler() {
         SimpleUrlAuthenticationSuccessHandler handler = new SimpleUrlAuthenticationSuccessHandler();
-        handler.setDefaultTargetUrl("/#/app");
+        handler.setDefaultTargetUrl("/");
         handler.setAlwaysUseDefaultTargetUrl(true);
         return handler;
     }
@@ -540,24 +537,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
                     .antMatchers("/api/stub/**").permitAll()
                     .antMatchers("/api/test/**").permitAll();
 
+            // @formatter:off
             http
-                    .authorizeRequests().antMatchers("/**").fullyAuthenticated()
-                    .and().httpBasic()
+                .authorizeRequests().antMatchers("/**").fullyAuthenticated()
+                .and().httpBasic()
                     .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
-                    .and()
+                .and()
                     .csrf().disable()
                     .logout()
                     .invalidateHttpSession(true)
                     .logoutUrl("/logout")
-                    .logoutSuccessUrl("/#/app")
-                    .and()
+                    .logoutSuccessUrl("/welcome.html")
+                .and()
                     .addFilterAt(fakeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
                     .sessionManagement()
                     .sessionAuthenticationStrategy(registerSessionAuthenticationStrategy());
+            // @formatter:on
         }
 
         if (profiles.contains(TEST_PROFILE)) {
             // Unauthenticated requests matching samlRequestMatcher will be sent to saml login flow
+            // @formatter:off
             http
                 .requestMatcher(samlRequestMatcher())
                     .authorizeRequests()
@@ -600,6 +600,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
                     .addFilterAfter(fakeAuthenticationFilter(), BasicAuthenticationFilter.class)
                     .sessionManagement()
                     .sessionAuthenticationStrategy(registerSessionAuthenticationStrategy());
+            // @formatter:on
         }
     }
 
