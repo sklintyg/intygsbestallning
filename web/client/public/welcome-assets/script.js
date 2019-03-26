@@ -1,7 +1,35 @@
 var persons = [];
 var loginOptions = [];
-var appIdentity = "WC";
+var medarbetaruppdrag = [];
+var appIdentity = "IB";
 var jsonSelect;
+
+var validProperties = [
+  'hsaId',
+  'forNamn',
+  'efterNamn',
+  'enhetId',
+  'legitimeradeYrkesgrupper',
+  'systemRoles',
+  'befattningsKod',
+  'forskrivarKod'
+];
+
+$( document ).ready(function() {
+  fetchHsaPersons();
+  fetchMedarbetaruppdrag();
+
+  jsonSelect = $("#jsonSelect");
+
+  jsonSelect.change(function() {
+    updateUserContext(jsonSelect.val());
+  });
+
+  jsonSelect.dblclick(function() {
+    updateUserContext(jsonSelect.val());
+    $("#loginForm").submit();
+  });
+});
 
 function fetchHsaPersons() {
   $.getJSON('/services/api/hsa-api/person')
@@ -10,6 +38,18 @@ function fetchHsaPersons() {
         persons = _loginModel(response);
         loginOptions = _loginOptions();
         updateUserList();
+      },
+      function(data, status) {
+        console.log('error ' + status);
+      }
+    );
+}
+
+function fetchMedarbetaruppdrag() {
+  $.getJSON('/services/api/hsa-api/medarbetaruppdrag')
+    .then(
+      function(response) {
+        medarbetaruppdrag = response;
       },
       function(data, status) {
         console.log('error ' + status);
@@ -28,20 +68,25 @@ function updateUserList() {
   updateUserContext(0);
 }
 
-$( document ).ready(function() {
-  fetchHsaPersons();
+function _getMedarbetaruppdrag(hsaId) {
+  return $scope.medarbetaruppdrag.filter(function(item) {
+    return item.hsaId === hsaId;
+  })[0];
+}
 
-  jsonSelect = $("#jsonSelect");
+function _getSystemRoles(hsaId) {
+  var mu = _getMedarbetaruppdrag(hsaId);
+  if (!mu || !mu.uppdrag) {
+    return [];
+  }
 
-  jsonSelect.change(function() {
-    updateUserContext(jsonSelect.val());
-  });
+  return mu.uppdrag.reduce(function(acc, val) {
+    if (val.systemRoles) {
+      return acc.concat(val.systemRoles);
+    }
+  }, []);
+}
 
-  jsonSelect.dblclick(function() {
-    updateUserContext(jsonSelect.val());
-    $("#loginForm").submit();
-  });
-});
 
 function _filterLoginIdentity(allowedApps, appName) {
   if (!$.isArray(allowedApps)) {
@@ -169,19 +214,6 @@ function _replacer(key, value) {
 }
 
 function _stringify(hsaPerson) {
-  var validProperties = [
-      'hsaId',
-      'intygTyp',
-      'forNamn',
-      'efterNamn',
-      'enhetId',
-      'legitimeradeYrkesgrupper',
-      'befattningsKod',
-      'forskrivarKod',
-      'origin',
-      'authenticationMethod',
-  'privatLakare','personId'];
-
   var string = JSON.stringify(hsaPerson, validProperties, 1);
   var object = JSON.parse(string);
 
@@ -200,9 +232,11 @@ function updateUserContext(newSelected, oldVal) {
     // Hantera som privatlakare.
     // Get the HSA person from model
     var hsaPerson = _findHsaPerson(login.hsaId);
+    var systemRoles =  _getSystemRoles(login.hsaId);
 
     // Add properties to HSA person
     _updateObject(hsaPerson, 'enhetId', login.forvaldEnhet);
+    _updateObject(hsaPerson, 'systemRoles', systemRoles);
 
     var loginJson = _stringify(hsaPerson);
 
