@@ -3,12 +3,12 @@ const ROOT_URL = '/api/';
 
 const handleResponse = (config) => (response) => {
   if (!response.ok) {
-    var error = {message: response.statusText, response}
+    const error = {message: response.statusText, response}
     throw error;
   }
 
   if (config) {
-    if (config.noBody) {
+    if (config.emptyBody) {
       return {};
     }
   }
@@ -23,7 +23,7 @@ export const buildUrlFromParams = (path, parameters) => {
       let value = parameters[key];
 
       if (value) {
-   
+
         parameterList.push(`${key}=${value}`);
       }
     });

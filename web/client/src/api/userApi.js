@@ -1,42 +1,13 @@
-import userDb from "./userDb";
+let api;
 
-// This is a fake in-memory implementation of something
-// that would be implemented by calling a REST server.
+if (process.env.NODE_ENV === 'production') {
+  api = require('./real/userApi');
+} else {
+  api = require('./mock/userApi')
+}
 
-const fakeDatabase = {
-  anvandare: userDb
-};
+export const fetchAnvandare = () => api.fetchAnvandare();
 
-const delay = (ms) =>
-  new Promise(resolve => setTimeout(resolve, ms));
+export const logoutUser = () => api.logoutUser();
 
-// should actually return  return makeServerRequest('anvandare')
-export const fetchAnvandare = () =>
-  delay(500).then(() => {
-    return fakeDatabase.anvandare;
-
-  });
-export const logoutUser = () =>
-  delay(1500).then(() => {
-    return {};
-
-  });
-// should actually return  return makeServerRequest('anvandare/andra-enhet')
-export const changeEnhet = (hsaId) =>
-  delay(500).then(() => {
-
-    // Manipulate fakeDatabase anvandare state and return the new one..
-    const newVardenhet = fakeDatabase.anvandare.vardgivare.reduce((arr, item) => arr.concat(item.vardenheter),
-      []).filter(
-      ve => ve.id === hsaId)[0];
-
-    const newVardgivare = fakeDatabase.anvandare.vardgivare.filter(vg => vg.id === newVardenhet.vardgivareHsaId)[0];
-
-    fakeDatabase.anvandare.valdVardenhet = newVardenhet;
-
-    fakeDatabase.anvandare.valdVardgivare = newVardgivare;
-    return fakeDatabase.anvandare;
-
-  });
-
-
+export const changeEnhet = (hsaId) => api.changeEnhet(hsaId);

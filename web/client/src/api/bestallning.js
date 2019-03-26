@@ -1,19 +1,11 @@
-import bestallningarDb, {decorateForBestallning, bestallningsConfig} from "./bestallningarFakeDb";
-import * as utils from '../store/actions/utils'
+let api;
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-const useFake = false;
+if (process.env.NODE_ENV === 'production' || true) {
+  api = require('./real/bestallning');
+} else {
+  api = require('./mock/bestallning')
+}
 
-export const fetchBestallning = id => {
-    if (useFake) {
-      return delay(500).then(() => {
-        return bestallningsConfig(decorateForBestallning([...bestallningarDb]).find(t => t.id === id));
-      });
-    } else {
-      return utils.makeServerRequest("bestallningar/1");
-    }
-  }
-export const setStatus = (id, status) =>
-    delay(500).then(() => {
-        return status;
-    });
+export const fetchBestallning = id => api.fetchBestallning(id);
+
+export const setStatus = (id, status) => api.setStatus(id, status);
