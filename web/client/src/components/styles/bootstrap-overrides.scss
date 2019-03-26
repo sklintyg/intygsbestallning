@@ -5,6 +5,8 @@
 $font-family-sans-serif: Roboto, "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 $font-size-base: 0.875rem; //This will set base font-size to equivalent of 14px ( default in browsers is 1rem = 16 px, so 16/14 = 0.875rem)
 
+//Set base default font color for body, so we only need to override where its different
+$body-color: $ib-color-08;
 $info: $ib-color-03;
 $primary: $ib-color-21;
 

@@ -6,7 +6,7 @@ import { getBestallning, getErrorMessage } from '../../store/reducers/bestallnin
 import BestallningFraga from './bestallningFraga'
 import BestallningHeader from './bestallningHeader'
 import { FlexColumnContainer, ScrollingContainer, WorkareaContainer } from '../styles/ibLayout'
-import Footer from '../Footer/Footer'
+import AppFooter from '../appFooter/AppFooter'
 import styled from 'styled-components'
 import Colors from '../styles/IbColors'
 import { compose, lifecycle } from 'recompose'
@@ -30,7 +30,7 @@ const BestallningContainer = ({ errorMessage, bestallning, history }) => {
           <WorkareaContainer>
             {bestallning.fragor.map((b, i) => <BestallningFraga key={i} props={b} />)}
           </WorkareaContainer>
-          <Footer />
+          <AppFooter />
         </CustomScrollingContainer>
       </FlexColumnContainer>
     )

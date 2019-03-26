@@ -1,7 +1,7 @@
 import React from 'react';
 import {FlexColumnContainer, ScrollingContainer, WorkareaContainer} from "../components/styles/ibLayout";
 import SelectEnhet from "../components/selectEnhet";
-import Footer from "../components/Footer/Footer";
+import AppFooter from "../components/appFooter/AppFooter";
 import styled from "styled-components";
 import ibValues from "../components/styles/IbValues";
 
@@ -32,7 +32,7 @@ const SelectEnhetPage = () => {
             inloggning.</p>
           <SelectEnhet />
         </PageContainer>
-        <Footer />
+        <AppFooter />
       </CustomScrollingContainer>
     </FlexColumnContainer>
   )

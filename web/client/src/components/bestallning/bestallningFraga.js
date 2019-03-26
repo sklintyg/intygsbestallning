@@ -12,7 +12,7 @@ const Fraga = Styled.div`
   background: ${Colors.IB_COLOR_00};
 `;
 
-const Rubrik = Styled(Typo.IB_TYPO_02)`
+const Rubrik = Styled(Typo.IbTypo02)`
   margin: 0;
   padding: 20px 30px 15px;
   border-bottom: 1px solid ${Colors.IB_COLOR_15};
@@ -24,12 +24,12 @@ const Content = Styled.div`
   padding: 0 30px;
 `
 
-const Etikett = Styled(Typo.IB_TYPO_06)`
+const Etikett = Styled(Typo.IbTypo06)`
   padding: 20px 0 10px;
   color: ${Colors.IB_COLOR_09};
 `
 
-const Text = Styled(Typo.IB_TYPO_07)`
+const Text = Styled(Typo.IbTypo07)`
   white-space: pre-line;
   background: ${Colors.IB_COLOR_28};
   color: ${Colors.IB_COLOR_07};
@@ -37,7 +37,7 @@ const Text = Styled(Typo.IB_TYPO_07)`
   padding: 10px;
 `;
 
-const Svar = Styled(Typo.IB_TYPO_07)`
+const Svar = Styled(Typo.IbTypo07)`
   white-space: pre-line;
   background: ${Colors.IB_COLOR_15};
   color: ${Colors.IB_COLOR_07};

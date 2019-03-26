@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import * as PropTypes from "prop-types";
 import styled from "styled-components";
-import {IB_TYPO_05, IB_TYPO_06} from "../styles/IbTypography";
+import {IbTypo05, IbTypo06} from "../styles/IbTypography";
 import IbColors from "../styles/IbColors";
 import Toggler from "../toggler/Toggler";
 import {Button} from "reactstrap";
@@ -11,7 +11,7 @@ const ComponentWrapper = styled.div`
   
 `
 
-const VardgivarTitle = styled(IB_TYPO_05)`
+const VardgivarTitle = styled(IbTypo05)`
   color: ${IbColors.IB_COLOR_09}
   background: ${IbColors.IB_COLOR_20}
   padding-left: 16px;
@@ -22,7 +22,7 @@ const VardgivarTitle = styled(IB_TYPO_05)`
   }
 `
 
-const Vardenhet = styled(IB_TYPO_06)`
+const Vardenhet = styled(IbTypo06)`
   background: transparent;
   //padding: 8px 8px 8px 30px
   padding-left: 32px;
