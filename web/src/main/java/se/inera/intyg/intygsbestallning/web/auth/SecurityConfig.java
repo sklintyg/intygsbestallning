@@ -210,19 +210,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
         return new OrRequestMatcher(matchers);
     }
 
-    @Bean
-    public JKSKeyManager keyManager() {
-        Map<String, String> map = new HashMap<>();
-        map.put(keystoreAlias, keystorePassword);
-        return new JKSKeyManager(keyStoreFile, keystorePassword, map, keystoreAlias);
-    }
-
     /* =====================================================
      *
      * SAML-stuff (prod, ib-security-test, ib-security-prod)
      *
      ===================================================== */
     // SAML 2.0 WebSSO Assertion Consumer
+
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public JKSKeyManager keyManager() {
+        Map<String, String> map = new HashMap<>();
+        map.put(keystoreAlias, keystorePassword);
+        return new JKSKeyManager(keyStoreFile, keystorePassword, map, keystoreAlias);
+    }
+
     @Bean
     @Profile({"prod", "ib-security-test", "ib-security-prod"})
     public WebSSOProfileConsumer webSSOprofileConsumer() {
@@ -416,6 +418,65 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
         return samlAuthenticationProvider;
     }
 
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public CachingMetadataManager metadata() throws MetadataProviderException, IOException {
+        return new CachingMetadataManager(Lists.newArrayList(
+                extendedMetadataDelegateSP(), extendedMetadataDelegateIdp()));
+    }
+
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public ExtendedMetadataDelegate extendedMetadataDelegateSP() throws MetadataProviderException {
+        File spMetadataFile = new File(configFolder + "/sp-sakerhetstjanst.xml");
+        FilesystemMetadataProvider spMetadataProvider = new FilesystemMetadataProvider(spMetadataFile);
+        spMetadataProvider.setParserPool(parserPool());
+        ExtendedMetadata extendedMetadata = generateExtendedMetadataSP();
+
+        ExtendedMetadataDelegate delegate = new ExtendedMetadataDelegate(spMetadataProvider, extendedMetadata);
+        delegate.setMetadataTrustCheck(true);
+
+        return delegate;
+    }
+
+    @NotNull
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    private ExtendedMetadata generateExtendedMetadataSP() {
+        ExtendedMetadata extendedMetadata = new ExtendedMetadata();
+        extendedMetadata.setAlias("defaultAlias");
+        extendedMetadata.setLocal(true);
+        extendedMetadata.setSslSecurityProfile("metaiop");
+        extendedMetadata.setSecurityProfile("metaiop");
+        extendedMetadata.setSignMetadata(true);
+        extendedMetadata.setSigningKey(keystoreAlias);
+        extendedMetadata.setEncryptionKey(keystoreAlias);
+        extendedMetadata.setRequireArtifactResolveSigned(true);
+        extendedMetadata.setRequireLogoutRequestSigned(false);
+        extendedMetadata.setRequireLogoutResponseSigned(false);
+        return extendedMetadata;
+    }
+
+    @Bean
+    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    public ExtendedMetadataDelegate extendedMetadataDelegateIdp() throws MetadataProviderException {
+        File spMetadataFile = new File(configFolder + "/idp-sakerhetstjanst.xml");
+        FilesystemMetadataProvider spMetadataProvider = new FilesystemMetadataProvider(spMetadataFile);
+        spMetadataProvider.setParserPool(parserPool());
+        ExtendedMetadata extendedMetadata = generateExtendedMetadataIdp();
+
+        ExtendedMetadataDelegate delegate = new ExtendedMetadataDelegate(spMetadataProvider, extendedMetadata);
+        delegate.setMetadataTrustCheck(true);
+
+        return delegate;
+    }
+
+    @NotNull
+    private ExtendedMetadata generateExtendedMetadataIdp() {
+        ExtendedMetadata extendedMetadata = new ExtendedMetadata();
+        extendedMetadata.setAlias("defaultAlias");
+        return extendedMetadata;
+    }
+
     /* ===================================================
     *
     * Dev-security & ib-security-test
@@ -444,64 +505,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     @Profile({ "dev-security", "ib-security-test"})
     public SimpleUrlAuthenticationSuccessHandler fakeSuccessHandler() {
         SimpleUrlAuthenticationSuccessHandler handler = new SimpleUrlAuthenticationSuccessHandler();
-        handler.setDefaultTargetUrl("/");
+        handler.setDefaultTargetUrl("/index.html");
         handler.setAlwaysUseDefaultTargetUrl(true);
         return handler;
-    }
-
-    @Bean
-    public CachingMetadataManager metadata() throws MetadataProviderException, IOException {
-        return new CachingMetadataManager(Lists.newArrayList(
-                extendedMetadataDelegateSP(), extendedMetadataDelegateIdp()));
-    }
-
-    @Bean
-    public ExtendedMetadataDelegate extendedMetadataDelegateSP() throws MetadataProviderException {
-        File spMetadataFile = new File(configFolder + "/sp-sakerhetstjanst.xml");
-        FilesystemMetadataProvider spMetadataProvider = new FilesystemMetadataProvider(spMetadataFile);
-        spMetadataProvider.setParserPool(parserPool());
-        ExtendedMetadata extendedMetadata = generateExtendedMetadataSP();
-
-        ExtendedMetadataDelegate delegate = new ExtendedMetadataDelegate(spMetadataProvider, extendedMetadata);
-        delegate.setMetadataTrustCheck(true);
-
-        return delegate;
-    }
-
-    @NotNull
-    private ExtendedMetadata generateExtendedMetadataSP() {
-        ExtendedMetadata extendedMetadata = new ExtendedMetadata();
-        extendedMetadata.setAlias("defaultAlias");
-        extendedMetadata.setLocal(true);
-        extendedMetadata.setSslSecurityProfile("metaiop");
-        extendedMetadata.setSecurityProfile("metaiop");
-        extendedMetadata.setSignMetadata(true);
-        extendedMetadata.setSigningKey(keystoreAlias);
-        extendedMetadata.setEncryptionKey(keystoreAlias);
-        extendedMetadata.setRequireArtifactResolveSigned(true);
-        extendedMetadata.setRequireLogoutRequestSigned(false);
-        extendedMetadata.setRequireLogoutResponseSigned(false);
-        return extendedMetadata;
-    }
-
-    @Bean
-    public ExtendedMetadataDelegate extendedMetadataDelegateIdp() throws MetadataProviderException {
-        File spMetadataFile = new File(configFolder + "/idp-sakerhetstjanst.xml");
-        FilesystemMetadataProvider spMetadataProvider = new FilesystemMetadataProvider(spMetadataFile);
-        spMetadataProvider.setParserPool(parserPool());
-        ExtendedMetadata extendedMetadata = generateExtendedMetadataIdp();
-
-        ExtendedMetadataDelegate delegate = new ExtendedMetadataDelegate(spMetadataProvider, extendedMetadata);
-        delegate.setMetadataTrustCheck(true);
-
-        return delegate;
-    }
-
-    @NotNull
-    private ExtendedMetadata generateExtendedMetadataIdp() {
-        ExtendedMetadata extendedMetadata = new ExtendedMetadata();
-        extendedMetadata.setAlias("defaultAlias");
-        return extendedMetadata;
     }
 
     @Override
@@ -519,9 +525,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
         // These should always be permitted
         http
             .authorizeRequests()
+                .antMatchers("/").permitAll()
                 .antMatchers("/welcome-assets/**").permitAll()
                 .antMatchers("/favicon.ico").permitAll()
                 .antMatchers("/index.html").permitAll()
+                .antMatchers("/static/**").permitAll()
                 .antMatchers("/app/**").permitAll()
                 .antMatchers("/assets/**").permitAll()
                 .antMatchers("/components/**").permitAll()
