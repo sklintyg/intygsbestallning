@@ -45,7 +45,7 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
 
     private static final long serialVersionUID = 8711015219408194075L;
 
-    // Tree for handling which VG and VE the user has access to as VARDADMIN or SAMORDNARE
+    // Tree for handling which VG and VE the user has access to
     private List<IbVardgivare> systemAuthorities = new ArrayList<>();
 
     // An IB-user must always have a current role and a current IbSelectableHsaEntity
@@ -189,11 +189,13 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
         return false;
     }
 
-
+    /**
+     * In IB we only handle VG/VE level
+     * @return
+     */
     @Override
     public int getTotaltAntalVardenheter() {
-        // count all hasid's in the datastructure
-        return (int) getVardgivare().stream().flatMap(vg -> vg.getHsaIds().stream()).count();
+        return (int) vardgivare.stream().flatMap(vg -> vg.getVardenheter().stream()).count();
     }
 
     /**

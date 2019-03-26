@@ -27,8 +27,7 @@ interface IbSelectableHsaEntity {
 
 data class IbVardgivare(
     override val id: String,
-    override val name: String,
-    val isSamordnare: Boolean
+    override val name: String
 ) : IbSelectableHsaEntity {
 
   var vardenheter: ArrayList<IbVardenhet> = arrayListOf()

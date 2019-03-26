@@ -35,7 +35,6 @@ public class GetUserResponse {
 
     private String hsaId;
     private String namn;
-    private String titel;
     private String authenticationScheme;
 
     private Map<String, Feature> features;
@@ -48,7 +47,6 @@ public class GetUserResponse {
     public GetUserResponse(IntygsbestallningUser user) {
         this.hsaId = user.getHsaId();
         this.namn = user.getNamn();
-        this.titel = user.getTitel();
 
         this.authenticationScheme = user.getAuthenticationScheme();
         this.features = user.getFeatures();
@@ -66,10 +64,6 @@ public class GetUserResponse {
 
     public String getNamn() {
         return namn;
-    }
-
-    public String getTitel() {
-        return titel;
     }
 
     public String getAuthenticationScheme() {

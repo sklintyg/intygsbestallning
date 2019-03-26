@@ -108,7 +108,7 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
         List<IbVardgivare> authSystemTree = new ArrayList<>();
 
         for (Vardgivare vg : user.getVardgivare()) {
-            IbVardgivare ibVardgivare = new IbVardgivare(vg.getId(), vg.getNamn(), false);
+            IbVardgivare ibVardgivare = new IbVardgivare(vg.getId(), vg.getNamn());
             for (Vardenhet ve : vg.getVardenheter()) {
                 ibVardgivare.getVardenheter().add(new IbVardenhet(ve.getId(), ve.getNamn(), ibVardgivare.getId(), ibVardgivare.getName(), ve.getVardgivareOrgnr()));
             }

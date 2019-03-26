@@ -181,7 +181,7 @@ public class PdlLogMessageFactoryTest {
     }
 
     private IbVardgivare createIbVardgivare() {
-        return new IbVardgivare(VG_ID, VG_NAME, false);
+        return new IbVardgivare(VG_ID, VG_NAME);
     }
 
     private IbVardenhet createIbVardenhet() {
