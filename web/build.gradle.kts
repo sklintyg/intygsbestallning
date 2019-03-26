@@ -16,18 +16,25 @@ dependencies {
   implementation(project(":persistence"))
   implementation(project(":mail-sender"))
 
-  compile("se.inera.intyg.infra:hsa-integration:${extra["intygInfraVersion"]}")
-  compile("se.inera.intyg.infra:log-messages:${extra["intygInfraVersion"]}")
-  compile("se.inera.intyg.infra:monitoring:${extra["intygInfraVersion"]}")
-  compile("se.inera.intyg.infra:pu-integration:${extra["intygInfraVersion"]}")
-  compile("se.inera.intyg.infra:security-authorities:${extra["intygInfraVersion"]}")
-  compile("se.inera.intyg.infra:security-common:${extra["intygInfraVersion"]}")
-  compile("se.inera.intyg.infra:security-siths:${extra["intygInfraVersion"]}")
+  implementation("se.inera.intyg.infra:hsa-integration:${extra["intygInfraVersion"]}")
+  implementation("se.inera.intyg.infra:log-messages:${extra["intygInfraVersion"]}")
+  implementation("se.inera.intyg.infra:monitoring:${extra["intygInfraVersion"]}")
+  implementation("se.inera.intyg.infra:pu-integration:${extra["intygInfraVersion"]}")
+  implementation("se.inera.intyg.infra:security-authorities:${extra["intygInfraVersion"]}")
+  implementation("se.inera.intyg.infra:security-common:${extra["intygInfraVersion"]}")
+  implementation("se.inera.intyg.infra:security-siths:${extra["intygInfraVersion"]}")
+
+
 
   // External dependencies
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-data-redis")
   //implementation("org.springframework.boot:spring-boot-starter-actuator")
+
+  //api documentation
+  implementation("io.springfox:springfox-swagger2:2.9.2")
+  implementation("io.springfox:springfox-swagger-ui:2.9.2")
+
 
   implementation("jakarta.jws:jakarta.jws-api:1.1.1")
   implementation("javax.xml.ws:jaxws-api:${Dependencies.jaxVersion}")
