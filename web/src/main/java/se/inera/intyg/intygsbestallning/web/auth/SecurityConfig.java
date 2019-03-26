@@ -553,6 +553,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
                     .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
                 .and()
                     .csrf().disable()
+                    .headers().frameOptions().disable()
+                .and()
                     .logout()
                     .invalidateHttpSession(true)
                     .logoutUrl("/logout")
