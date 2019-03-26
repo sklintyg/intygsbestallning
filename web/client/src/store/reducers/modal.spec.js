@@ -6,7 +6,7 @@ describe('modal reducer', () => {
     const initState = {};
 
     expect(reducer(undefined, {})).toEqual(initState);
-  })
+  });
 
   describe('should handle ' + OPEN_MODAL, () => {
     const id = '123';

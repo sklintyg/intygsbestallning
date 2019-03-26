@@ -61,7 +61,17 @@ tasks {
   val buildReactApp by creating(NpmTask::class) {
     dependsOn(npmInstall)
 
+    setEnvironment(mapOf("CI" to true))
+
     setArgs(listOf("run", "build"))
+  }
+
+  val testReactApp by creating(NpmTask::class) {
+    dependsOn(npmInstall)
+
+    setEnvironment(mapOf("CI" to true))
+
+    setArgs(listOf("run", "test"))
   }
 
   val copyReactbuild by creating(Copy::class) {
@@ -130,6 +140,10 @@ tasks {
 
     bootJar {
       dependsOn(buildReactApp)
+    }
+
+    test {
+      dependsOn(testReactApp)
     }
   }
 }
