@@ -15,7 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
-import se.inera.intyg.intygsbestallning.common.domain.IntygTyp;
 import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
 import se.inera.intyg.intygsbestallning.common.property.MailProperties;
 import se.inera.intyg.intygsbestallning.common.text.mail.MailContent;

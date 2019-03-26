@@ -2,7 +2,6 @@ package se.inera.intyg.intygsbestallning.common.dto
 
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus
-import se.inera.intyg.intygsbestallning.common.domain.IntygTyp
 import se.inera.intyg.intygsbestallning.common.domain.Invanare
 import se.inera.intyg.intygsbestallning.common.text.bestallning.BestallningTexter
 import java.time.LocalDate

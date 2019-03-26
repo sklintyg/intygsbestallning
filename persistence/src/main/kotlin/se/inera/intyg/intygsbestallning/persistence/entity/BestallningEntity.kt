@@ -4,7 +4,6 @@ import com.querydsl.core.annotations.PropertyType
 import com.querydsl.core.annotations.QueryType
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus
-import se.inera.intyg.intygsbestallning.common.domain.IntygTyp
 import java.time.LocalDateTime
 import javax.persistence.*
 

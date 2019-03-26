@@ -14,6 +14,7 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -70,10 +71,14 @@ public class BestallningTextServiceImpl implements BestallningTextService {
     private Double getLatestVersionForTyp(String intygTyp) {
         return bestallningTexterList.stream()
                 .filter(texter -> texter.getTyp().equals(intygTyp))
+
+                .filter(bestallningTexter -> {
+                    var date = Try.of(() -> LocalDate.parse(bestallningTexter.getGiltigFrom()));
+                    return date.isSuccess() && !date.get().isAfter(LocalDate.now());
+                })
                 .mapToDouble(texter -> Double.parseDouble(texter.getVersion()))
                 .max()
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Bestallning text resources for bestallning is not supported for Type: " + intygTyp));
+                .orElseThrow(() -> new IllegalArgumentException("Intyg of Type: " + intygTyp + " is not supported"));
     }
 
     private void loadResources(String path) throws IOException {
