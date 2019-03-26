@@ -1,7 +1,9 @@
 import React from 'react'
 import BestallningActionBar from './bestallningActionBar'
 import ibValues from '../styles/IbValues'
+import * as ibTypo from '../styles/IbTypography'
 import styled from 'styled-components'
+import Colors from '../styles/IbColors'
 
 const CenterContainer = styled.div`
   margin: auto;
@@ -15,6 +17,22 @@ const HeaderContainer = styled.div`
   position: relative;
 `
 
+const ButtonRow = styled.div`
+  display: flex;
+  .left {
+    flex: 1 0;
+  }
+  .right {
+    
+  }
+  border-top: 1px solid ${Colors.IB_COLOR_15};
+  padding-top: 10px;
+  margin-top: 10px;
+  align-items: flex-end;
+  justify-content: space-between;
+`
+
+
 const BestallningHeader = ({props}) => (
   <HeaderContainer>
     <CenterContainer>
@@ -24,9 +42,13 @@ const BestallningHeader = ({props}) => (
         <span> :: Status {props.bestallning.status}</span>
         <span> :: Inkom {props.bestallning.ankomstDatum}</span>
       </div>
-      <div>{props.bestallning.id}</div>
-      <div>{props.bestallning.invanare.personId} - {props.bestallning.invanare.name}</div>
-      <BestallningActionBar bestallning={props.bestallning} />
+      <ButtonRow>
+        <div className="left">
+          <ibTypo.IbTypo05>{props.bestallning.id}</ibTypo.IbTypo05>
+          <ibTypo.IbTypo01>{props.bestallning.invanare.personId} - {props.bestallning.invanare.name}</ibTypo.IbTypo01>
+        </div>
+        <BestallningActionBar bestallning={props.bestallning} />
+      </ButtonRow>
     </CenterContainer>
   </HeaderContainer>
 )

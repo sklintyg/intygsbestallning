@@ -2,7 +2,7 @@ import bestallningarDb, {decorateForBestallning, bestallningsConfig} from "./bes
 import * as utils from '../store/actions/utils'
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-const useFake = true;
+const useFake = false;
 
 export const fetchBestallning = id => {
     if (useFake) {
