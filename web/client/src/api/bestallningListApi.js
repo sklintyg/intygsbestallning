@@ -50,7 +50,8 @@ export const fetchBestallningList = (categoryFilter, textFilter) => {
     });
   } else {
     return utils.makeServerRequest(utils.buildUrlFromParams('bestallningar', {
-      category: categoryFilter
+      category: categoryFilter,
+      textSearch: textFilter
     }));
   }
 };

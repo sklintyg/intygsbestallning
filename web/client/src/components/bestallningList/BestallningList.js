@@ -29,7 +29,7 @@ const BestallningarList = ({ bestallningList }) => {
 
   return (
     <div>
-      <ResultLine>Sökresultat: {bestallningList.bestallningar.length} av {bestallningList.totalCount} beställningar</ResultLine>
+      <ResultLine>Sökresultat: {bestallningList.bestallningar.length} av {bestallningList.totalElements} beställningar</ResultLine>
       <Table>
         <thead>
           <tr>
