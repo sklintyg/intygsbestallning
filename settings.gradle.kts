@@ -1,4 +1,3 @@
-import java.lang.IllegalArgumentException
 import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 
 pluginManagement {
@@ -21,6 +20,7 @@ include(":mail-sender")
 include(":integration")
 include(":persistence")
 include(":web")
+include(":test")
 
 fun getProjectDirName(project: String): String {
 	return when(project) {
@@ -29,6 +29,7 @@ fun getProjectDirName(project: String): String {
 		"integration" ->"$rootDir/integration"
 		"persistence" ->"$rootDir/persistence"
 		"web" ->"$rootDir/web"
+		"test" ->"$rootDir/test"
 		else -> throw IllegalArgumentException("Project module $project does not exist.")
 	}
 }
