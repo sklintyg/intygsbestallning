@@ -18,5 +18,9 @@ data class Handelse(
     fun las(): Handelse {
       return Handelse(event = BestallningEvent.LAS, skapad = LocalDateTime.now(), beskrivning = "Beställning läst")
     }
+
+    fun acceptera(): Handelse {
+      return Handelse(event = BestallningEvent.ACCEPTERA, skapad = LocalDateTime.now(), beskrivning = "Beställning accepterad")
+    }
   }
 }

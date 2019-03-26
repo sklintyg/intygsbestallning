@@ -12,7 +12,7 @@ dependencies {
     compile("com.fasterxml.jackson.module:jackson-module-kotlin")
 
 
-    implementation("io.vavr:vavr:${Dependencies.vavrVersion}")
+    compile("io.vavr:vavr:${Dependencies.vavrVersion}")
     implementation("org.antlr:stringtemplate:${Dependencies.stringTemplateVersion}")
 
     implementation("org.springframework.boot:spring-boot-starter-activemq")
