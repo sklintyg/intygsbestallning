@@ -1,4 +1,4 @@
-import { v4 } from 'node-uuid';
+import v4 from 'uuid/v4';
 
 const bestallningDb = [{
       id: v4(),
@@ -82,7 +82,7 @@ export const bestallningsConfig = (bestallning) => ({
         etikett: 'Personnummer',
         svar: bestallning.patient.id
       },{
-        etikett: 'Namn', 
+        etikett: 'Namn',
         svar: bestallning.patient.name
       }]
     },{
@@ -101,31 +101,31 @@ export const bestallningsConfig = (bestallning) => ({
       rubrik: 'Kontaktuppgifter arbetsförmedlingen',
       delfragor: [{
         etikett: 'Arbetsförmedlare',
-        svar: bestallning.handlaggare.name + '\n' + 
-              bestallning.handlaggare.epost + '\n' + 
+        svar: bestallning.handlaggare.name + '\n' +
+              bestallning.handlaggare.epost + '\n' +
               bestallning.handlaggare.telefonnummer
       },{
-        etikett: 'Arbetsförmedlingskontor', 
+        etikett: 'Arbetsförmedlingskontor',
         svar: bestallning.kontor.name + '\n' +
               bestallning.kontor.adress
       }]
     },{
-      rubrik: 'Fakturainformation', 
+      rubrik: 'Fakturainformation',
       delfragor: [{
         etikett: 'Information',
         text: 'Följande uppgifter ska användas för att fakturera Arbetsförmedlingen för ett utfärdat medicinskt utlåtande.' +
         'Arbetsförmedlingen betalar för utlåtandet, högst 2200 kr inklusive moms.'
       },{
-        etikett: 'Utrednings-ID', 
+        etikett: 'Utrednings-ID',
         svar: bestallning.utredning.id
       },{
-        etikett: 'Kostnadsställe', 
+        etikett: 'Kostnadsställe',
         svar: bestallning.kontor.kostnadsstalle
       },{
-        etikett: 'Moms', 
+        etikett: 'Moms',
         text: '25%'
       },{
-        etikett: 'Skicka fakturan till', 
+        etikett: 'Skicka fakturan till',
         text: 'Arbetsförmedlingen\n' +
         'Skanningscentralen\n' +
         '681 85 Kristinehamn'

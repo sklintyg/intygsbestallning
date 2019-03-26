@@ -6,7 +6,7 @@ export const openModal = (id) => {
   return {
     type: OPEN_MODAL,
     payload: {
-      id: id
+      id
     }
   };
 };
@@ -15,10 +15,11 @@ export const closeModal = (id) => {
   return {
     type: CLOSE_MODAL,
     payload: {
-      id: id
+      id
     }
   }
 };
+
 export const closeAllModals = () => {
   return {
     type: CLOSE_ALL_MODALS,

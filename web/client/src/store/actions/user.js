@@ -46,9 +46,7 @@ export const selectEnhet = (hsaId) => {
         });
 
         dispatch(push('/bestallningar'));
-
-      dispatch(closeAllModals());
-
+        dispatch(closeAllModals());
       }
     ).catch(
       error => dispatch({
