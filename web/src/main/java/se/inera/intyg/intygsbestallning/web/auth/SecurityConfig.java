@@ -543,7 +543,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
                     .authorizeRequests()
                     .antMatchers("/welcome.html").permitAll()
                     .antMatchers("/api/stub/**").permitAll()
-                    .antMatchers("/api/test/**").permitAll();
+                    .antMatchers("/api/test/**").permitAll()
+                    .antMatchers("/h2-console/**").permitAll();
 
             // @formatter:off
             http
