@@ -35,7 +35,6 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "proxy": "http://localhost:8080",
   "browserslist": [
     ">0.2%",
     "not dead",
@@ -44,6 +43,7 @@
   ],
   "devDependencies": {
     "babel-plugin-styled-components": "^1.10.0",
+    "http-proxy-middleware": "^0.19.1",
     "json-server": "^0.14.2",
     "node-sass": "^4.11.0"
   }
