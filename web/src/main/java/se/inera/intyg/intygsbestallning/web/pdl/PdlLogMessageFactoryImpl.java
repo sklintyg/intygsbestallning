@@ -77,12 +77,12 @@ public class PdlLogMessageFactoryImpl implements PdlLogMessageFactory {
 
         if (loggedInAt != null && loggedInAt.type() == IbSelectableHsaEntityType.VE) {
             IbVardenhet ve = (IbVardenhet) loggedInAt;
-            LogUser logUser = new LogUser(ibUser.getHsaId(), ve.getId(), ve.getParent().getId());
+            LogUser logUser = new LogUser(ibUser.getHsaId(), ve.getId(), ve.getParentHsaId());
             logUser.setUserName(ibUser.getNamn());
             logUser.setUserAssignment(ibUser.getSelectedMedarbetarUppdragNamn());
             logUser.setUserTitle(ibUser.getTitel());
             logUser.setEnhetsNamn(ve.getName());
-            logUser.setVardgivareNamn(ve.getParent().getName());
+            logUser.setVardgivareNamn(ve.getParentHsaName());
             return logUser;
         } else {
             // TODO: Make better error message

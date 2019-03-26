@@ -185,7 +185,8 @@ public class PdlLogMessageFactoryTest {
     }
 
     private IbVardenhet createIbVardenhet() {
-        return new IbVardenhet(VE_ID, VE_NAME, createIbVardgivare(), VG_ORGNR);
+        final IbVardgivare ibVardgivare = createIbVardgivare();
+        return new IbVardenhet(VE_ID, VE_NAME, ibVardgivare.getId(), ibVardgivare.getName(), VG_ORGNR);
     }
 
 }

@@ -41,8 +41,9 @@ data class IbVardgivare(
 data class IbVardenhet(
     override val id: String,
     override val name: String,
-    val parent: IbVardgivare,
-    val orgNrVargivare: String
+    val parentHsaId: String,
+    val parentHsaName: String,
+    val orgNrVardgivare: String
 ) : IbSelectableHsaEntity {
 
   override fun type() : IbSelectableHsaEntityType {

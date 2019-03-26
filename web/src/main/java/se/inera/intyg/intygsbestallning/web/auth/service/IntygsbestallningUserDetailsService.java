@@ -25,7 +25,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.saml.SAMLCredential;
-import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.springframework.stereotype.Service;
 import se.inera.intyg.infra.integration.hsa.model.UserCredentials;
 import se.inera.intyg.infra.integration.hsa.model.Vardenhet;
@@ -111,7 +110,7 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
         for (Vardgivare vg : user.getVardgivare()) {
             IbVardgivare ibVardgivare = new IbVardgivare(vg.getId(), vg.getNamn(), false);
             for (Vardenhet ve : vg.getVardenheter()) {
-                ibVardgivare.getVardenheter().add(new IbVardenhet(ve.getId(), ve.getNamn(), ibVardgivare, ve.getVardgivareOrgnr()));
+                ibVardgivare.getVardenheter().add(new IbVardenhet(ve.getId(), ve.getNamn(), ibVardgivare.getId(), ibVardgivare.getName(), ve.getVardgivareOrgnr()));
             }
             authSystemTree.add(ibVardgivare);
         }
