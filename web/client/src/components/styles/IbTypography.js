@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import colors from './IbColors';
 
 /*
 100 = Roboto Thin
@@ -21,71 +22,74 @@ in bootstrap-overrides, the base font of the body is IbTypo07 with color IbColor
 if not specified as something else.
  */
 
+const Div = styled.div`
+  color: ${props => props.color || colors.IB_COLOR_08};
+`
 
-export const IbTypo01 = styled.div`
-  font-weight: 100;
+export const IbTypo01 = styled(Div)`
+  font-weight: 300;
   font-size: 25px;
 `
 
-export const IbTypo02 = styled.div`
+export const IbTypo02 = styled(Div)`
   font-weight: 500;
   font-size: 18px;
 `
 
-export const IbTypo03 = styled.div`
+export const IbTypo03 = styled(Div)`
   font-weight: 300;
   font-size: 18px;
 `
 
-export const IbTypo04 = styled.div`
+export const IbTypo04 = styled(Div)`
   font-weight: 700;
   font-size: 18px;
 `
 
-export const IbTypo05 = styled.div`
+export const IbTypo05 = styled(Div)`
   font-weight: 500;
   font-size: 16px;
 `
 
-export const IbTypo06 = styled.div`
+export const IbTypo06 = styled(Div)`
   font-weight: 500;
   font-size: 14px;
 `
 
-export const IbTypo07 = styled.div`
+export const IbTypo07 = styled(Div)`
   font-weight: 400;
   font-size: 14px;
 `
 
-export const IbTypo08 = styled.div`
+export const IbTypo08 = styled(Div)`
   font-weight: 400;
   font-size: 14px;
   text-decoration: underline;
 `
 
-export const IbTypo09 = styled.div`
+export const IbTypo09 = styled(Div)`
   font-weight: 400;
   font-size: 12px;
 `
-export const IbTypo10 = styled.div`
+export const IbTypo10 = styled(Div)`
   font-weight: 400;
   font-size: 16px;
 `
-export const IbTypo11 = styled.div`
+export const IbTypo11 = styled(Div)`
   font-weight: 400;
   font-size: 12px;
   font-style: italic;
 `
-export const IbTypo12 = styled.div`
+export const IbTypo12 = styled(Div)`
   font-weight: 400;
   font-size: 14px;
   font-style: italic;
 `
-export const IbTypo13 = styled.div`
+export const IbTypo13 = styled(Div)`
   font-weight: 700;
   font-size: 12px;
 `
-export const IbTypo14 = styled.div`
+export const IbTypo14 = styled(Div)`
   font-weight: 700;
   font-size: 14px;
 `

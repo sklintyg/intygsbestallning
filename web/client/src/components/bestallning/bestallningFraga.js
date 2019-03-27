@@ -1,6 +1,5 @@
 import React from 'react'
 import Styled from 'styled-components'
-import * as Resources from './resources'
 import Colors from '../styles/IbColors'
 import * as Typo from '../styles/IbTypography'
 
@@ -10,7 +9,7 @@ const Fraga = Styled.div`
   padding: 0 0 30px;
   margin: 10px auto;
   background: ${Colors.IB_COLOR_00};
-`;
+`
 
 const Rubrik = Styled(Typo.IbTypo02)`
   margin: 0;
@@ -18,7 +17,7 @@ const Rubrik = Styled(Typo.IbTypo02)`
   border-bottom: 1px solid ${Colors.IB_COLOR_15};
   border-radius: 4px 4px 0 0;
   color: ${Colors.IB_COLOR_07};
-`;
+`
 
 const Content = Styled.div`
   padding: 0 30px;
@@ -35,7 +34,7 @@ const Text = Styled(Typo.IbTypo07)`
   color: ${Colors.IB_COLOR_07};
   border-radius: 4px;
   padding: 10px;
-`;
+`
 
 const Svar = Styled(Typo.IbTypo07)`
   white-space: pre-line;
@@ -43,7 +42,7 @@ const Svar = Styled(Typo.IbTypo07)`
   color: ${Colors.IB_COLOR_07};
   border-radius: 4px;
   padding: 10px;
-`;
+`
 
 const BestallningFraga = ({ props }) => (
   <Fraga>
@@ -53,7 +52,7 @@ const BestallningFraga = ({ props }) => (
         <Etikett>{c.etikett}</Etikett>
         {c.text ? <Text>{c.text}</Text> : null}
         {c.svar ? <Svar>{c.svar}</Svar> : null}
-        {c.bild ? <img src={Resources[c.bild]} alt='none'/> : null}
+        {c.bild ? <img src={c.bild} alt='none'/> : null}
       </Content>
     ))}
   </Fraga>
