@@ -1,5 +1,6 @@
 package se.inera.intyg.intygsbestallning.common.dto
 
+import se.inera.intyg.intygsbestallning.common.domain.BestallningSvar
 import se.inera.intyg.schemas.contract.Personnummer
 
 data class CreateBestallningRequest(
@@ -36,7 +37,20 @@ data class CreateBestallningRequestKontor(
    val postOrt: String? = null
 )
 
+abstract class SimpleBestallningRequest {
+    abstract val bestallningId: String
+    abstract val bestallningSvar: BestallningSvar
+    abstract val fritextForklaring: String?
+}
+
 data class AccepteraBestallningRequest(
-   val bestallningId: String,
-   val fritextForklaring: String? = null
-)
+        override val bestallningId: String,
+        override val bestallningSvar: BestallningSvar = BestallningSvar.ACCEPTERAT,
+        override val fritextForklaring: String? = null
+) : SimpleBestallningRequest()
+
+data class AvvisaBestallningRequest(
+        override val bestallningId: String,
+        override val bestallningSvar: BestallningSvar = BestallningSvar.AVVISAT,
+        override val fritextForklaring: String? = null
+) : SimpleBestallningRequest()

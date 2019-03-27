@@ -15,14 +15,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
+import se.inera.intyg.intygsbestallning.common.domain.BestallningSvar;
 import se.inera.intyg.intygsbestallning.common.dto.AccepteraBestallningRequest;
+import se.inera.intyg.intygsbestallning.common.dto.AvvisaBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningSortColumn;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
 import se.inera.intyg.intygsbestallning.web.bestallning.AccepteraBestallning;
+import se.inera.intyg.intygsbestallning.web.bestallning.AvvisaBestallning;
 import se.inera.intyg.intygsbestallning.web.bestallning.BestallningStatusKategori;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.AccepteraBestallningService;
+import se.inera.intyg.intygsbestallning.web.service.bestallning.AvvisaBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.VisaBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.ListBestallningService;
 
@@ -33,14 +37,17 @@ public class BestallningController {
     private AccepteraBestallningService accepteraBestallningService;
     private ListBestallningService listBestallningService;
     private VisaBestallningService visaBestallningService;
+    private AvvisaBestallningService avvisaBestallningService;
 
     public BestallningController(
             AccepteraBestallningService accepteraBestallningService,
             ListBestallningService listBestallningService,
-            VisaBestallningService visaBestallningService) {
+            VisaBestallningService visaBestallningService,
+            AvvisaBestallningService avvisaBestallningService) {
         this.accepteraBestallningService = accepteraBestallningService;
         this.listBestallningService = listBestallningService;
         this.visaBestallningService = visaBestallningService;
+        this.avvisaBestallningService = avvisaBestallningService;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -111,7 +118,15 @@ public class BestallningController {
 
     @PostMapping("/{id}/acceptera")
     public ResponseEntity accepteraBestallning(@PathVariable String id, AccepteraBestallning accepteraBestallning) {
-        accepteraBestallningService.accepteraBestallning(new AccepteraBestallningRequest(id, accepteraBestallning.getFritextForklaring()));
+        accepteraBestallningService.accepteraBestallning(new AccepteraBestallningRequest(id,
+                BestallningSvar.ACCEPTERAT, accepteraBestallning.getFritextForklaring()));
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/avvisa")
+    public ResponseEntity avvisaBestallning(@PathVariable String id, AvvisaBestallning avvisaBestallning) {
+        avvisaBestallningService.avvisaBestallning(new AvvisaBestallningRequest(id, BestallningSvar.AVVISAT,
+                avvisaBestallning.getFritextForklaring()));
         return ResponseEntity.ok().build();
     }
 }

@@ -9,13 +9,12 @@ const StyledButton = styled(Button)`
 margin-right: 16px;
 `
 
-const BestallningActionBar = ({bestallning, accepteraBestallning}) => {
+const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestallning}) => {
 
   const accept = () => accepteraBestallning(bestallning.id);
   
-  const reject = () => {
-    //rejectBestallning(bestallning.id, 'REJECTED');
-  }
+  const reject = () => rejectBestallning(bestallning.id, 'REJECTED');
+
   
   const complete = () => {
     //completeBestallning(bestallning.id, 'COMPLETED');
