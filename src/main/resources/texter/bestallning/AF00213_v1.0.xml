@@ -1,8 +1,5 @@
-<bestallning giltigFrom="2019-01-01" typ="AF00213" version="1.0">
+<bestallning giltigFrom="2019-01-01" typ="AF00213" version="1.0" bild="af_logo.png">
   <texter>
-
-    <text id="BILD">af_logo.png</text>
-
     <!--FORFRAGAN-->
     <text id="RBK_1">Denna förfrågan avser</text>
     <text id="ETK_1.1">Avsändare</text>

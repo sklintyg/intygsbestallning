@@ -8,7 +8,7 @@ infrastructure:
 ib:
   server: localhost:8990
   host:
-    url: http://localhost:8990
+    url: http://localhost:8080
 
 resources:
   folder: ${resource.dir}

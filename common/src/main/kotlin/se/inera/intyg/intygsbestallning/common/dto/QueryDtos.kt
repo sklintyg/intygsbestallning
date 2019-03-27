@@ -100,7 +100,10 @@ data class VisaBestallningDto(
    val fragor: List<Fraga>
 ) {
   companion object Factory {
-    fun toDto(bestallning: Bestallning, bestallningTexter: BestallningTexter): VisaBestallningDto {
+    fun toDto(
+       bestallning: Bestallning,
+       bild: String,
+       bestallningTexter: BestallningTexter): VisaBestallningDto {
 
       val textMap = bestallningTexter.texter.map { it.id to it.value }.toMap()
 
@@ -114,7 +117,7 @@ data class VisaBestallningDto(
             Fraga(
                rubrik = textMap.getValue(RBK_1),
                delfragor = listOf(
-                  Delfraga(etikett = textMap.getValue(ETK_1_1), bild = ""),
+                  Delfraga(etikett = textMap.getValue(ETK_1_1), bild = bild),
                   Delfraga(etikett = textMap.getValue(ETK_1_2), text = textMap.getValue(TEXT_1_2_1)),
                   Delfraga(etikett = textMap.getValue(ETK_1_3), text = textMap.getValue(TEXT_1_3_1)))
             ),
@@ -130,9 +133,9 @@ data class VisaBestallningDto(
             Fraga(
                rubrik = textMap.getValue(RBK_3),
                delfragor = listOf(
-                  Delfraga(etikett = textMap.getValue(ETK_3_1), svar = "ett syfte"), //TODO bestallning.syfte
+                  Delfraga(etikett = textMap.getValue(ETK_3_1), svar = bestallning.syfte),
                   Delfraga(etikett = textMap.getValue(ETK_3_2), svar = bestallning.invanare.bakgrundNulage),
-                  Delfraga(etikett = textMap.getValue(ETK_3_3), svar = "insatser ska göras")) //TODO: bestallning.planeradeInstatser
+                  Delfraga(etikett = textMap.getValue(ETK_3_3), svar = bestallning.planeradeAktiviteter))
             ),
             Fraga(
                rubrik = textMap.getValue(RBK_5),

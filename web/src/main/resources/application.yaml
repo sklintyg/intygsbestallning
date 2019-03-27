@@ -40,6 +40,7 @@ mail:
 bestallning:
   text-resource-path: ${resources.folder}/texter/bestallning/
   image-resource-path: ${resources.folder}/bilder/bestallning/
+  host: ${ib.host.url}
 
 #AUTH
 authorities:
