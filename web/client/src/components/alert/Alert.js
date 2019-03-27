@@ -1,6 +1,6 @@
 import React from 'react';
 import * as PropTypes from "prop-types";
-import {InfoIcon, Security} from "../styles/IbSvgIcons";
+import {InfoIcon, Security, Check, ErrorOutline, Warning} from "../styles/IbSvgIcons";
 import {Alert} from "reactstrap";
 import IbColors from "../styles/IbColors";
 
@@ -12,6 +12,12 @@ const IbAlert = ({type, children}) => {
       return <InfoIcon color={IbColors.IB_COLOR_06} />;
     case 'sekretess':
       return <Security color={IbColors.IB_COLOR_05} />;
+    case 'warning':
+      return <ErrorOutline color={IbColors.IB_COLOR_05} />;
+    case 'success':
+      return <Check color={IbColors.IB_COLOR_30} />;
+    case 'danger':
+      return <Warning color={IbColors.IB_COLOR_04} />;
     default:
       return null;
     }

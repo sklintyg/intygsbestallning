@@ -46,17 +46,6 @@ const IconSpan = styled(IbTypo09)`
     top: -4px;
   }
 `
-const Observandum = styled.div`
-  border-radius: 4px;
-  background: ${IbColors.IB_COLOR_02};
-  color: ${IbColors.IB_COLOR_05};
-  display: inline-block;
-  padding: 4px 7px;
-  svg {
-    width: 16px;
-    margin-right: 4px;
-  }
-`
 
 const BestallningHeader = ({props}) => (
   <HeaderContainer>
@@ -71,7 +60,7 @@ const BestallningHeader = ({props}) => (
         <div className="left">
           <IbTypo04 color={IbColors.IB_COLOR_19}>{props.bestallning.id}</IbTypo04>
           <IbTypo01 color={IbColors.IB_COLOR_06}>{props.bestallning.invanare.personId} - {props.bestallning.invanare.name}</IbTypo01>
-          {true ? <IbAlert type="warning">Patienten har sekretessmarkering</IbAlert> : null}
+          {true ? <IbAlert type="sekretess">Patienten har sekretessmarkering</IbAlert> : null}
         </div>
         <BestallningActionBar bestallning={props.bestallning} />
       </ButtonRow>
