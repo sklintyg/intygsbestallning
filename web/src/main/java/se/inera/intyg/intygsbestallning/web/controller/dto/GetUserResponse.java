@@ -41,7 +41,7 @@ public class GetUserResponse {
 
     private List<IbVardgivare> authoritiesTree;
     private Role currentRole;
-    private IbSelectableHsaEntity currentloggedInAt;
+    private IbSelectableHsaEntity unitContext;
     private int totaltAntalVardenheter;
 
     public GetUserResponse(IntygsbestallningUser user) {
@@ -53,7 +53,7 @@ public class GetUserResponse {
 
         this.authoritiesTree = user.getSystemAuthorities();
         this.currentRole = user.getCurrentRole();
-        this.currentloggedInAt = user.getCurrentlyLoggedInAt();
+        this.unitContext = user.getUnitContext();
         this.totaltAntalVardenheter = user.getTotaltAntalVardenheter();
 
     }
@@ -82,8 +82,8 @@ public class GetUserResponse {
         return currentRole;
     }
 
-    public IbSelectableHsaEntity getCurrentloggedInAt() {
-        return currentloggedInAt;
+    public IbSelectableHsaEntity getUnitContext() {
+        return unitContext;
     }
 
     public int getTotaltAntalVardenheter() {

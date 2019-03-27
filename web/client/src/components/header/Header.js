@@ -34,33 +34,16 @@ const HeaderActionsWrapper = styled.div`
   
 `
 
-//TODO: this could be a property from backend in user object?
-const canChangeEnhet = (vardgivare) => {
-  let enheter = 0;
-  if (vardgivare) {
-    vardgivare.forEach((vg) => {
-      vg.vardenheter.forEach((ve) => {
-        enheter++;
-        ve.mottagningar.forEach((mo) => {
-          enheter++;
-        })
-      })
-    });
-  }
-  return enheter > 1;
-};
-
-
-const Header = ({isAuthenticated, namn, userRole, valdVardgivare, valdVardenhet, vardgivare}) => {
+const Header = ({isAuthenticated, namn, userRole, unitContext, totaltAntalVardenheter}) => {
   return (
     <ComponentWrapper>
       <StyledHeader>
         <Logo className={(isAuthenticated ? 'd-none d-md-flex' : '')} />
         {isAuthenticated && <User id="currentUser" userName={namn} userRole={userRole} />}
-        {isAuthenticated && valdVardgivare && valdVardenhet &&
-        <Unit valdVardgivare={valdVardgivare} valdVardenhet={valdVardenhet} />}
+        {isAuthenticated && unitContext &&
+        <Unit vg={unitContext.parentHsaName} ve={unitContext.name} />}
         <HeaderActionsWrapper>
-          {isAuthenticated && canChangeEnhet(vardgivare) && valdVardenhet &&
+          {isAuthenticated && unitContext && (totaltAntalVardenheter > 1) &&
           <HeaderSectionContainerHoverable>
             <ChangeEnhet />
           </HeaderSectionContainerHoverable>}

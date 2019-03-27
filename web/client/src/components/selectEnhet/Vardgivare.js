@@ -46,20 +46,20 @@ class Vardgivare extends Component {
   }
 
   render() {
-    const {vg, currentVardenhet, handleSelect} = this.props;
+    const {vg, unitContext, handleSelect} = this.props;
 
 
     return (
       <ComponentWrapper>
         <VardgivarTitle>
-          <span>{vg.namn}</span> <Toggler expanded={this.state.expanded} handleToggle={this.onToggleExpand} />
+          <span>{vg.name}</span> <Toggler expanded={this.state.expanded} handleToggle={this.onToggleExpand} />
         </VardgivarTitle>
         {this.state.expanded && vg.vardenheter.map(ve => {
           return (
             <Vardenhet key={ve.id}>
               <Button color="link" onClick={handleSelect(ve.id)}
-                      disabled={(currentVardenhet && currentVardenhet.id === ve.id)}>{ve.namn} {
-                (currentVardenhet && currentVardenhet.id === ve.id) &&
+                      disabled={(unitContext && unitContext.id === ve.id)}>{ve.name} {
+                (unitContext && unitContext.id === ve.id) &&
                 <span>(nuvarande enhet)</span>}
               </Button>
             </Vardenhet>
@@ -75,7 +75,7 @@ class Vardgivare extends Component {
 Vardgivare.propTypes = {
   vg: PropTypes.object,
   initiallyExpanded: PropTypes.bool,
-  currentVardenhet: PropTypes.object,
+  unitContext: PropTypes.object,
   selectEnhet: PropTypes.func
 };
 

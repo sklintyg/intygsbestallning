@@ -23,14 +23,14 @@ const VardenhetTitle = styled.div`
  
 `
 
-const Unit = ({valdVardgivare, valdVardenhet}) => {
+const Unit = ({vg, ve}) => {
   return (
     <UnitComponentWrapper>
       <UnitIcon />
       <VerticalContainer>
         <SingleTextRowContainer>
-          <VardgivarTitle id="currentVardgivarTitle">{valdVardgivare.namn}</VardgivarTitle>
-          <VardenhetTitle id="currentVardenhetTitle">&nbsp;-{valdVardenhet.namn}</VardenhetTitle>
+          <VardgivarTitle id="currentVardgivarTitle">{vg}</VardgivarTitle>
+          <VardenhetTitle id="currentVardenhetTitle">&nbsp;-{ve}</VardenhetTitle>
         </SingleTextRowContainer>
       </VerticalContainer>
     </UnitComponentWrapper>

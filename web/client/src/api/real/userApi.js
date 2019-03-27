@@ -1,5 +1,7 @@
-export const fetchAnvandare = () => {};
+import * as util from "./utils";
 
-export const logoutUser = () => {};
+export const fetchAnvandare = () => util.makeServerRequest('anvandare');
 
-export const changeEnhet = (hsaId) => {};
+export const logoutUser = () => util.makeServerRequest('anvandare/logout');
+
+export const changeEnhet = (hsaId) => util.makeServerPost('anvandare/unit-context/' + hsaId);

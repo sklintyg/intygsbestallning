@@ -11,17 +11,17 @@ const ComponentWrapper = styled.div`
 `
 
 function SelectEnhet(props) {
-  const {vardgivare, currentVardenhet, selectEnhet} = props;
+  const {authoritiesTree, unitContext, selectEnhet} = props;
 
   const handleSelect = (hsaid) => () => selectEnhet(hsaid);
 
   return (
     <ComponentWrapper>
-      {vardgivare.map(vg => {
+      {authoritiesTree.map(vg => {
           return (<Vardgivare key={vg.id}
                               vg={vg}
                               initiallyExpanded={true}
-                              currentVardenhet={currentVardenhet}
+                              unitContext={unitContext}
                               handleSelect={handleSelect} />
           );
         }
@@ -31,8 +31,8 @@ function SelectEnhet(props) {
 }
 
 SelectEnhet.propTypes = {
-  vardgivare: PropTypes.array,
-  currentVardenhet: PropTypes.object,
+  authoritiesTree: PropTypes.array,
+  unitContext: PropTypes.object,
   selectEnhet: PropTypes.func
 }
 

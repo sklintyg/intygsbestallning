@@ -176,7 +176,7 @@ public class PdlLogMessageFactoryTest {
         var ibUser = new IntygsbestallningUser(createDefaultUser());
         ibUser.setHsaId(USER_ID);
         ibUser.setNamn(USER_NAME);
-        ibUser.setCurrentlyLoggedInAt(createIbVardenhet());
+        ibUser.setUnitContext(createIbVardenhet());
         return ibUser;
     }
 

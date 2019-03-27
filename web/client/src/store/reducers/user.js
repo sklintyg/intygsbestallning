@@ -27,10 +27,10 @@ export default (state = INITIAL_STATE, action) => {
       isAuthenticated: true,
       errorMessage: '',
       namn: action.payload.namn,
-      userRole: action.payload.currentRole.desc,
-      valdVardgivare: action.payload.valdVardgivare,
-      valdVardenhet: action.payload.valdVardenhet,
-      vardgivare: action.payload.vardgivare
+      userRole: action.payload.currentRole ? action.payload.currentRole.desc : '',
+      unitContext: action.payload.unitContext,
+      authoritiesTree: action.payload.authoritiesTree,
+      totaltAntalVardenheter: action.payload.totaltAntalVardenheter
     }
   case GET_USER_FAILURE:
     return {
@@ -44,10 +44,7 @@ export default (state = INITIAL_STATE, action) => {
   case LOGOUT_USER:
     return {...state, isLoading: true}
   case LOGOUT_SUCCESS:
-    return {
-      isLoading: false,
-      isAuthenticated: false
-    }
+    return INITIAL_STATE
   case LOGOUT_FAILURE:
     return {
       ...state,
@@ -64,10 +61,10 @@ export default (state = INITIAL_STATE, action) => {
       isLoading: false,
       isAuthenticated: true,
       namn: action.payload.namn,
-      userRole: action.payload.currentRole.desc,
-      valdVardgivare: action.payload.valdVardgivare,
-      valdVardenhet: action.payload.valdVardenhet,
-      vardgivare: action.payload.vardgivare
+      userRole: action.payload.currentRole ? action.payload.currentRole.desc : '',
+      unitContext: action.payload.unitContext,
+      authoritiesTree: action.payload.authoritiesTree,
+      totaltAntalVardenheter: action.payload.totaltAntalVardenheter
     }
   case SET_ENHET_FAILURE:
     return {

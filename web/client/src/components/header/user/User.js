@@ -19,19 +19,13 @@ const UserTitle = styled.div`
   
 `
 
-const UserRoleTitle = styled.div`
-  white-space: nowrap;
-  
-`
-
-const User = ({userName, userRole}) => {
+const User = ({userName}) => {
   return (
     <UserComponentWrapper>
       <UserIcon/>
       <VerticalContainer>
         <SingleTextRowContainer>
           <UserTitle id="currentUserTitle">{userName}</UserTitle>
-          <UserRoleTitle id="currentUserRoleTitle">&nbsp;-{userRole}</UserRoleTitle>
         </SingleTextRowContainer>
       </VerticalContainer>
     </UserComponentWrapper>

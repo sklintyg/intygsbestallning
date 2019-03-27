@@ -73,7 +73,7 @@ public class PdlLogMessageFactoryImpl implements PdlLogMessageFactory {
     }
 
     private LogUser getLogUser(IntygsbestallningUser ibUser) {
-        IbSelectableHsaEntity loggedInAt = ibUser.getCurrentlyLoggedInAt();
+        IbSelectableHsaEntity loggedInAt = ibUser.getUnitContext();
 
         if (loggedInAt != null && loggedInAt.type() == IbSelectableHsaEntityType.VE) {
             IbVardenhet ve = (IbVardenhet) loggedInAt;

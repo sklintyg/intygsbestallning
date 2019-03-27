@@ -51,7 +51,7 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
     // An IB-user must always have a current role and a current IbSelectableHsaEntity
     private Role currentRole;
 
-    private IbSelectableHsaEntity currentlyLoggedInAt;
+    private IbSelectableHsaEntity unitContext;
 
     // Handles PDL logging state
     private Map<String, List<PdlActivityEntry>> storedActivities;
@@ -120,12 +120,12 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
         this.currentRole = currentRole;
     }
 
-    public IbSelectableHsaEntity getCurrentlyLoggedInAt() {
-        return currentlyLoggedInAt;
+    public IbSelectableHsaEntity getUnitContext() {
+        return unitContext;
     }
 
-    public void setCurrentlyLoggedInAt(IbSelectableHsaEntity currentlyLoggedInAt) {
-        this.currentlyLoggedInAt = currentlyLoggedInAt;
+    public void setUnitContext(IbSelectableHsaEntity unitContext) {
+        this.unitContext = unitContext;
     }
 
     public Map<String, List<PdlActivityEntry>> getStoredActivities() {
@@ -211,7 +211,7 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
         for (IbVardgivare ibVg : systemAuthorities) {
             for (IbVardenhet ibVardenhet : ibVg.getVardenheter()) {
                 if (ibVardenhet.getId().equalsIgnoreCase(vgOrVeHsaId)) {
-                    this.currentlyLoggedInAt = ibVardenhet;
+                    this.unitContext = ibVardenhet;
                     this.currentRole = selectRole(possibleRoles, ROLE_VARDADMIN);
                     this.authorities = toMap(currentRole.getPrivileges(), Privilege::getName);
                     return true;

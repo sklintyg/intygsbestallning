@@ -7,6 +7,7 @@ import { delay } from "./util";
 const fakeDatabase = {
   anvandare: userDb
 };
+
 // should actually return  return makeServerRequest('anvandare')
 export const fetchAnvandare = () =>
   delay(500).then(() => {
@@ -23,17 +24,14 @@ export const changeEnhet = (hsaId) =>
   delay(500).then(() => {
 
     // Manipulate fakeDatabase anvandare state and return the new one..
-    const newVardenhet = fakeDatabase.anvandare.vardgivare.reduce((arr, item) => arr.concat(item.vardenheter),
+    const newVardenhet = fakeDatabase.anvandare.authoritiesTree.reduce((arr, item) => arr.concat(item.vardenheter),
       []).filter(
       ve => ve.id === hsaId)[0];
 
-    const newVardgivare = fakeDatabase.anvandare.vardgivare.filter(vg => vg.id === newVardenhet.vardgivareHsaId)[0];
 
-    fakeDatabase.anvandare.valdVardenhet = newVardenhet;
+    fakeDatabase.anvandare.unitContext = newVardenhet;
 
-    fakeDatabase.anvandare.valdVardgivare = newVardgivare;
+
     return fakeDatabase.anvandare;
 
   });
-
-

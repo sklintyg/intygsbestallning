@@ -1,72 +1,93 @@
 const userDb = {
-  "hsaId": "TSTNMT2321000156-1079",
-    "namn": "Arnold Johansson",
-    "currentRole": {
-    "name": "LAKARE",
-      "desc": "Läkare"
+
+  "hsaId": "ib-user-3",
+  "namn": "Harald Alltsson",
+  "authenticationScheme": "urn:inera:intygsbestallning:siths:fake",
+  "features": {},
+  "authoritiesTree": [{
+    "id": "vastmanland",
+    "name": "Landstinget Västmanland",
+    "vardenheter": [{
+      "id": "centrum-ost",
+      "name": "Vårdcentrum i Öst",
+      "parentHsaId": "vastmanland",
+      "parentHsaName": "Landstinget Västmanland",
+      "orgNrVardgivare": "2-orgnr-vastmanland"
+    }]
+  }, {
+    "id": "ostergotland",
+    "name": "Landstinget Östergötland",
+    "vardenheter": [{
+      "id": "linkoping",
+      "name": "Linköpings Universitetssjukhus",
+      "parentHsaId": "ostergotland",
+      "parentHsaName": "Landstinget Östergötland",
+      "orgNrVardgivare": "2-orgnr-ostergotland"
+    }]
+  }, {
+    "id": "IFV1239877878-1041",
+    "name": "WebCert-Vårdgivare1",
+    "vardenheter": [{
+      "id": "IFV1239877878-1042",
+      "name": "WebCert-Enhet1",
+      "parentHsaId": "IFV1239877878-1041",
+      "parentHsaName": "WebCert-Vårdgivare1",
+      "orgNrVardgivare": "2-orgnr-1041"
+    }]
+  }, {
+    "id": "IFV1239877878-1043",
+    "name": "WebCert-Vårdgivare2",
+    "vardenheter": [{
+      "id": "IFV1239877878-1045",
+      "name": "WebCert-Enhet2",
+      "parentHsaId": "IFV1239877878-1043",
+      "parentHsaName": "WebCert-Vårdgivare2",
+      "orgNrVardgivare": "2-orgnr-1043"
+    }, {
+      "id": "IFV1239877878-104D",
+      "name": "WebCert-Enhet3",
+      "parentHsaId": "IFV1239877878-1043",
+      "parentHsaName": "WebCert-Vårdgivare2",
+      "orgNrVardgivare": "2-orgnr-1041"
+    }]
+  }],
+  "currentRole" : {
+    "name" : "VARDADMIN",
+    "desc" : "Vårdadministratör",
+    "privileges" : [ {
+      "name" : "VISA_BESTALLNING",
+      "desc" : "Visa beställning",
+      "intygstyper" : [ ],
+      "requestOrigins" : [ ]
+    }, {
+      "name" : "RADERA_BESTALLNING",
+      "desc" : "Radera beställning",
+      "intygstyper" : [ ],
+      "requestOrigins" : [ ]
+    }, {
+      "name" : "LISTA_BESTALLNINGAR",
+      "desc" : "Lista beställningar",
+      "intygstyper" : [ ],
+      "requestOrigins" : [ ]
+    }, {
+      "name" : "ANDRA_STATUS_PA_BESTALLNING",
+      "desc" : "Ändra status på beställning",
+      "intygstyper" : [ ],
+      "requestOrigins" : [ ]
+    }, {
+      "name" : "SKRIVA_UT",
+      "desc" : "Skriva ut",
+      "intygstyper" : [ ],
+      "requestOrigins" : [ ]
+    } ]
   },
-  "authenticationScheme": "urn:inera:webcert:siths:fake",
-  "valdVardenhet": {
-  "id": "ve1",
-    "namn": "Vårdenhet 1"
+  "unitContext" : {
+    "id" : "IFV1239877878-1042",
+    "name" : "WebCert-Enhet1",
+    "parentHsaId" : "IFV1239877878-1041",
+    "parentHsaName" : "WebCert-Vårdgivare1",
+    "orgNrVardgivare" : "2-orgnr-1041"
   },
-  "valdVardgivare": {
-    "id": "vg1",
-      "namn": "Vårdgivare 1"
-  },
-  "vardgivare": [
-    {
-      "id": "vg1",
-      "namn": "Vårdgivare 1",
-      "vardenheter": [
-        {
-          "id": "ve1",
-          "namn": "Vårdenhet 1",
-          "epost": "enhet1@webcert.invalid.se",
-          "postadress": "Storgatan 1",
-          "postnummer": "12345",
-          "postort": "Småmåla",
-          "telefonnummer": "0101234567890",
-          "arbetsplatskod": "1234567890",
-          "vardgivareOrgnr": "2-orgnr-1041",
-          "agandeForm": "OFFENTLIG",
-          "vardgivareHsaId": "vg1",
-          "mottagningar": []
-        }
-      ]
-    },
-    {
-      "id": "vg2",
-      "namn": "Vårdgivare 2",
-      "vardenheter": [
-        {
-          "id": "ve2",
-          "namn": "Vårdenhet 2",
-          "vardgivareOrgnr": "2-orgnr-1043",
-          "agandeForm": "OFFENTLIG",
-          "vardgivareHsaId": "vg2",
-          "mottagningar": [
-            {
-              "id": "IFV1239877878-1046",
-              "namn": "WebCert-Enhet2-Mottagning1",
-              "postadress": "",
-              "postnummer": "12345",
-              "postort": "Storgatan 1",
-              "telefonnummer": "",
-              "arbetsplatskod": "1234567890",
-              "agandeForm": "OFFENTLIG"
-            }
-          ]
-        },
-        {
-          "id": "ve3",
-          "namn": "Vårdenhet 3",
-          "agandeForm": "OFFENTLIG",
-          "vardgivareHsaId": "vg2",
-          "mottagningar": []
-        }
-      ]
-    }
-  ]
+  "totaltAntalVardenheter": 5
 }
 export default userDb;

@@ -6,7 +6,7 @@ const mapStateToProps = (state) => {
   return {
     isAuthenticated: state.user.isAuthenticated,
     isLoading: state.user.isLoading,
-    hasCurrentUnit: !!state.user.valdVardenhet
+    hasCurrentUnit: !!state.user.unitContext
   };
 };
 
