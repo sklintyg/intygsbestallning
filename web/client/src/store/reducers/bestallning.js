@@ -5,7 +5,7 @@ const bestallning = (state = {}, action) => {
     switch (action.type) {
         case ActionConstants.FETCH_BESTALLNING_SUCCESS:
             return action.response;
-        case ActionConstants.SETSTATUS_BESTALLNING_SUCCESS:
+        case ActionConstants.ACCEPTERA_BESTALLNING_SUCCESS:
             return {...state, status: action.response}
         default:
             return state;
@@ -36,23 +36,10 @@ const errorMessage = (state = null, action) => {
     }
 };
 
-const statusErrorMessage = (state = null, action) => {
-    switch (action.type) {
-        case ActionConstants.SETSTATUS_BESTALLNING_FAILURE:
-            return action.message;
-        case ActionConstants.SETSTATUS_BESTALLNING_REQUEST:
-        case ActionConstants.SETSTATUS_BESTALLNING_SUCCESS:
-            return null;
-        default:
-            return state;
-    }
-};
-
 export default combineReducers({
     bestallning,
     fetching,
     errorMessage,
-    statusErrorMessage,
 });
 
 export const getBestallning = (state) =>
@@ -63,9 +50,3 @@ export const isFetching = (state) =>
 
 export const getErrorMessage = (state) =>
     state.bestallning.errorMessage;
-
-export const isSettingStatus = (state) =>
-    state.bestallning.settingStatus;
-
-export const getStatusErrorMessage = (state) =>
-    state.bestallning.statusErrorMessage;

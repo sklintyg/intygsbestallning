@@ -9,13 +9,17 @@ const StyledButton = styled(Button)`
 margin-right: 16px;
 `
 
-const BestallningActionBar = ({bestallning, setStatus}) => {
+const BestallningActionBar = ({bestallning, accepteraBestallning}) => {
 
-  const accept = () => setStatus(bestallning.id, 'ACCEPTED');
+  const accept = () => accepteraBestallning(bestallning.id);
   
-  const reject = () => setStatus(bestallning.id, 'REJECTED');
+  const reject = () => {
+    //rejectBestallning(bestallning.id, 'REJECTED');
+  }
   
-  const complete = () => setStatus(bestallning.id, 'COMPLETED');
+  const complete = () => {
+    //completeBestallning(bestallning.id, 'COMPLETED');
+  }
 
   const vidarebefodra = () => {
     //vidarebefodra(bestallning.id)

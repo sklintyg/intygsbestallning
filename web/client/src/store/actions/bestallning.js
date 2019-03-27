@@ -1,13 +1,13 @@
 import * as api from '../../api/bestallning'
-import { isFetching, isSettingStatus } from '../reducers/bestallning'
+import { isFetching } from '../reducers/bestallning'
 
 export const FETCH_BESTALLNING_REQUEST = "FETCH_BESTALLNING_REQUEST";
 export const FETCH_BESTALLNING_SUCCESS = "FETCH_BESTALLNING_SUCCESS";
 export const FETCH_BESTALLNING_FAILURE = "FETCH_BESTALLNING_FAILURE";
 
-export const SETSTATUS_BESTALLNING_REQUEST = "SETSTATUS_BESTALLNING_REQUEST";
-export const SETSTATUS_BESTALLNING_SUCCESS = "SETSTATUS_BESTALLNING_SUCCESS";
-export const SETSTATUS_BESTALLNING_FAILURE = "SETSTATUS_BESTALLNING_FAILURE";
+export const ACCEPTERA_BESTALLNING_REQUEST = "ACCEPTERA_BESTALLNING_REQUEST";
+export const ACCEPTERA_BESTALLNING_SUCCESS = "ACCEPTERA_BESTALLNING_SUCCESS";
+export const ACCEPTERA_BESTALLNING_FAILURE = "ACCEPTERA_BESTALLNING_FAILURE";
 
 export const fetchBestallning = id => (dispatch, getState) => {
     if (isFetching(getState())) {
@@ -37,28 +37,23 @@ export const fetchBestallning = id => (dispatch, getState) => {
     );
 };
 
-export const setStatus = (id, status) => (dispatch, getState) => {
-    if (isSettingStatus(getState())) {
-        return Promise.resolve();
-    }
-    
+export const accepteraBestallning = id => (dispatch) => {
     dispatch({
-        type: SETSTATUS_BESTALLNING_REQUEST,
-        id,
-        status
+        type: ACCEPTERA_BESTALLNING_REQUEST,
+        id
     });
     
-    return api.setStatus(id, status).then(
+    return api.accepteraBestallning(id).then(
         response => {
             console.log(response);
             dispatch({
-                type: SETSTATUS_BESTALLNING_SUCCESS,
+                type: ACCEPTERA_BESTALLNING_SUCCESS,
                 response: response
             });
         },
         error => {
             dispatch({
-                type: SETSTATUS_BESTALLNING_FAILURE,
+                type: ACCEPTERA_BESTALLNING_FAILURE,
                 id,
                 message: error.message || "Something went wrong."
             });

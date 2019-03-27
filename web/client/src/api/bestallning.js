@@ -8,4 +8,4 @@ if (process.env.NODE_ENV === 'production' || true) {
 
 export const fetchBestallning = id => api.fetchBestallning(id);
 
-export const setStatus = (id, status) => api.setStatus(id, status);
+export const accepteraBestallning = (id, status) => api.accepteraBestallning(id, status);

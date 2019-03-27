@@ -1,6 +1,6 @@
 import React from 'react';
 import * as PropTypes from "prop-types";
-import {InfoIcon} from "../styles/IbSvgIcons";
+import {InfoIcon, Security} from "../styles/IbSvgIcons";
 import {Alert} from "reactstrap";
 import IbColors from "../styles/IbColors";
 
@@ -10,13 +10,15 @@ const IbAlert = ({type, children}) => {
     switch (type) {
     case 'info':
       return <InfoIcon color={IbColors.IB_COLOR_06} />;
+    case 'sekretess':
+      return <Security color={IbColors.IB_COLOR_05} />;
     default:
       return null;
     }
   }
 
   return (
-    <Alert color={type}>
+    <Alert color={type === 'sekretess' ? 'warning' : type }>
       <div className={'d-flex'}>
         <div>{getIcon(type)}</div>
         <div>{children}</div>
