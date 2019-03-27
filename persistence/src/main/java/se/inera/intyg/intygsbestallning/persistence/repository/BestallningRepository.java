@@ -35,8 +35,7 @@ public interface BestallningRepository extends JpaRepository<BestallningEntity, 
                     "join b.notifieringar n " +
                     "where (b.status in :statusar) " +
                     "and (:textSearch is null " +
-                    "or (:textSearch is not null and (i.personId like %:textSearch% or upper(concat(trim(i.fornamn), ' ' , trim(i.efternamn))) like %:textSearch%) or upper(concat(trim(i.fornamn), ' ' , trim(i.mellannamn), ' ', trim(i.efternamn))) like %:textSearch%) " +
-                    "or (:textSearch is not null and b.intygTyp like %:textSearch%) " +
+                    "or (:textSearch is not null and (b.intygTyp like %:textSearch%) or (i.personId like %:textSearch% or upper(concat(trim(i.fornamn), ' ' , trim(i.efternamn))) like %:textSearch%) or upper(concat(trim(i.fornamn), ' ' , trim(i.mellannamn), ' ', trim(i.efternamn))) like %:textSearch%) " +
                     "or (:id is not null and b.id = :id) " +
                     "or (:status is not null and b.status = :status) " +
                     "or (:ankomstDatumFrom is not null and (b.ankomstDatum between :ankomstDatumFrom and :ankomstDatumTo)))")
