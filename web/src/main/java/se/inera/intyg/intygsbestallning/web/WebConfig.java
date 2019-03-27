@@ -10,28 +10,34 @@ import org.apache.cxf.jaxws.EndpointImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.view.InternalResourceView;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import java.time.LocalDateTime;
+import se.inera.intyg.intygsbestallning.common.property.BestallningProperties;
 import se.inera.intyg.intygsbestallning.web.controller.LocalDateTimeDeserializer;
 import se.inera.intyg.intygsbestallning.web.controller.LocalDateTimeSerializer;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning;
 
-import java.time.LocalDateTime;
-
 @Configuration
 @ComponentScan(basePackages = "se.inera.intyg.intygsbestallning.web")
-public class WebConfig {
+public class WebConfig implements WebMvcConfigurer {
 
     private Bus bus;
     private OrderAssessmentIntygsbestallning orderAssessment;
 
-    public WebConfig(Bus bus, OrderAssessmentIntygsbestallning orderAssessment) {
+    private BestallningProperties bestallningProperties;
+
+    public WebConfig(
+            Bus bus,
+            OrderAssessmentIntygsbestallning orderAssessment,
+            BestallningProperties bestallningProperties) {
+        super();
         this.bus = bus;
         this.orderAssessment = orderAssessment;
+        this.bestallningProperties = bestallningProperties;
     }
 
     @Bean(name = "jacksonJsonProvider")
@@ -41,7 +47,7 @@ public class WebConfig {
 
     @Bean
     @Primary
-    public ObjectMapper customObjectMapper(){
+    public ObjectMapper customObjectMapper() {
 
         SimpleModule module = new SimpleModule();
         module.addSerializer(new LocalDateTimeSerializer());
@@ -60,5 +66,14 @@ public class WebConfig {
         EndpointImpl endpoint = new EndpointImpl(bus, orderAssessment);
         endpoint.publish("/order-assessment-responder");
         return endpoint;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+        var path = bestallningProperties.getImageResourcePath();
+
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("file:" + path);
     }
 }

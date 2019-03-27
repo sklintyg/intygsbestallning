@@ -530,6 +530,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
                 .antMatchers("/favicon.ico").permitAll()
                 .antMatchers("/index.html").permitAll()
                 .antMatchers("/static/**").permitAll()
+                .antMatchers("/images/**").permitAll()
                 .antMatchers("/app/**").permitAll()
                 .antMatchers("/assets/**").permitAll()
                 .antMatchers("/components/**").permitAll()

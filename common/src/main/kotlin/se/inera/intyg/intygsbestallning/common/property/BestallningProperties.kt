@@ -7,4 +7,5 @@ import org.springframework.context.annotation.Configuration
 @ConfigurationProperties(prefix = "bestallning")
 open class BestallningProperties {
   lateinit var textResourcePath: String
+  lateinit var imageResourcePath: String
 }
