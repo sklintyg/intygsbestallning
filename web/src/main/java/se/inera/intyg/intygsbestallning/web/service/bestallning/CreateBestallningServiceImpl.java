@@ -12,7 +12,7 @@ import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.common.service.notifiering.NotifieringSendService;
-import se.inera.intyg.intygsbestallning.persistence.repository.HandlaggareRepository;
+import se.inera.intyg.intygsbestallning.integration.pu.PatientService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
 import se.inera.intyg.intygsbestallning.persistence.service.InvanarePersistenceService;
 import se.inera.intyg.intygsbestallning.persistence.service.VardenhetPersistenceService;
@@ -28,18 +28,21 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
     private BestallningStatusResolver bestallningStatusResolver;
     private VardenhetPersistenceService vardenhetPersistenceService;
     private NotifieringSendService notifieringSendService;
+    private PatientService patientService;
 
     public CreateBestallningServiceImpl(
             BestallningPersistenceService bestallningPersistenceService,
             InvanarePersistenceService invanarePersistenceService,
             BestallningStatusResolver bestallningStatusResolver,
             VardenhetPersistenceService vardenhetPersistenceService,
-            NotifieringSendService notifieringSendService) {
+            NotifieringSendService notifieringSendService,
+            PatientService patientService) {
         this.bestallningPersistenceService = bestallningPersistenceService;
         this.invanarePersistenceService = invanarePersistenceService;
         this.bestallningStatusResolver = bestallningStatusResolver;
         this.vardenhetPersistenceService = vardenhetPersistenceService;
         this.notifieringSendService = notifieringSendService;
+        this.patientService = patientService;
     }
 
     @Override
@@ -54,6 +57,13 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
 
         Invanare invanare;
         if (existing.isEmpty()) {
+            var person = patientService.lookupPersonnummerFromPU(createBestallningRequest.getInvanare().getPersonnummer());
+
+            if (person.isEmpty()) {
+                throw new IllegalArgumentException("invanare with personnummer: " +
+                        createBestallningRequest.getInvanare().getPersonnummer().getPersonnummerWithDash() + "was not found");
+            }
+
             invanare = Invanare.Factory.newInvanare(
                     createBestallningRequest.getInvanare().getPersonnummer(),
                     createBestallningRequest.getInvanare().getFornamn(),

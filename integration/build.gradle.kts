@@ -5,6 +5,8 @@ dependencies {
   implementation(project(":common"))
 
   implementation("se.inera.intyg.infra:hsa-integration:${extra["intygInfraVersion"]}")
+  implementation("se.inera.intyg.infra:pu-integration:${extra["intygInfraVersion"]}")
+
 
   // External dependencies
   compile("org.apache.cxf:cxf-spring-boot-starter-jaxws:${Dependencies.cxfBootStarterVersion}")

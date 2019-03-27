@@ -24,8 +24,6 @@ dependencies {
   implementation("se.inera.intyg.infra:security-common:${extra["intygInfraVersion"]}")
   implementation("se.inera.intyg.infra:security-siths:${extra["intygInfraVersion"]}")
 
-
-
   // External dependencies
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-data-redis")

@@ -7,6 +7,7 @@ import se.inera.intyg.intygsbestallning.common.domain.Handelse;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningDto;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTextService;
+import se.inera.intyg.intygsbestallning.integration.pu.PatientService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
 
 @Service
@@ -15,14 +16,17 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
     private BestallningPersistenceService bestallningPersistenceService;
     private BestallningStatusResolver bestallningStatusResolver;
     private BestallningTextService bestallningTextService;
+    private PatientService patientService;
 
     public VisaBestallningServiceImpl(
             BestallningPersistenceService bestallningPersistenceService,
             BestallningStatusResolver bestallningStatusResolver,
-            BestallningTextService bestallningTextService) {
+            BestallningTextService bestallningTextService,
+            PatientService patientService) {
         this.bestallningPersistenceService = bestallningPersistenceService;
         this.bestallningStatusResolver = bestallningStatusResolver;
         this.bestallningTextService = bestallningTextService;
+        this.patientService = patientService;
     }
 
     @Override
@@ -33,6 +37,8 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
         if (bestallning.isEmpty()) {
             return Optional.empty();
         }
+
+        patientService.updatePersonDetaljer(bestallning.get().getInvanare());
 
         if (bestallning.get().getStatus() == BestallningStatus.OLAST) {
             bestallning.get().getHandelser().add(Handelse.Factory.las());

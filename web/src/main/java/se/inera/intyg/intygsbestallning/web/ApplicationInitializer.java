@@ -30,6 +30,7 @@ public class ApplicationInitializer implements WebApplicationInitializer {
                 MailSenderConfig.class,
                 PersistenceConfig.class,
                 WebConfig.class,
+                SwaggerConfig.class,
                 SecurityConfig.class);
 
         servletContext.addListener(new ContextLoaderListener(appContext));

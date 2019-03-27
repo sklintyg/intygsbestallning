@@ -4,12 +4,12 @@ import se.inera.intyg.schemas.contract.Personnummer
 
 data class Invanare(
    val id: Long? = null,
-   val personId: Personnummer,
-   val fornamn: String? = null,
-   val mellannamn: String? = null,
-   val efternamn: String? = null,
+   var personId: Personnummer,
+   var fornamn: String? = null,
+   var mellannamn: String? = null,
+   var efternamn: String? = null,
    val bakgrundNulage: String? = null,
-   val sektretessMarkering: Boolean? = false) {
+   var sektretessMarkering: Boolean? = false) {
 
   companion object Factory {
     fun newInvanare(
