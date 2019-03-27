@@ -505,7 +505,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     @Profile({ "dev-security", "ib-security-test"})
     public SimpleUrlAuthenticationSuccessHandler fakeSuccessHandler() {
         SimpleUrlAuthenticationSuccessHandler handler = new SimpleUrlAuthenticationSuccessHandler();
-        handler.setDefaultTargetUrl("/index.html");
+        handler.setDefaultTargetUrl("/");
         handler.setAlwaysUseDefaultTargetUrl(true);
         return handler;
     }
