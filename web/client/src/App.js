@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import {HashRouter, NavLink, Switch} from 'react-router-dom'
+import {HashRouter, NavLink, Link, Switch} from 'react-router-dom'
 import HomePage from "./pages/IndexPage";
 import SelectEnhetPage from "./pages/SelectEnhetPage";
 import BestallningarIndexPage from "./pages/BestallningarIndexPage";
@@ -18,7 +18,9 @@ import {closeAllModals} from "./store/actions/modal";
 // TEST
 const TestLinks = () => (
   <nav>
-    <NavLink exact to="/">
+    <a href="/welcome.html">
+      welcome
+    </a> | <NavLink exact to="/">
       start
     </NavLink> | <NavLink to="/valj-enhet">
       valj-enhet
