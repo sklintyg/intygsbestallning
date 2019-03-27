@@ -1,37 +1,24 @@
-import React, {Component} from "react";
+import React from "react";
 import Pagination from "react-js-pagination";
 
-class BestallningarListPagination extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      activePage: 15
-    };
-  }
-
-  handlePageChange = (pageNumber) => {
-    console.log(`active page is ${pageNumber}`);
-    this.setState({activePage: pageNumber});
-  }
-
-  render() {
-    return (
-      <div>
-        <Pagination
-          activePage={this.state.activePage}
-          itemsCountPerPage={5}
-          totalItemsCount={100}
-          pageRangeDisplayed={5}
-          hideFirstLastPages={true}
-          prevPageText='Föregående'
-          nextPageText='Nästa'
-          itemClass='page-item'
-          linkClass='page-link'
-          onChange={this.handlePageChange}
-        />
-      </div>
-    );
-  }
+const BestallningarListPagination = props => {
+  const pageIndex = !props.bestallningList.pageIndex ? 1 : props.bestallningList.pageIndex + 1
+  return (
+    <div>
+      <Pagination
+        activePage={pageIndex}
+        itemsCountPerPage={4}
+        totalItemsCount={props.bestallningList.totalElements}
+        pageRangeDisplayed={10}
+        hideFirstLastPages={true}
+        prevPageText="Föregående"
+        nextPageText="Nästa"
+        itemClass="page-item"
+        linkClass="page-link"
+        onChange={props.handlePageChange}
+      />
+    </div>
+  );
 };
 
 export default BestallningarListPagination;

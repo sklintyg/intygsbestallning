@@ -1,7 +1,12 @@
 import * as api from '../../api/bestallningListApi';
 import { getIsFetching } from '../reducers/bestallningList';
 
-export const fetchBestallningList = (categoryFilter, textFilter) => (dispatch, getState) => {
+export const fetchBestallningList = (categoryFilter, textFilter, pageIndex) => (dispatch, getState) => {
+
+  if(!pageIndex) {
+    pageIndex = 0
+  }
+
   if (getIsFetching(getState(), categoryFilter)) {
     return Promise.resolve();
   }
@@ -11,7 +16,7 @@ export const fetchBestallningList = (categoryFilter, textFilter) => (dispatch, g
     categoryFilter
   });
 
-  return api.fetchBestallningList(categoryFilter, textFilter).then(
+  return api.fetchBestallningList({categoryFilter, textFilter, pageIndex}).then(
     response => {
       dispatch({
         type: 'FETCH_BESTALLNINGAR_SUCCESS',

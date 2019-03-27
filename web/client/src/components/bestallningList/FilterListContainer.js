@@ -1,33 +1,47 @@
 import React, { useState, Fragment } from "react";
 import * as actions from "../../store/actions/bestallningList";
 import BestallningFilter from "../textSearch/TextSearch";
-import { fetchBestallningList } from "./../../store/actions/bestallningList";
 import BestallningListContainer from "./BestallningListContainer";
 import { compose } from "recompose";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import BestallningListPagination from "./BestallningListPagination";
+import {
+  getVisibleBestallningList
+} from "../../store/reducers/bestallningList";
 
 const FilterListContainer = (props) => {
   const [textFilter, setTextFilter] = useState("");
+  const { categoryFilter, bestallningList } = props;
 
   const handleFilterChange = (textFilter) => {
-    const { categoryFilter } = props;
     setTextFilter(textFilter);
-    fetchBestallningList(categoryFilter, textFilter);
+    fetchList(bestallningList.pageIndex)
   };
+
+  const handlePageChange = (pageNumber) => {
+    fetchList(pageNumber)
+  }
+
+  const fetchList = (pageIndex) => {
+    props.fetchBestallningList(categoryFilter, textFilter, pageIndex - 1);
+  }
+  
   return (
     <Fragment>
       <BestallningFilter onChange={handleFilterChange} />
       <BestallningListContainer textFilter={textFilter} />
-      <BestallningListPagination />
+      <BestallningListPagination bestallningList={bestallningList} handlePageChange={handlePageChange}/>
     </Fragment>
   );
 };
 
 const mapStateToProps = (state, { match }) => {
   const categoryFilter = match.params.filter || 'AKTUELLA';
-  return { categoryFilter };
+  return {
+    bestallningList: getVisibleBestallningList(state, categoryFilter),
+    categoryFilter
+  };
 };
 
 export default compose(
