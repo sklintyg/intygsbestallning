@@ -7,12 +7,12 @@
   "planeradeAktiviteter": "planerade aktiviteter",
   "status": "OLAST",
   "invanare": {
-    "personId": "20111113-2393",
-    "fornamn": "Bertil",
-    "mellannamn": "NMT-Intyg-UTVtest",
-    "efternamn": "Bryske",
+    "personId": "19520617-2339",
+    "fornamn": "Björn Anders Daniel",
+    "mellannamn": "Annat",
+    "efternamn": "Pärsson",
     "bakgrundNulage": null,
-    "sektretessMarkering": true
+    "sektretessMarkering": false
   },
   "handlaggare": {
     "fullstandigtNamn": "Fullt Handlaggarnamn",

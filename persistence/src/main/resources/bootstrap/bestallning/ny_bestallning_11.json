@@ -7,12 +7,12 @@
   "planeradeAktiviteter": "planerade aktiviteter",
   "status": "OLAST",
   "invanare": {
-    "personId": "20111124-2390",
-    "fornamn": "Emil",
-    "mellannamn": "NMT-Intyg-UTVtest",
-    "efternamn": "Svensson",
+    "personId": "19830923-9294",
+    "fornamn": "Eric",
+    "mellannamn": "",
+    "efternamn": "Söderman",
     "bakgrundNulage": null,
-    "sektretessMarkering": true
+    "sektretessMarkering": false
   },
   "handlaggare": {
     "fullstandigtNamn": "Fullt Handlaggarnamn",
