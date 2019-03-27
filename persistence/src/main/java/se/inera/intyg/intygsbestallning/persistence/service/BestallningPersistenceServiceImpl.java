@@ -107,6 +107,8 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
         return ListBestallningarResult.Factory.toDto(
                 bestallningar,
                 pageResult.getNumber(),
+                pageResult.getNumber() * pageResult.getSize() + 1,
+                pageResult.getNumber() * pageResult.getSize() + pageResult.getNumberOfElements(),
                 pageResult.getTotalPages(),
                 pageResult.getNumberOfElements(),
                 pageResult.getTotalElements(),

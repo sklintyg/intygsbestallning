@@ -30,6 +30,8 @@ enum class ListBestallningDirection {
 data class ListBestallningarResult(
    val bestallningar: List<BestallningDto>,
    val pageIndex: Int? = 0,
+   val start: Int,
+   val end: Int,
    val totalPages: Int,
    val numberOfElements: Int,
    val totalElements: Long,
@@ -40,6 +42,8 @@ data class ListBestallningarResult(
     fun toDto(
        bestallningar: List<Bestallning>,
        pageIndex: Int? = 0,
+       start: Int,
+       end: Int,
        totalPages: Int,
        numberOfElements: Int,
        totalElements: Long,
@@ -48,6 +52,8 @@ data class ListBestallningarResult(
       return ListBestallningarResult(
          bestallningar = bestallningar.map { BestallningDto.toDto(it) },
          pageIndex = pageIndex,
+         start = start,
+         end = end,
          totalPages = totalPages,
          numberOfElements = numberOfElements,
          totalElements = totalElements,
