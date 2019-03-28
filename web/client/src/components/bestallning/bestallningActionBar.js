@@ -1,9 +1,11 @@
-import React, {Fragment} from 'react'
+import React, { Fragment } from 'react'
 import * as actions from '../../store/actions/bestallning'
 import { connect } from 'react-redux'
 import { Button, UncontrolledButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
 import { compose } from 'recompose'
 import styled from 'styled-components'
+import AccepteraBestallning from './accepteraBestallning'
+import AvvisaBestallning from './avvisaBestallning'
 
 const StyledButton = styled(Button)`
 margin-right: 16px;
@@ -11,9 +13,15 @@ margin-right: 16px;
 
 const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestallning}) => {
 
-  const accept = () => accepteraBestallning(bestallning.id);
+  const accept = (fritextForklaring) => accepteraBestallning(bestallning.id, {fritextForklaring});
   
-  const reject = () => rejectBestallning(bestallning.id);
+  const reject = (fritextForklaring, avvisa) => {
+    if (avvisa) {
+      rejectBestallning(bestallning.id, {fritextForklaring});
+    } else {
+      //raderaBestallning();
+    }
+  }
   
   const complete = () => {
     //completeBestallning(bestallning.id, 'COMPLETED');
@@ -25,9 +33,9 @@ const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestalln
 
   return (
     <Fragment>
-      { bestallning.status === 'LAST' ? <StyledButton onClick={accept}>Acceptera</StyledButton> : null }
-      { bestallning.status === 'LAST' ? <StyledButton onClick={reject}>Avvisa</StyledButton> : null }
-      { bestallning.status === 'ACCEPTERAD' ? <StyledButton outline={true} onClick={complete}>Klarmakera</StyledButton> : null }
+      { bestallning.status === 'Läst' ? <AccepteraBestallning accept={accept} /> : null }
+      { bestallning.status === 'Läst' ? <AvvisaBestallning accept={reject} /> : null }
+      { bestallning.status === 'Accepterad' ? <StyledButton outline={true} onClick={complete}>Klarmakera</StyledButton> : null }
       <StyledButton onClick={vidarebefodra}>Vidarebefodra</StyledButton>
       <UncontrolledButtonDropdown>
         <DropdownToggle caret>

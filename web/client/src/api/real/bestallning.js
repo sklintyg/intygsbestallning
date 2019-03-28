@@ -2,6 +2,8 @@ import * as utils from './utils'
 
 export const fetchBestallning = id => utils.makeServerRequest('bestallningar/' + id);
 
-export const accepteraBestallning = id => utils.makeServerPost('bestallningar/' + id + '/acceptera', '', {emptyBody:true});
+export const accepteraBestallning = (id, fritextForklaring) => 
+  utils.makeServerPost('bestallningar/' + id + '/acceptera', fritextForklaring, {emptyBody:true});
 
-export const rejectBestallning = id => utils.makeServerPost('bestallningar/' + id + '/avvisa','', {emptyBody:true});
+export const rejectBestallning = (id, fritextForklaring) => 
+  utils.makeServerPost('bestallningar/' + id + '/avvisa', fritextForklaring, {emptyBody:true});

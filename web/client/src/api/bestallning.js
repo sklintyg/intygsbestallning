@@ -8,6 +8,8 @@ if (process.env.NODE_ENV === 'production' || true) {
 
 export const fetchBestallning = id => api.fetchBestallning(id);
 
-export const accepteraBestallning = id => api.accepteraBestallning(id);
+export const accepteraBestallning = (id, fritextForklaring) =>
+  api.accepteraBestallning(id, fritextForklaring);
 
-export const rejectBestallning = id => api.rejectBestallning(id);
+export const rejectBestallning = (id, fritextForklaring) =>
+  api.rejectBestallning(id, fritextForklaring);

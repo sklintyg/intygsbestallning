@@ -41,14 +41,14 @@ export const fetchBestallning = id => (dispatch, getState) => {
     );
 };
 
-export const accepteraBestallning = id => (dispatch) => {
+export const accepteraBestallning = (id, fritextForklaring) => (dispatch) => {
     dispatch({
         type: ACCEPTERA_BESTALLNING_REQUEST,
         id
     });
     
-    return api.accepteraBestallning(id).then(
-        response => {
+    return api.accepteraBestallning(id, fritextForklaring).then(
+        () => {
             dispatch({
                 type: ACCEPTERA_BESTALLNING_SUCCESS
             });
@@ -63,14 +63,14 @@ export const accepteraBestallning = id => (dispatch) => {
     );
 };
 
-export const rejectBestallning = id => (dispatch) => {
+export const rejectBestallning = (id, fritextForklaring) => (dispatch) => {
     dispatch({
         type: REJECT_BESTALLNING_REQUEST,
         id
     });
 
-    return api.rejectBestallning(id).then(
-        response => {
+    return api.rejectBestallning(id, fritextForklaring).then(
+        () => {
             dispatch({
                 type: REJECT_BESTALLNING_SUCCESS
             });
