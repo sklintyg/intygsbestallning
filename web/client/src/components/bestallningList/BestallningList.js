@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styled from 'styled-components'
-
+import styled from "styled-components";
+import TableSortHead from "./TableSortHead";
 const Table = styled.table`
   padding-top: 10px;
 
@@ -19,27 +19,66 @@ const ResultLine = styled.div`
   padding-top: 20px;
 `;
 
-const BestallningarList = ({ bestallningList }) => {
-
-  if(bestallningList.bestallningar.length === 0){
+const BestallningarList = ({ bestallningList, onSort }) => {
+  if (bestallningList.bestallningar.length === 0) {
     return (
-      <ResultLine>Inget resultat hittades för den valda filtreringen. Överväg att ändra filtreringen för att utöka resultatet.</ResultLine>
-    )
+      <ResultLine>
+        Inget resultat hittades för den valda filtreringen. Överväg att ändra
+        filtreringen för att utöka resultatet.
+      </ResultLine>
+    );
   }
+
+  const handleSort = sortColumn => {
+    onSort(sortColumn);
+  };
 
   return (
     <div>
-      <ResultLine>Visar {bestallningList.start}-{bestallningList.end} av {bestallningList.totalElements} träffar</ResultLine>
+      <ResultLine>
+        Visar {bestallningList.start}-{bestallningList.end} av{" "}
+        {bestallningList.totalElements} träffar
+      </ResultLine>
       <Table>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Efterfrågat intyg</th>
-            <th>Personnummer</th>
+            <TableSortHead
+              currentSortColumn={bestallningList.sortColumn}
+              currentSortDirection={bestallningList.sortDirection}
+              text="ID"
+              sortId="ID"
+              onSort={handleSort}
+            />
+            <TableSortHead
+              currentSortColumn={bestallningList.sortColumn}
+              currentSortDirection={bestallningList.sortDirection}
+              text="Efterfrågat intyg"
+              sortId="INTYG_TYP"
+              onSort={handleSort}
+            />
+            <TableSortHead
+              currentSortColumn={bestallningList.sortColumn}
+              currentSortDirection={bestallningList.sortDirection}
+              text="Personnummer"
+              sortId="INVANARE_PERSON_ID"
+              onSort={handleSort}
+            />
             <th>Namn</th>
-            <th>Status</th>
-            <th>Inkommet datum</th>
-            <th></th>
+            <TableSortHead
+              currentSortColumn={bestallningList.sortColumn}
+              currentSortDirection={bestallningList.sortDirection}
+              text="Status"
+              sortId="STATUS"
+              onSort={handleSort}
+            />
+            <TableSortHead
+              currentSortColumn={bestallningList.sortColumn}
+              currentSortDirection={bestallningList.sortDirection}
+              text="Inkommet datum"
+              sortId="ANKOMST_DATUM"
+              onSort={handleSort}
+            />
+            <th />
           </tr>
         </thead>
         <tbody>

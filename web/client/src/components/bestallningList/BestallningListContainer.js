@@ -1,4 +1,4 @@
-import React, {Fragment} from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { compose, lifecycle } from "recompose";
 import { connect } from "react-redux";
@@ -12,22 +12,34 @@ import {
 import BestallningList from "./BestallningList";
 import FetchError from "./FetchError";
 
-const BestallningarListContainer = ({ isFetching, errorMessage, bestallningList }) => {
-    if (isFetching && !bestallningList.length) {
-      return <p>Loading...</p>;
-    }
-    if (errorMessage && !bestallningList.length) {
-      return (
-        <FetchError message={errorMessage} onRetry={() => this.fetchData()} />
-      );
+const BestallningarListContainer = props => {
+  const { isFetching, errorMessage, bestallningList } = props;
+  if (isFetching && !bestallningList.length) {
+    return <p>Loading...</p>;
+  }
+  if (errorMessage && !bestallningList.length) {
+    return (
+      <FetchError message={errorMessage} onRetry={() => fetchData(props)} />
+    );
+  }
+
+  const handleSort = newSortColumn => {
+    let {sortColumn, sortDirection} = bestallningList
+    if(sortColumn === newSortColumn){
+      sortDirection = (bestallningList.sortDirection === 'DESC') ? 'ASC' : 'DESC'
+    } else {
+      sortColumn = newSortColumn
     }
 
-    return (
-      <Fragment>
-        <BestallningList bestallningList={bestallningList} />
-      </Fragment>
-    );
-}
+    fetchData({...props, sortColumn, sortDirection})
+  };
+
+  return (
+    <Fragment>
+      <BestallningList bestallningList={bestallningList} onSort={handleSort} />
+    </Fragment>
+  );
+};
 
 BestallningarListContainer.propTypes = {
   filter: PropTypes.string,
@@ -37,9 +49,9 @@ BestallningarListContainer.propTypes = {
   fetchBestallningar: PropTypes.func
 };
 
-const fetchData = ({ fetchBestallningList, categoryFilter, textFilter }) => {
-  fetchBestallningList(categoryFilter, textFilter);
-}
+const fetchData = ({ fetchBestallningList, categoryFilter, textFilter, sortColumn, sortDirection }) => {
+  fetchBestallningList({categoryFilter, textFilter, sortColumn, sortDirection});
+};
 
 const lifeCycleValues = {
   componentDidMount() {
@@ -56,7 +68,7 @@ const lifeCycleValues = {
 };
 
 const mapStateToProps = (state, { match }) => {
-  const categoryFilter = match.params.filter || 'AKTUELLA';
+  const categoryFilter = match.params.filter || "AKTUELLA";
   return {
     bestallningList: getVisibleBestallningList(state, categoryFilter),
     categoryFilter,
@@ -67,6 +79,9 @@ const mapStateToProps = (state, { match }) => {
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, actions),
+  connect(
+    mapStateToProps,
+    actions
+  ),
   lifecycle(lifeCycleValues)
 )(BestallningarListContainer);

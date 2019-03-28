@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 
 const createBestallningarList = filter => {
   const bestallningList = (
-    state = { bestallningar: [], 'pageIndex': 0, 'totalPages': 0, 'numberOfElements': 0, 'totalElements': 0, 'sortableColumn': 'ID', 'sortDirection': 'ASC' },
+    state = { bestallningar: [], 'pageIndex': 0, 'totalPages': 0, 'numberOfElements': 0, 'totalElements': 0, 'sortColumn': 'ID', 'sortDirection': 'ASC' },
     action
   ) => {
     switch (action.type) {

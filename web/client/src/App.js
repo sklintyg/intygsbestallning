@@ -72,8 +72,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getUser: () => dispatch(getUser()),
     closeAllModals: () => dispatch(closeAllModals())
-
-
   }
 };
 

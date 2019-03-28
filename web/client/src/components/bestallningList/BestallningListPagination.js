@@ -7,7 +7,7 @@ const BestallningarListPagination = props => {
     <div>
       <Pagination
         activePage={pageIndex}
-        itemsCountPerPage={4}
+        itemsCountPerPage={props.bestallningList.limit}
         totalItemsCount={props.bestallningList.totalElements}
         pageRangeDisplayed={10}
         hideFirstLastPages={true}

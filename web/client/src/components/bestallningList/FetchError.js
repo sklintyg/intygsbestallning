@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const FetchError = ({ message, onRetry }) => (
   <div>
-    <p>Could not fetch todos. {message}</p>
+    <p>Kunde inte hämta beställningar. Fel: {message}</p>
     <button onClick={onRetry}>Retry</button>
   </div>
 );
