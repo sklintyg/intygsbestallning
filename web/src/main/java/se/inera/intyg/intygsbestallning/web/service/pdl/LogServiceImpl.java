@@ -18,6 +18,7 @@
  */
 package se.inera.intyg.intygsbestallning.web.service.pdl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -43,6 +44,7 @@ import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
 import se.inera.intyg.intygsbestallning.common.exception.IbJMSException;
 import se.inera.intyg.intygsbestallning.common.json.CustomObjectMapper;
 
+import se.inera.intyg.intygsbestallning.web.pdl.LogActivity;
 import se.inera.intyg.intygsbestallning.web.pdl.LogEvent;
 import se.inera.intyg.intygsbestallning.web.pdl.LogMessage;
 import se.inera.intyg.intygsbestallning.web.pdl.PdlLogMessageFactory;
@@ -98,7 +100,8 @@ public class LogServiceImpl implements LogService {
     }
 
     private LogMessage getLogMessage(Bestallning bestallning, LogEvent logEvent) {
-        return null;
+        LogMessage logMessage = new LogMessage(new LogActivity("", logEvent), new ArrayList<>());
+        return logMessage;
     }
 
     private void send(PdlLogMessage pdlLogMessage) {
