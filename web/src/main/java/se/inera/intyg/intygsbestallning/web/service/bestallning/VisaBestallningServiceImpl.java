@@ -2,7 +2,6 @@ package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
 import org.springframework.stereotype.Service;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.Handelse;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningDto;
@@ -10,7 +9,6 @@ import se.inera.intyg.intygsbestallning.common.property.BestallningProperties;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTextService;
 import se.inera.intyg.intygsbestallning.common.text.bestallning.BestallningTexter;
-import se.inera.intyg.intygsbestallning.common.text.bestallning.Text;
 import se.inera.intyg.intygsbestallning.integration.pu.PatientService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
 
@@ -80,13 +78,12 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
         if (bestallning.get().getStatus() == BestallningStatus.OLAST) {
             bestallning.get().getHandelser().add(Handelse.Factory.las());
             bestallningStatusResolver.setStatus(bestallning.get());
-            var updatedBestallning = bestallningPersistenceService.updateBestallning(bestallning.get());
-            var bestallningTexter = bestallningTextService.getBestallningTexter(updatedBestallning);
-            return Optional.of(VisaBestallningDto.Factory.toDto(updatedBestallning, getBildUrl(bestallningTexter), bestallningTexter));
-        } else {
-            var bestallningTexter = bestallningTextService.getBestallningTexter(bestallning.get());
-            return Optional.of(VisaBestallningDto.Factory.toDto(bestallning.get(), getBildUrl(bestallningTexter), bestallningTexter));
         }
+
+        var updatedBestallning = bestallningPersistenceService.updateBestallning(bestallning.get());
+        var bestallningTexter = bestallningTextService.getBestallningTexter(updatedBestallning);
+
+        return Optional.of(VisaBestallningDto.Factory.toDto(updatedBestallning, getBildUrl(bestallningTexter), bestallningTexter));
     }
 
     private String getBildUrl(BestallningTexter bestallningTexter) {

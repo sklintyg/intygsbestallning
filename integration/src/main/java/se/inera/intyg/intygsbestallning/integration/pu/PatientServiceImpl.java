@@ -40,9 +40,19 @@ public class PatientServiceImpl implements PatientService {
         switch (personSvar.getStatus()) {
             case FOUND:
                 var person = personSvar.getPerson();
-                invanare.setFornamn(person.getFornamn());
-                invanare.setEfternamn(person.getEfternamn());
-                invanare.setMellannamn(person.getMellannamn());
+
+                invanare.setSektretessMarkering(person.isSekretessmarkering());
+
+                if (person.isSekretessmarkering()) {
+                    invanare.setFornamn(null);
+                    invanare.setMellannamn(null);
+                    invanare.setEfternamn(null);
+
+                } else {
+                    invanare.setFornamn(person.getFornamn());
+                    invanare.setEfternamn(person.getEfternamn());
+                    invanare.setMellannamn(person.getMellannamn());
+                }
                 break;
             case NOT_FOUND:
                 throw new RuntimeException("Could not find person with id: " + invanare.getPersonId() + " from PU"); //TODO: Throw better exception

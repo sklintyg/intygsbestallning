@@ -13,8 +13,9 @@ import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import java.time.LocalDateTime;
 import java.util.List;
-import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
+import java.util.Random;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
 import se.inera.intyg.intygsbestallning.common.property.PersistenceProperties;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
@@ -75,9 +76,10 @@ public class TestDataBootstrapper {
 
         var bootstrapResult = Try.run(() -> {
             var bestallningBootstrapDirectory = persistenceProperties.getBestallningDirectory();
-            var mappadeBestallningar = loadResources(bestallningBootstrapDirectory, Bestallning.class);
 
-            mappadeBestallningar.forEach(bestallningPersistenceService::saveNewBestallning);
+            loadResources(bestallningBootstrapDirectory, BootstrapBestallning.class).stream()
+                    .map(BootstrapBestallning.Factory::toDomain)
+                    .forEach(bestallningPersistenceService::saveNewBestallning);
         });
 
         if (bootstrapResult.isFailure()) {
@@ -93,11 +95,21 @@ public class TestDataBootstrapper {
         var resources = pathMatchingResourcePatternResolver.getResources(path + "*.json");
 
         var mappedList = Lists.<T>newArrayList();
-
         for (var resource : resources) {
             var mapped = objectMapper.readValue(resource.getInputStream(), clazz);
+
+            if (clazz == BootstrapBestallning.class) {
+                var date = randomizeDate();
+                ((BootstrapBestallning) mapped).setAnkomstDatum(date);
+            }
+
             mappedList.add(mapped);
         }
         return mappedList;
+    }
+
+    private LocalDateTime randomizeDate() {
+        var daySpan = 7;
+        return LocalDateTime.now().minusDays(new Random().nextInt(daySpan + 1));
     }
 }

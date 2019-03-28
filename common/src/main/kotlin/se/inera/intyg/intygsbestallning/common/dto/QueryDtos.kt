@@ -85,13 +85,16 @@ data class BestallningDto(
 
 data class BestallningInvanareDto(
    val personId: String,
+   val sekretessMarkering: Boolean,
    val name: String
 ) {
   companion object Factory {
     fun toDto(invanare: Invanare): BestallningInvanareDto {
       return BestallningInvanareDto(
          personId = invanare.personId.personnummerWithDash,
-         name = listOf(invanare.fornamn, invanare.mellannamn, invanare.efternamn).joinToString(separator = " ")
+         sekretessMarkering = invanare.sektretessMarkering ?: false,
+         name = listOf(invanare.fornamn, invanare.mellannamn, invanare.efternamn)
+            .filterNotNull().joinToString(separator = " ")
       )
     }
   }
