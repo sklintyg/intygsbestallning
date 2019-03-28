@@ -29,8 +29,11 @@ import org.springframework.stereotype.Service;
 import se.inera.intyg.infra.integration.hsa.model.UserCredentials;
 import se.inera.intyg.infra.integration.hsa.model.Vardenhet;
 import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
+import se.inera.intyg.infra.security.authorities.AuthoritiesResolverUtil;
 import se.inera.intyg.infra.security.common.exception.GenericAuthenticationException;
 import se.inera.intyg.infra.security.common.model.IntygUser;
+import se.inera.intyg.infra.security.common.model.Privilege;
+import se.inera.intyg.infra.security.common.model.Role;
 import se.inera.intyg.infra.security.siths.BaseSakerhetstjanstAssertion;
 import se.inera.intyg.infra.security.siths.BaseUserDetailsService;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
@@ -59,10 +62,11 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
 
     @Override
     protected IntygsbestallningUser buildUserPrincipal(SAMLCredential credential) {
-        // All IB customization is done in the overridden decorateXXX methods, so just return a new IbUSer
+        // All IB customization is done in overridden decorateXXX methods, so just return a new IbUSer
         IntygUser intygUser = super.buildUserPrincipal(credential);
         IntygsbestallningUser ibUser = new IntygsbestallningUser(intygUser);
         ibUser.setPossibleRoles(commonAuthoritiesResolver.getRoles());
+
         buildSystemAuthoritiesTree(ibUser);
 
         if (ibUser.getSystemAuthorities().size() == 0) {
@@ -75,36 +79,7 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
         return ibUser;
     }
 
-
-    protected void tryToSelectHsaEntity(IntygsbestallningUser ibUser) {
-        if (ibUser.getTotaltAntalVardenheter() == 1) {
-            ibUser.changeValdVardenhet(ibUser.getVardgivare().get(0).getVardenheter().get(0).getId());
-        }
-    }
-
-    /**
-     * Overridden for IB. We cannot use "fallback" roles here so we must postpone population of this.roles.
-     *
-     * @param intygUser
-     * @param personInfo
-     * @param userCredentials
-     */
-    @Override
-    protected void decorateIntygUserWithRoleAndAuthorities(IntygUser intygUser, List<PersonInformationType> personInfo,
-                                                           UserCredentials userCredentials) {
-       // Do nothing
-    }
-
-    @Override
-    protected void decorateIntygUserWithDefaultVardenhet(IntygUser intygUser) {
-        // Only set a default enhet if there is only one (mottagningar doesnt count).
-        // If no default vardenhet can be determined - let it be null and force user to select one.
-        if (getTotaltAntalVardenheterExcludingMottagningar(intygUser) == 1) {
-            super.decorateIntygUserWithDefaultVardenhet(intygUser);
-        }
-    }
-
-    public void buildSystemAuthoritiesTree(IntygsbestallningUser user) {
+    protected void buildSystemAuthoritiesTree(IntygsbestallningUser user) {
         List<IbVardgivare> authSystemTree = new ArrayList<>();
 
         for (Vardgivare vg : user.getVardgivare()) {
@@ -117,14 +92,48 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
         user.setSystemAuthorities(authSystemTree);
     }
 
-    private int getTotaltAntalVardenheterExcludingMottagningar(IntygUser intygUser) {
-        // count all vardenheter (not including mottagningar under vardenheter)
-        return (int) intygUser.getVardgivare().stream().flatMap(vg -> vg.getVardenheter().stream()).count();
+    protected void tryToSelectHsaEntity(IntygsbestallningUser ibUser) {
+        if (ibUser.getTotaltAntalVardenheter() == 1) {
+            ibUser.changeValdVardenhet(ibUser.getVardgivare().get(0).getVardenheter().get(0).getId());
+        }
+    }
+
+    /**
+     * Overridden for IB. Application has only one role.
+     *
+     * @param intygUser
+     * @param personInfo
+     * @param userCredentials
+     */
+    @Override
+    protected void decorateIntygUserWithRoleAndAuthorities(IntygUser intygUser,
+                                                           List<PersonInformationType> personInfo,
+                                                           UserCredentials userCredentials) {
+
+        Role role = commonAuthoritiesResolver.getRole(AuthoritiesConstants.ROLE_VARDADMIN);
+        LOG.debug("User role is set to {}", role);
+        intygUser.setRoles(AuthoritiesResolverUtil.toMap(role));
+        intygUser.setAuthorities(AuthoritiesResolverUtil.toMap(role.getPrivileges(), Privilege::getName));
     }
 
     @Override
+    protected void decorateIntygUserWithDefaultVardenhet(IntygUser intygUser) {
+        // Only set a default enhet if there is only one (mottagningar doesnt count).
+        // If no default vardenhet can be determined - let it be null and force user to select one.
+        if (getTotaltAntalVardenheterExcludingMottagningar(intygUser) == 1) {
+            super.decorateIntygUserWithDefaultVardenhet(intygUser);
+        }
+    }
+
+    /**
+     * Overridden for IB. Application do not utilize system roles.
+     *
+     * @param intygUser
+     * @param userCredentials
+     */
+    @Override
     protected void decorateIntygUserWithSystemRoles(IntygUser intygUser, UserCredentials userCredentials) {
-        super.decorateIntygUserWithSystemRoles(intygUser, userCredentials);
+        // Do nothing;
     }
 
     @Override
@@ -141,4 +150,10 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return null;
     }
+
+    private int getTotaltAntalVardenheterExcludingMottagningar(IntygUser intygUser) {
+        // count all vardenheter (not including mottagningar under vardenheter)
+        return (int) intygUser.getVardgivare().stream().flatMap(vg -> vg.getVardenheter().stream()).count();
+    }
+
 }
