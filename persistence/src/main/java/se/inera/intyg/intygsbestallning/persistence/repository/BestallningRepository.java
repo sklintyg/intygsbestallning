@@ -28,15 +28,18 @@ public interface BestallningRepository extends JpaRepository<BestallningEntity, 
         QuerydslPredicateExecutor<BestallningEntity>,
         QuerydslBinderCustomizer<QBestallningEntity> {
 
-    @Query(value =  "select distinct b from BestallningEntity b " +
+    @Query(value =  "select b from BestallningEntity b " +
                     "join b.invanare i " +
                     "join b.vardenhet v " +
                     "where (b.status in :statusar) " +
                     "and (:textSearch is null " +
-                    "or (:textSearch is not null and (b.intygTyp like %:textSearch%) or (i.personId like %:textSearch% or upper(concat(trim(i.fornamn), ' ' , trim(i.efternamn))) like %:textSearch%) or upper(concat(trim(i.fornamn), ' ' , trim(i.mellannamn), ' ', trim(i.efternamn))) like %:textSearch%) " +
-                    "or (:id is not null and b.id = :id) " +
-                    "or (:status is not null and b.status = :status) " +
-                    "or (:ankomstDatumFrom is not null and (b.ankomstDatum between :ankomstDatumFrom and :ankomstDatumTo)))")
+                    "or (:textSearch is not null and (b.intygTyp like %:textSearch%) " +
+                        "or (i.personId like %:textSearch% " +
+                        "or upper(concat(trim(i.fornamn), ' ' , trim(i.efternamn))) like %:textSearch%) " +
+                        "or upper(concat(trim(i.fornamn), ' ' , trim(i.mellannamn), ' ', trim(i.efternamn))) like %:textSearch% " +
+                        "or (:id is not null and b.id = :id) " +
+                        "or (:status is not null and b.status = :status) " +
+                        "or (:ankomstDatumFrom is not null and (b.ankomstDatum between :ankomstDatumFrom and :ankomstDatumTo))))")
     Page<BestallningEntity> findByQuery(
             @Param("statusar") List<BestallningStatus> statusar,
             @Param("textSearch") String textSearch,

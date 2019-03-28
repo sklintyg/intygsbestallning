@@ -19,7 +19,6 @@ data class Bestallning(
 
   companion object Factory {
     fun newBestallning(
-       hsaId: String,
        invanare: Invanare,
        handlaggare: Handlaggare,
        intygTyp: String,
@@ -33,7 +32,7 @@ data class Bestallning(
          handlaggare = handlaggare,
          vardenhet = vardenhet,
          handelser = listOf(Handelse.skapa()),
-         notifieringar = listOf(Notifiering.nyBestallning(hsaId)))
+         notifieringar = listOf(Notifiering.nyBestallning(vardenhet.hsaId)))
     }
   }
 }

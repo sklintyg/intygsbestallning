@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.lang.invoke.MethodHandles;
-import se.inera.intyg.infra.integration.hsa.stub.HsaServiceStub;
+import se.inera.intyg.infra.integration.hsa.services.HsaOrganizationsService;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
 import se.inera.intyg.intygsbestallning.common.domain.Invanare;
@@ -30,7 +30,7 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
     private VardenhetPersistenceService vardenhetPersistenceService;
     private NotifieringSendService notifieringSendService;
     private PatientService patientService;
-    private HsaServiceStub
+    private HsaOrganizationsService hsaOrganizationsService;
 
     public CreateBestallningServiceImpl(
             BestallningPersistenceService bestallningPersistenceService,
@@ -38,22 +38,21 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
             BestallningStatusResolver bestallningStatusResolver,
             VardenhetPersistenceService vardenhetPersistenceService,
             NotifieringSendService notifieringSendService,
-            PatientService patientService) {
+            PatientService patientService,
+            HsaOrganizationsService hsaOrganizationsService) {
         this.bestallningPersistenceService = bestallningPersistenceService;
         this.invanarePersistenceService = invanarePersistenceService;
         this.bestallningStatusResolver = bestallningStatusResolver;
         this.vardenhetPersistenceService = vardenhetPersistenceService;
         this.notifieringSendService = notifieringSendService;
         this.patientService = patientService;
+        this.hsaOrganizationsService = hsaOrganizationsService;
     }
 
     @Override
     public Long create(CreateBestallningRequest createBestallningRequest) {
 
         LOG.debug("Creating new bestallning");
-
-        //TODO: Lookup HSAID
-        var hsaId = "hsaId";
 
         var existing = invanarePersistenceService.getInvanareByPersonnummer(createBestallningRequest.getInvanare().getPersonnummer());
 
@@ -67,41 +66,38 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
             }
 
             var foundPerson = person.get();
-            if (foundPerson.isSekretessmarkering()) {
-                invanare = Invanare.Factory.newInvanare(
-                        foundPerson.getPersonnummer(),
-                        foundPerson.getFornamn(),
-                        foundPerson.getMellannamn(),
-                        foundPerson.getEfternamn(),
-                        createBestallningRequest.getInvanare().getBakgrundNulage(),
-                        foundPerson.isSekretessmarkering());
-            } else {
-                invanare = Invanare.Factory.newInvanare(
-                        foundPerson.getPersonnummer(),
-                        null,
-                        null,
-                        null,
-                        createBestallningRequest.getInvanare().getBakgrundNulage(),
-                        foundPerson.isSekretessmarkering());
-            }
 
+            invanare = Invanare.Factory.newInvanare(
+                    foundPerson.getPersonnummer(),
+                    foundPerson.getFornamn(),
+                    foundPerson.getMellannamn(),
+                    foundPerson.getEfternamn(),
+                    createBestallningRequest.getInvanare().getBakgrundNulage(),
+                    foundPerson.isSekretessmarkering());
 
         } else {
             invanare = existing.get();
         }
 
-        var existingVardenhet = vardenhetPersistenceService.getVardenhetByHsaId(createBestallningRequest.getVardenhet());
+        var vardenhetRespons = hsaOrganizationsService.getVardenhet(createBestallningRequest.getVardenhet());
+
+        var existingVardenhet = vardenhetPersistenceService.getVardenhetByHsaId(vardenhetRespons.getVardgivareOrgnr());
 
         Vardenhet vardenhet;
-        if (existingVardenhet.isEmpty()) {
-            vardenhet = Vardenhet.Factory.newVardenhet(
-                    createBestallningRequest.getVardenhet(),
-                    "vardgivareHsaId",
-                    "namn",
-                    "epost",
-                    "svar");
-        } else {
+        if (existingVardenhet.isPresent()) {
             vardenhet = existingVardenhet.get();
+            vardenhet.setHsaId(vardenhetRespons.getId());
+            vardenhet.setVardgivareHsaId(vardenhetRespons.getVardgivareHsaId());
+            vardenhet.setNamn(vardenhetRespons.getNamn());
+            vardenhet.setEpost(vardenhetRespons.getEpost());
+        } else {
+            vardenhet = Vardenhet.Factory.newVardenhet(
+                    vardenhetRespons.getId(),
+                    vardenhetRespons.getVardgivareHsaId(),
+                    vardenhetRespons.getVardgivareOrgnr(),
+                    vardenhetRespons.getNamn(),
+                    vardenhetRespons.getEpost(),
+                    null);
         }
 
         var handlaggare = Handlaggare.Factory.newHandlaggare(
@@ -116,7 +112,6 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
                 createBestallningRequest.getHandlaggare().getKontor().getPostOrt());
 
         var bestallning = Bestallning.Factory.newBestallning(
-                hsaId,
                 invanare,
                 handlaggare,
                 createBestallningRequest.getIntygTyp(),

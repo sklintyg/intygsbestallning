@@ -52,6 +52,9 @@
       <column name="VARDGIVARE_HSA_ID" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
+      <column name="ORGANISATION_ID" type="varchar(64)">
+        <constraints nullable="false"/>
+      </column>
       <column name="NAMN" type="varchar(64)">
         <constraints nullable="false"/>
       </column>

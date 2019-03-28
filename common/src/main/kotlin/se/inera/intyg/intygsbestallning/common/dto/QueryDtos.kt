@@ -19,7 +19,7 @@ enum class ListBestallningSortColumn(val kolumn: String) {
   INTYG_TYP("intygTyp"),
   ANKOMST_DATUM("ankomstDatum"),
   STATUS("status"),
-  INVANARE_PERSON_ID("invanare.personId")
+  INVANARE_PERSON_ID("i.personId")
 }
 
 enum class ListBestallningDirection {

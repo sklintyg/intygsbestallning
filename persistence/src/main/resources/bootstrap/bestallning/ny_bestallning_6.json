@@ -30,6 +30,7 @@
     "hsaId": "TSTNMT2321000156-105N",
     "vardgivareHsaId": "IFV1239877878-1041",
     "namn": "Intygsbeställning-Enhet2",
+    "organisationId" : "org",
     "epost": null,
     "standardSvar": null
   },

@@ -5,7 +5,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "VARDENHET")
-class VardenhetEntity (builder: Builder) {
+class VardenhetEntity(builder: Builder) {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +17,9 @@ class VardenhetEntity (builder: Builder) {
 
   @Column(name = "VARDGIVARE_HSA_ID", nullable = false)
   val vardgivareHsaId: String
+
+  @Column(name = "ORGANISATION_ID", nullable = false)
+  val organisationId: String
 
   @Column(name = "NAMN", nullable = false)
   val namn: String
@@ -31,6 +34,7 @@ class VardenhetEntity (builder: Builder) {
     this.id = builder.id
     this.hsaId = builder.hsaId ?: throw IllegalArgumentException("hsaId may not be null")
     this.vardgivareHsaId = builder.vardgivareHsaId ?: throw IllegalArgumentException("vardgivareHsaId may not be null")
+    this.organisationId = builder.organisationId ?: throw IllegalArgumentException("organisationId may not be null")
     this.namn = builder.namn ?: throw IllegalArgumentException("namn may not be null")
   }
 
@@ -38,6 +42,7 @@ class VardenhetEntity (builder: Builder) {
     var id: Long? = null
     var hsaId: String? = null
     var vardgivareHsaId: String? = null
+    var organisationId: String? = null
     var namn: String? = null
     var epost: String? = null
     var standardSvar: String? = null
@@ -45,6 +50,7 @@ class VardenhetEntity (builder: Builder) {
     fun id(id: Long?) = apply { this.id = id }
     fun hsaId(hsaId: String) = apply { this.hsaId = hsaId }
     fun vardgivareHsaId(vardgivareHsaId: String) = apply { this.vardgivareHsaId = vardgivareHsaId }
+    fun organisationId(organisationId: String) = apply { this.organisationId = organisationId }
     fun namn(namn: String) = apply { this.namn = namn }
     fun epost(epost: String?) = apply { this.epost = epost }
     fun standardSvar(standardSvar: String?) = apply { this.standardSvar = standardSvar }
@@ -58,6 +64,7 @@ class VardenhetEntity (builder: Builder) {
          id = vardenhetEntity.id!!,
          hsaId = vardenhetEntity.hsaId,
          vardgivareHsaId = vardenhetEntity.vardgivareHsaId,
+         organisationId = vardenhetEntity.organisationId,
          namn = vardenhetEntity.namn,
          epost = vardenhetEntity.epost,
          standardSvar = vardenhetEntity.standardSvar)
@@ -68,6 +75,7 @@ class VardenhetEntity (builder: Builder) {
          .id(vardenhet.id)
          .hsaId(vardenhet.hsaId)
          .vardgivareHsaId(vardenhet.vardgivareHsaId)
+         .organisationId(vardenhet.organisationId)
          .namn(vardenhet.namn)
          .epost(vardenhet.epost)
          .standardSvar(vardenhet.standardSvar)

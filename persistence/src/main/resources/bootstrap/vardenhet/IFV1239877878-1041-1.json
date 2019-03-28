@@ -1,5 +1,6 @@
 {
   "vardgivareHsaId": "IFV1239877878-1041",
   "hsaId": "IFV1239877878-1042",
-  "namn": "Intygsbeställning-Enhet1"
+  "namn": "Intygsbeställning-Enhet1",
+  "organisationId" : "org"
 }
