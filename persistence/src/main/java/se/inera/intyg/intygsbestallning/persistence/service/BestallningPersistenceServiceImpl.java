@@ -76,9 +76,9 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
 
         Sort sortRequest;
         if (query.getSortDirection() == ListBestallningDirection.ASC) {
-            sortRequest = Sort.by(query.getSortableColumn().getKolumn()).ascending();
+            sortRequest = Sort.by(query.getSortColumn().getKolumn()).ascending();
         } else {
-            sortRequest = Sort.by(query.getSortableColumn().getKolumn()).descending();
+            sortRequest = Sort.by(query.getSortColumn().getKolumn()).descending();
         }
 
         var pageRequest = PageRequest.of(query.getPageIndex(), query.getLimit(), sortRequest);
@@ -112,7 +112,7 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
                 pageResult.getTotalPages(),
                 pageResult.getNumberOfElements(),
                 pageResult.getTotalElements(),
-                query.getSortableColumn(),
+                query.getSortColumn(),
                 query.getSortDirection());
     }
 

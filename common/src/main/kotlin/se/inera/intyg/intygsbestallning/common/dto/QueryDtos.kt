@@ -11,7 +11,7 @@ data class ListBestallningarQuery(
    val textSearch: String?,
    val pageIndex: Int,
    val limit: Int,
-   val sortableColumn: ListBestallningSortColumn,
+   val sortColumn: ListBestallningSortColumn,
    val sortDirection: ListBestallningDirection)
 
 enum class ListBestallningSortColumn(val kolumn: String) {
@@ -35,7 +35,7 @@ data class ListBestallningarResult(
    val totalPages: Int,
    val numberOfElements: Int,
    val totalElements: Long,
-   val sortableColumn: ListBestallningSortColumn,
+   val sortColumn: ListBestallningSortColumn,
    val sortDirection: ListBestallningDirection
 ) {
   companion object Factory {
@@ -47,7 +47,7 @@ data class ListBestallningarResult(
        totalPages: Int,
        numberOfElements: Int,
        totalElements: Long,
-       sortableColumn: ListBestallningSortColumn,
+       sortColumn: ListBestallningSortColumn,
        sortDirection: ListBestallningDirection): ListBestallningarResult {
       return ListBestallningarResult(
          bestallningar = bestallningar.map { BestallningDto.toDto(it) },
@@ -57,7 +57,7 @@ data class ListBestallningarResult(
          totalPages = totalPages,
          numberOfElements = numberOfElements,
          totalElements = totalElements,
-         sortableColumn = sortableColumn,
+         sortColumn = sortColumn,
          sortDirection = sortDirection)
     }
   }
