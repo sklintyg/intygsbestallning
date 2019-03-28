@@ -2,6 +2,11 @@ import React from "react";
 import Pagination from "react-js-pagination";
 
 const BestallningarListPagination = props => {
+
+  if(props.bestallningList.bestallningar.length < 1) {
+    return null
+  }
+
   const pageIndex = !props.bestallningList.pageIndex ? 1 : props.bestallningList.pageIndex + 1
   return (
     <div>

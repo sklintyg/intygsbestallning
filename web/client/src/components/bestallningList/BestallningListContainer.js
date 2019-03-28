@@ -14,9 +14,6 @@ import FetchError from "./FetchError";
 
 const BestallningarListContainer = props => {
   const { isFetching, errorMessage, bestallningList } = props;
-  if (isFetching && !bestallningList.length) {
-    return <p>Loading...</p>;
-  }
   if (errorMessage && !bestallningList.length) {
     return (
       <FetchError message={errorMessage} onRetry={() => fetchData(props)} />
@@ -37,6 +34,9 @@ const BestallningarListContainer = props => {
   return (
     <Fragment>
       <BestallningList bestallningList={bestallningList} onSort={handleSort} />
+      { isFetching && !bestallningList.length &&
+        <p>Loading...</p>
+      }
     </Fragment>
   );
 };

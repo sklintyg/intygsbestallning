@@ -25,7 +25,7 @@ const FilterListContainer = (props) => {
 
   const fetchList = (pageIndex) => {
     const pageIndexZeroBased = pageIndex - 1
-    props.fetchBestallningList({categoryFilter, textFilter, pageIndexZeroBased});
+    props.fetchBestallningList({categoryFilter, textFilter, pageIndex: pageIndexZeroBased});
   }
   
   return (
