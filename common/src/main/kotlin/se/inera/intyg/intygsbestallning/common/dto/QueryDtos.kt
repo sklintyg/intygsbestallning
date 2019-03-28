@@ -93,8 +93,7 @@ data class BestallningInvanareDto(
       return BestallningInvanareDto(
          personId = invanare.personId.personnummerWithDash,
          sekretessMarkering = invanare.sektretessMarkering ?: false,
-         name = listOf(invanare.fornamn, invanare.mellannamn, invanare.efternamn)
-            .filterNotNull().joinToString(separator = " ")
+         name = listOfNotNull(invanare.fornamn, invanare.mellannamn, invanare.efternamn).joinToString(separator = " ")
       )
     }
   }
@@ -118,7 +117,7 @@ data class VisaBestallningDto(
 
       return VisaBestallningDto(
          id = bestallning.id!!,
-         status = bestallning.status!!.name,
+         status = bestallning.status!!.beskrivning,
          ankomstDatum = bestallning.ankomstDatum.toLocalDate(),
          intygTyp = bestallning.intygTyp,
          invanare = BestallningInvanareDto.toDto(bestallning.invanare),

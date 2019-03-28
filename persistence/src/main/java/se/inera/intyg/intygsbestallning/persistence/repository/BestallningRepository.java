@@ -31,8 +31,6 @@ public interface BestallningRepository extends JpaRepository<BestallningEntity, 
     @Query(value =  "select distinct b from BestallningEntity b " +
                     "join b.invanare i " +
                     "join b.vardenhet v " +
-                    "join b.handelser h " +
-                    "join b.notifieringar n " +
                     "where (b.status in :statusar) " +
                     "and (:textSearch is null " +
                     "or (:textSearch is not null and (b.intygTyp like %:textSearch%) or (i.personId like %:textSearch% or upper(concat(trim(i.fornamn), ' ' , trim(i.efternamn))) like %:textSearch%) or upper(concat(trim(i.fornamn), ' ' , trim(i.mellannamn), ' ', trim(i.efternamn))) like %:textSearch%) " +
