@@ -4,6 +4,8 @@ import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 import styled from 'styled-components'
 import modalContainer from '../../modalContainer/modalContainer'
 import { compose } from 'recompose'
+import { Check } from '../../styles/IbSvgIcons'
+import IbColors from '../../styles/IbColors'
 
 const StyledButton = styled(Button)`
 margin-right: 16px;
@@ -23,7 +25,7 @@ const AccepteraBestallning = ({handleOpen, handleClose, isOpen, accept}) => {
 
   return (
     <Fragment>
-      <StyledButton onClick={handleOpen}>Acceptera</StyledButton>
+      <StyledButton onClick={handleOpen}><Check color={IbColors.IB_COLOR_00}/> Acceptera</StyledButton>
       <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
         <ModalHeader toggle={handleClose}>Acceptera</ModalHeader>
         <ModalBody>

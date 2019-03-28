@@ -4,6 +4,8 @@ import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 import styled from 'styled-components'
 import modalContainer from '../../modalContainer/modalContainer'
 import { compose } from 'recompose'
+import { Block } from '../../styles/IbSvgIcons'
+import IbColors from '../../styles/IbColors'
 
 const StyledButton = styled(Button)`
 margin-right: 16px;
@@ -28,7 +30,7 @@ const AvvisaBestallning = ({handleOpen, handleClose, isOpen, accept}) => {
 
   return (
     <Fragment>
-      <StyledButton onClick={handleOpen}>Avvisa</StyledButton>
+      <StyledButton onClick={handleOpen}><Block color={IbColors.IB_COLOR_00}/> Avvisa</StyledButton>
       <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
         <ModalHeader toggle={handleClose}>Avvisa</ModalHeader>
         <ModalBody>

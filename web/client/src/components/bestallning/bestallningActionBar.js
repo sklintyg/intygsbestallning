@@ -5,6 +5,8 @@ import { Button, UncontrolledButtonDropdown, DropdownItem, DropdownMenu, Dropdow
 import { compose } from 'recompose'
 import styled from 'styled-components'
 import {AccepteraBestallning, AvvisaBestallning, SkrivUtBestallning} from './dialogs'
+import { Check, Reply, Print } from '../styles/IbSvgIcons'
+import IbColors from '../styles/IbColors'
 
 const StyledButton = styled(Button)`
 margin-right: 16px;
@@ -38,11 +40,11 @@ const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestalln
     <Fragment>
       { bestallning.status === 'Läst' ? <AccepteraBestallning accept={accept} /> : null }
       { bestallning.status === 'Läst' ? <AvvisaBestallning accept={reject} /> : null }
-      { bestallning.status === 'Accepterad' ? <StyledButton outline={true} onClick={complete}>Klarmakera</StyledButton> : null }
-      <StyledButton onClick={vidarebefodra}>Vidarebefodra</StyledButton>
+      { bestallning.status === 'Accepterad' ? <StyledButton onClick={complete}><Check color={IbColors.IB_COLOR_00}/> Klarmakera</StyledButton> : null }
+      <StyledButton onClick={vidarebefodra}><Reply color={IbColors.IB_COLOR_00}/> Vidarebefodra</StyledButton>
       <UncontrolledButtonDropdown>
         <DropdownToggle caret>
-          Skriv ut
+        <Print color={IbColors.IB_COLOR_00}/> Skriv ut
         </DropdownToggle>
         <DropdownMenu>
           <SkrivUtBestallning sekretess={bestallning.invanare.sekretessMarkering} accept={printBestallning}/>

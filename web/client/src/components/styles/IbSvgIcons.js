@@ -117,3 +117,24 @@ export const Archive = () => (
     <path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM12 17.5L6.5 12H10v-2h4v2h3.5L12 17.5zM5.12 5l.81-1h12l.94 1H5.12z"/>
   </svg>
 )
+
+//ib-ikon-65
+export const Block = ({color}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill={color} width="24px" height="24px" viewBox="0 0 24 24">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z"/>
+  </svg>
+)
+
+//ib-ikon-71
+export const Reply = ({color}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill={color} width="24px" height="24px" viewBox="0 0 24 24">
+    <path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/>
+  </svg>
+)
+
+//ib-ikon-07
+export const Print = ({color}) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill={color} width="24px" height="24px" viewBox="0 0 24 24">
+  <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
+</svg>
+)
