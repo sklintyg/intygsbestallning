@@ -1,10 +1,7 @@
 package se.inera.intyg.intygsbestallning.web;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import java.time.LocalDateTime;
+
 import org.apache.cxf.Bus;
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +11,14 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+
+import se.inera.intyg.infra.security.filter.PrincipalUpdatedFilter;
 import se.inera.intyg.intygsbestallning.common.property.BestallningProperties;
 import se.inera.intyg.intygsbestallning.web.controller.LocalDateTimeDeserializer;
 import se.inera.intyg.intygsbestallning.web.controller.LocalDateTimeSerializer;
@@ -76,4 +79,10 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("file:" + path);
     }
+
+    @Bean
+    public PrincipalUpdatedFilter principalUpdatedFilter() {
+        return new PrincipalUpdatedFilter();
+    }
+
 }

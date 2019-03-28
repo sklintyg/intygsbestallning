@@ -23,6 +23,7 @@ dependencies {
   implementation("se.inera.intyg.infra:security-authorities:${extra["intygInfraVersion"]}")
   implementation("se.inera.intyg.infra:security-common:${extra["intygInfraVersion"]}")
   implementation("se.inera.intyg.infra:security-siths:${extra["intygInfraVersion"]}")
+  implementation("se.inera.intyg.infra:security-filter:${extra["intygInfraVersion"]}")
 
   // External dependencies
   implementation("org.springframework.boot:spring-boot-starter-web")

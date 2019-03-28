@@ -115,6 +115,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
 
     private static final String DEV_PROFILE = "dev-security";
     private static final String TEST_PROFILE = "ib-security-test";
+    private static final String FAKE_LOGOUT_URL = "/logout";
 
     private MultiThreadedHttpConnectionManager multiThreadedHttpConnectionManager;
 
@@ -558,7 +559,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
                 .and()
                     .logout()
                     .invalidateHttpSession(true)
-                    .logoutUrl("/logout")
+                    .logoutUrl(FAKE_LOGOUT_URL)
                     .logoutSuccessUrl("/welcome.html")
                 .and()
                     .addFilterAt(fakeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
@@ -601,8 +602,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
                     .csrf().disable()
                     .logout()
                     .invalidateHttpSession(true)
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/#/app")
+                    .logoutUrl(FAKE_LOGOUT_URL)
+                    .logoutSuccessUrl("/welcome.html")
                 .and()
                     .authorizeRequests()
                     .antMatchers("/fake").permitAll()

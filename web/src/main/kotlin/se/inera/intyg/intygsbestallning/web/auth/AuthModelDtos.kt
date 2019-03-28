@@ -18,7 +18,9 @@
  */
 package se.inera.intyg.intygsbestallning.web.auth
 
-interface IbSelectableHsaEntity {
+import java.io.Serializable
+
+interface IbSelectableHsaEntity : Serializable {
   val id: String
   val name: String
 
@@ -29,8 +31,11 @@ data class IbVardgivare(
     override val id: String,
     override val name: String
 ) : IbSelectableHsaEntity {
-
   var vardenheter: ArrayList<IbVardenhet> = arrayListOf()
+
+  companion object {
+    private const val serialVersionUID: Long = -6427803280385145071L
+  }
 
   override fun type() : IbSelectableHsaEntityType {
     return IbSelectableHsaEntityType.VG
@@ -44,6 +49,10 @@ data class IbVardenhet(
     val parentHsaName: String,
     val orgNrVardgivare: String
 ) : IbSelectableHsaEntity {
+
+  companion object {
+    private const val serialVersionUID: Long = -5646195952617853831L
+  }
 
   override fun type() : IbSelectableHsaEntityType {
     return IbSelectableHsaEntityType.VE
