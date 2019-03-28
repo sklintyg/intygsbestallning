@@ -13,8 +13,7 @@ const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestalln
 
   const accept = () => accepteraBestallning(bestallning.id);
   
-  const reject = () => rejectBestallning(bestallning.id, 'REJECTED');
-
+  const reject = () => rejectBestallning(bestallning.id);
   
   const complete = () => {
     //completeBestallning(bestallning.id, 'COMPLETED');

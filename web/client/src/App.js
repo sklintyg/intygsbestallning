@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import {HashRouter, NavLink, Link, Switch} from 'react-router-dom'
+import {HashRouter, NavLink, Switch} from 'react-router-dom'
 import HomePage from "./pages/IndexPage";
 import SelectEnhetPage from "./pages/SelectEnhetPage";
 import BestallningarIndexPage from "./pages/BestallningarIndexPage";
