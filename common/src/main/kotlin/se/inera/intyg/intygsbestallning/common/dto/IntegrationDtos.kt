@@ -15,9 +15,6 @@ data class CreateBestallningRequest(
 
 data class CreateBestallningRequestInvanare(
    val personnummer: Personnummer,
-   val fornamn: String? = null,
-   val mellannamn: String? = null,
-   val efternamn: String? = null,
    val bakgrundNulage: String? = null
 )
 

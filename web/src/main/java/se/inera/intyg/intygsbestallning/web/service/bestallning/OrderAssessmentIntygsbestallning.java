@@ -90,13 +90,7 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
         var intygVersion = bestallningTextService.getLatestVersionForBestallningsbartIntyg(intygTyp);
 
 
-        var invanare = new CreateBestallningRequestInvanare(
-                personnummer,
-                request.getCitizen().getFirstName(),
-                request.getCitizen().getMiddleName(),
-                request.getCitizen().getLastName(),
-                request.getCitizen().getSituationBackground());
-
+        var invanare = new CreateBestallningRequestInvanare(personnummer, request.getCitizen().getSituationBackground());
 
         CreateBestallningRequestKontor kontor;
         if (request.getAuthorityAdministrativeOfficial().getOfficeAddress() != null) {

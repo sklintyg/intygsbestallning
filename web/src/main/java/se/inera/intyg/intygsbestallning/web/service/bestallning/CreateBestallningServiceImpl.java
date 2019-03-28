@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.lang.invoke.MethodHandles;
+import se.inera.intyg.infra.integration.hsa.stub.HsaServiceStub;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
 import se.inera.intyg.intygsbestallning.common.domain.Invanare;
@@ -29,6 +30,7 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
     private VardenhetPersistenceService vardenhetPersistenceService;
     private NotifieringSendService notifieringSendService;
     private PatientService patientService;
+    private HsaServiceStub
 
     public CreateBestallningServiceImpl(
             BestallningPersistenceService bestallningPersistenceService,
@@ -64,13 +66,26 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
                         createBestallningRequest.getInvanare().getPersonnummer().getPersonnummerWithDash() + "was not found");
             }
 
-            invanare = Invanare.Factory.newInvanare(
-                    createBestallningRequest.getInvanare().getPersonnummer(),
-                    createBestallningRequest.getInvanare().getFornamn(),
-                    createBestallningRequest.getInvanare().getMellannamn(),
-                    createBestallningRequest.getInvanare().getEfternamn(),
-                    createBestallningRequest.getInvanare().getBakgrundNulage(),
-                    false);
+            var foundPerson = person.get();
+            if (foundPerson.isSekretessmarkering()) {
+                invanare = Invanare.Factory.newInvanare(
+                        foundPerson.getPersonnummer(),
+                        foundPerson.getFornamn(),
+                        foundPerson.getMellannamn(),
+                        foundPerson.getEfternamn(),
+                        createBestallningRequest.getInvanare().getBakgrundNulage(),
+                        foundPerson.isSekretessmarkering());
+            } else {
+                invanare = Invanare.Factory.newInvanare(
+                        foundPerson.getPersonnummer(),
+                        null,
+                        null,
+                        null,
+                        createBestallningRequest.getInvanare().getBakgrundNulage(),
+                        foundPerson.isSekretessmarkering());
+            }
+
+
         } else {
             invanare = existing.get();
         }
