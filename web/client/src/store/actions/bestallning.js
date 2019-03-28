@@ -49,10 +49,8 @@ export const accepteraBestallning = id => (dispatch) => {
     
     return api.accepteraBestallning(id).then(
         response => {
-            console.log(response);
             dispatch({
-                type: ACCEPTERA_BESTALLNING_SUCCESS,
-                response: response
+                type: ACCEPTERA_BESTALLNING_SUCCESS
             });
         },
         error => {
@@ -73,10 +71,8 @@ export const rejectBestallning = id => (dispatch) => {
 
     return api.rejectBestallning(id).then(
         response => {
-            console.log(response);
             dispatch({
-                type: REJECT_BESTALLNING_SUCCESS,
-                response: response
+                type: REJECT_BESTALLNING_SUCCESS
             });
         },
         error => {

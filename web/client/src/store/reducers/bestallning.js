@@ -6,7 +6,9 @@ const bestallning = (state = {}, action) => {
         case ActionConstants.FETCH_BESTALLNING_SUCCESS:
             return action.response;
         case ActionConstants.ACCEPTERA_BESTALLNING_SUCCESS:
-            return {...state, status: action.response}
+            return {...state, status: 'ACCEPTERAD'}
+        case ActionConstants.REJECT_BESTALLNING_SUCCESS:
+            return {...state, status: 'AVVISAD'}
         default:
             return state;
     }
@@ -27,9 +29,15 @@ const fetching = (state = false, action) => {
 const errorMessage = (state = null, action) => {
     switch (action.type) {
         case ActionConstants.FETCH_BESTALLNING_FAILURE:
+        case ActionConstants.REJECT_BESTALLNING_FAILURE:
+        case ActionConstants.ACCEPTERA_BESTALLNING_FAILURE:
             return action.message;
         case ActionConstants.FETCH_BESTALLNING_REQUEST:
         case ActionConstants.FETCH_BESTALLNING_SUCCESS:
+        case ActionConstants.REJECT_BESTALLNING_SUCCESS:
+        case ActionConstants.REJECT_BESTALLNING_REQUEST:
+        case ActionConstants.ACCEPTERA_BESTALLNING_REQUEST:
+        case ActionConstants.ACCEPTERA_BESTALLNING_SUCCESS:
             return null;
         default:
             return state;
