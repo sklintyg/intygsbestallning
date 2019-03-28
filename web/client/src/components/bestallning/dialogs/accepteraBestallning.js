@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react'
 import { Debounce } from 'react-throttle'
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 import styled from 'styled-components'
-import modalContainer from '../modalContainer/modalContainer'
+import modalContainer from '../../modalContainer/modalContainer'
 import { compose } from 'recompose'
 
 const StyledButton = styled(Button)`

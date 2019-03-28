@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import { Button, UncontrolledButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
 import { compose } from 'recompose'
 import styled from 'styled-components'
-import AccepteraBestallning from './accepteraBestallning'
-import AvvisaBestallning from './avvisaBestallning'
+import {AccepteraBestallning, AvvisaBestallning, SkrivUtBestallning} from './dialogs'
 
 const StyledButton = styled(Button)`
 margin-right: 16px;
@@ -31,6 +30,10 @@ const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestalln
     //vidarebefodra(bestallning.id)
   }
 
+  const printBestallning = () => {
+
+  }
+
   return (
     <Fragment>
       { bestallning.status === 'Läst' ? <AccepteraBestallning accept={accept} /> : null }
@@ -42,7 +45,7 @@ const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestalln
           Skriv ut
         </DropdownToggle>
         <DropdownMenu>
-          <DropdownItem>Förfrågan</DropdownItem>
+          <SkrivUtBestallning sekretess={bestallning.invanare.sekretessMarkering} accept={printBestallning}/>
           <DropdownItem>Fakturaunderlag</DropdownItem>
         </DropdownMenu>
       </UncontrolledButtonDropdown>
