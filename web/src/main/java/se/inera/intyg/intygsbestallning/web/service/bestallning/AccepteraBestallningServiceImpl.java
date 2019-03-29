@@ -7,6 +7,8 @@ import se.inera.intyg.intygsbestallning.common.dto.AccepteraBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.integration.client.RespondToOrderService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
+import se.inera.intyg.intygsbestallning.web.pdl.LogEvent;
+import se.inera.intyg.intygsbestallning.web.service.pdl.LogService;
 import se.inera.intyg.intygsbestallning.web.service.util.BestallningUtil;
 
 @Service
@@ -15,14 +17,17 @@ public class AccepteraBestallningServiceImpl implements AccepteraBestallningServ
     private BestallningPersistenceService bestallningPersistenceService;
     private BestallningStatusResolver bestallningStatusResolver;
     private RespondToOrderService respondToOrderService;
+    private LogService pdlLogService;
 
     public AccepteraBestallningServiceImpl(
             BestallningPersistenceService bestallningPersistenceService,
             BestallningStatusResolver bestallningStatusResolver,
-            RespondToOrderService respondToOrderService) {
+            RespondToOrderService respondToOrderService,
+            LogService pdlLogService) {
         this.bestallningPersistenceService = bestallningPersistenceService;
         this.bestallningStatusResolver = bestallningStatusResolver;
         this.respondToOrderService = respondToOrderService;
+        this.pdlLogService = pdlLogService;
     }
 
     @Override
@@ -44,6 +49,7 @@ public class AccepteraBestallningServiceImpl implements AccepteraBestallningServ
         bestallningStatusResolver.setStatus(bestallning.get());
         bestallningPersistenceService.updateBestallning(bestallning.get());
 
+        pdlLogService.log(bestallning.get(), LogEvent.BESTALLNING_ACCEPTERAS);
         respondToOrderService.sendRespondToOrder(accepteraBestallningRequest);
     }
 }

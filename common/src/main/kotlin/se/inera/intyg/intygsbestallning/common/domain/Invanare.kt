@@ -30,4 +30,9 @@ data class Invanare(
       )
     }
   }
+
+  override fun toString(): String {
+    return personId.personnummer + ", " + fornamn + ", " + mellannamn + ", " + efternamn +
+            ", " + bakgrundNulage + ", " + sektretessMarkering
+  }
 }

@@ -26,6 +26,7 @@ import se.inera.intyg.intygsbestallning.common.domain.BestallningSvar;
 import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
 import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
+import se.inera.intyg.intygsbestallning.common.dto.AccepteraBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.dto.AvvisaBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.integration.client.RespondToOrderService;
@@ -36,7 +37,7 @@ import se.inera.intyg.schemas.contract.Personnummer;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(JUnitPlatform.class)
-class AvvisaBestallningServiceImplTest {
+class AccepteraBestallningServiceImplTest {
     private static final Long BESTALLNING_ID = 1L;
     private static final LocalDateTime ANKOMST_DATUM = LocalDateTime.now().minusDays(2L);
     private static final LocalDateTime AVSLUT_DATUM = LocalDateTime.now().plusDays(1L);
@@ -54,7 +55,7 @@ class AvvisaBestallningServiceImplTest {
     private LogService pdlLogService;
 
     @InjectMocks
-    private AvvisaBestallningServiceImpl avvisaBestallningService;
+    private AccepteraBestallningServiceImpl accepteraBestallningService;
 
     @BeforeEach
     void setup() {
@@ -63,12 +64,12 @@ class AvvisaBestallningServiceImplTest {
 
     @Test
     void testAvvisaBestallning() {
-        AvvisaBestallningRequest request = new AvvisaBestallningRequest("1", BestallningSvar.AVVISAT, "Kommentar");
-        avvisaBestallningService.avvisaBestallning(request);
+        AccepteraBestallningRequest request = new AccepteraBestallningRequest("1", BestallningSvar.ACCEPTERAT, "Kommentar");
+        accepteraBestallningService.accepteraBestallning(request);
 
         verify(bestallningStatusResolver, times(1)).setStatus(any(Bestallning.class));
-        verify(pdlLogService, times(1)).log(any(Bestallning.class), Mockito.eq(LogEvent.BESTALLNING_AVVISAS));
-        verify(respondToOrderService, times(1)).sendRespondToOrder(any(AvvisaBestallningRequest.class));
+        verify(pdlLogService, times(1)).log(any(Bestallning.class), Mockito.eq(LogEvent.BESTALLNING_ACCEPTERAS));
+        verify(respondToOrderService, times(1)).sendRespondToOrder(any(AccepteraBestallningRequest.class));
 
     }
 
