@@ -8,11 +8,9 @@ import IbAlert from "../alert/Alert";
 const ComponentWrapper = styled.div`
   padding: 8px;
   max-width: 500px;
-  
 `
 
-function SelectEnhet(props) {
-  const {authoritiesTree, unitContext, activeError, selectEnhet} = props;
+function SelectEnhet({authoritiesTree, unitContext, activeError, selectEnhet}) {
 
   const handleSelect = (hsaid) => () => selectEnhet(hsaid);
 

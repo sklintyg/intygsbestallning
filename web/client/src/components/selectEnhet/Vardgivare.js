@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import * as PropTypes from "prop-types";
 import styled from "styled-components";
 import {IbTypo05, IbTypo06} from "../styles/IbTypography";
@@ -8,7 +8,6 @@ import {Button} from "reactstrap";
 
 const ComponentWrapper = styled.div`
   padding-bottom: 4px;
-  
 `
 
 const VardgivarTitle = styled(IbTypo05)`
@@ -26,50 +25,35 @@ const Vardenhet = styled(IbTypo06)`
   background: transparent;
   //padding: 8px 8px 8px 30px
   padding-left: 32px;
-  
 `
 
+const Vardgivare = ({initiallyExpanded, vg, unitContext, handleSelect}) => {
 
-class Vardgivare extends Component {
+  const [expanded, setExpanded] = useState(initiallyExpanded);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      expanded: props.initiallyExpanded
-    };
-
-    this.onToggleExpand = this.onToggleExpand.bind(this);
+  const onToggleExpand = () => {
+    setExpanded(!expanded);
   }
 
-  onToggleExpand() {
-    this.setState({expanded: !this.state.expanded});
-  }
+  return (
+    <ComponentWrapper>
+      <VardgivarTitle>
+        <span>{vg.name}</span> <Toggler expanded={expanded} handleToggle={onToggleExpand} />
+      </VardgivarTitle>
+      {expanded && vg.vardenheter.map(ve => {
+        return (
+          <Vardenhet key={ve.id}>
+            <Button color="link" onClick={handleSelect(ve.id)}
+                    disabled={(unitContext && unitContext.id === ve.id)}>{ve.name} {
+              (unitContext && unitContext.id === ve.id) &&
+              <span>(nuvarande enhet)</span>}
+            </Button>
+          </Vardenhet>
 
-  render() {
-    const {vg, unitContext, handleSelect} = this.props;
-
-
-    return (
-      <ComponentWrapper>
-        <VardgivarTitle>
-          <span>{vg.name}</span> <Toggler expanded={this.state.expanded} handleToggle={this.onToggleExpand} />
-        </VardgivarTitle>
-        {this.state.expanded && vg.vardenheter.map(ve => {
-          return (
-            <Vardenhet key={ve.id}>
-              <Button color="link" onClick={handleSelect(ve.id)}
-                      disabled={(unitContext && unitContext.id === ve.id)}>{ve.name} {
-                (unitContext && unitContext.id === ve.id) &&
-                <span>(nuvarande enhet)</span>}
-              </Button>
-            </Vardenhet>
-
-          )
-        })}
-      </ComponentWrapper>
-    )
-
-  }
+        )
+      })}
+    </ComponentWrapper>
+  )
 }
 
 Vardgivare.propTypes = {

@@ -7,7 +7,7 @@ import {FlexColumnContainer, ScrollingContainer, WorkareaContainer} from "../com
 import ibValues from "../components/styles/IbValues";
 import {Col, Container, Row} from "reactstrap";
 import LoginOptions from "../components/loginOptions/LoginOptionsContainer";
-import IbAlert from "../components/alert/Alert";
+import IbAlert, { alertType } from "../components/alert/Alert";
 
 const CustomScrollingContainer = styled(ScrollingContainer)`
   max-width: none;
@@ -21,7 +21,7 @@ const PageContainer = styled(WorkareaContainer)`
   flex-direction: row;
   min-height: calc(100vh - 290px);
   padding-bottom: 60px;
-  
+
   img {
   width: 100%;
   padding-bottom: 20px;
@@ -45,7 +45,7 @@ const HomePage = () => {
                   (exempelvis SITHS-kort) samt behörighet att ta del av förfrågningar och beställningar för din
                   vårdenhet. </IbTypo07>
 
-                <IbAlert type="info">De förfrågningar och beställningar som hanteras i Intygsbeställning
+                <IbAlert type={alertType.INFO}>De förfrågningar och beställningar som hanteras i Intygsbeställning
                   är journalhandlingar och all aktivitet i tjänsten loggas i enlighet med Patientdatalagen.
                 </IbAlert>
                 <LoginOptions />
