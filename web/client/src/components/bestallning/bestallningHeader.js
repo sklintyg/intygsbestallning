@@ -5,7 +5,7 @@ import { IbTypo09, IbTypo04, IbTypo01 } from '../styles/IbTypography'
 import styled from 'styled-components'
 import IbColors from '../styles/IbColors'
 import { ArrowBack, Error } from '../styles/IbSvgIcons'
-import IbAlert from '../alert/Alert.js'
+import IbAlert, { alertType } from '../alert/Alert.js'
 
 const CenterContainer = styled.div`
   margin: auto;
@@ -59,7 +59,7 @@ const BestallningHeader = ({props}) => (
         <div className="left">
           <IbTypo04 color={IbColors.IB_COLOR_19}>{props.bestallning.id}</IbTypo04>
           <IbTypo01 color={IbColors.IB_COLOR_06}>{props.bestallning.invanare.personId} - {props.bestallning.invanare.name}</IbTypo01>
-          {props.bestallning.invanare.sekretessMarkering ? <IbAlert type="sekretess">Patienten har sekretessmarkering</IbAlert> : null}
+          {props.bestallning.invanare.sekretessMarkering ? <IbAlert type={alertType.SEKRETESS}>Patienten har sekretessmarkering</IbAlert> : null}
         </div>
         <BestallningActionBar bestallning={props.bestallning} />
       </ButtonRow>

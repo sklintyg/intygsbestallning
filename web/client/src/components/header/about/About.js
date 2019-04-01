@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import * as PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import {ActionButton} from "../styles";
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 import {AboutIcon} from "../../styles/IbSvgIcons";
@@ -28,9 +28,9 @@ const About = ({handleOpen, handleClose, isOpen}) => {
 };
 
 About.propTypes = {
-  handleOpen: PropTypes.func,
-  handleClose: PropTypes.func,
-  isOpen: PropTypes.bool
+  handleOpen: PropTypes.func.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired
 };
 
 export default About;

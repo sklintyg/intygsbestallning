@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter, DropdownItem } from 'reactstrap'
 import modalContainer from '../../modalContainer/modalContainer'
 import { compose } from 'recompose'
-import IbAlert from '../../alert/Alert'
+import IbAlert, { alertType } from '../../alert/Alert'
 
 const SkrivUtBestallning = ({handleOpen, handleClose, isOpen, accept, sekretess}) => (
   <Fragment>
@@ -11,7 +11,7 @@ const SkrivUtBestallning = ({handleOpen, handleClose, isOpen, accept, sekretess}
     <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
       <ModalHeader toggle={handleClose}>Skriv ut beställning</ModalHeader>
       <ModalBody>
-        <IbAlert type="sekretess">Invånaren har sekretessmarkering. Hantera utskriften varsamt.</IbAlert>
+        <IbAlert type={alertType.SEKRETESS}>Invånaren har sekretessmarkering. Hantera utskriften varsamt.</IbAlert>
       </ModalBody>
       <ModalFooter>
         <Button color={'secondary'} outline={true} onClick={() => {handleClose()}}>Avbryt</Button>
@@ -22,7 +22,6 @@ const SkrivUtBestallning = ({handleOpen, handleClose, isOpen, accept, sekretess}
 )
 
 
-  
 export default compose(
   modalContainer('skrivUtBestallning')
 )(SkrivUtBestallning)

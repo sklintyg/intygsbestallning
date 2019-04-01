@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components/macro";
 import {debounce} from 'lodash';
+import PropTypes from "prop-types";
 
 const Wrapper = styled.div`
   padding-top: 10px;
@@ -8,11 +9,11 @@ const Wrapper = styled.div`
 
 const TextSearch = ({onChange}) => {
   const debounceHandleChange = debounce(value => {
-    onChange(value.target.value)
+    onChange(value)
   }, 1000);
 
   const handleChange = e => {
-    debounceHandleChange(e.target.value); // perform a search only once every 200ms
+    debounceHandleChange(e.target.value); // perform a search only once every 1000ms
   }
 
   return (
@@ -23,6 +24,10 @@ const TextSearch = ({onChange}) => {
       </div>
     </Wrapper>
   );
+}
+
+TextSearch.propTypes = {
+  onChange: PropTypes.func.isRequired
 }
 
 export default TextSearch;
