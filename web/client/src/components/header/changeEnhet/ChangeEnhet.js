@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import * as PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import SelectEnhet from "../../selectEnhet";
 import {ActionButton} from "../styles";
 import {ChangeUnitIcon} from "../../styles/IbSvgIcons";
@@ -18,7 +18,7 @@ const ChangeEnhet = ({handleOpen, handleClose, isOpen}) => {
       <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
         <ModalHeader toggle={handleClose}>Välj enhet</ModalHeader>
         <ModalBody>
-          <SelectEnhet></SelectEnhet>
+          <SelectEnhet />
         </ModalBody>
         <ModalFooter>
           <Button color={'secondary'} outline={true} onClick={handleClose}>Avbryt</Button>
@@ -29,9 +29,9 @@ const ChangeEnhet = ({handleOpen, handleClose, isOpen}) => {
 };
 
 ChangeEnhet.propTypes = {
-  handleOpen: PropTypes.func,
-  handleClose: PropTypes.func,
-  isOpen: PropTypes.bool
+  handleOpen: PropTypes.func.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired
 };
 
 export default ChangeEnhet;
