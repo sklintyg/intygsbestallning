@@ -14,6 +14,7 @@ import UnsecuredRoute from "./components/auth/unsecuredRoute/UnsecuredRoute";
 import {history} from "./store/configureStore";
 import {ConnectedRouter} from "connected-react-router";
 import {closeAllModals} from "./store/actions/modal";
+import ErrorPage from "./pages/ErrorPage";
 
 // TEST
 const TestLinks = () => (
@@ -44,6 +45,7 @@ const App = () => {
               <SecuredRoute path="/bestallningar/:filter" component={BestallningarPage} />
               <SecuredRoute path="/bestallningar" component={BestallningarIndexPage} />
               <SecuredRoute path="/bestallning/:id" component={BestallningPage} />
+              <UnsecuredRoute path="/exit/:errorCode" isErrorPage={true} component={ErrorPage} />
             </Switch>
           </Fragment>
       </HashRouter>

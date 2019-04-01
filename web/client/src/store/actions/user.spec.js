@@ -28,12 +28,12 @@ describe('actions', () => {
 
     it('failure', () => {
       api.fetchAnvandare = () => {
-        return Promise.reject({message: 'failed'});
+        return Promise.reject({message: 'failed', errorCode: 'ERRORCODE'});
       }
 
       const expectedActions = [
         { type: actions.GET_USER },
-        { type: actions.GET_USER_FAILURE, payload: 'failed' }
+        { type: actions.GET_USER_FAILURE, payload: {message: 'failed', errorCode: 'ERRORCODE' }}
       ]
 
       return functionToTest(store, actions.getUser, expectedActions)
@@ -66,43 +66,12 @@ describe('actions', () => {
 
     it('failure', () => {
       api.changeEnhet = () => {
-        return Promise.reject({message: 'failed'});
+        return Promise.reject({message: 'failed', errorCode: 'ERRORCODE'});
       }
 
       const expectedActions = [
         { type: actions.SET_ENHET },
-        { type: actions.SET_ENHET_FAILURE, payload: 'failed' }
-      ]
-
-      return functionToTest(store, tested, expectedActions)
-    })
-  })
-
-  describe('logOut', () => {
-    const tested = () => actions.logOut();
-
-    it('success', () => {
-      api.logoutUser = () => {
-        return Promise.resolve({});
-      };
-
-      const expectedActions = [
-        { type: actions.LOGOUT_USER },
-        { type: actions.LOGOUT_SUCCESS, payload: {} },
-        routerAction("/")
-      ]
-
-      return functionToTest(store, tested, expectedActions)
-    })
-
-    it('failure', () => {
-      api.logoutUser = () => {
-        return Promise.reject({message: 'failed'});
-      }
-
-      const expectedActions = [
-        { type: actions.LOGOUT_USER },
-        { type: actions.LOGOUT_FAILURE, payload: 'failed' }
+        { type: actions.SET_ENHET_FAILURE, payload: {message: 'failed', errorCode: 'ERRORCODE' }}
       ]
 
       return functionToTest(store, tested, expectedActions)

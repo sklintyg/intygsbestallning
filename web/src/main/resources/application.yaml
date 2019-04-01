@@ -3,6 +3,12 @@ resources:
 config:
   folder: ${config.dir}
 
+# Disable spring boot default error handling
+server:
+  error:
+    whitelabel:
+      enabled: false
+
 spring:
   datasource:
     url: jdbc:h2:mem:dataSource;MODE=MySQL;DB_CLOSE_DELAY=-1

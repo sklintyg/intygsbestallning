@@ -3,22 +3,21 @@ import * as PropTypes from "prop-types";
 import {ActionButton} from "../styles";
 import {LogoutIcon} from "../../styles/IbSvgIcons";
 
-const Logout = (props) => {
-  const {handleLogout} = props;
-
-
-  return (
+const Logout = ({logoutUrl}) =>
+  (
     <Fragment>
-      <ActionButton onClick={handleLogout} id="logoutBtn">
-        <LogoutIcon/>
-        <br />
-        Logga ut</ActionButton>
+      <a href={logoutUrl}>
+        <ActionButton id="logoutBtn">
+
+          <LogoutIcon />
+          <br />
+          Logga ut </ActionButton>
+      </a>
     </Fragment>
-  );
-}
+  )
 
 Logout.propTypes = {
-  handleLogout: PropTypes.func
+  logoutUrl: PropTypes.string
 }
 
 export default Logout;

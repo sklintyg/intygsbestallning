@@ -108,6 +108,8 @@ import se.inera.intyg.intygsbestallning.web.auth.fake.FakeAuthenticationFilter;
 import se.inera.intyg.intygsbestallning.web.auth.fake.FakeAuthenticationProvider;
 import se.inera.intyg.intygsbestallning.web.auth.service.IntygsbestallningUserDetailsService;
 
+import static se.inera.intyg.intygsbestallning.web.controller.RequestErrorController.IB_CLIENT_EXIT_BOOT_PATH;
+
 @EnableWebSecurity
 @PropertySource("file:${credentials.file}")
 @ComponentScan({"se.inera.intyg.infra.security.authorities", "org.springframework.security.saml"})
@@ -115,7 +117,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
 
     private static final String DEV_PROFILE = "dev-security";
     private static final String TEST_PROFILE = "ib-security-test";
-    private static final String FAKE_LOGOUT_URL = "/logout";
+    public static final String FAKE_LOGOUT_URL = "/logout";
 
     private MultiThreadedHttpConnectionManager multiThreadedHttpConnectionManager;
 
@@ -189,15 +191,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
         ExceptionMappingAuthenticationFailureHandler failureHandler = new ExceptionMappingAuthenticationFailureHandler();
         HashMap<String, String> exceptionMappings = new HashMap<>();
 
-        exceptionMappings.put(BadCredentialsException.class.getName(), "/index.html?reason=login.failed");
+        exceptionMappings.put(BadCredentialsException.class.getName(), IB_CLIENT_EXIT_BOOT_PATH + "login.failed");
         exceptionMappings.put(MissingMedarbetaruppdragException.class.getName(),
-                "/index.html?reason=login.medarbetaruppdrag");
+                IB_CLIENT_EXIT_BOOT_PATH + "login.medarbetaruppdrag");
         exceptionMappings.put(MissingIBSystemRoleException.class.getName(),
-                "/index.html?reason=login.no-hsa-ib-systemrole");
-        exceptionMappings.put(HsaServiceException.class.getName(), "/index.html?reason=login.hsaerror");
+                IB_CLIENT_EXIT_BOOT_PATH + "login.no-hsa-ib-systemrole");
+        exceptionMappings.put(HsaServiceException.class.getName(), IB_CLIENT_EXIT_BOOT_PATH + "login.hsaerror");
 
         failureHandler.setExceptionMappings(exceptionMappings);
-        failureHandler.setDefaultFailureUrl("/index.html?reason=login.failed");
+        failureHandler.setDefaultFailureUrl(IB_CLIENT_EXIT_BOOT_PATH + "login.failed");
         return failureHandler;
     }
 

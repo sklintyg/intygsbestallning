@@ -3,8 +3,10 @@ const ROOT_URL = '/api/';
 
 const handleResponse = (config) => (response) => {
   if (!response.ok) {
-    const error = {message: response.statusText, response}
-    throw error;
+    return response.json().then(errorJson => {
+      const error = {statusCode: response.status, error: errorJson};
+      throw error;
+    });
   }
 
   if (config) {

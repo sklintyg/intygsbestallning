@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components'
 import * as PropTypes from "prop-types";
 import Vardgivare from "./Vardgivare";
+import IbAlert from "../alert/Alert";
 
 
 const ComponentWrapper = styled.div`
@@ -11,12 +12,14 @@ const ComponentWrapper = styled.div`
 `
 
 function SelectEnhet(props) {
-  const {authoritiesTree, unitContext, selectEnhet} = props;
+  const {authoritiesTree, unitContext, activeError, selectEnhet} = props;
 
   const handleSelect = (hsaid) => () => selectEnhet(hsaid);
 
   return (
     <ComponentWrapper>
+      {activeError &&
+      <IbAlert type="error">{activeError.errorCode}</IbAlert>}
       {authoritiesTree.map(vg => {
           return (<Vardgivare key={vg.id}
                               vg={vg}
@@ -33,6 +36,7 @@ function SelectEnhet(props) {
 SelectEnhet.propTypes = {
   authoritiesTree: PropTypes.array,
   unitContext: PropTypes.object,
+  activeError: PropTypes.object,
   selectEnhet: PropTypes.func
 }
 

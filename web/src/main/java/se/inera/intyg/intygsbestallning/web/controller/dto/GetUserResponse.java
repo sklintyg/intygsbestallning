@@ -18,6 +18,7 @@
  */
 package se.inera.intyg.intygsbestallning.web.controller.dto;
 
+import se.inera.intyg.infra.security.common.model.AuthenticationMethod;
 import se.inera.intyg.infra.security.common.model.Feature;
 import se.inera.intyg.infra.security.common.model.Role;
 import se.inera.intyg.intygsbestallning.web.auth.IbSelectableHsaEntity;
@@ -26,6 +27,9 @@ import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
 
 import java.util.List;
 import java.util.Map;
+
+import static org.springframework.security.saml.SAMLLogoutProcessingFilter.FILTER_URL;
+import static se.inera.intyg.intygsbestallning.web.auth.SecurityConfig.FAKE_LOGOUT_URL;
 
 /**
  * Reponse dto for the getUser api.
@@ -36,6 +40,7 @@ public class GetUserResponse {
     private String hsaId;
     private String namn;
     private String authenticationScheme;
+    private String logoutUrl;
 
     private Map<String, Feature> features;
 
@@ -49,6 +54,7 @@ public class GetUserResponse {
         this.namn = user.getNamn();
 
         this.authenticationScheme = user.getAuthenticationScheme();
+        this.logoutUrl = user.getAuthenticationMethod().equals(AuthenticationMethod.FAKE) ? FAKE_LOGOUT_URL : FILTER_URL;
         this.features = user.getFeatures();
 
         this.authoritiesTree = user.getSystemAuthorities();
@@ -88,5 +94,13 @@ public class GetUserResponse {
 
     public int getTotaltAntalVardenheter() {
         return totaltAntalVardenheter;
+    }
+
+    public String getLogoutUrl() {
+        return logoutUrl;
+    }
+
+    public void setLogoutUrl(String logoutUrl) {
+        this.logoutUrl = logoutUrl;
     }
 }

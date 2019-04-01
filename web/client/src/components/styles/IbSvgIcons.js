@@ -155,3 +155,28 @@ export const Print = ({color}) => (
   <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
 </svg>
 )
+
+//fel-01.svg
+export const ErrorPageIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 202 150" width="101px" height="75px">
+    <defs />
+    <g id="Layer_2" data-name="Layer 2">
+      <g id="Layer_1-2" data-name="Layer 1">
+        <path d="M24.67 9.53h163.56A14.48 14.48 0 0 1 202.72 24v126H10.19V24A14.48 14.48 0 0 1 24.67 9.53z" opacity=".5"
+              fill="#d8d8d8" />
+        <path d="M14.48 0H178a14.48 14.48 0 0 1 14.48 14.48v126H0v-126A14.48 14.48 0 0 1 14.48 0z" fill={IbColors.IB_COLOR_23} />
+        <circle className="cls-3" cx="13.21" cy="11.77" r="2.25" />
+        <circle className="cls-3" cx="27.74" cy="11.77" r="2.25" />
+        <circle className="cls-3" cx="20.47" cy="11.77" r="2.25" />
+        <path stroke="#f1f1f1" fill="none" stroke-miterlimit="10" d="M.64 20.84h190.91" />
+        <path fill="#fff"
+              d="M35.69 6.45h126.82v10.23H35.69zM96.26 93.67a3.51 3.51 0 0 1 3.63 3.47 3.63 3.63 0 0 1-7.25 0 3.54 3.54 0 0 1 3.62-3.47zm2-3h-4.14l-.77-25.74H99z" />
+        <path
+          d="M90.36 49.77l-29 50.16a6.82 6.82 0 0 0 5.91 10.23h57.92a6.82 6.82 0 0 0 5.91-10.23l-29-50.16a6.82 6.82 0 0 0-11.74 0z"
+          stroke="#fff" stroke-width="4" fill="none" stroke-miterlimit="10" />
+      </g>
+    </g>
+  </svg>
+)
+
+

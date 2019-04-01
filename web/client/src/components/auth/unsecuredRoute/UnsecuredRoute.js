@@ -10,7 +10,7 @@ const mapStateToProps = (state) => {
 };
 
 const UnsecuredRoute = (props) => {
-  const {component: Component, isAuthenticated, isLoading, ...rest} = props;
+  const {component: Component, isAuthenticated, isErrorPage, isLoading, ...rest} = props;
 
   if(isLoading){
     return (
@@ -21,7 +21,7 @@ const UnsecuredRoute = (props) => {
 
   return (
     <Route {...rest} render={(props) => {
-      if (isAuthenticated) {
+      if (isAuthenticated && !isErrorPage) {
         return <Redirect to='/bestallningar/AKTUELLA' />;
       }
       return (<Component {...props}/>)

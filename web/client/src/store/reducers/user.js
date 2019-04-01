@@ -2,9 +2,6 @@ import {
   GET_USER,
   GET_USER_FAILURE,
   GET_USER_SUCCESS,
-  LOGOUT_FAILURE,
-  LOGOUT_SUCCESS,
-  LOGOUT_USER,
   SET_ENHET,
   SET_ENHET_FAILURE,
   SET_ENHET_SUCCESS
@@ -13,7 +10,7 @@ import {
 const INITIAL_STATE = {
   isLoading: false,
   isAuthenticated: false,
-  errorMessage: null
+  activeError: null
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -25,33 +22,21 @@ export default (state = INITIAL_STATE, action) => {
       ...state,
       isLoading: false,
       isAuthenticated: true,
-      errorMessage: '',
+      activeError: null,
       namn: action.payload.namn,
       userRole: action.payload.currentRole ? action.payload.currentRole.desc : '',
       unitContext: action.payload.unitContext,
       authoritiesTree: action.payload.authoritiesTree,
-      totaltAntalVardenheter: action.payload.totaltAntalVardenheter
+      totaltAntalVardenheter: action.payload.totaltAntalVardenheter,
+      logoutUrl: action.payload.logoutUrl
     }
   case GET_USER_FAILURE:
     return {
       ...state,
       isLoading: false,
       isAuthenticated: false,
-      errorMessage: action.payload
+      activeError: action.payload.error
     }
-
-
-  case LOGOUT_USER:
-    return {...state, isLoading: true}
-  case LOGOUT_SUCCESS:
-    return INITIAL_STATE
-  case LOGOUT_FAILURE:
-    return {
-      ...state,
-      isLoading: false,
-      errorMessage: action.payload
-    }
-
 
   case SET_ENHET:
     return {...state, isLoading: true}
@@ -60,6 +45,7 @@ export default (state = INITIAL_STATE, action) => {
       ...state,
       isLoading: false,
       isAuthenticated: true,
+      activeError: null,
       namn: action.payload.namn,
       userRole: action.payload.currentRole ? action.payload.currentRole.desc : '',
       unitContext: action.payload.unitContext,
@@ -70,7 +56,7 @@ export default (state = INITIAL_STATE, action) => {
     return {
       ...state,
       isLoading: false,
-      errorMessage: action.payload
+      activeError: action.payload.error
     }
   default:
     return state;

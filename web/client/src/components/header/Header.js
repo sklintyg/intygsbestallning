@@ -7,9 +7,9 @@ import styled from "styled-components";
 import IbColors from "../styles/IbColors";
 import {HeaderSectionContainerHoverable} from "./styles";
 import ChangeEnhet from "./changeEnhet";
-import Logout from "./logout/LogoutContainer";
 import ibValues from '../styles/IbValues'
 import About from "./about";
+import Logout from "./logout/Logout";
 
 const ComponentWrapper = styled.div`
   display: block;
@@ -34,7 +34,7 @@ const HeaderActionsWrapper = styled.div`
   
 `
 
-const Header = ({isAuthenticated, namn, userRole, unitContext, totaltAntalVardenheter}) => {
+const Header = ({isAuthenticated, namn, userRole, logoutUrl, unitContext, totaltAntalVardenheter}) => {
   return (
     <ComponentWrapper>
       <StyledHeader>
@@ -53,7 +53,7 @@ const Header = ({isAuthenticated, namn, userRole, unitContext, totaltAntalVarden
                 <About />
               </HeaderSectionContainerHoverable>
               <HeaderSectionContainerHoverable>
-                <Logout />
+                <Logout logoutUrl={logoutUrl}/>
               </HeaderSectionContainerHoverable>
             </Fragment>
           }

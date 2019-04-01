@@ -6,7 +6,8 @@ import {selectEnhet} from "../../store/actions/user";
 const mapStateToProps = (state, ownProps) => {
   return {
     authoritiesTree: state.user.authoritiesTree,
-    unitContext: state.user.unitContext
+    unitContext: state.user.unitContext,
+    activeError: state.user.activeError
   }
 };
 // expose selected dispatchable methods to App props
