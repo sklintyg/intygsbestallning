@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from 'react'
-import { Debounce } from 'react-throttle'
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 import styled from 'styled-components'
 import modalContainer from '../../modalContainer/modalContainer'
@@ -40,9 +39,7 @@ const AvvisaBestallning = ({handleOpen, handleClose, isOpen, accept}) => {
           <input type="radio" name="avvisa" id="radera" value="false" onChange={handleRadioChange}/>Radera
           <p>Vänligen förtydliga skälet till varför beställningen avvisas eller raderas.</p>
           <p>Observera att patientrelaterad information inte får lämnas ut utan stöd i patientdatalagen (2008:355), patientsäkerhetslagen (2010:659) eller Offentlighets- och sekretesslagen (2009:400).</p>
-          <Debounce time="1000" handler="onChange">
-            <Textarea rows="5" onChange={handleTextareaChange} />
-          </Debounce>
+          <Textarea rows="5" onChange={handleTextareaChange} />
         </ModalBody>
         <ModalFooter>
           <Button color={'secondary'} outline={true} onClick={() => {handleClose()}}>Avbryt</Button>
@@ -53,7 +50,7 @@ const AvvisaBestallning = ({handleOpen, handleClose, isOpen, accept}) => {
   )
 }
 
-  
+
 export default compose(
   modalContainer('avvisaBestallning')
 )(AvvisaBestallning)

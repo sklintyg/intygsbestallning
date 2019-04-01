@@ -1,28 +1,28 @@
-import React, { Component } from "react";
+import React from "react";
 import styled from "styled-components/macro";
-import { Debounce } from "react-throttle";
+import {debounce} from 'lodash';
 
 const Wrapper = styled.div`
   padding-top: 10px;
 `;
 
-class TextSearch extends Component {
-  handleChange = e => {
-    this.props.onChange(e.target.value); // perform a search only once every 200ms
-  };
+const TextSearch = ({onChange}) => {
+  const debounceHandleChange = debounce(value => {
+    onChange(value.target.value)
+  }, 1000);
 
-  render() {
-    return (
-      <Wrapper>
-        <label htmlFor="textFilter">Filter</label>
-        <div>
-          <Debounce time="1000" handler="onChange">
-            <input id="textFilter" type="text" onChange={this.handleChange} />
-          </Debounce>
-        </div>
-      </Wrapper>
-    );
+  const handleChange = e => {
+    debounceHandleChange(e.target.value); // perform a search only once every 200ms
   }
+
+  return (
+    <Wrapper>
+      <label htmlFor="textFilter">Filter</label>
+      <div>
+        <input id="textFilter" type="text" onChange={handleChange} />
+      </div>
+    </Wrapper>
+  );
 }
 
 export default TextSearch;
