@@ -5,8 +5,8 @@ import { InfoIcon, Security, ErrorOutline, Check, Warning } from '../styles/IbSv
 
 describe('<IBAlert />', () => {
   it('Render alert and children', () => {
-    const wrapper = shallow(<IbAlert>Alert</IbAlert>);
-    expect(wrapper.text()).toEqual('Alert');
+    const wrapper = shallow(<IbAlert type={alertType.INFO}>Alert</IbAlert>);
+    expect(wrapper.find('div').text()).toEqual('Alert');
   });
 
   describe('icons', () => {

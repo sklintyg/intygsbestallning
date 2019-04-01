@@ -73,7 +73,7 @@ const IbAlert = ({type, children}) => {
 }
 
 IbAlert.propTypes = {
-  type: PropTypes.oneOf(Object.values(alertType))
+  type: PropTypes.oneOf(Object.values(alertType)).isRequired
 }
 
 export default IbAlert;

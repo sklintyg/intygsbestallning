@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components'
-import * as PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import Vardgivare from "./Vardgivare";
 import IbAlert from "../alert/Alert";
 
@@ -12,8 +12,6 @@ const ComponentWrapper = styled.div`
 
 function SelectEnhet({authoritiesTree, unitContext, activeError, selectEnhet}) {
 
-  const handleSelect = (hsaid) => () => selectEnhet(hsaid);
-
   return (
     <ComponentWrapper>
       {activeError &&
@@ -23,7 +21,7 @@ function SelectEnhet({authoritiesTree, unitContext, activeError, selectEnhet}) {
                               vg={vg}
                               initiallyExpanded={true}
                               unitContext={unitContext}
-                              handleSelect={handleSelect} />
+                              handleSelect={selectEnhet} />
           );
         }
       )}
@@ -32,10 +30,10 @@ function SelectEnhet({authoritiesTree, unitContext, activeError, selectEnhet}) {
 }
 
 SelectEnhet.propTypes = {
-  authoritiesTree: PropTypes.array,
+  authoritiesTree: PropTypes.array.isRequired,
+  selectEnhet: PropTypes.func.isRequired,
   unitContext: PropTypes.object,
-  activeError: PropTypes.object,
-  selectEnhet: PropTypes.func
+  activeError: PropTypes.object
 }
 
 export default SelectEnhet;

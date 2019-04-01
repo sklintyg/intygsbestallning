@@ -23,7 +23,6 @@ const VardgivarTitle = styled(IbTypo05)`
 
 const Vardenhet = styled(IbTypo06)`
   background: transparent;
-  //padding: 8px 8px 8px 30px
   padding-left: 32px;
 `
 
@@ -35,21 +34,25 @@ const Vardgivare = ({initiallyExpanded, vg, unitContext, handleSelect}) => {
     setExpanded(!expanded);
   }
 
+  const onSelect = (hsaid) => () => handleSelect(hsaid);
+
   return (
     <ComponentWrapper>
       <VardgivarTitle>
         <span>{vg.name}</span> <Toggler expanded={expanded} handleToggle={onToggleExpand} />
       </VardgivarTitle>
       {expanded && vg.vardenheter.map(ve => {
+        const activeEnhet = (unitContext && unitContext.id === ve.id);
+
         return (
           <Vardenhet key={ve.id}>
-            <Button color="link" onClick={handleSelect(ve.id)}
-                    disabled={(unitContext && unitContext.id === ve.id)}>{ve.name} {
-              (unitContext && unitContext.id === ve.id) &&
-              <span>(nuvarande enhet)</span>}
+            <Button
+              color="link"
+              onClick={onSelect(ve.id)}
+              disabled={activeEnhet}>
+              {ve.name} {activeEnhet && <span>(nuvarande enhet)</span>}
             </Button>
           </Vardenhet>
-
         )
       })}
     </ComponentWrapper>
@@ -57,10 +60,10 @@ const Vardgivare = ({initiallyExpanded, vg, unitContext, handleSelect}) => {
 }
 
 Vardgivare.propTypes = {
-  vg: PropTypes.object,
+  vg: PropTypes.object.isRequired,
+  handleSelect: PropTypes.func.isRequired,
   initiallyExpanded: PropTypes.bool,
-  unitContext: PropTypes.object,
-  selectEnhet: PropTypes.func
+  unitContext: PropTypes.object
 };
 
 export default Vardgivare;
