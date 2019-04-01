@@ -94,6 +94,8 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
 
         var pageResult = bestallningRepository.findByQuery(
                 query.getStatusar(),
+                query.getHsaId(),
+                query.getOrgNrVardgivare(),
                 searchString.orElse(null),
                 id.orElse(null),
                 (BestallningStatus) status.orElse(null),
@@ -117,8 +119,8 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
     }
 
     @Override
-    public Optional<Bestallning> getBestallningById(Long id) {
-        return bestallningRepository.findById(id)
+    public Optional<Bestallning> getBestallningByIdAndHsaIdAndOrgId(Long id, String hsaId, String orgNrVardgivare) {
+        return bestallningRepository.findByIdAndHsaIdAndOrgId(id, hsaId, orgNrVardgivare)
                 .map(BestallningEntity.Factory::toDomain);
     }
 

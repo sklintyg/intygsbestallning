@@ -2,6 +2,7 @@ package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static se.inera.intyg.schemas.contract.Personnummer.createPersonnummer;
@@ -58,12 +59,12 @@ class AvvisaBestallningServiceImplTest {
 
     @BeforeEach
     void setup() {
-        Mockito.when(bestallningPersistenceService.getBestallningById(anyLong())).thenReturn(buildBestallning());
+        Mockito.when(bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(anyLong(), anyString(), anyString())).thenReturn(buildBestallning());
     }
 
     @Test
     void testAvvisaBestallning() {
-        AvvisaBestallningRequest request = new AvvisaBestallningRequest("1", BestallningSvar.AVVISAT, "Kommentar");
+        AvvisaBestallningRequest request = new AvvisaBestallningRequest("1", "hsaId", "orgNr", BestallningSvar.AVVISAT, "Kommentar");
         avvisaBestallningService.avvisaBestallning(request);
 
         verify(bestallningStatusResolver, times(1)).setStatus(any(Bestallning.class));

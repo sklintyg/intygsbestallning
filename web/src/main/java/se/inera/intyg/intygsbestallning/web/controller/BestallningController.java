@@ -22,13 +22,15 @@ import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningSortColumn;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
+import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
 import se.inera.intyg.intygsbestallning.web.bestallning.AccepteraBestallning;
 import se.inera.intyg.intygsbestallning.web.bestallning.AvvisaBestallning;
 import se.inera.intyg.intygsbestallning.web.bestallning.BestallningStatusKategori;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.AccepteraBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.AvvisaBestallningService;
-import se.inera.intyg.intygsbestallning.web.service.bestallning.VisaBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.ListBestallningService;
+import se.inera.intyg.intygsbestallning.web.service.bestallning.VisaBestallningService;
+import se.inera.intyg.intygsbestallning.web.service.user.UserService;
 
 @RestController
 @RequestMapping("/api/bestallningar")
@@ -38,16 +40,19 @@ public class BestallningController {
     private ListBestallningService listBestallningService;
     private VisaBestallningService visaBestallningService;
     private AvvisaBestallningService avvisaBestallningService;
+    private UserService userService;
 
     public BestallningController(
             AccepteraBestallningService accepteraBestallningService,
             ListBestallningService listBestallningService,
             VisaBestallningService visaBestallningService,
-            AvvisaBestallningService avvisaBestallningService) {
+            AvvisaBestallningService avvisaBestallningService,
+            UserService userService) {
         this.accepteraBestallningService = accepteraBestallningService;
         this.listBestallningService = listBestallningService;
         this.visaBestallningService = visaBestallningService;
         this.avvisaBestallningService = avvisaBestallningService;
+        this.userService = userService;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -83,8 +88,21 @@ public class BestallningController {
             sortDirection = ListBestallningDirection.ASC;
         }
 
+        var user = userService.getUser();
+
+        var hsaId = user.getUnitContext().getId();
+        var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
+
         var result = listBestallningService.listByQuery(
-                new ListBestallningarQuery(statusar, textSearch, pageIndex, limit, sortColumn, sortDirection));
+                new ListBestallningarQuery(
+                        statusar,
+                        hsaId,
+                        orgNrVardgivare,
+                        textSearch,
+                        pageIndex,
+                        limit,
+                        sortColumn,
+                        sortDirection));
 
         return ResponseEntity.ok(result);
     }
@@ -98,7 +116,7 @@ public class BestallningController {
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getBestallning(@PathVariable String id) {
+    public ResponseEntity visaBestallning(@PathVariable String id) {
 
         Long idLong;
         try {
@@ -107,7 +125,11 @@ public class BestallningController {
             throw new IllegalArgumentException("Id could not be converted to Long value");
         }
 
-        var aktuellBestallning = visaBestallningService.getBestallningById(idLong);
+        var user = userService.getUser();
+        var hsaId = user.getUnitContext().getId();
+        var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
+
+        var aktuellBestallning = visaBestallningService.getBestallningByIdAndHsaIdAndOrgId(idLong, hsaId, orgNrVardgivare);
 
         if (aktuellBestallning.isPresent()) {
             return ResponseEntity.ok(aktuellBestallning);
@@ -118,14 +140,29 @@ public class BestallningController {
 
     @PostMapping("/{id}/acceptera")
     public ResponseEntity accepteraBestallning(@PathVariable String id, AccepteraBestallning accepteraBestallning) {
-        accepteraBestallningService.accepteraBestallning(new AccepteraBestallningRequest(id,
-                BestallningSvar.ACCEPTERAT, accepteraBestallning.getFritextForklaring()));
+        var user = userService.getUser();
+        var hsaId = user.getUnitContext().getId();
+        var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
+        accepteraBestallningService.accepteraBestallning(new AccepteraBestallningRequest(
+                id,
+                hsaId,
+                orgNrVardgivare,
+                BestallningSvar.ACCEPTERAT,
+                accepteraBestallning.getFritextForklaring()));
+
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{id}/avvisa")
     public ResponseEntity avvisaBestallning(@PathVariable String id, AvvisaBestallning avvisaBestallning) {
-        avvisaBestallningService.avvisaBestallning(new AvvisaBestallningRequest(id, BestallningSvar.AVVISAT,
+        var user = userService.getUser();
+        var hsaId = user.getUnitContext().getId();
+        var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
+        avvisaBestallningService.avvisaBestallning(new AvvisaBestallningRequest(
+                id,
+                hsaId,
+                orgNrVardgivare,
+                BestallningSvar.AVVISAT,
                 avvisaBestallning.getFritextForklaring()));
         return ResponseEntity.ok().build();
     }

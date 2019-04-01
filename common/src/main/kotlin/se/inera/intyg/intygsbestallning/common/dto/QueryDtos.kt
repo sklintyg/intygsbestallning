@@ -8,6 +8,8 @@ import java.time.LocalDate
 
 data class ListBestallningarQuery(
    val statusar: List<BestallningStatus>,
+   val hsaId: String,
+   val orgNrVardgivare: String,
    val textSearch: String?,
    val pageIndex: Int,
    val limit: Int,
@@ -28,7 +30,7 @@ enum class ListBestallningDirection {
 }
 
 data class ListBestallningarResult(
-   val bestallningar: List<BestallningDto>,
+   val bestallningar: List<ListBestallningDto>,
    val pageIndex: Int? = 0,
    val start: Int,
    val end: Int,
@@ -50,7 +52,7 @@ data class ListBestallningarResult(
        sortColumn: ListBestallningSortColumn,
        sortDirection: ListBestallningDirection): ListBestallningarResult {
       return ListBestallningarResult(
-         bestallningar = bestallningar.map { BestallningDto.toDto(it) },
+         bestallningar = bestallningar.map { ListBestallningDto.toDto(it) },
          pageIndex = pageIndex,
          start = start,
          end = end,
@@ -62,6 +64,30 @@ data class ListBestallningarResult(
     }
   }
 }
+
+data class ListBestallningDto(
+   val id: Long,
+   val status: String,
+   val ankomstDatum: LocalDate,
+   val intygTyp: String,
+   val invanare: ListBestallningInvanareDto
+) {
+  companion object Factory {
+    fun toDto(bestallning: Bestallning): ListBestallningDto {
+      return ListBestallningDto(
+         id = bestallning.id!!,
+         status = bestallning.status!!.beskrivning,
+         ankomstDatum = bestallning.ankomstDatum.toLocalDate(),
+         intygTyp = bestallning.intygTyp,
+         invanare = ListBestallningInvanareDto(bestallning.invanare.personId.personnummerWithDash)
+      )
+    }
+  }
+}
+
+data class ListBestallningInvanareDto(
+   val personId: String
+)
 
 data class BestallningDto(
    val id: Long,
@@ -93,7 +119,13 @@ data class BestallningInvanareDto(
       return BestallningInvanareDto(
          personId = invanare.personId.personnummerWithDash,
          sekretessMarkering = invanare.sektretessMarkering ?: false,
-         name = listOfNotNull(invanare.fornamn, invanare.mellannamn, invanare.efternamn).joinToString(separator = " ")
+         name =
+         if (!invanare.sektretessMarkering!!)
+           listOfNotNull(
+              invanare.fornamn,
+              invanare.mellannamn,
+              invanare.efternamn).joinToString(separator = " ")
+         else "Namn okänt"
       )
     }
   }
@@ -115,6 +147,14 @@ data class VisaBestallningDto(
 
       val textMap = bestallningTexter.texter.map { it.id to it.value }.toMap()
 
+      val invanareName =
+         if (!bestallning.invanare.sektretessMarkering!!)
+           listOfNotNull(
+              bestallning.invanare.fornamn,
+              bestallning.invanare.mellannamn,
+              bestallning.invanare.efternamn).joinToString(separator = "\n")
+         else "Namn okänt"
+
       return VisaBestallningDto(
          id = bestallning.id!!,
          status = bestallning.status!!.beskrivning,
@@ -133,10 +173,7 @@ data class VisaBestallningDto(
                rubrik = textMap.getValue(RBK_2),
                delfragor = listOf(
                   Delfraga(etikett = textMap.getValue(ETK_2_1), svar = bestallning.invanare.personId.personnummerWithDash),
-                  Delfraga(etikett = textMap.getValue(ETK_2_2), svar = listOfNotNull(
-                     bestallning.invanare.fornamn,
-                     bestallning.invanare.mellannamn,
-                     bestallning.invanare.efternamn).joinToString(separator = "\n")))
+                  Delfraga(etikett = textMap.getValue(ETK_2_2), svar = invanareName))
             ),
             Fraga(
                rubrik = textMap.getValue(RBK_3),

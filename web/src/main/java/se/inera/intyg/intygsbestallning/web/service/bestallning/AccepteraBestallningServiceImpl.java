@@ -31,15 +31,16 @@ public class AccepteraBestallningServiceImpl implements AccepteraBestallningServ
     }
 
     @Override
-    public void accepteraBestallning(AccepteraBestallningRequest accepteraBestallningRequest) {
+    public void accepteraBestallning(AccepteraBestallningRequest request) {
 
-        if (accepteraBestallningRequest == null) {
-            throw new IllegalArgumentException("accepteraBestallningRequest may not be null");
+        if (request == null) {
+            throw new IllegalArgumentException("request may not be null");
         }
 
-        var id = BestallningUtil.resolveId(accepteraBestallningRequest);
+        var id = BestallningUtil.resolveId(request);
 
-        var bestallning = bestallningPersistenceService.getBestallningById(id.get());
+        var bestallning = bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(
+                id.get(), request.getHsaId(), request.getOrgNrVardgivare());
 
         if (bestallning.isEmpty()) {
             throw new IllegalArgumentException("bestallning with id: " + id.get() + " was not found");
@@ -50,6 +51,6 @@ public class AccepteraBestallningServiceImpl implements AccepteraBestallningServ
         bestallningPersistenceService.updateBestallning(bestallning.get());
 
         pdlLogService.log(bestallning.get(), LogEvent.BESTALLNING_ACCEPTERAS);
-        respondToOrderService.sendRespondToOrder(accepteraBestallningRequest);
+        respondToOrderService.sendRespondToOrder(request);
     }
 }

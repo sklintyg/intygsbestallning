@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
 import se.inera.intyg.intygsbestallning.persistence.entity.QBestallningEntity;
@@ -32,6 +33,8 @@ public interface BestallningRepository extends JpaRepository<BestallningEntity, 
                     "join b.invanare i " +
                     "join b.vardenhet v " +
                     "where (b.status in :statusar) " +
+                    "and (:hsaId is not null and v.hsaId = :hsaId) " +
+                    "and (:orgNrVardgivare is not null and v.organisationId = :orgNrVardgivare) " +
                     "and (:textSearch is null " +
                     "or (:textSearch is not null and (b.intygTyp like %:textSearch%) " +
                         "or (i.personId like %:textSearch% " +
@@ -42,12 +45,25 @@ public interface BestallningRepository extends JpaRepository<BestallningEntity, 
                         "or (:ankomstDatumFrom is not null and (b.ankomstDatum between :ankomstDatumFrom and :ankomstDatumTo))))")
     Page<BestallningEntity> findByQuery(
             @Param("statusar") List<BestallningStatus> statusar,
+            @Param("hsaId") String hsaId,
+            @Param("orgNrVardgivare") String orgNrVardgivare,
             @Param("textSearch") String textSearch,
             @Param("id") Long id,
             @Param("status") BestallningStatus bestallningStatus,
             @Param("ankomstDatumFrom") LocalDateTime ankomstDatumFrom,
             @Param("ankomstDatumTo") LocalDateTime ankomstDatumTo,
             Pageable pageable);
+
+
+    @Query(value =  "select b from BestallningEntity b " +
+                    "join b.vardenhet v " +
+                    "where (:id is not null and b.id = :id) " +
+                    "and (:hsaId is not null and v.hsaId = :hsaId) " +
+                    "and (:orgNrVardgivare is not null and v.organisationId = :orgNrVardgivare)")
+    Optional<BestallningEntity> findByIdAndHsaIdAndOrgId(
+            @Param("id") Long id,
+            @Param("hsaId") String hsaId,
+            @Param("orgNrVardgivare") String orgNrVardgivare);
 
     @Override
     default void customize(QuerydslBindings bindings, QBestallningEntity entity) {

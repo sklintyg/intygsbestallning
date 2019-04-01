@@ -41,7 +41,8 @@ public class AvvisaBestallningServiceImpl implements AvvisaBestallningService {
 
         Try<Long> id = BestallningUtil.resolveId(request);
 
-        var bestallning = bestallningPersistenceService.getBestallningById(id.get());
+        var bestallning = bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(
+                id.get(), request.getHsaId(), request.getOrgNrVardgivare());
 
         if (bestallning.isEmpty()) {
             throw new IllegalArgumentException("bestallning with id: " + id.get() + " was not found");

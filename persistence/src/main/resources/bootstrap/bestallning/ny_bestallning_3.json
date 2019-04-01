@@ -12,7 +12,7 @@
     "mellannamn": "Ewa",
     "efternamn": "Nordén",
     "bakgrundNulage": null,
-    "sektretessMarkering": true
+    "sektretessMarkering": false
   },
   "handlaggare": {
     "fullstandigtNamn": "Fullt Handlaggarnamn",
@@ -26,10 +26,10 @@
     "stad": "Kostnadsstaden"
   },
   "vardenhet": {
-    "id": 3,
-    "hsaId": "TSTNMT2321000156-105N",
+    "id": 1,
+    "hsaId": "IFV1239877878-1042",
     "vardgivareHsaId": "IFV1239877878-1041",
-    "organisationId" : "org",
+    "organisationId" : "2-orgnr-1041",
     "namn": "Intygsbeställning-Enhet2",
     "epost": null,
     "standardSvar": null

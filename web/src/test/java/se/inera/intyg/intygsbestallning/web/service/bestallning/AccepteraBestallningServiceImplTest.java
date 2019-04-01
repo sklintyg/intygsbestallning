@@ -2,6 +2,7 @@ package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static se.inera.intyg.schemas.contract.Personnummer.createPersonnummer;
@@ -59,12 +60,12 @@ class AccepteraBestallningServiceImplTest {
 
     @BeforeEach
     void setup() {
-        Mockito.when(bestallningPersistenceService.getBestallningById(anyLong())).thenReturn(buildBestallning());
+        Mockito.when(bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(anyLong(), anyString(), anyString())).thenReturn(buildBestallning());
     }
 
     @Test
     void testAvvisaBestallning() {
-        AccepteraBestallningRequest request = new AccepteraBestallningRequest("1", BestallningSvar.ACCEPTERAT, "Kommentar");
+        AccepteraBestallningRequest request = new AccepteraBestallningRequest("1", "hsaId", "orgNr", BestallningSvar.ACCEPTERAT, "Kommentar");
         accepteraBestallningService.accepteraBestallning(request);
 
         verify(bestallningStatusResolver, times(1)).setStatus(any(Bestallning.class));

@@ -36,18 +36,24 @@ data class CreateBestallningRequestKontor(
 
 abstract class SimpleBestallningRequest {
     abstract val bestallningId: String
+    abstract val hsaId: String
+    abstract val orgNrVardgivare: String
     abstract val bestallningSvar: BestallningSvar
     abstract val fritextForklaring: String?
 }
 
 data class AccepteraBestallningRequest(
         override val bestallningId: String,
+        override val hsaId: String,
+        override val orgNrVardgivare: String,
         override val bestallningSvar: BestallningSvar = BestallningSvar.ACCEPTERAT,
         override val fritextForklaring: String? = null
 ) : SimpleBestallningRequest()
 
 data class AvvisaBestallningRequest(
         override val bestallningId: String,
+        override val hsaId: String,
+        override val orgNrVardgivare: String,
         override val bestallningSvar: BestallningSvar = BestallningSvar.AVVISAT,
         override val fritextForklaring: String? = null
 ) : SimpleBestallningRequest()
