@@ -1,15 +1,23 @@
-import React, {Fragment} from "react";
+import React, { Fragment } from "react";
 import { Button } from "reactstrap";
+import { DownIcon, UpIcon, UpDownIcon } from "../styles/IbSvgIcons";
 
-const TableSortHead = ({ currentSortColumn, currentSortDirection, text, sortId, onSort }) => {
-
+const TableSortHead = ({
+  currentSortColumn,
+  currentSortDirection,
+  text,
+  sortId,
+  onSort
+}) => {
   const handleSort = sortColumn => {
     onSort(sortColumn);
   };
 
   const renderSortIcon = sortColumn => {
     if (currentSortColumn === sortColumn) {
-      return currentSortDirection === "DESC" ? " v" : " ^";
+      return currentSortDirection === "DESC" ? <DownIcon /> : <UpIcon />;
+    } else {
+      return <UpDownIcon />;
     }
   };
 
@@ -22,8 +30,9 @@ const TableSortHead = ({ currentSortColumn, currentSortDirection, text, sortId, 
             handleSort(sortId);
           }}
         >
-          {text}{renderSortIcon(sortId)}
-        </Button>
+          {text}
+        </Button>{" "}
+        {renderSortIcon(sortId)}
       </th>
     </Fragment>
   );

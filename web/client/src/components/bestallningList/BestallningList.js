@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import TableSortHead from "./TableSortHead";
+import { Error } from '../styles/IbSvgIcons'
+
 const Table = styled.table`
   padding-top: 10px;
 
@@ -88,7 +90,7 @@ const BestallningarList = ({ bestallningList, onSort }) => {
               <td>{bestallning.intygTyp}</td>
               <td>{bestallning.invanare.personId}</td>
               <td>{bestallning.invanare.name}</td>
-              <td>{bestallning.status}</td>
+              <td>{bestallning.status === 'Oläst' ? <Error /> : null } {bestallning.status}</td>
               <td>{bestallning.ankomstDatum}</td>
               <td>
                 <Link to={`/bestallning/${bestallning.id}`}>Visa</Link>

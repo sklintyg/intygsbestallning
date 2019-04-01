@@ -1,6 +1,23 @@
 import React from 'react';
 import IbColors from "../styles/IbColors";
 
+export const UpDownIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="#000" width="12px" height="12px" viewBox="0 -150 1000 1000">
+    <path d="M392 474h-392l194 188 198 188 194-188 195-188h-389z m-392-247l194-189 195-188 194 188 195 189h-386-392z" />
+  </svg>
+)
+
+export const DownIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="#000" width="12px" height="12px" viewBox="0 -150 1000 1000">
+    <path d="M0 227l194-189 195-188 194 188 195 189h-386-392z" horiz-adv-x="784"/>
+  </svg>
+)
+
+export const UpIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="#000" width="12px" height="12px" viewBox="0 -150 1000 1000">
+    <path d="M392 474h-392l194 188 198 188 194-188 195-188h-389z" />
+  </svg>
+)
 
 export const ExpandIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill={IbColors.IB_COLOR_08} width="24px" height="24px" viewBox="0 0 24 24">
@@ -106,7 +123,7 @@ export const Alarm = () => (
 
 //ib-ikon-49
 export const Error = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill={IbColors.IB_COLOR_06} width="24px" height="24px" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" fill={IbColors.IB_COLOR_06} width="16px" height="16px" viewBox="0 0 24 24">
     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
   </svg>
 )
