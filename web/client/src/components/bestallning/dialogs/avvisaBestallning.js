@@ -30,7 +30,7 @@ const AvvisaBestallning = ({handleOpen, handleClose, isOpen, accept}) => {
 
   return (
     <Fragment>
-      <StyledButton onClick={handleOpen}><Block color={IbColors.IB_COLOR_00}/> Avvisa</StyledButton>
+      <StyledButton onClick={handleOpen} color="primary"><Block color={IbColors.IB_COLOR_00}/> Avvisa</StyledButton>
       <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
         <ModalHeader toggle={handleClose}>Avvisa</ModalHeader>
         <ModalBody>

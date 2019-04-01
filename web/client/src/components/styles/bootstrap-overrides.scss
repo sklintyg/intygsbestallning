@@ -52,7 +52,6 @@ $alert-padding-x: 0.5rem;
 @import '~bootstrap/scss/_utilities';
 //@import '~bootstrap/scss/_print';
 
-
 // Bootstrap non-variable overrides for those things we cannot affect with just using variables.
 
 //1. Modal footer buttons should be left aligned
@@ -62,4 +61,65 @@ $alert-padding-x: 0.5rem;
 
 .alert-info {
   color: $ib-color-06;
+}
+
+// Button override för ib-tema
+@mixin btn-common-mixin($color, $background, $border) {
+  font-weight: normal;
+  cursor: pointer;
+  white-space: nowrap;
+
+  border-color: $border;
+  background-color: $background;
+  color: $color;
+
+  &:focus,
+  &:active,
+  &:active:focus {
+    border-color: $border;
+    background-color: $background;
+    color: $color;
+    box-shadow: 0 0 8px -3px #000;
+  }
+
+  &:hover,
+  &:active:hover,
+  &.active,
+  &.active:hover,
+  &.active:focus {
+    background-color: $ib-color-21;
+    border-color: $ib-color-21;
+    color: $ib-color-00;
+    box-shadow: 0 0 8px -3px #000;
+  }
+
+  &,
+  &:hover,
+  &:focus,
+  &:active,
+  &:active:focus,
+  &.active {
+    &:disabled, fieldset[disabled] & {
+      background-color: $ib-color-13;
+      border-color: $ib-color-13;
+      color: $ib-color-22;
+      opacity: 1;
+    }
+  }
+}
+
+.btn-primary {
+  @include btn-common-mixin($ib-color-00, $ib-color-14, $ib-color-14);
+}
+
+.btn-success {
+  @include btn-common-mixin($ib-color-00, $ib-color-16, $ib-color-16);
+}
+
+.btn-default {
+  @include btn-common-mixin($ib-color-17, $ib-color-00, $ib-color-17);
+}
+
+.btn-secondary {
+  @include btn-common-mixin($ib-color-08, $ib-color-15, $ib-color-15);
 }

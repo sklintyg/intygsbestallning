@@ -25,7 +25,7 @@ const AccepteraBestallning = ({handleOpen, handleClose, isOpen, accept}) => {
 
   return (
     <Fragment>
-      <StyledButton onClick={handleOpen}><Check color={IbColors.IB_COLOR_00}/> Acceptera</StyledButton>
+      <StyledButton onClick={handleOpen} color="primary"><Check color={IbColors.IB_COLOR_00}/> Acceptera</StyledButton>
       <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
         <ModalHeader toggle={handleClose}>Acceptera</ModalHeader>
         <ModalBody>
