@@ -43,7 +43,6 @@ const IconSpan = styled(IbTypo09)`
     position: absolute;
     left: -17px;
     width: 16px;
-    top: -4px;
   }
 `
 

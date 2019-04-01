@@ -9,7 +9,7 @@ export const UpDownIcon = () => (
 
 export const DownIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="#000" width="12px" height="12px" viewBox="0 -150 1000 1000">
-    <path d="M0 227l194-189 195-188 194 188 195 189h-386-392z" horiz-adv-x="784"/>
+    <path d="M0 227l194-189 195-188 194 188 195 189h-386-392z"/>
   </svg>
 )
 
