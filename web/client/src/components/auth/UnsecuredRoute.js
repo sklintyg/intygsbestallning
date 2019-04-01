@@ -1,6 +1,7 @@
 import React from 'react';
 import {Redirect, Route} from 'react-router-dom';
 import {connect} from 'react-redux'
+import Loading from './Loading';
 
 const mapStateToProps = (state) => {
   return {
@@ -9,15 +10,11 @@ const mapStateToProps = (state) => {
   };
 };
 
-const UnsecuredRoute = (props) => {
-  const {component: Component, isAuthenticated, isErrorPage, isLoading, ...rest} = props;
+const UnsecuredRoute = ({component: Component, isAuthenticated, isErrorPage, isLoading, ...rest}) => {
 
-  if(isLoading){
-    return (
-      <div style={{textAlign:'center',marginTop:'1rem'}}>
-        Loading...
-      </div>)
-}
+  if (isLoading){
+    return <Loading />
+  }
 
   return (
     <Route {...rest} render={(props) => {
@@ -25,7 +22,8 @@ const UnsecuredRoute = (props) => {
         return <Redirect to='/bestallningar/AKTUELLA' />;
       }
       return (<Component {...props}/>)
-    }} />);
+    }} />
+  );
 }
 
 export default connect(mapStateToProps)(UnsecuredRoute);

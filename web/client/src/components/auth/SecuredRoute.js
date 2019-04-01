@@ -1,6 +1,7 @@
 import React from 'react';
 import {Redirect, Route} from 'react-router-dom';
 import {connect} from 'react-redux'
+import Loading from './Loading';
 
 const mapStateToProps = (state) => {
   return {
@@ -10,18 +11,14 @@ const mapStateToProps = (state) => {
   };
 };
 
-const SecuredRoute = (props) => {
-  const {component: Component, path, isAuthenticated, isLoading, hasCurrentUnit, allowMissingUnit} = props;
+const SecuredRoute = ({component: Component, isAuthenticated, isLoading, hasCurrentUnit, allowMissingUnit, ...rest}) => {
 
-  if(!isAuthenticated && isLoading){
-    return (
-      <div style={{textAlign:'center',marginTop:'1rem'}}>
-        Loading...
-      </div>)
-}
+  if (!isAuthenticated && isLoading){
+    return <Loading />
+  }
 
   return (
-    <Route path={path} render={(props) => {
+    <Route {...rest} render={(props) => {
       if (!isAuthenticated) {
         return <Redirect to='/' />;
       }
@@ -30,7 +27,8 @@ const SecuredRoute = (props) => {
       }
 
       return (<Component {...props}/>)
-    }} />);
+    }} />
+  );
 }
 
 export default connect(mapStateToProps)(SecuredRoute);
