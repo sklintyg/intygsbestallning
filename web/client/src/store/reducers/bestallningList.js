@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { buildClientError } from './util';
 
 const createBestallningarList = filter => {
   const bestallningList = (
@@ -34,7 +35,7 @@ const createBestallningarList = filter => {
     }
     switch (action.type) {
       case 'FETCH_BESTALLNINGAR_FAILURE':
-        return action.message;
+        return buildClientError(action.payload, 'error.bestallninglist').message;
       case 'FETCH_BESTALLNINGAR_REQUEST':
       case 'FETCH_BESTALLNINGAR_SUCCESS':
         return null;
@@ -75,7 +76,7 @@ export default bestallningarReducer;
 
 // Selectors
 
-export const getVisibleBestallningList = (state, filter) => 
+export const getVisibleBestallningList = (state, filter) =>
   state.bestallningList.listBestallningarByFilter[filter].bestallningList;
 
 export const getIsFetching = (state, filter) =>

@@ -22,9 +22,9 @@ export const getUser = () => {
         payload: json
       })
     ).catch(
-      error => dispatch({
+      errorResponse => dispatch({
         type: GET_USER_FAILURE,
-        payload: error
+        payload: errorResponse
       })
     );
   }

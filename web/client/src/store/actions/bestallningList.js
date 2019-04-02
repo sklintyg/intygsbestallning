@@ -21,11 +21,11 @@ export const fetchBestallningList = (bestallningRequest) => (dispatch, getState)
         response: response,
       });
     },
-    error => {
+    errorResponse => {
       dispatch({
         type: 'FETCH_BESTALLNINGAR_FAILURE',
         categoryFilter,
-        message: error.message || 'Something went wrong.',
+        payload: errorResponse
       });
     }
   );
