@@ -1,6 +1,11 @@
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
-import org.aspectj.weaver.ast.Var;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static se.inera.intyg.schemas.contract.Personnummer.createPersonnummer;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,13 +13,11 @@ import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
+import java.util.Optional;
 import se.inera.intyg.infra.integration.hsa.services.HsaOrganizationsService;
 import se.inera.intyg.infra.integration.pu.model.Person;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
-import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
 import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
@@ -29,17 +32,6 @@ import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersisten
 import se.inera.intyg.intygsbestallning.persistence.service.InvanarePersistenceService;
 import se.inera.intyg.intygsbestallning.persistence.service.VardenhetPersistenceService;
 import se.inera.intyg.schemas.contract.Personnummer;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Optional;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static se.inera.intyg.schemas.contract.Personnummer.createPersonnummer;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(JUnitPlatform.class)
@@ -84,7 +76,6 @@ class CreateBestallningServiceImplTest {
     void testCreateBestallning() {
         createBestallningService.create(buildBestallningRequest());
         verify(notifieringSendService, times(1)).nyBestallning(any(Bestallning.class));
-
     }
 
     private CreateBestallningRequest buildBestallningRequest() {

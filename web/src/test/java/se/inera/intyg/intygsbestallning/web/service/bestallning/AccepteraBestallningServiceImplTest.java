@@ -7,10 +7,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static se.inera.intyg.schemas.contract.Personnummer.createPersonnummer;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +16,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Optional;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningSvar;
@@ -28,7 +26,6 @@ import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
 import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
 import se.inera.intyg.intygsbestallning.common.dto.AccepteraBestallningRequest;
-import se.inera.intyg.intygsbestallning.common.dto.AvvisaBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.integration.client.RespondToOrderService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;

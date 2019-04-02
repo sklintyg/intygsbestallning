@@ -1,0 +1,6 @@
+<bestallning giltigFrom="2019-01-01" typ="TEST" version="1.0" bild="TEST_LOGO.png">
+  <texter>
+    <text id="TEST_1">Text tillhörande id TEST_1</text>
+    <text id="TEST_2">Text tillhörande id TEST_2</text>
+  </texter>
+</bestallning>

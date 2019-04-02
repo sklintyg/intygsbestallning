@@ -53,7 +53,7 @@ public class BestallningTextServiceImpl implements BestallningTextService {
         return getBestallningTexter(bestallning.getIntygTyp(), bestallning.getIntygVersion())
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Bestallning text resources for bestallning is not supported for Type: " +
-                                bestallning.getIntygTyp() + " and Version: " + "1.0"));
+                                bestallning.getIntygTyp() + " and Version: " + bestallning.getIntygVersion()));
     }
 
     @Override
