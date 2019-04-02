@@ -34,16 +34,26 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
 
     private MailService mailService;
     private MailTextService mailTextService;
+    private NotifieringMailBodyFactory notifieringMailBodyFactory;
+    private MaillinkRedirectUrlBuilder maillinkRedirectUrlBuilder;
 
-    public NotifieringSendServiceImpl(MailService mailService, MailTextService mailTextService) {
+    public NotifieringSendServiceImpl(
+            MailService mailService,
+            MailTextService mailTextService,
+            NotifieringMailBodyFactory notifieringMailBodyFactory,
+            MaillinkRedirectUrlBuilder maillinkRedirectUrlBuilder) {
         this.mailService = mailService;
         this.mailTextService = mailTextService;
+        this.notifieringMailBodyFactory = notifieringMailBodyFactory;
+        this.maillinkRedirectUrlBuilder = maillinkRedirectUrlBuilder;
     }
 
     @Override
     public void nyBestallning(Bestallning bestallning) {
         var nyBestallning = NotifieringTyp.NY_BESTALLNING;
-        var mailContent = mailTextService.getMailContent(nyBestallning, bestallning.getIntygTyp());
+        var mailTexter= mailTextService.getMailContent(nyBestallning, bestallning.getIntygTyp());
+        notifieringMailBodyFactory.buildBody(bestallning, mailTexter, "");
+
     }
 
     @Override

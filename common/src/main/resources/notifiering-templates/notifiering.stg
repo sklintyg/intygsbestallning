@@ -40,31 +40,22 @@ mail(data) ::= <<
                         <tr>
                             <td align="left" valign="top">
 
-                                    <h1>Hej!</h1>
-                                    <p>
-                                        $data.message$
-                                    </p>
-
-                                    <p>Klicka på följande länk för att ta del av $data.linkType$:</p>
+                                    <h1>$data.texter.halsning.text$</h1>
+                                    <p>$data.texter.body.text1$</p>
 
                                     <p>
-                                    <a href="$data.url$">$data.url$</a>
+                                        <a href="$data.url$">$data.url$</a>
                                     </p>
 
-                                    <p>
-                                      Vid problem med att klicka på ovanstående länk kan du klippa ut den och klistra in den i din webläsare.
-                                    </p>
-
+                                    <p>$data.texter.body.text2$</p
                             </td>
                         </tr>
                         <tr>
                             <td align="left" valign="top" id="templateFooter">
                                 <br>
-                                  <img alt="FMU logo" src="$data.hostUrl$/assets/images/fmu-mail-logo.png" height="30" width="221">
+                                  <img alt="Intygsbeställning logo" src="$data.hostUrl$/images/$data.texter.logo$" height="30" width="221">
                                 <br>
-                                Intygsbeställning är en tjänst från Inera AB som myndigheter kan använda för att skicka beställningar av medicinska utlåtanden och intyg till vården.
-                                <br><br>
-                                För att logga in i tjänsten krävs att du har SITHS- eller Efoskort, alternativt tillgång till annan Sambi-kompatibel inloggningsmetod, samt är behörig att ta del av försäkringsmedicinska utredningar (FMU).
+                                <p>$data.texter.footer.text$</p>
                             </td>
                         </tr>
                     </table>

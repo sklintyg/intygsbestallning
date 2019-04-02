@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 
 @JacksonXmlRootElement(localName = "mail")
-data class MailContent(
+data class MailTexter(
+   @JsonProperty(value = "logo") val logo: String,
    @JsonProperty(value = "intyg") val intyg: String,
    @JsonProperty(value = "typ") val typ: String,
    @JsonProperty(value = "arenderad") val arendeRad: ArendeRad,
@@ -21,7 +22,7 @@ data class Halsning(
 )
 
 data class Body(
-   @JsonProperty(value = "text1") val text1: String,
+   @JsonProperty(value = "text1") var text1: String,
    @JsonProperty(value = "text2") val text2: String
 )
 

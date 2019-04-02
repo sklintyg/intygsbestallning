@@ -22,7 +22,12 @@ import org.springframework.stereotype.Component;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
+import se.inera.intyg.intygsbestallning.common.mail.MailContent;
 import se.inera.intyg.intygsbestallning.common.property.MailProperties;
+import se.inera.intyg.intygsbestallning.common.text.mail.MailTexter;
 
 @Component
 public class NotifieringMailBodyFactory implements MailBodyFactory {
@@ -35,29 +40,19 @@ public class NotifieringMailBodyFactory implements MailBodyFactory {
         this.mailProperties = mailProperties;
     }
 
-    public String buildBodyForUtredning(String message, String url) {
+    public String buildBody(Bestallning bestallning, MailTexter texter, String url) {
+
         ST utredningTemplate = templateGroup.getInstanceOf("mail");
-        utredningTemplate.add("data", new MailContent(mailProperties.getHost(), message, "utredningen", url));
+        enrichInkomstDatum(bestallning, texter);
+        utredningTemplate.add("data", new MailContent(mailProperties.getHost(), texter, url));
+
         return utredningTemplate.render();
     }
 
-    public String buildBodyForForfragan(String message, String url) {
-        ST forfraganTemplate = templateGroup.getInstanceOf("mail");
-        forfraganTemplate.add("data", new MailContent(mailProperties.getHost(), message, "förfrågan", url));
-        return forfraganTemplate.render();
-    }
+    private void enrichInkomstDatum(Bestallning bestallning, MailTexter mailTexter) {
+        var daysAgo = ChronoUnit.DAYS.between(bestallning.getAnkomstDatum(), LocalDate.now());
+        var replaced = mailTexter.getBody().getText1().replace("{0}", Long.toString(daysAgo));
 
-    private static final class MailContent {
-        private String hostUrl;
-        private String message;
-        private String linkType;
-        private String url;
-
-        MailContent(String hostUrl, String message, String linkType, String url) {
-            this.hostUrl = hostUrl;
-            this.message = message;
-            this.linkType = linkType;
-            this.url = url;
-        }
+        mailTexter.getBody().setText1(replaced);
     }
 }

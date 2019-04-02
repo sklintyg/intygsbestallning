@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
 import se.inera.intyg.intygsbestallning.common.property.MailProperties;
-import se.inera.intyg.intygsbestallning.common.text.mail.MailContent;
+import se.inera.intyg.intygsbestallning.common.text.mail.MailTexter;
 
 @Service
 public class MailTextServiceImpl implements MailTextService {
@@ -25,7 +25,7 @@ public class MailTextServiceImpl implements MailTextService {
     private static final Logger LOG = LoggerFactory.getLogger(lookup().lookupClass());
     private static final String ACTION = "Initiate Intygsbestallning Mail Text Resources";
 
-    private List<MailContent> mailContentList = Lists.newArrayList();
+    private List<MailTexter> mailTexterList = Lists.newArrayList();
 
     private MailProperties mailProperties;
 
@@ -34,7 +34,7 @@ public class MailTextServiceImpl implements MailTextService {
     }
 
     @Override
-    public MailContent getMailContent(NotifieringTyp typ, String intyg) {
+    public MailTexter getMailContent(NotifieringTyp typ, String intyg) {
 
         if (typ == null) {
             throw new IllegalArgumentException("typ may not be null");
@@ -44,7 +44,7 @@ public class MailTextServiceImpl implements MailTextService {
             throw new IllegalArgumentException("intyg may not be null");
         }
 
-        return mailContentList.stream()
+        return mailTexterList.stream()
                 .filter(content -> content.getTyp().equals(typ.name()) && content.getIntyg().equals(intyg))
                 .collect(MoreCollectors.toOptional())
                 .orElseThrow(() -> new IllegalArgumentException(
@@ -70,12 +70,12 @@ public class MailTextServiceImpl implements MailTextService {
                 .filter(Files::isRegularFile)
                 .collect(Collectors.toList());
 
-        var tempList = Lists.<MailContent>newArrayList();
+        var tempList = Lists.<MailTexter>newArrayList();
         for (var filePath : filePaths) {
             var file = filePath.toFile();
-            var mailContent = xmlMapper.readValue(file, MailContent.class);
+            var mailContent = xmlMapper.readValue(file, MailTexter.class);
             tempList.add(mailContent);
         }
-        mailContentList.addAll(tempList);
+        mailTexterList.addAll(tempList);
     }
 }
