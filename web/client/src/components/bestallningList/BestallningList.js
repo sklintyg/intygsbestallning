@@ -9,6 +9,12 @@ const ResultLine = styled.div`
   padding: 20px 0 10px 0;
 `;
 
+const Wrapper = styled.div`
+  & th:last-child {
+    width: 1%;
+  }
+`
+
 const BestallningarList = ({ bestallningList, onSort }) => {
   if (bestallningList.bestallningar.length === 0) {
     return (
@@ -24,7 +30,7 @@ const BestallningarList = ({ bestallningList, onSort }) => {
   };
 
   return (
-    <div>
+    <Wrapper>
       <ResultLine>
         Visar {bestallningList.start}-{bestallningList.end} av{" "}
         {bestallningList.totalElements} träffar
@@ -85,7 +91,7 @@ const BestallningarList = ({ bestallningList, onSort }) => {
           ))}
         </tbody>
       </Table>
-    </div>
+    </Wrapper>
   );
 };
 

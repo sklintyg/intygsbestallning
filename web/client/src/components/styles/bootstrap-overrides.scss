@@ -165,7 +165,6 @@ input[type=text] {
 
 // Table
 
-
 /* table striped style for all webcert */
 .ib-table-striped {
   border-collapse: separate;
@@ -254,69 +253,26 @@ input[type=text] {
 
 // Font
 
-@font-face {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 300;
-  src: local('Roboto Light'), local('Roboto-Light'),
-  url('/components/styles/fonts/Roboto-Light.woff2') format('woff2'),
-  url('/components/styles/fonts/Roboto-Light.woff') format('woff');
-}
-
-@font-face {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 400;
-  src: local('Roboto'), local('Roboto-Regular'),
-  url('/components/styles/fonts/Roboto-Regular.woff2') format('woff2'),
-  url('/components/styles/fonts/Roboto-Regular.woff') format('woff');
-}
-
-@font-face {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  src: local('Roboto Medium'), local('Roboto-Medium'),
-  url('/components/styles/fonts/Roboto-Medium.woff2') format('woff2'),
-  url('/components/styles/fonts/Roboto-Medium.woff') format('woff');
-}
-
-@font-face {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 700;
-  src: local('Roboto Bold'), local('Roboto-Bold'),
-  url('/components/styles/fonts/Roboto-Bold.woff2') format('woff2'),
-  url('/components/styles/fonts/Roboto-Bold.woff') format('woff');
-}
-
-//Font priority
-$font-0: Roboto;
-$font-1: helvetica;
-$font-2: arial;
-$font-3: sans-serif;
-
-
 @mixin font-variant-light($font-size: 14px) {
-  font-family: $font-0, $font-1, $font-2, $font-3;
+  font-family: $font-family-sans-serif;
   font-size: $font-size;
   font-weight: 300;
 }
 
 @mixin font-variant-regular($font-size: 14px) {
-  font-family: $font-0, $font-1, $font-2, $font-3;
+  font-family: $font-family-sans-serif;
   font-size: $font-size;
   font-weight: 400;
 }
 
 @mixin font-variant-medium($font-size: 14px) {
-  font-family: $font-0, $font-1, $font-2, $font-3;
+  font-family: $font-family-sans-serif;
   font-size: $font-size;
   font-weight: 500;
 }
 
 @mixin font-variant-bold($font-size: 14px) {
-  font-family: $font-0, $font-1, $font-2, $font-3;
+  font-family: $font-family-sans-serif;
   font-size: $font-size;
   font-weight: 700;
 }
