@@ -40,10 +40,15 @@ public class MailTextServiceImpl implements MailTextService {
             throw new IllegalArgumentException("typ may not be null");
         }
 
+        if (intyg == null) {
+            throw new IllegalArgumentException("intyg may not be null");
+        }
+
         return mailContentList.stream()
                 .filter(content -> content.getTyp().equals(typ.name()) && content.getIntyg().equals(intyg))
                 .collect(MoreCollectors.toOptional())
-                .orElseThrow(() -> new IllegalArgumentException("Mail Content for type: " + typ + "does not exist"));
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Mail Content for type: " + typ + " and intyg: " + intyg + " does not exist"));
     }
 
     @PostConstruct

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<mail>
+  <intyg>TEST_INTYG</intyg>
+  <typ>NY_BESTALLNING</typ>
+  <arenderad>
+    <arende>arende</arende>
+  </arenderad>
+  <halsning>
+    <text>text</text>
+  </halsning>
+  <body>
+    <text1>detta är text 1</text1>
+    <text2>detta är text 2</text2>
+  </body>
+  <footer>
+    <text>text</text>
+  </footer>
+</mail>
