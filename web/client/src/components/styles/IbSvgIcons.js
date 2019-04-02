@@ -74,7 +74,7 @@ export const InfoIcon = ({color}) => (
 
 //ib-ikon-17
 export const ArrowBack = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill={IbColors.IB_COLOR_06} width="24px" height="24px" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" fill={IbColors.IB_COLOR_06} width="16px" height="16px" viewBox="0 0 24 24">
     <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
   </svg>
 )

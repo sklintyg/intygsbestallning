@@ -4,23 +4,21 @@ import modalContainer from '../../modalContainer/modalContainer'
 import { compose } from 'recompose'
 import IbAlert, { alertType } from '../../alert/Alert'
 
-const SkrivUtBestallning = ({handleOpen, handleClose, isOpen, accept, sekretess}) => (
+const SkrivUtBestallning = ({ handleOpen, handleClose, isOpen, accept, sekretess }) => (
   <Fragment>
-    {sekretess ? <DropdownItem onClick={handleOpen}>Förfrågan</DropdownItem> :
-    <DropdownItem onClick={accept}>Förfrågan</DropdownItem>}
+    <DropdownItem onClick={sekretess ? handleOpen : accept}>Förfrågan</DropdownItem>
     <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
       <ModalHeader toggle={handleClose}>Skriv ut beställning</ModalHeader>
       <ModalBody>
         <IbAlert type={alertType.SEKRETESS}>Invånaren har sekretessmarkering. Hantera utskriften varsamt.</IbAlert>
       </ModalBody>
       <ModalFooter>
-        <Button color={'secondary'} outline={true} onClick={() => {handleClose()}}>Avbryt</Button>
-        <Button color={'primary'} onClick={() => {accept(); handleClose()}}>Skriv ut</Button>
+        <Button color={'primary'} onClick={() => { accept(); handleClose() }}>Skriv ut</Button>
+        <Button color={'default'} onClick={() => { handleClose() }}>Avbryt</Button>
       </ModalFooter>
     </Modal>
   </Fragment>
 )
-
 
 export default compose(
   modalContainer('skrivUtBestallning')

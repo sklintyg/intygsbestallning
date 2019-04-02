@@ -42,7 +42,9 @@ const IconSpan = styled(IbTypo09)`
   svg {
     position: absolute;
     left: -17px;
-    width: 16px;
+  }
+  &.hand {
+    cursor: pointer;
   }
 `
 
@@ -50,7 +52,7 @@ const BestallningHeader = ({props}) => (
   <HeaderContainer>
     <CenterContainer>
       <div>
-        <IconSpan onClick={props.history.goBack} as="span" color={IbColors.IB_COLOR_07}><ArrowBack/>Tillbaka till lista</IconSpan>
+        <IconSpan onClick={props.history.goBack} className="hand" color={IbColors.IB_COLOR_07} as="span"><ArrowBack/>Tillbaka till lista</IconSpan>
         <IbTypo09 as="span" color={IbColors.IB_COLOR_07}>Förfrågan av Intygstyp '{props.bestallning.intygTyp}'</IbTypo09>
         <IconSpan as="span" color={IbColors.IB_COLOR_07}><Error/>Status {props.bestallning.status}</IconSpan>
         <IbTypo09 as="span" color={IbColors.IB_COLOR_07}>Inkom {props.bestallning.ankomstDatum}</IbTypo09>

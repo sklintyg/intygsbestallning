@@ -41,9 +41,9 @@ const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestalln
       { bestallning.status === 'Läst' ? <AccepteraBestallning accept={accept} /> : null }
       { bestallning.status === 'Läst' ? <AvvisaBestallning accept={reject} /> : null }
       { bestallning.status === 'Accepterad' ? <StyledButton onClick={complete}><Check color={IbColors.IB_COLOR_00}/> Klarmakera</StyledButton> : null }
-      <StyledButton onClick={vidarebefodra} color="primary"><Reply color={IbColors.IB_COLOR_00}/> Vidarebefodra</StyledButton>
+      <StyledButton onClick={vidarebefodra} color={'primary'}><Reply color={IbColors.IB_COLOR_00}/> Vidarebefodra</StyledButton>
       <UncontrolledButtonDropdown>
-        <DropdownToggle caret color="primary">
+        <DropdownToggle caret color={'primary'}>
         <Print color={IbColors.IB_COLOR_00}/> Skriv ut
         </DropdownToggle>
         <DropdownMenu>

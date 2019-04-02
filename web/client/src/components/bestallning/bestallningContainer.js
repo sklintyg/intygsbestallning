@@ -21,6 +21,11 @@ const BestallningContainer = ({ errorMessage, bestallning, history }) => {
 
     if (errorMessage) {
       console.log(errorMessage);
+      return (
+        <FlexColumnContainer>
+          errorMessage
+        </FlexColumnContainer>
+      )
     }
 
     return (bestallningIsEmpty ? null :

@@ -29,7 +29,7 @@ const AvvisaBestallning = ({handleOpen, handleClose, isOpen, accept}) => {
 
   return (
     <Fragment>
-      <StyledButton onClick={handleOpen} color="primary"><Block color={IbColors.IB_COLOR_00}/> Avvisa</StyledButton>
+      <StyledButton onClick={handleOpen} color={'primary'}><Block color={IbColors.IB_COLOR_00}/> Avvisa</StyledButton>
       <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
         <ModalHeader toggle={handleClose}>Avvisa</ModalHeader>
         <ModalBody>
@@ -42,8 +42,8 @@ const AvvisaBestallning = ({handleOpen, handleClose, isOpen, accept}) => {
           <Textarea rows="5" onChange={handleTextareaChange} />
         </ModalBody>
         <ModalFooter>
-          <Button color={'secondary'} outline={true} onClick={() => {handleClose()}}>Avbryt</Button>
           <Button color={'primary'} disabled={avvisa === undefined} onClick={() => {accept(fritextForklaring, avvisa); handleClose()}}>Bekräfta</Button>
+          <Button color={'default'} onClick={() => {handleClose()}}>Avbryt</Button>
         </ModalFooter>
       </Modal>
     </Fragment>

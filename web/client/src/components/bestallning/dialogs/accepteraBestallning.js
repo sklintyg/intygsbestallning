@@ -24,7 +24,7 @@ const AccepteraBestallning = ({handleOpen, handleClose, isOpen, accept}) => {
 
   return (
     <Fragment>
-      <StyledButton onClick={handleOpen} color="primary"><Check color={IbColors.IB_COLOR_00}/> Acceptera</StyledButton>
+      <StyledButton onClick={handleOpen} color={'primary'}><Check color={IbColors.IB_COLOR_00}/> Acceptera</StyledButton>
       <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
         <ModalHeader toggle={handleClose}>Acceptera</ModalHeader>
         <ModalBody>
@@ -33,8 +33,8 @@ const AccepteraBestallning = ({handleOpen, handleClose, isOpen, accept}) => {
           <Textarea rows="5" onChange={handleChange} />
         </ModalBody>
         <ModalFooter>
-          <Button color={'secondary'} outline={true} onClick={() => {handleClose()}}>Avbryt</Button>
           <Button color={'primary'} onClick={() => {accept(fritextForklaring); handleClose()}}>Bekräfta</Button>
+          <Button color={'default'} onClick={() => {handleClose()}}>Avbryt</Button>
         </ModalFooter>
       </Modal>
     </Fragment>
