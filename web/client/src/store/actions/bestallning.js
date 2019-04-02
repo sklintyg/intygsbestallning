@@ -13,6 +13,10 @@ export const REJECT_BESTALLNING_REQUEST = "REJECT_BESTALLNING_REQUEST";
 export const REJECT_BESTALLNING_SUCCESS = "REJECT_BESTALLNING_SUCCESS";
 export const REJECT_BESTALLNING_FAILURE = "REJECT_BESTALLNING_FAILURE";
 
+export const COMPLETE_BESTALLNING_REQUEST = "COMPLETE_BESTALLNING_REQUEST";
+export const COMPLETE_BESTALLNING_SUCCESS = "COMPLETE_BESTALLNING_SUCCESS";
+export const COMPLETE_BESTALLNING_FAILURE = "COMPLETE_BESTALLNING_FAILURE";
+
 export const fetchBestallning = id => (dispatch, getState) => {
     if (isFetching(getState())) {
         return Promise.resolve();
@@ -83,4 +87,26 @@ export const rejectBestallning = (id, fritextForklaring) => (dispatch) => {
             });
         }
     );
+};
+
+export const completeBestallning = (id) => (dispatch) => {
+  dispatch({
+    type: COMPLETE_BESTALLNING_REQUEST,
+    id
+  });
+
+  return api.completeBestallning(id).then(
+    () => {
+      dispatch({
+        type: COMPLETE_BESTALLNING_SUCCESS
+      });
+    },
+    errorResponse => {
+      dispatch({
+        type: REJECT_BESTALLNING_FAILURE,
+        id,
+        payload: errorResponse
+      });
+    }
+  );
 };

@@ -6,9 +6,11 @@ const bestallning = (state = {}, action) => {
         case ActionConstants.FETCH_BESTALLNING_SUCCESS:
             return action.response;
         case ActionConstants.ACCEPTERA_BESTALLNING_SUCCESS:
-            return {...state, status: 'ACCEPTERAD'}
+            return {...state, status: 'Accepterad'}
         case ActionConstants.REJECT_BESTALLNING_SUCCESS:
-            return {...state, status: 'AVVISAD'}
+            return {...state, status: 'Avvisad'}
+        case ActionConstants.COMPLETE_BESTALLNING_SUCCESS:
+            return {...state, status: 'Klar'}
         case ActionConstants.FETCH_BESTALLNING_REQUEST:
             return {}
         default:
@@ -33,6 +35,7 @@ const errorMessage = (state = null, action) => {
         case ActionConstants.FETCH_BESTALLNING_FAILURE:
         case ActionConstants.REJECT_BESTALLNING_FAILURE:
         case ActionConstants.ACCEPTERA_BESTALLNING_FAILURE:
+        case ActionConstants.COMPLETE_BESTALLNING_FAILURE:
             return action.payload;
         case ActionConstants.FETCH_BESTALLNING_REQUEST:
         case ActionConstants.FETCH_BESTALLNING_SUCCESS:

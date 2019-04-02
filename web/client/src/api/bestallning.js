@@ -13,3 +13,6 @@ export const accepteraBestallning = (id, fritextForklaring) =>
 
 export const rejectBestallning = (id, fritextForklaring) =>
   api.rejectBestallning(id, fritextForklaring);
+
+export const completeBestallning = (id) =>
+  api.completeBestallning(id);

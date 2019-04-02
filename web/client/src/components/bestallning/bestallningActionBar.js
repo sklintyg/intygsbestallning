@@ -12,7 +12,7 @@ const StyledButton = styled(Button)`
   margin-right: 16px;
 `
 
-const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestallning}) => {
+const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestallning, completeBestallning}) => {
 
   const accept = (fritextForklaring) => accepteraBestallning(bestallning.id, {fritextForklaring});
   
@@ -25,7 +25,7 @@ const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestalln
   }
   
   const complete = () => {
-    //completeBestallning(bestallning.id, 'COMPLETED');
+    completeBestallning(bestallning.id, 'COMPLETED');
   }
 
   const vidarebefodra = () => {
@@ -40,7 +40,7 @@ const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestalln
     <Fragment>
       { bestallning.status === 'Läst' ? <AccepteraBestallning accept={accept} /> : null }
       { bestallning.status === 'Läst' ? <AvvisaBestallning accept={reject} /> : null }
-      { bestallning.status === 'Accepterad' ? <StyledButton onClick={complete}><Check color={IbColors.IB_COLOR_00}/> Klarmakera</StyledButton> : null }
+      { bestallning.status === 'Accepterad' ? <StyledButton onClick={complete} color={'primary'}><Check color={IbColors.IB_COLOR_00}/> Klarmarkera</StyledButton> : null }
       <StyledButton onClick={vidarebefodra} color={'primary'}><Reply color={IbColors.IB_COLOR_00}/> Vidarebefodra</StyledButton>
       <UncontrolledButtonDropdown>
         <DropdownToggle caret color={'primary'}>
