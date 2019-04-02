@@ -50,7 +50,6 @@ const AvvisaBestallning = ({handleOpen, handleClose, isOpen, accept}) => {
   )
 }
 
-
 export default compose(
   modalContainer('avvisaBestallning')
 )(AvvisaBestallning)
