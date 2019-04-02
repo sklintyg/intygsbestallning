@@ -48,6 +48,7 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
         if (bestallning.get().getStatus() == BestallningStatus.OLAST) {
             bestallning.get().getHandelser().add(Handelse.Factory.las());
             bestallningStatusResolver.setStatus(bestallning.get());
+            bestallningPersistenceService.updateBestallning(bestallning.get());
         }
 
         var bestallningTexter = bestallningTextService.getBestallningTexter(bestallning.get());

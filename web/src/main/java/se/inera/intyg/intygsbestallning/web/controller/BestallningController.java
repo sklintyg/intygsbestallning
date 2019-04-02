@@ -18,6 +18,7 @@ import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningSvar;
 import se.inera.intyg.intygsbestallning.common.dto.AccepteraBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.dto.AvvisaBestallningRequest;
+import se.inera.intyg.intygsbestallning.common.dto.KlarmarkeraBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningSortColumn;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
@@ -28,6 +29,7 @@ import se.inera.intyg.intygsbestallning.web.bestallning.AvvisaBestallning;
 import se.inera.intyg.intygsbestallning.web.bestallning.BestallningStatusKategori;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.AccepteraBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.AvvisaBestallningService;
+import se.inera.intyg.intygsbestallning.web.service.bestallning.KlarmarkeraBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.ListBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.VisaBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.user.UserService;
@@ -40,6 +42,7 @@ public class BestallningController {
     private ListBestallningService listBestallningService;
     private VisaBestallningService visaBestallningService;
     private AvvisaBestallningService avvisaBestallningService;
+    private KlarmarkeraBestallningService klarmarkeraBestallningService;
     private UserService userService;
 
     public BestallningController(
@@ -47,11 +50,13 @@ public class BestallningController {
             ListBestallningService listBestallningService,
             VisaBestallningService visaBestallningService,
             AvvisaBestallningService avvisaBestallningService,
+            KlarmarkeraBestallningService klarmarkeraBestallningService,
             UserService userService) {
         this.accepteraBestallningService = accepteraBestallningService;
         this.listBestallningService = listBestallningService;
         this.visaBestallningService = visaBestallningService;
         this.avvisaBestallningService = avvisaBestallningService;
+        this.klarmarkeraBestallningService = klarmarkeraBestallningService;
         this.userService = userService;
     }
 
@@ -164,6 +169,18 @@ public class BestallningController {
                 orgNrVardgivare,
                 BestallningSvar.AVVISAT,
                 avvisaBestallning.getFritextForklaring()));
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/klarmarkera")
+    public ResponseEntity klarmarkeraBestallning(@PathVariable String id) {
+        var user = userService.getUser();
+        var hsaId = user.getUnitContext().getId();
+        var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
+        klarmarkeraBestallningService.klarmarkeraBestallning(new KlarmarkeraBestallningRequest(
+                id,
+                hsaId,
+                orgNrVardgivare));
         return ResponseEntity.ok().build();
     }
 }
