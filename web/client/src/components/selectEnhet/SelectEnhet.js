@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components'
 import PropTypes from "prop-types";
 import Vardgivare from "./Vardgivare";
-import IbAlert from "../alert/Alert";
+import IbAlert, { alertType } from "../alert/Alert";
 
 
 const ComponentWrapper = styled.div`
@@ -15,7 +15,7 @@ function SelectEnhet({authoritiesTree, unitContext, activeError, selectEnhet}) {
   return (
     <ComponentWrapper>
       {activeError &&
-      <IbAlert type="error">{activeError.errorCode}</IbAlert>}
+      <IbAlert type={alertType.ERROR}>{activeError.message}</IbAlert>}
       {authoritiesTree.map(vg => {
           return (<Vardgivare key={vg.id}
                               vg={vg}

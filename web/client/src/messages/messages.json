@@ -1,0 +1,11 @@
+{
+  "error": {
+    "common": {
+      "unknown": "Unknown error",
+      "network_error": "Network error"
+    },
+    "user": {
+
+    }
+  }
+}

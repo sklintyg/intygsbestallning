@@ -6,6 +6,7 @@ import {
   SET_ENHET_FAILURE,
   SET_ENHET_SUCCESS
 } from "../actions/user";
+import { buildClientError } from "./util";
 
 const INITIAL_STATE = {
   isLoading: false,
@@ -35,7 +36,7 @@ export default (state = INITIAL_STATE, action) => {
       ...state,
       isLoading: false,
       isAuthenticated: false,
-      activeError: action.payload.error
+      activeError: buildClientError(action.payload, 'error.user')
     }
 
   case SET_ENHET:
@@ -56,7 +57,7 @@ export default (state = INITIAL_STATE, action) => {
     return {
       ...state,
       isLoading: false,
-      activeError: action.payload.error
+      activeError: buildClientError(action.payload, 'error.user')
     }
   default:
     return state;
