@@ -1,12 +1,49 @@
 
 const ROOT_URL = '/api/';
 
-const handleResponse = (config) => (response) => {
+const networkError = err => {
+  return Promise.reject({
+    statusCode: -1,
+    error: {
+      errorCode: 'NETWORK_ERROR',
+      message: err
+    }
+  });
+};
+
+export const handleResponse = (config) => (response) => {
   if (!response.ok) {
-    return response.json().then(errorJson => {
-      const error = {statusCode: response.status, error: errorJson};
-      throw error;
-    });
+    return response
+      .json()
+      .catch(() => {
+        if (response.status === '404') {
+          const error = {
+            statusCode: response.status,
+            error: {
+              errorCode: 'NOT_FOUND',
+              message: 'Resource not found'
+            }
+          };
+
+          throw error;
+        }
+
+        // We should never get these unless response is mangled
+        // Or API is not properly implemented
+        const error = {
+          statusCode: response.status,
+          error: {
+            errorCode: 'UNKNOWN_INTERNAL_PROBLEM',
+            message: 'Invalid or missing JSON'
+          }
+        };
+
+        throw error;
+      })
+      .then(errorJson => {
+        const error = {statusCode: response.status, error: errorJson};
+        throw error;
+      });
   }
 
   if (config) {
@@ -25,7 +62,6 @@ export const buildUrlFromParams = (path, parameters) => {
       let value = parameters[key];
 
       if (value) {
-
         parameterList.push(`${key}=${value}`);
       }
     });
@@ -40,58 +76,40 @@ export const buildUrlFromParams = (path, parameters) => {
   return path + urlParameters;
 }
 
-export const makeServerRequest = (path, config={}) => {
-    return fetch(`${ROOT_URL}${path}`).then(handleResponse(config));
-};
-
-export const makeServerPost = (path, body, config) => {
+const internalRequest = (path, fetchConfig, config = {}) => {
   const url = `${ROOT_URL}${path}`;
 
-  return fetch(url, {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body)
-  })
-  .then(handleResponse(config));
+  return fetch(url, fetchConfig)
+    .catch(networkError)
+    .then(handleResponse(config));
+}
+
+const getJsonConfig = (method, body) => ({
+  method,
+  headers: {
+      "Content-Type": "application/json",
+  },
+  body: JSON.stringify(body)
+});
+
+export const makeServerRequest = (path, config) => {
+  return internalRequest(path, {}, config)
 };
 
-export const makeServerFormPost = (path, body, config) => {
-  const url = `${ROOT_URL}${path}`;
+export const makeServerPost = (path, body, config = {}) => {
+  const fetchConfig = getJsonConfig('POST', body);
 
-  return fetch(url, {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: body
-  })
-  .then(handleResponse(config));
+  return internalRequest(path, fetchConfig, config);
 };
 
-export const makeServerPut = (path, body, config) => {
-  const url = `${ROOT_URL}${path}`;
+export const makeServerPut = (path, body, config = {}) => {
+  const fetchConfig = getJsonConfig('PUT', body);
 
-  return fetch(url, {
-    method: "PUT",
-    headers: {
-        "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body)
-  })
-  .then(handleResponse(config));
+  return internalRequest(path, fetchConfig, config);
 };
 
-export const makeServerDelete = (path, body, config) => {
-  const url = `${ROOT_URL}${path}`;
+export const makeServerDelete = (path, body, config = {}) => {
+  const fetchConfig = getJsonConfig('DELETE', body);
 
-  return fetch(url, {
-    method: "DELETE",
-    headers: {
-        "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body)
-  })
-  .then(handleResponse(config));
+  return internalRequest(path, fetchConfig, config);
 };
