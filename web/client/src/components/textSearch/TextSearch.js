@@ -15,7 +15,7 @@ const TextSearch = ({ onChange, placeholder }) => {
     <Fragment>
       <label htmlFor="textFilter">Fritextfilter</label>
       <div>
-        <input id="textFilter" type="text" placeholder={placeholder} onChange={handleChange} />
+        <input id="textFilter" type="text" maxLength={100} placeholder={placeholder} onChange={handleChange} />
       </div>
     </Fragment>
   )
