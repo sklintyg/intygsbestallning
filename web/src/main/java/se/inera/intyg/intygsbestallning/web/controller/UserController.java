@@ -15,9 +15,14 @@ import se.inera.intyg.intygsbestallning.web.controller.dto.GetUserResponse;
 import se.inera.intyg.intygsbestallning.web.service.user.UserService;
 
 @RestController
-@RequestMapping("/api/anvandare")
+@RequestMapping(UserController.API_ANVANDARE)
 public class UserController {
+
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+    protected static final String UNIT_CONTEXT = "/unit-context/";
+
+    public static final String API_ANVANDARE = "/api/anvandare";
+    public static final String API_UNIT_CONTEXT = API_ANVANDARE + UNIT_CONTEXT;
 
     private UserService userService;
 
@@ -32,7 +37,7 @@ public class UserController {
         return ResponseEntity.ok(new GetUserResponse(user));
     }
 
-    @PostMapping(path = "/unit-context/{hsaId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = UNIT_CONTEXT + "{hsaId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity changeUnitContext(@PathVariable String hsaId) {
         IntygsbestallningUser user = getIbUser();
 
