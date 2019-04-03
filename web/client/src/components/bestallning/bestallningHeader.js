@@ -63,7 +63,7 @@ const BestallningHeader = ({props}) => (
           <IbTypo01 color={IbColors.IB_COLOR_06}>{props.bestallning.invanare.personId} - {props.bestallning.invanare.name}</IbTypo01>
           {props.bestallning.invanare.sekretessMarkering ? <IbAlert type={alertType.SEKRETESS}>Patienten har sekretessmarkering</IbAlert> : null}
         </div>
-        <BestallningActionBar bestallning={props.bestallning} />
+        <BestallningActionBar bestallning={props.bestallning} goBack={props.history.goBack}/>
       </ButtonRow>
     </CenterContainer>
   </HeaderContainer>

@@ -7,12 +7,13 @@ import styled from 'styled-components'
 import { AccepteraBestallning, AvvisaBestallning, SkrivUtBestallning } from './dialogs'
 import { Check, Reply, Print } from '../styles/IbSvgIcons'
 import IbColors from '../styles/IbColors'
+import BorttagenBestallning from "./dialogs/borttagenBestallning";
 
 const StyledButton = styled(Button)`
   margin-right: 16px;
 `
 
-const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestallning, completeBestallning}) => {
+const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestallning, deleteBestallning, completeBestallning, goBack}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const accept = (fritextForklaring) => accepteraBestallning(bestallning.id, {fritextForklaring});
@@ -21,7 +22,7 @@ const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestalln
     if (avvisa) {
       rejectBestallning(bestallning.id, {fritextForklaring});
     } else {
-      //raderaBestallning();
+      deleteBestallning(bestallning.id, {fritextForklaring});
     }
   }
 
@@ -44,7 +45,7 @@ const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestalln
   return (
     <Fragment>
       { bestallning.status === 'Läst' ? <AccepteraBestallning accept={accept} /> : null }
-      { bestallning.status === 'Läst' ? <AvvisaBestallning accept={reject} /> : null }
+      { bestallning.status === 'Läst' ? <AvvisaBestallning accept={reject} goBack={goBack} /> : null }
       { bestallning.status === 'Accepterad' ? <StyledButton onClick={complete} color={'primary'}><Check color={IbColors.IB_COLOR_00}/> Klarmarkera</StyledButton> : null }
       <StyledButton onClick={vidarebefodra} color={'primary'}><Reply color={IbColors.IB_COLOR_00}/> Vidarebefodra</StyledButton>
       <ButtonDropdown isOpen={dropdownOpen} toggle={toggleDropdown}>

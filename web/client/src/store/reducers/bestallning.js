@@ -36,6 +36,7 @@ const errorMessage = (state = null, action) => {
         case ActionConstants.REJECT_BESTALLNING_FAILURE:
         case ActionConstants.ACCEPTERA_BESTALLNING_FAILURE:
         case ActionConstants.COMPLETE_BESTALLNING_FAILURE:
+        case ActionConstants.DELETE_BESTALLNING_FAILURE:
             return action.payload;
         case ActionConstants.FETCH_BESTALLNING_REQUEST:
         case ActionConstants.FETCH_BESTALLNING_SUCCESS:
@@ -43,6 +44,8 @@ const errorMessage = (state = null, action) => {
         case ActionConstants.REJECT_BESTALLNING_REQUEST:
         case ActionConstants.ACCEPTERA_BESTALLNING_REQUEST:
         case ActionConstants.ACCEPTERA_BESTALLNING_SUCCESS:
+        case ActionConstants.DELETE_BESTALLNING_REQUEST:
+        case ActionConstants.DELETE_BESTALLNING_SUCCESS:
             return null;
         default:
             return state;

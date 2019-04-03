@@ -5,6 +5,7 @@ import modalContainer from '../../modalContainer/modalContainer'
 import { compose } from 'recompose'
 import { Block } from '../../styles/IbSvgIcons'
 import IbColors from '../../styles/IbColors'
+import BorttagenBestallning from "./borttagenBestallning";
 
 const StyledButton = styled(Button)`
   margin-right: 16px;
@@ -15,7 +16,7 @@ const Textarea = styled.textarea`
   resize: none;
 `
 
-const AvvisaBestallning = ({ handleOpen, handleClose, isOpen, accept }) => {
+const AvvisaBestallning = ({ handleOpen, handleClose, isOpen, accept, goBack }) => {
   const [fritextForklaring, setFritextForklaring] = useState('')
   const [avvisa, setAvvisa] = useState(undefined)
 
@@ -93,6 +94,7 @@ const AvvisaBestallning = ({ handleOpen, handleClose, isOpen, accept }) => {
           </Button>
         </ModalFooter>
       </Modal>
+      <BorttagenBestallning onClose={goBack}/>
     </Fragment>
   )
 }
