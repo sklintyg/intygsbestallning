@@ -5,8 +5,10 @@ import com.google.common.primitives.Longs;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import io.vavr.control.Try;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -143,7 +145,7 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
         var date = Try.of(() -> LocalDate.parse(text, DateTimeFormatter.ISO_LOCAL_DATE));
         if (date.isSuccess()) {
             var from = date.get().atStartOfDay();
-            return qe.ankomstDatum.between(from, from.plusDays(1).minusSeconds(1));
+            return qe.ankomstDatum.between(from, from.plusDays(1).minus(Duration.ofMillis(1L)));
         }
         return new BooleanBuilder(qe.invanare.fornamn.containsIgnoreCase(text))
                 .or(qe.invanare.mellannamn.containsIgnoreCase(text))
