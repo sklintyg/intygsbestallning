@@ -132,7 +132,7 @@ describe('utils test', () => {
             body: {
               name: 'failed'
             },
-            status: '500',
+            status: 500,
             headers: { 'content-type': 'application/json' }
           })
 
@@ -145,7 +145,7 @@ describe('utils test', () => {
 
         it('error - from server noBody', (done) => {
           fetchMock[method.fetch]('/api/test', {
-            status: '500',
+            status: 500,
             headers: { 'content-type': 'application/json' }
           })
 
@@ -161,7 +161,7 @@ describe('utils test', () => {
 
         it('error - not found', (done) => {
           fetchMock[method.fetch]('/api/test', {
-            status: '404',
+            status: 404,
             headers: { 'content-type': 'application/json' }
           })
 
