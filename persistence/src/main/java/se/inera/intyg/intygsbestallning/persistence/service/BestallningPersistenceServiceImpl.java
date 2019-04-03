@@ -72,6 +72,12 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
     }
 
     @Override
+    public void deleteBestallning(Bestallning bestallning) {
+        var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning);
+        bestallningRepository.delete(bestallningEntity);
+    }
+
+    @Override
     public ListBestallningarResult listBestallningar(ListBestallningarQuery query) {
 
 

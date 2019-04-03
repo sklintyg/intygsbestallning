@@ -58,6 +58,14 @@ data class AvvisaBestallningRequest(
         override val fritextForklaring: String? = null
 ) : SimpleBestallningRequest()
 
+data class RaderaBestallningRequest(
+        override val bestallningId: String,
+        override val hsaId: String,
+        override val orgNrVardgivare: String,
+        override val bestallningSvar: BestallningSvar = BestallningSvar.RADERAT,
+        override val fritextForklaring: String? = null
+) : SimpleBestallningRequest()
+
 data class KlarmarkeraBestallningRequest(
     val bestallningId: String,
     val hsaId: String,

@@ -24,15 +24,18 @@ import se.inera.intyg.intygsbestallning.common.dto.KlarmarkeraBestallningRequest
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningSortColumn;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
+import se.inera.intyg.intygsbestallning.common.dto.RaderaBestallningRequest;
 import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
 import se.inera.intyg.intygsbestallning.web.bestallning.AccepteraBestallning;
 import se.inera.intyg.intygsbestallning.web.bestallning.AvvisaBestallning;
 import se.inera.intyg.intygsbestallning.web.bestallning.BestallningStatusKategori;
+import se.inera.intyg.intygsbestallning.web.bestallning.RaderaBestallning;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.AccepteraBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.AvvisaBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.KlarmarkeraBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.ListBestallningService;
+import se.inera.intyg.intygsbestallning.web.service.bestallning.RaderaBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.VisaBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.user.UserService;
 
@@ -44,6 +47,7 @@ public class BestallningController {
     private ListBestallningService listBestallningService;
     private VisaBestallningService visaBestallningService;
     private AvvisaBestallningService avvisaBestallningService;
+    private RaderaBestallningService raderaBestallningService;
     private KlarmarkeraBestallningService klarmarkeraBestallningService;
     private UserService userService;
 
@@ -55,12 +59,14 @@ public class BestallningController {
             ListBestallningService listBestallningService,
             VisaBestallningService visaBestallningService,
             AvvisaBestallningService avvisaBestallningService,
+            RaderaBestallningService raderaBestallningService,
             KlarmarkeraBestallningService klarmarkeraBestallningService,
             UserService userService) {
         this.accepteraBestallningService = accepteraBestallningService;
         this.listBestallningService = listBestallningService;
         this.visaBestallningService = visaBestallningService;
         this.avvisaBestallningService = avvisaBestallningService;
+        this.raderaBestallningService = raderaBestallningService;
         this.klarmarkeraBestallningService = klarmarkeraBestallningService;
         this.userService = userService;
     }
@@ -161,6 +167,20 @@ public class BestallningController {
                 orgNrVardgivare,
                 BestallningSvar.AVVISAT,
                 avvisaBestallning.getFritextForklaring()));
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/radera")
+    public ResponseEntity raderaBestallning(@PathVariable String id, RaderaBestallning raderaBestallning) {
+        var user = userService.getUser();
+        var hsaId = user.getUnitContext().getId();
+        var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
+        raderaBestallningService.raderaBestallning(new RaderaBestallningRequest(
+                id,
+                hsaId,
+                orgNrVardgivare,
+                BestallningSvar.RADERAT,
+                raderaBestallning.getFritextForklaring()));
         return ResponseEntity.ok().build();
     }
 

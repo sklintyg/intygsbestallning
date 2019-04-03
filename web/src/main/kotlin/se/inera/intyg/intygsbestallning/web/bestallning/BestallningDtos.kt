@@ -7,6 +7,8 @@ data class AccepteraBestallning(val fritextForklaring: String? = null)
 
 data class AvvisaBestallning(val fritextForklaring: String? = null)
 
+data class RaderaBestallning(val fritextForklaring: String? = null)
+
 enum class BestallningStatusKategori(val list: List<BestallningStatus>) {
   AKTUELLA(listOf(OLAST, LAST, ACCEPTERAD)),
   KLARA(listOf(KLAR)),
