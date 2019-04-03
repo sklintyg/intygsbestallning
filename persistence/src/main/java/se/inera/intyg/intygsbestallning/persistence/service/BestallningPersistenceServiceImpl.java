@@ -1,23 +1,19 @@
 package se.inera.intyg.intygsbestallning.persistence.service;
 
-import com.google.common.collect.MoreCollectors;
+import com.google.common.base.Enums;
+import com.google.common.primitives.Longs;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import kotlin.Pair;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+import io.vavr.control.Try;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
@@ -25,6 +21,7 @@ import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarResult;
 import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
 import se.inera.intyg.intygsbestallning.persistence.entity.InvanareEntity;
+import se.inera.intyg.intygsbestallning.persistence.entity.QBestallningEntity;
 import se.inera.intyg.intygsbestallning.persistence.entity.VardenhetEntity;
 import se.inera.intyg.intygsbestallning.persistence.repository.BestallningRepository;
 import se.inera.intyg.intygsbestallning.persistence.repository.InvanareRepository;
@@ -49,14 +46,15 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
 
     @Override
     public Bestallning saveNewBestallning(Bestallning bestallning) {
+
         var invanareEntity = InvanareEntity.Factory.toEntity(bestallning.getInvanare());
-        if (invanareEntity.getId() == null) {
-            invanareRepository.save(invanareEntity);
+        if (Objects.isNull(invanareEntity.getId())) {
+            invanareEntity = invanareRepository.saveAndFlush(invanareEntity);
         }
 
         var vardenhetEntity = VardenhetEntity.Factory.toEntity(bestallning.getVardenhet());
-        if (vardenhetEntity.getId() == null) {
-            vardenhetRepository.save(vardenhetEntity);
+        if (Objects.isNull(vardenhetEntity.getId())) {
+            vardenhetEntity = vardenhetRepository.saveAndFlush(vardenhetEntity);
         }
 
         var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning, invanareEntity, vardenhetEntity);
@@ -74,6 +72,22 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
     @Override
     public ListBestallningarResult listBestallningar(ListBestallningarQuery query) {
 
+
+        var pb = new BooleanBuilder();
+        var qe = QBestallningEntity.bestallningEntity;
+        if (!query.getStatusar().isEmpty()) {
+            pb.and(qe.status.in(query.getStatusar()));
+        }
+        if (Objects.nonNull(query.getHsaId())) {
+            pb.and(qe.vardenhet.hsaId.eq(query.getHsaId()));
+        }
+        if (Objects.nonNull(query.getOrgNrVardgivare())) {
+            pb.and(qe.vardenhet.organisationId.eq(query.getOrgNrVardgivare()));
+        }
+        if (Objects.nonNull(query.getTextSearch())) {
+            pb.and(textPredicate(query.getTextSearch()));
+        }
+
         Sort sortRequest;
         if (query.getSortDirection() == ListBestallningDirection.ASC) {
             sortRequest = Sort.by(query.getSortColumn().getKolumn()).ascending();
@@ -81,30 +95,9 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
             sortRequest = Sort.by(query.getSortColumn().getKolumn()).descending();
         }
 
-        var pageRequest = PageRequest.of(query.getPageIndex(), query.getLimit(), sortRequest);
+        var pageResult = bestallningRepository.findAll(pb.getValue(), PageRequest.of(query.getPageIndex(), query.getLimit(), sortRequest));
 
-        var searchString = Optional.ofNullable(query.getTextSearch()).map(String::toUpperCase);
-
-        var id = getValidLong(query.getTextSearch());
-
-        var status = getValidTyp(query.getTextSearch(), BestallningStatus.class);
-
-        var localDateTimeSearch = getValidLocalDatetimeInterval(query.getTextSearch());
-
-
-        var pageResult = bestallningRepository.findByQuery(
-                query.getStatusar(),
-                query.getHsaId(),
-                query.getOrgNrVardgivare(),
-                searchString.orElse(null),
-                id.orElse(null),
-                (BestallningStatus) status.orElse(null),
-                localDateTimeSearch.map(Pair::getFirst).orElse(null),
-                localDateTimeSearch.map(Pair::getSecond).orElse(null),
-                pageRequest);
-
-        var bestallningar = pageResult.get().map(BestallningEntity.Factory::toDomain)
-                .collect(Collectors.toList());
+        var bestallningar = pageResult.get().map(BestallningEntity.Factory::toDomain).collect(Collectors.toList());
 
         return ListBestallningarResult.Factory.toDto(
                 bestallningar,
@@ -120,57 +113,43 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
 
     @Override
     public Optional<Bestallning> getBestallningByIdAndHsaIdAndOrgId(Long id, String hsaId, String orgNrVardgivare) {
-        return bestallningRepository.findByIdAndHsaIdAndOrgId(id, hsaId, orgNrVardgivare)
+        var pb = new BooleanBuilder();
+        var qe = QBestallningEntity.bestallningEntity;
+
+        pb.and(qe.id.eq(id));
+
+        if (Objects.nonNull(hsaId)) {
+            pb.and(qe.vardenhet.hsaId.eq(hsaId));
+        }
+        if (Objects.nonNull(orgNrVardgivare)) {
+            pb.and(qe.vardenhet.organisationId.eq(orgNrVardgivare));
+        }
+
+        return bestallningRepository.findOne(pb.getValue())
                 .map(BestallningEntity.Factory::toDomain);
     }
 
-    @Override
-    public Page<Bestallning> list(Predicate predicate, Pageable pageable) {
-        var page = bestallningRepository.findAll(predicate, pageable);
-        return map(page, BestallningEntity.Factory::toDomain);
-    }
-
-    <D, E> Page<D> map(Page<E> page, Function<E, D> mapper) {
-        return new PageImpl<>(
-                page.getContent().stream().map(mapper).collect(Collectors.toList()),
-                page.getPageable(),
-                page.getTotalElements());
-    }
-
-
-    private Optional<Long> getValidLong(String potentialLongString) {
-        if (potentialLongString != null) {
-            try {
-                return Optional.of(Long.valueOf(potentialLongString));
-            } catch (NumberFormatException ex) {
-                return Optional.empty();
-            }
+    //
+    private Predicate textPredicate(String text) {
+        var qe = QBestallningEntity.bestallningEntity;
+        var id = Longs.tryParse(text);
+        if (Objects.nonNull(id)) {
+            return qe.id.eq(id);
         }
-        return Optional.empty();
-    }
-
-    private Optional<Enum<?>> getValidTyp(String potentialIntygTypString, Class<? extends Enum<?>> enumType) {
-        if (potentialIntygTypString != null) {
-            return Arrays.stream(enumType.getEnumConstants())
-                    .filter(e -> e.name().equalsIgnoreCase(potentialIntygTypString))
-                    .collect(MoreCollectors.toOptional());
+        var status = Enums.getIfPresent(BestallningStatus.class, text);
+        if (status.isPresent()) {
+            return qe.status.eq(status.get());
         }
-        return Optional.empty();
-    }
-
-    private Optional<Pair<LocalDateTime, LocalDateTime>> getValidLocalDatetimeInterval(String potentialLocalDateString) {
-        var dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        if (potentialLocalDateString != null) {
-            try {
-                var converted = LocalDate.parse(potentialLocalDateString, dateTimeFormatter);
-                var from = converted.atStartOfDay();
-                var to = converted.plusDays(1).atStartOfDay();
-                return Optional.of(new Pair<>(from, to));
-            } catch (DateTimeParseException ex) {
-                return Optional.empty();
-            }
+        var date = Try.of(() -> LocalDate.parse(text, DateTimeFormatter.ISO_LOCAL_DATE));
+        if (date.isSuccess()) {
+            var from = date.get().atStartOfDay();
+            return qe.ankomstDatum.between(from, from.plusDays(1).minusSeconds(1));
         }
-        return Optional.empty();
+        return new BooleanBuilder(qe.invanare.fornamn.containsIgnoreCase(text))
+                .or(qe.invanare.mellannamn.containsIgnoreCase(text))
+                .or(qe.invanare.efternamn.containsIgnoreCase(text))
+                .or(qe.invanare.personId.containsIgnoreCase(text))
+                .getValue();
     }
+
 }

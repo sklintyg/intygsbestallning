@@ -8,7 +8,7 @@ import javax.persistence.*
 class HandlaggareEntity private constructor(builder: Builder) {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", nullable = false)
   private val id: Long?
 

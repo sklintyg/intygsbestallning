@@ -1,7 +1,10 @@
 package se.inera.intyg.intygsbestallning.web.controller;
 
-import com.google.common.collect.Lists;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.types.Predicate;
+import java.io.IOException;
+import java.util.Collections;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
@@ -14,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
-import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningSvar;
 import se.inera.intyg.intygsbestallning.common.dto.AccepteraBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.dto.AvvisaBestallningRequest;
@@ -45,6 +47,9 @@ public class BestallningController {
     private KlarmarkeraBestallningService klarmarkeraBestallningService;
     private UserService userService;
 
+    @Autowired
+    ObjectMapper customObjectMapper;
+
     public BestallningController(
             AccepteraBestallningService accepteraBestallningService,
             ListBestallningService listBestallningService,
@@ -69,13 +74,7 @@ public class BestallningController {
             @RequestParam(value = "sortColumn", required = false) ListBestallningSortColumn sortColumn,
             @RequestParam(value = "sortDirection", required = false) ListBestallningDirection sortDirection) {
 
-        var statusar = Lists.<BestallningStatus>newArrayList();
-
-        if (kategori == null) {
-            statusar = Lists.newArrayList(BestallningStatus.values());
-        } else {
-            statusar = Lists.newArrayList(kategori.getList());
-        }
+        var statusar = (kategori != null) ? kategori.getList() : Collections.EMPTY_LIST;
 
         if (pageIndex == null) {
             pageIndex = 0;
@@ -112,13 +111,6 @@ public class BestallningController {
         return ResponseEntity.ok(result);
     }
 
-    // Alternative Spring Rest Querydsl API
-    // Handling query conditions, paging and sorting
-    @GetMapping("/qdsl")
-    public ResponseEntity<Page<Bestallning>> list(@QuerydslPredicate(root = BestallningEntity.class) Predicate predicate,
-                                                  Pageable pageable) {
-        return ResponseEntity.ok(listBestallningService.list(predicate, pageable));
-    }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity visaBestallning(@PathVariable String id) {
