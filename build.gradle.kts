@@ -21,11 +21,13 @@ allprojects {
 
   extra.apply {
     set("intygInfraVersion", System.getenv("infraVersion") ?: "0-SNAPSHOT")
+    set("refDataVersion", System.getenv("refDataVersion") ?: "1.0-SNAPSHOT")
   }
 
   repositories {
     mavenLocal()
     mavenCentral()
+    maven("https://build-inera.nordicmedtest.se/nexus/repository/snapshots/")
     maven("https://build-inera.nordicmedtest.se/nexus/repository/releases/")
   }
 }
@@ -69,6 +71,7 @@ subprojects {
     testImplementation("org.mockito:mockito-core:${TestDependencies.mockitoCoreVersion}")
     testImplementation("org.mockito:mockito-junit-jupiter:${TestDependencies.mockitoCoreVersion}")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("se.inera.intyg.refdata:refdata:${extra["refDataVersion"]}")
 
     testImplementation(kotlin("test"))
 

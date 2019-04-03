@@ -18,6 +18,7 @@
  */
 package se.inera.intyg.intygsbestallning.web.auth;
 
+import com.google.common.collect.Lists;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,7 +27,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.velocity.app.VelocityEngine;
@@ -43,7 +43,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -98,9 +97,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-
-import com.google.common.collect.Lists;
-
 import se.inera.intyg.infra.security.exception.HsaServiceException;
 import se.inera.intyg.infra.security.exception.MissingMedarbetaruppdragException;
 import se.inera.intyg.intygsbestallning.web.auth.exceptions.MissingIBSystemRoleException;
@@ -108,10 +104,10 @@ import se.inera.intyg.intygsbestallning.web.auth.fake.FakeAuthenticationFilter;
 import se.inera.intyg.intygsbestallning.web.auth.fake.FakeAuthenticationProvider;
 import se.inera.intyg.intygsbestallning.web.auth.service.IntygsbestallningUserDetailsService;
 
+
 import static se.inera.intyg.intygsbestallning.web.controller.RequestErrorController.IB_CLIENT_EXIT_BOOT_PATH;
 
 @EnableWebSecurity
-@PropertySource("file:${credentials.file}")
 @ComponentScan({"se.inera.intyg.infra.security.authorities", "org.springframework.security.saml"})
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements InitializingBean, DisposableBean {
 

@@ -1,14 +1,11 @@
 resources:
-  folder: ${resources.dir}
-config:
-  folder: ${config.dir}
+  folder: "classpath:"
 
 # Disable spring boot default error handling
 server:
   error:
     whitelabel:
       enabled: false
-
 
 spring:
   datasource:
@@ -33,7 +30,7 @@ spring:
 
 # Mail notifications
 mail:
-  text-resource-path: ${resources.folder}/texter/mail/
+  text-resource-path: ${resources.folder}/intygsbestallning/texts/mail/*.xml
   host: ib-host
   admin: ib-notifications@inera.se
   from: ib-notifications@inera.se
@@ -47,17 +44,17 @@ mail:
     debug: false
 
 bestallning:
-  text-resource-path: ${resources.folder}/texter/bestallning/
-  image-resource-path: ${resources.folder}/bilder/bestallning/
+  text-resource-path: ${resources.folder}/intygsbestallning/texts/bestallning/*.xml
+  image-resource-path: ${resources.folder}/images/
   host: ${ib.host.url}
 
 #AUTH
 authorities:
   configuration:
-    file: ${resources.folder}/security/authorities.yaml
+    file: ${resources.folder}/intygsbestallning/authorities.yaml
 features:
   configuration:
-    file: ${resources.folder}/security/features.yaml
+    file: ${resources.folder}/intygsbestallning/features.yaml
 
 #HSA integration
 infrastructure:

@@ -1,3 +1,9 @@
+config:
+  folder: dummy
+
+certificate:
+  folder: dummy
+
 ntjp:
   base:
     url: http://localhost:8080/services/stubs
@@ -9,9 +15,6 @@ ib:
   server: localhost:8990
   host:
     url: http://localhost:8080
-
-resources:
-  folder: ${resource.dir}
 
 putjanst:
   logicaladdress: PUDEV

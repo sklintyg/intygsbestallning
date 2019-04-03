@@ -1,23 +1,27 @@
 package se.inera.intyg.intygsbestallning.common.service.notifiering;
 
-import static java.lang.invoke.MethodHandles.lookup;
-
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.google.common.collect.Lists;
 import com.google.common.collect.MoreCollectors;
 import io.vavr.control.Try;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.ResourcePatternUtils;
+import org.springframework.stereotype.Service;
 import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
 import se.inera.intyg.intygsbestallning.common.property.MailProperties;
 import se.inera.intyg.intygsbestallning.common.text.mail.MailContent;
+
+
+import static java.lang.invoke.MethodHandles.lookup;
 
 @Service
 public class MailTextServiceImpl implements MailTextService {
@@ -25,13 +29,19 @@ public class MailTextServiceImpl implements MailTextService {
     private static final Logger LOG = LoggerFactory.getLogger(lookup().lookupClass());
     private static final String ACTION = "Initiate Intygsbestallning Mail Text Resources";
 
-    private List<MailContent> mailContentList = Lists.newArrayList();
+    private List<MailContent> mailContentList = Collections.EMPTY_LIST;
 
     private MailProperties mailProperties;
 
     public MailTextServiceImpl(MailProperties mailProperties) {
         this.mailProperties = mailProperties;
     }
+
+    @Autowired
+    ResourceLoader resourceLoader;
+
+    XmlMapper xmlMapper = new XmlMapper();
+
 
     @Override
     public MailContent getMailContent(NotifieringTyp typ, String intyg) {
@@ -55,27 +65,32 @@ public class MailTextServiceImpl implements MailTextService {
     private void initTexts() {
         LOG.info("Starting: " + ACTION);
 
-        var result = Try.run(this::loadResources);
+        var result = Try.of(() -> loadResources(mailProperties.getTextResourcePath()));
         if (result.isFailure()) {
             LOG.error("Failure: " + ACTION);
             result.getCause().printStackTrace();
         } else {
-            LOG.info("Done: " + ACTION);
+            mailContentList = result.get();
+            LOG.info("Done: {}, {}", ACTION, mailContentList.size());
         }
     }
 
-    private void loadResources() throws IOException {
-        var xmlMapper = new XmlMapper();
-        var filePaths = Files.walk(Paths.get(mailProperties.getTextResourcePath()))
-                .filter(Files::isRegularFile)
+    private List<MailContent> loadResources(String location) throws IOException {
+        LOG.info("Load mail texts from: {}", location);
+        return Stream.of(
+                ResourcePatternUtils
+                        .getResourcePatternResolver(resourceLoader).getResources(location))
+                .map(this::parse)
                 .collect(Collectors.toList());
-
-        var tempList = Lists.<MailContent>newArrayList();
-        for (var filePath : filePaths) {
-            var file = filePath.toFile();
-            var mailContent = xmlMapper.readValue(file, MailContent.class);
-            tempList.add(mailContent);
-        }
-        mailContentList.addAll(tempList);
     }
+
+    private MailContent parse(Resource resource) {
+        try {
+            return xmlMapper.readValue(resource.getInputStream(), MailContent.class);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+
 }
