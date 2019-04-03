@@ -43,7 +43,8 @@ dependencies {
   implementation("org.springframework.security.extensions:spring-security-saml2-core:1.0.3.RELEASE")
   implementation("com.querydsl:querydsl-core:${Dependencies.querydslVersion}")
 
-    implementation("se.inera.intyg.refdata:refdata:${extra["refDataVersion"]}")
+  // FIXME: shall not be bundled with app!
+  implementation("se.inera.intyg.refdata:refdata:${extra["refDataVersion"]}")
 
 }
 
