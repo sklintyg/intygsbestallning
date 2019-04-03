@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import * as ActionConstants from '../actions/bestallning';
-import { buildClientError } from './util';
 
 const bestallning = (state = {}, action) => {
     switch (action.type) {
@@ -10,6 +9,8 @@ const bestallning = (state = {}, action) => {
             return {...state, status: 'ACCEPTERAD'}
         case ActionConstants.REJECT_BESTALLNING_SUCCESS:
             return {...state, status: 'AVVISAD'}
+        case ActionConstants.FETCH_BESTALLNING_REQUEST:
+            return {}
         default:
             return state;
     }
@@ -32,7 +33,7 @@ const errorMessage = (state = null, action) => {
         case ActionConstants.FETCH_BESTALLNING_FAILURE:
         case ActionConstants.REJECT_BESTALLNING_FAILURE:
         case ActionConstants.ACCEPTERA_BESTALLNING_FAILURE:
-            return buildClientError(action.payload, 'error.bestallning').message;
+            return action.payload;
         case ActionConstants.FETCH_BESTALLNING_REQUEST:
         case ActionConstants.FETCH_BESTALLNING_SUCCESS:
         case ActionConstants.REJECT_BESTALLNING_SUCCESS:

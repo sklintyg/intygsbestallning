@@ -1,7 +1,7 @@
 import React from 'react'
 import Styled from 'styled-components'
 import Colors from '../styles/IbColors'
-import * as Typo from '../styles/IbTypography'
+import { IbTypo02, IbTypo06, IbTypo07 } from '../styles/IbTypography'
 
 const Fraga = Styled.div`
   width: 756px;
@@ -11,7 +11,7 @@ const Fraga = Styled.div`
   background: ${Colors.IB_COLOR_00};
 `
 
-const Rubrik = Styled(Typo.IbTypo02)`
+const Rubrik = Styled(IbTypo02)`
   margin: 0;
   padding: 20px 30px 15px;
   border-bottom: 1px solid ${Colors.IB_COLOR_15};
@@ -23,12 +23,12 @@ const Content = Styled.div`
   padding: 0 30px;
 `
 
-const Etikett = Styled(Typo.IbTypo06)`
+const Etikett = Styled(IbTypo06)`
   padding: 20px 0 10px;
   color: ${Colors.IB_COLOR_09};
 `
 
-const Text = Styled(Typo.IbTypo07)`
+const Text = Styled(IbTypo07)`
   white-space: pre-line;
   background: ${Colors.IB_COLOR_28};
   color: ${Colors.IB_COLOR_07};
@@ -36,7 +36,7 @@ const Text = Styled(Typo.IbTypo07)`
   padding: 10px;
 `
 
-const Svar = Styled(Typo.IbTypo07)`
+const Svar = Styled(IbTypo07)`
   white-space: pre-line;
   background: ${Colors.IB_COLOR_15};
   color: ${Colors.IB_COLOR_07};

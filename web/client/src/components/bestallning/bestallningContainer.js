@@ -1,5 +1,5 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom'
+import { Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actions from '../../store/actions/bestallning'
 import { getBestallning, getErrorMessage } from '../../store/reducers/bestallning'
@@ -16,16 +16,11 @@ const CustomScrollingContainer = styled(ScrollingContainer)`
   max-width: none;
 `
 
-const BestallningContainer = ({ errorMessage, bestallning, history }) => {
+const BestallningContainer = ({ error, bestallning, history }) => {
     const bestallningIsEmpty = Object.entries(bestallning).length === 0 && bestallning.constructor === Object;
 
-    if (errorMessage) {
-      console.log(errorMessage);
-      return (
-        <FlexColumnContainer>
-          errorMessage
-        </FlexColumnContainer>
-      )
+    if (error) {
+      return <Redirect to={'/exit/' + error.error.errorCode} />
     }
 
     return (bestallningIsEmpty ? null :
@@ -62,7 +57,7 @@ const mapStateToProps = (state, { match, history }) => {
     id,
     history,
     bestallning: getBestallning(state),
-    errorMessage: getErrorMessage(state),
+    error: getErrorMessage(state),
   };
 };
 
