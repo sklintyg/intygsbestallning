@@ -35,8 +35,16 @@ const AvvisaBestallning = ({handleOpen, handleClose, isOpen, accept}) => {
         <ModalBody>
           <p>Du kan välja att bara avvisa beställningen eller att även radera den.</p>
           <p>Radering får endast ske om beställningen har skickats till fel vårdenhet och någon journalanteckning med anledning av beställningen inte har upprättats.</p>
-          <input type="radio" name="avvisa" id="avvisa" value="true" onChange={handleRadioChange}/>Avvisa
-          <input type="radio" name="avvisa" id="radera" value="false" onChange={handleRadioChange}/>Radera
+          <div className="radio-wrapper">
+            <div className="ib-radio">
+              <input type="radio" name="avvisa" id="avvisa" value="true" checked={avvisa === true} onChange={handleRadioChange}/><label onClick={() => setAvvisa(true)}>Avvisa</label>
+            </div>
+          </div>
+          <div className="radio-wrapper">
+            <div className="ib-radio">
+              <input className="ib-radio" type="radio" name="avvisa" id="radera" value="false" checked={avvisa === false} onChange={handleRadioChange}/><label onClick={() => setAvvisa(false)}>Radera</label>
+            </div>
+          </div>
           <p>Vänligen förtydliga skälet till varför beställningen avvisas eller raderas.</p>
           <p>Observera att patientrelaterad information inte får lämnas ut utan stöd i patientdatalagen (2008:355), patientsäkerhetslagen (2010:659) eller Offentlighets- och sekretesslagen (2009:400).</p>
           <Textarea rows="5" onChange={handleTextareaChange} />
