@@ -30,7 +30,7 @@ const FilterListContainer = (props) => {
   
   return (
     <Fragment>
-      <BestallningFilter onChange={handleFilterChange} />
+      <BestallningFilter placeholder="Skriv sökord" onChange={handleFilterChange} />
       <BestallningListContainer textFilter={textFilter} />
       <BestallningListPagination bestallningList={bestallningList} handlePageChange={handlePageChange}/>
     </Fragment>

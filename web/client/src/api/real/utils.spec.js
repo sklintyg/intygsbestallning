@@ -11,15 +11,15 @@ describe('utils test', () => {
     const path = 'path';
 
     it('empty state', () => {
-      const reulst = utils.buildUrlFromParams(path, {});
+      const result = utils.buildUrlFromParams(path, {});
 
-      expect(reulst).toEqual(path + '')
+      expect(result).toEqual(path + '')
     })
 
     it('no parameters state', () => {
-      const reulst = utils.buildUrlFromParams(path);
+      const result = utils.buildUrlFromParams(path);
 
-      expect(reulst).toEqual(path)
+      expect(result).toEqual(path)
     })
 
     it('don\'t include empty parameter values', () => {
@@ -29,9 +29,9 @@ describe('utils test', () => {
         value: '',
         nullValue: null
       };
-      const reulst = utils.buildUrlFromParams(path, state);
+      const result = utils.buildUrlFromParams(path, state);
 
-      expect(reulst).toEqual(`${path}?page=1&sort=p`)
+      expect(result).toEqual(`${path}?page=1&sort=p`)
     })
   })
 
@@ -44,21 +44,21 @@ describe('utils test', () => {
       };
 
       it('empty config', () => {
-        const reulst = utils.handleResponse({})(reponse);
+        const result = utils.handleResponse({})(reponse);
 
-        expect(reulst).toEqual('json')
+        expect(result).toEqual('json')
       })
 
       it('no config', () => {
-        const reulst = utils.handleResponse()(reponse);
+        const result = utils.handleResponse()(reponse);
 
-        expect(reulst).toEqual('json')
+        expect(result).toEqual('json')
       })
 
       it('config, noBody', () => {
-        const reulst = utils.handleResponse({emptyBody: true})(reponse);
+        const result = utils.handleResponse({emptyBody: true})(reponse);
 
-        expect(reulst).toEqual({})
+        expect(result).toEqual({})
       })
     });
 
@@ -132,7 +132,7 @@ describe('utils test', () => {
             body: {
               name: 'failed'
             },
-            status: '500',
+            status: 500,
             headers: { 'content-type': 'application/json' }
           })
 
@@ -145,7 +145,7 @@ describe('utils test', () => {
 
         it('error - from server noBody', (done) => {
           fetchMock[method.fetch]('/api/test', {
-            status: '500',
+            status: 500,
             headers: { 'content-type': 'application/json' }
           })
 
@@ -161,7 +161,7 @@ describe('utils test', () => {
 
         it('error - not found', (done) => {
           fetchMock[method.fetch]('/api/test', {
-            status: '404',
+            status: 404,
             headers: { 'content-type': 'application/json' }
           })
 

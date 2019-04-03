@@ -41,7 +41,6 @@ const AccepteraBestallning = ({handleOpen, handleClose, isOpen, accept}) => {
   )
 }
 
-
 export default compose(
   modalContainer('accepteraBestallning')
 )(AccepteraBestallning)

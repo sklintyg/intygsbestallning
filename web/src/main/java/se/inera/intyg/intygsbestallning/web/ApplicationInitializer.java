@@ -3,12 +3,6 @@ package se.inera.intyg.intygsbestallning.web;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
@@ -21,6 +15,11 @@ import se.inera.intyg.intygsbestallning.integration.IntegrationConfig;
 import se.inera.intyg.intygsbestallning.mailsender.config.MailSenderConfig;
 import se.inera.intyg.intygsbestallning.persistence.PersistenceConfig;
 import se.inera.intyg.intygsbestallning.web.auth.SecurityConfig;
+
+import javax.servlet.FilterRegistration;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
 
 import static se.inera.intyg.intygsbestallning.web.controller.SessionStatusController.SESSION_STATUS_CHECK_URI;
 
@@ -73,13 +72,6 @@ public class ApplicationInitializer implements WebApplicationInitializer {
         principalUpdatedFilter.setInitParameter("targetFilterLifecycle", "true");
         principalUpdatedFilter.addMappingForUrlPatterns(null, false, "/*");
 
-        // unitSelectedAssurance filter
-  /*      FilterRegistration.Dynamic unitSelectedAssuranceFilter = servletContext.addFilter("unitSelectedAssuranceFilter",
-                DelegatingFilterProxy.class);
-        unitSelectedAssuranceFilter.setInitParameter("targetFilterLifecycle", "true");
-        unitSelectedAssuranceFilter.addMappingForUrlPatterns(null, false, "/api/*");
-        unitSelectedAssuranceFilter.setInitParameter("ignoredUrls", "/api/config,/api/user,/api/user/andraenhet");
-*/
 
         FilterRegistration.Dynamic characterEncodingFilter = servletContext.addFilter("characterEncodingFilter",
                 CharacterEncodingFilter.class);

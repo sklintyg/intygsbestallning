@@ -37,7 +37,7 @@ public class AccepteraBestallningServiceImpl implements AccepteraBestallningServ
             throw new IllegalArgumentException("request may not be null");
         }
 
-        var id = BestallningUtil.resolveId(request);
+        var id = BestallningUtil.resolveId(request.getBestallningId());
 
         var bestallning = bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(
                 id.get(), request.getHsaId(), request.getOrgNrVardgivare());

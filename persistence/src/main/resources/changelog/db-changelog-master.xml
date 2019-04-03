@@ -119,6 +119,9 @@
       <column name="STAD" type="varchar(64)">
         <constraints nullable="true"/>
       </column>
+      <column name="KOSTNADSSTALLE" type="varchar(64)">
+        <constraints nullable="true"/>
+      </column>
 
     </createTable>
 

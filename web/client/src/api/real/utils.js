@@ -16,7 +16,7 @@ export const handleResponse = (config) => (response) => {
     return response
       .json()
       .catch(() => {
-        if (response.status === '404') {
+        if (response.status === 404) {
           const error = {
             statusCode: response.status,
             error: {

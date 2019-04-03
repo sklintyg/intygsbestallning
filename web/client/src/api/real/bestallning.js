@@ -7,3 +7,6 @@ export const accepteraBestallning = (id, fritextForklaring) =>
 
 export const rejectBestallning = (id, fritextForklaring) => 
   utils.makeServerPost('bestallningar/' + id + '/avvisa', fritextForklaring, {emptyBody:true});
+
+export const completeBestallning = (id) =>
+  utils.makeServerPost('bestallningar/' + id + '/klarmarkera', null,{emptyBody:true});

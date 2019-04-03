@@ -24,9 +24,4 @@ public class ListBestallningServiceImpl implements ListBestallningService {
     public ListBestallningarResult listByQuery(ListBestallningarQuery query) {
         return bestallningPersistenceService.listBestallningar(query);
     }
-
-    @Override
-    public Page<Bestallning> list(Predicate predicate, Pageable pageable) {
-        return bestallningPersistenceService.list(predicate, pageable);
-    }
 }

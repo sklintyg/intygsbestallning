@@ -6,8 +6,8 @@ import se.inera.intyg.intygsbestallning.common.dto.SimpleBestallningRequest;
 
 public final class BestallningUtil {
     @NotNull
-    public static Try<Long> resolveId(SimpleBestallningRequest request) {
-        var id = Try.of(() -> Long.valueOf(request.getBestallningId()));
+    public static Try<Long> resolveId(String requestId) {
+        var id = Try.of(() -> Long.valueOf(requestId));
         if (id.isFailure()) {
             throw new IllegalArgumentException("id must be of typ Long");
         }

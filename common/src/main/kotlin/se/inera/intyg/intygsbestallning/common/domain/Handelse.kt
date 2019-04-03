@@ -26,5 +26,9 @@ data class Handelse(
     fun avvisa(): Handelse {
       return Handelse(event = BestallningEvent.AVVISA, skapad = LocalDateTime.now(), beskrivning = "Beställning avvisad")
     }
+
+    fun klarmarkera(): Handelse {
+      return Handelse(event = BestallningEvent.KLARMARKERA, skapad = LocalDateTime.now(), beskrivning = "Beställning klarmarkerad")
+    }
   }
 }

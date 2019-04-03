@@ -6,9 +6,9 @@ import {FlexColumnContainer, ScrollingContainer, WorkareaContainer} from '../com
 
 const BestallningarPage = () => (
   <FlexColumnContainer>
+    <BestallningFilterBar />
     <ScrollingContainer>
       <WorkareaContainer>
-        <BestallningFilterBar />
         <FilterListContainer />
       </WorkareaContainer>
     </ScrollingContainer>

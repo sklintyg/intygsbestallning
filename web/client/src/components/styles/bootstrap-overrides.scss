@@ -1,5 +1,6 @@
 
 @import 'ibColors';
+@import 'ibCommon';
 
 // Override default variables before the import
 $font-family-sans-serif: Roboto, "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -23,7 +24,7 @@ $alert-padding-x: 0.5rem;
 //@import '~bootstrap/scss/_images';
 //@import '~bootstrap/scss/_code';
 @import '~bootstrap/scss/_grid';
-//@import '~bootstrap/scss/_tables';
+@import '~bootstrap/scss/_tables';
 //@import '~bootstrap/scss/_forms';
 @import '~bootstrap/scss/_buttons';
 @import '~bootstrap/scss/_transitions';
@@ -31,12 +32,12 @@ $alert-padding-x: 0.5rem;
 //@import '~bootstrap/scss/_button-group';
 //@import '~bootstrap/scss/_input-group';
 //@import '~bootstrap/scss/_custom-forms';
-//@import '~bootstrap/scss/_nav';
-//@import '~bootstrap/scss/_navbar';
+@import '~bootstrap/scss/_nav';
+@import '~bootstrap/scss/_navbar';
 //@import '~bootstrap/scss/_card';
 //@import '~bootstrap/scss/_breadcrumb';
 @import '~bootstrap/scss/_pagination';
-//@import '~bootstrap/scss/_badge';
+@import '~bootstrap/scss/_badge';
 //@import '~bootstrap/scss/_jumbotron';
 //@import '~bootstrap/scss/_alert';
 //@import '~bootstrap/scss/_progress';
@@ -79,7 +80,7 @@ $alert-padding-x: 0.5rem;
     border-color: $border;
     background-color: $background;
     color: $color;
-    box-shadow: 0 0 8px -3px #000;
+    box-shadow: 2px 2px 4px 0 $black_12;
   }
 
   &:hover,
@@ -90,7 +91,7 @@ $alert-padding-x: 0.5rem;
     background-color: $ib-color-21;
     border-color: $ib-color-21;
     color: $ib-color-00;
-    box-shadow: 0 0 8px -3px #000;
+    box-shadow: 2px 2px 4px 0 $black_12;
   }
 
   &,
@@ -126,4 +127,185 @@ $alert-padding-x: 0.5rem;
 
 .btn-link {
   padding: 0
+}
+
+th .btn-link {
+  color: $ib-color-19;
+
+  &:hover {
+    color: $ib-color-19;
+  }
+}
+
+// Table
+
+/* table striped style for all ib */
+.ib-table-striped {
+  border-collapse: separate;
+  border-spacing: 0 0;
+  margin-bottom: 0;
+
+  .btn-primary {
+    padding: 7px 15px;
+    min-width: 50px;
+  }
+
+  .btn-secondary {
+    padding: 7px 15px;
+    min-width: 50px;
+  }
+
+  // Table header ---------------
+  > thead > tr > th {
+    padding: 7px 5px;
+    background-color: $ib-color-15;
+    @extend %ib-typo-06;
+    color: $ib-color-19;
+    border: none;
+
+    &:first-child {
+      padding-left: 21px;
+    }
+  }
+  // Table body ---------------
+  > tbody > tr {
+      height: 50px;
+
+    &:hover {
+      > td {
+        border-top: 1px solid $ib-color-21;
+        border-bottom: 1px solid $ib-color-21;
+      }
+
+      > td:first-child {
+        border-left: 1px solid $ib-color-21;
+        padding-left: 21px;
+      }
+
+      > td:last-child {
+        border-right: 1px solid $ib-color-21;
+      }
+    }
+
+    //a normal td
+    > td {
+      padding: 5px;
+      border-top: 1px solid transparent;
+      border-bottom: 1px solid $ib-color-15;
+      //IE11 needs this explicitly to avoid column height behaviour -_--- (INTYG-7611)
+      height: 100%;
+      vertical-align: middle;
+
+      &:first-child {
+        padding-left: 21px;
+        border-left: 1px solid $ib-color-15;
+      }
+
+      &:last-child {
+        border-right: 1px solid $ib-color-15;
+        border-radius: 0;
+      }
+
+      &.nopadding {
+        padding: 0;
+      }
+    }
+  }
+}
+
+// Pagination
+
+.pagination {
+  > li > a {
+    border: none
+  }
+
+  > li:first-child > a {
+    padding-left: 0;
+  }
+}
+
+// Font
+
+@mixin font-variant-light($font-size: 14px) {
+  font-family: $font-family-sans-serif;
+  font-size: $font-size;
+  font-weight: 300;
+}
+
+@mixin font-variant-regular($font-size: 14px) {
+  font-family: $font-family-sans-serif;
+  font-size: $font-size;
+  font-weight: 400;
+}
+
+@mixin font-variant-medium($font-size: 14px) {
+  font-family: $font-family-sans-serif;
+  font-size: $font-size;
+  font-weight: 500;
+}
+
+@mixin font-variant-bold($font-size: 14px) {
+  font-family: $font-family-sans-serif;
+  font-size: $font-size;
+  font-weight: 700;
+}
+
+%ib-typo-01 {
+  @include font-variant-light(25px);
+}
+
+%ib-typo-02 {
+  @include font-variant-medium(18px);
+}
+
+%ib-typo-03 {
+  @include font-variant-light(18px);
+}
+
+%ib-typo-04 {
+  @include font-variant-bold(18px);
+}
+
+%ib-typo-05 {
+  @include font-variant-medium(16px);
+}
+
+%ib-typo-06 {
+  @include font-variant-medium(14px);
+}
+
+%ib-typo-07 {
+  @include font-variant-regular(14px);
+}
+
+%ib-typo-08 {
+  @include font-variant-regular(14px);
+  text-decoration: underline;
+}
+
+%ib-typo-09 {
+  @include font-variant-regular(12px);
+}
+
+%ib-typo-10 {
+  @include font-variant-regular(16px);
+}
+
+%ib-typo-11 {
+  @include font-variant-regular(12px);
+  font-style: italic;
+}
+
+%ib-typo-12 {
+  @include font-variant-regular(14px);
+  font-style: italic;
+}
+
+%ib-typo-13 {
+  @include font-variant-bold(12px);
+}
+
+%ib-typo-14 {
+  @include font-variant-bold(14px);
 }

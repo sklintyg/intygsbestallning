@@ -6,7 +6,7 @@ export const HeaderSectionContainer = styled.div`
   display: flex;
   align-items: center;
   height: 100%;
-  border-width: 0 6px;
+  border-width: 0 6px 0 0;
   border-style: solid;
   border-image-source: url(${dividerImage});
   border-image-slice: 0 50%;

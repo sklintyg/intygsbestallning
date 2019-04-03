@@ -16,6 +16,12 @@ export const FlexColumnContainer = styled.div`
   
 `
 
+export const PageHeaderContainer = styled.div`
+  margin: auto;
+  width: 100%;
+  max-width: ${ibValues.maxContentWidth};
+`
+
 export const ScrollingContainer = styled.div`
   overflow-y: auto;
   background: #fff;

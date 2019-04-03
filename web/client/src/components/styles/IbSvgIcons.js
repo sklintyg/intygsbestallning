@@ -168,12 +168,12 @@ export const ErrorPageIcon = () => (
         <circle className="cls-3" cx="13.21" cy="11.77" r="2.25" />
         <circle className="cls-3" cx="27.74" cy="11.77" r="2.25" />
         <circle className="cls-3" cx="20.47" cy="11.77" r="2.25" />
-        <path stroke="#f1f1f1" fill="none" stroke-miterlimit="10" d="M.64 20.84h190.91" />
+        <path stroke="#f1f1f1" fill="none" strokeMiterlimit="10" d="M.64 20.84h190.91" />
         <path fill="#fff"
               d="M35.69 6.45h126.82v10.23H35.69zM96.26 93.67a3.51 3.51 0 0 1 3.63 3.47 3.63 3.63 0 0 1-7.25 0 3.54 3.54 0 0 1 3.62-3.47zm2-3h-4.14l-.77-25.74H99z" />
         <path
           d="M90.36 49.77l-29 50.16a6.82 6.82 0 0 0 5.91 10.23h57.92a6.82 6.82 0 0 0 5.91-10.23l-29-50.16a6.82 6.82 0 0 0-11.74 0z"
-          stroke="#fff" stroke-width="4" fill="none" stroke-miterlimit="10" />
+          stroke="#fff" strokeWidth="4" fill="none" strokeMiterlimit="10" />
       </g>
     </g>
   </svg>

@@ -3,23 +3,17 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import TableSortHead from "./TableSortHead";
 import { Error } from '../styles/IbSvgIcons'
-
-const Table = styled.table`
-  padding-top: 10px;
-
-  & th {
-    text-align: left;
-  }
-
-  & td {
-    background-color: #eee;
-    padding: 5px;
-  }
-`;
+import {Table, Button} from 'reactstrap'
 
 const ResultLine = styled.div`
-  padding-top: 20px;
+  padding: 20px 0 10px 0;
 `;
+
+const Wrapper = styled.div`
+  & th:last-child {
+    width: 1%;
+  }
+`
 
 const BestallningarList = ({ bestallningList, onSort }) => {
   if (bestallningList.bestallningar.length === 0) {
@@ -36,12 +30,12 @@ const BestallningarList = ({ bestallningList, onSort }) => {
   };
 
   return (
-    <div>
+    <Wrapper>
       <ResultLine>
         Visar {bestallningList.start}-{bestallningList.end} av{" "}
         {bestallningList.totalElements} träffar
       </ResultLine>
-      <Table>
+      <Table striped className="ib-table-striped">
         <thead>
           <tr>
             <TableSortHead
@@ -65,7 +59,6 @@ const BestallningarList = ({ bestallningList, onSort }) => {
               sortId="INVANARE_PERSON_ID"
               onSort={handleSort}
             />
-            <th>Namn</th>
             <TableSortHead
               currentSortColumn={bestallningList.sortColumn}
               currentSortDirection={bestallningList.sortDirection}
@@ -89,17 +82,16 @@ const BestallningarList = ({ bestallningList, onSort }) => {
               <td>{bestallning.id}</td>
               <td>{bestallning.intygTyp}</td>
               <td>{bestallning.invanare.personId}</td>
-              <td>{bestallning.invanare.name}</td>
               <td>{bestallning.status === 'Oläst' ? <Error /> : null } {bestallning.status}</td>
               <td>{bestallning.ankomstDatum}</td>
               <td>
-                <Link to={`/bestallning/${bestallning.id}`}>Visa</Link>
+                <Link to={`/bestallning/${bestallning.id}`}><Button color="primary">Visa</Button></Link>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
-    </div>
+    </Wrapper>
   );
 };
 

@@ -21,7 +21,7 @@ const PageContainer = styled(WorkareaContainer)`
 
 `
 const ErrorPage = ({match}) => {
-  let toShow = "unknown";
+  let toShow = {title: 'unknown', message: 'unknown'};
   switch (match.params.errorCode) {
   case 'login.hsaerror':
     toShow = {title: 'Inloggning misslyckades', message: 'Det uppstod ett tekniskt fel när din behörighet skulle kontrolleras.'};
