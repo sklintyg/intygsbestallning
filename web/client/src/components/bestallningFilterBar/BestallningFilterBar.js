@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components/macro'
 import { PageHeaderContainer } from '../styles/ibLayout'
 import ibColors from '../styles/IbColors'
-import { Badge, Navbar, Nav } from 'reactstrap'
+import { Navbar, Nav } from 'reactstrap'
 import FilterBarButton from './FilterBarButton';
 
 const Wrapper = styled.div`

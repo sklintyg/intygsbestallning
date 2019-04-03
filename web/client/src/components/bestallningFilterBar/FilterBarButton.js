@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import ibColors from '../styles/IbColors'
-import { Badge, NavItem } from 'reactstrap'
+import { NavItem } from 'reactstrap'
 
 const Wrapper = styled.span`
 
