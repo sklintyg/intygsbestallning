@@ -49,7 +49,7 @@ public class UserController {
         boolean changeSuccess = user.changeValdVardenhet(hsaId);
 
         if (!changeSuccess) {
-            throw new AuthoritiesException(String.format("Could not change active unit context to : Unit '%s' is not present in the MIUs for user '%s'",
+            throw new AuthoritiesException(String.format("Could not change active unit context: Unit '%s' is not present in the MIUs for user '%s'",
                     hsaId, user.getHsaId()));
         }
 

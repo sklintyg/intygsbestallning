@@ -1,11 +1,11 @@
 {
   "error": {
     "common": {
-      "unknown": "Unknown error",
+      "unknown": "Prova igen om en stund. Om problemet kvarstår, kontakta i första hand din lokala IT-avdelning och i andra hand http://www.inera.se/kundtjanst och uppge då följande logg id: <logId>",
       "network_error": "Network error"
     },
     "user": {
-
+      "unauthorized": "Unauthorized"
     }
   }
 }
