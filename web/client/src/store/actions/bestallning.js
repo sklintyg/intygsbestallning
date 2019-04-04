@@ -1,4 +1,4 @@
-import * as api from '../../api/bestallning'
+import * as api from '../../api/bestallningApi'
 import { isFetching } from '../reducers/bestallning'
 import {openModal} from "./modal";
 
