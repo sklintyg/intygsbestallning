@@ -1,9 +1,9 @@
 let api;
 
 if (process.env.NODE_ENV === 'production' || true) {
-  api = require('./real/bestallning');
+  api = require('./real/bestallningApi');
 } else {
-  api = require('./mock/bestallning')
+  api = require('./mock/bestallningApi')
 }
 
 export const fetchBestallning = id => api.fetchBestallning(id);
