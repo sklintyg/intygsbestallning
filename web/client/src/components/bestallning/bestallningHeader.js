@@ -4,7 +4,7 @@ import ibValues from '../styles/IbValues'
 import { IbTypo09, IbTypo04, IbTypo01 } from '../styles/IbTypography'
 import styled from 'styled-components'
 import IbColors from '../styles/IbColors'
-import { ArrowBack, Error } from '../styles/IbSvgIcons'
+import { ArrowBack, Error, EventAvailableIcon } from '../styles/IbSvgIcons'
 import IbAlert, { alertType } from '../alert/Alert.js'
 
 const CenterContainer = styled.div`
@@ -55,7 +55,7 @@ const BestallningHeader = ({props}) => (
         <IconSpan onClick={props.history.goBack} className="hand" color={IbColors.IB_COLOR_07} as="span"><ArrowBack/>Tillbaka till lista</IconSpan>
         <IbTypo09 as="span" color={IbColors.IB_COLOR_07}>Förfrågan av Intygstyp '{props.bestallning.intygTyp}'</IbTypo09>
         <IconSpan as="span" color={IbColors.IB_COLOR_07}><Error/>Status {props.bestallning.status}</IconSpan>
-        <IbTypo09 as="span" color={IbColors.IB_COLOR_07}>Inkom {props.bestallning.ankomstDatum}</IbTypo09>
+        <IconSpan as="span" color={IbColors.IB_COLOR_07}><EventAvailableIcon/>Inkom {props.bestallning.ankomstDatum}</IconSpan>
       </div>
       <ButtonRow>
         <div className="left">
