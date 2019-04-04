@@ -40,20 +40,20 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 ## Kodformatering (Prettier)
 
 ### Config
-Se package.json `prettier` section.
+See package.json `prettier` section.
 
 Options: https://prettier.io/docs/en/options.html
 
 ### IDE Installation
-Kräver plugin-installation i både VS Code resp IntelliJ.
+Requires plugin installation in VS Code and IntelliJ.
 
-VS Code: Prettier - Code formatter
+VS Code extension: Prettier - Code formatter
 
 IntelliJ: Prettier https://plugins.jetbrains.com/plugin/10456-prettier
 
-Guide integration med IDEs JetBrains och VS Code: https://prettier.io/docs/en/editors.html
+IDE Integration Guide: https://prettier.io/docs/en/editors.html
 
-Tips för Jetbrains integration: https://intellij-support.jetbrains.com/hc/en-us/community/posts/360000167624-How-can-I-change-the-prettier-settings-
+Jetbrains integration info: https://intellij-support.jetbrains.com/hc/en-us/community/posts/360000167624-How-can-I-change-the-prettier-settings-
 
 ### Användning
 Alla filer som formateras under nivån där package.json ligger formateras med denna fil när man aktiverar formateringskommandot i respektive IDE. Det finns både keybindings och auto-format on save options.
