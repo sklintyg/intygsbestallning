@@ -1,13 +1,14 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import TableSortHead from "./TableSortHead";
+import React from 'react'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+import TableSortHead from './TableSortHead'
 import { Error } from '../styles/IbSvgIcons'
-import {Table, Button} from 'reactstrap'
+import { Table, Button } from 'reactstrap'
+import FetchError from './FetchError'
 
 const ResultLine = styled.div`
   padding: 20px 0 10px 0;
-`;
+`
 
 const Wrapper = styled.div`
   & th:last-child {
@@ -15,25 +16,21 @@ const Wrapper = styled.div`
   }
 `
 
-const BestallningarList = ({ bestallningList, onSort }) => {
-  if (bestallningList.bestallningar.length === 0) {
+const BestallningarList = ({ bestallningList, onSort, errorMessage }) => {
+  if (bestallningList.bestallningar && bestallningList.bestallningar.length === 0) {
     return (
-      <ResultLine>
-        Inget resultat hittades för den valda filtreringen. Överväg att ändra
-        filtreringen för att utöka resultatet.
-      </ResultLine>
-    );
+      <ResultLine>Inget resultat hittades för den valda filtreringen. Överväg att ändra filtreringen för att utöka resultatet.</ResultLine>
+    )
   }
 
   const handleSort = sortColumn => {
-    onSort(sortColumn);
-  };
+    onSort(sortColumn)
+  }
 
   return (
     <Wrapper>
       <ResultLine>
-        Visar {bestallningList.start}-{bestallningList.end} av{" "}
-        {bestallningList.totalElements} träffar
+        Visar {bestallningList.start}-{bestallningList.end} av {bestallningList.totalElements} träffar
       </ResultLine>
       <Table striped className="ib-table-striped">
         <thead>
@@ -77,22 +74,27 @@ const BestallningarList = ({ bestallningList, onSort }) => {
           </tr>
         </thead>
         <tbody>
-          {bestallningList.bestallningar.map(bestallning => (
+          {errorMessage && <tr><td><FetchError message={errorMessage}/></td></tr>}
+          {!errorMessage && bestallningList.bestallningar && bestallningList.bestallningar.map(bestallning => (
             <tr key={bestallning.id}>
               <td>{bestallning.id}</td>
               <td>{bestallning.intygTyp}</td>
               <td>{bestallning.invanare.personId}</td>
-              <td>{bestallning.status === 'Oläst' ? <Error /> : null } {bestallning.status}</td>
+              <td>
+                {bestallning.status === 'Oläst' ? <Error /> : null} {bestallning.status}
+              </td>
               <td>{bestallning.ankomstDatum}</td>
               <td>
-                <Link to={`/bestallning/${bestallning.id}`}><Button color="primary">Visa</Button></Link>
+                <Link to={`/bestallning/${bestallning.id}`}>
+                  <Button color="primary">Visa</Button>
+                </Link>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default BestallningarList;
+export default BestallningarList

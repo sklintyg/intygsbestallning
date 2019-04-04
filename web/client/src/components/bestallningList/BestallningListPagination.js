@@ -31,7 +31,7 @@ const Wrapper = styled.div`
   `
 
 const BestallningarListPagination = props => {
-  if (props.bestallningList.bestallningar.length < 1) {
+  if (!props.bestallningList.bestallningar || props.bestallningList.bestallningar.length < 1) {
     return null
   }
 

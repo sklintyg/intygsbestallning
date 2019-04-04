@@ -1,15 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types'
+import { ErrorPageIcon } from '../styles/IbSvgIcons';
+import styled from 'styled-components'
 
-const FetchError = ({ message, onRetry }) => (
-  <div>
-    <p>Kunde inte hämta beställningar. Fel: {message}</p>
-    <button onClick={onRetry}>Retry</button>
-  </div>
+const Wrapper = styled.div`text-align: center`
+
+const FetchError = () => (
+  <Wrapper>
+    <ErrorPageIcon/>
+    <p>Kunde inte hämta beställningar.</p>
+  </Wrapper>
 );
 
 FetchError.propTypes = {
-  message: PropTypes.string.isRequired,
+  message: PropTypes.string,
   onRetry: PropTypes.func.isRequired,
 };
 
