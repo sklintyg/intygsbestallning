@@ -23,7 +23,7 @@ const BestallningarList = ({ bestallningList, onSort, errorMessage }) => {
     )
   }
 
-  const handleSort = sortColumn => {
+  const handleSort = (sortColumn) => {
     onSort(sortColumn)
   }
 
@@ -74,23 +74,31 @@ const BestallningarList = ({ bestallningList, onSort, errorMessage }) => {
           </tr>
         </thead>
         <tbody>
-          {errorMessage && <tr><td><FetchError message={errorMessage}/></td></tr>}
-          {!errorMessage && bestallningList.bestallningar && bestallningList.bestallningar.map(bestallning => (
-            <tr key={bestallning.id}>
-              <td>{bestallning.id}</td>
-              <td>{bestallning.intygTyp}</td>
-              <td>{bestallning.invanare.personId}</td>
+          {errorMessage && (
+            <tr>
               <td>
-                {bestallning.status === 'Oläst' ? <Error /> : null} {bestallning.status}
-              </td>
-              <td>{bestallning.ankomstDatum}</td>
-              <td>
-                <Link to={`/bestallning/${bestallning.id}`}>
-                  <Button color="primary">Visa</Button>
-                </Link>
+                <FetchError message={errorMessage} />
               </td>
             </tr>
-          ))}
+          )}
+          {!errorMessage &&
+            bestallningList.bestallningar &&
+            bestallningList.bestallningar.map((bestallning) => (
+              <tr key={bestallning.id}>
+                <td>{bestallning.id}</td>
+                <td>{bestallning.intygTyp}</td>
+                <td>{bestallning.invanare.personId}</td>
+                <td>
+                  {bestallning.status === 'Oläst' ? <Error /> : null} {bestallning.status}
+                </td>
+                <td>{bestallning.ankomstDatum}</td>
+                <td>
+                  <Link to={`/bestallning/${bestallning.id}`}>
+                    <Button color="primary">Visa</Button>
+                  </Link>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </Table>
     </Wrapper>
