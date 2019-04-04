@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import * as actions from '../../store/actions/bestallning'
 import { connect } from 'react-redux'
-import { Button, UncontrolledButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
+import { Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
 import { compose } from 'recompose'
 import styled from 'styled-components'
-import {AccepteraBestallning, AvvisaBestallning, SkrivUtBestallning} from './dialogs'
+import { AccepteraBestallning, AvvisaBestallning, SkrivUtBestallning } from './dialogs'
 import { Check, Reply, Print } from '../styles/IbSvgIcons'
 import IbColors from '../styles/IbColors'
 
@@ -13,9 +13,10 @@ const StyledButton = styled(Button)`
 `
 
 const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestallning, completeBestallning}) => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const accept = (fritextForklaring) => accepteraBestallning(bestallning.id, {fritextForklaring});
-  
+
   const reject = (fritextForklaring, avvisa) => {
     if (avvisa) {
       rejectBestallning(bestallning.id, {fritextForklaring});
@@ -23,7 +24,7 @@ const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestalln
       //raderaBestallning();
     }
   }
-  
+
   const complete = () => {
     completeBestallning(bestallning.id, 'COMPLETED');
   }
@@ -36,21 +37,25 @@ const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestalln
 
   }
 
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen)
+  }
+
   return (
     <Fragment>
       { bestallning.status === 'Läst' ? <AccepteraBestallning accept={accept} /> : null }
       { bestallning.status === 'Läst' ? <AvvisaBestallning accept={reject} /> : null }
       { bestallning.status === 'Accepterad' ? <StyledButton onClick={complete} color={'primary'}><Check color={IbColors.IB_COLOR_00}/> Klarmarkera</StyledButton> : null }
       <StyledButton onClick={vidarebefodra} color={'primary'}><Reply color={IbColors.IB_COLOR_00}/> Vidarebefodra</StyledButton>
-      <UncontrolledButtonDropdown>
-        <DropdownToggle caret color={'primary'}>
-        <Print color={IbColors.IB_COLOR_00}/> Skriv ut
+      <ButtonDropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
+        <DropdownToggle color={'primary'} className={dropdownOpen ? 'dropdown-toggle up-icon' : 'dropdown-toggle down-icon'}>
+          <Print color={IbColors.IB_COLOR_00}/> Skriv ut
         </DropdownToggle>
-        <DropdownMenu>
+        <DropdownMenu right={true}>
           <SkrivUtBestallning sekretess={bestallning.invanare.sekretessMarkering} accept={printBestallning}/>
           <DropdownItem>Fakturaunderlag</DropdownItem>
         </DropdownMenu>
-      </UncontrolledButtonDropdown>
+      </ButtonDropdown>
     </Fragment>
   )
 };
