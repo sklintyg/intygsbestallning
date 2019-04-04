@@ -1,5 +1,4 @@
-import 'react-app-polyfill/ie11';
-import 'polyfill-array-includes';
+import './polyfills'
 import 'typeface-roboto';
 import React from 'react';
 import ReactDOM from 'react-dom';
