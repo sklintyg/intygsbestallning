@@ -7,7 +7,6 @@ import styled from 'styled-components'
 import { AccepteraBestallning, AvvisaBestallning, SkrivUtBestallning } from './dialogs'
 import { Check, Reply, Print } from '../styles/IbSvgIcons'
 import IbColors from '../styles/IbColors'
-import BorttagenBestallning from "./dialogs/borttagenBestallning";
 
 const StyledButton = styled(Button)`
   margin-right: 16px;

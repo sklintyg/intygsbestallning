@@ -16,10 +16,10 @@ const CustomScrollingContainer = styled(ScrollingContainer)`
   max-width: none;
 `
 
-const BestallningContainer = ({ error, bestallning, history }) => {
+const BestallningContainer = ({ error, bestallning, history, displayErrorModal }) => {
     const bestallningIsEmpty = Object.entries(bestallning).length === 0 && bestallning.constructor === Object;
 
-    if (error) {
+    if (error && bestallningIsEmpty) {
       return <Redirect to={'/exit/' + error.error.errorCode} />
     }
 
@@ -47,6 +47,9 @@ const lifeCycleValues = {
   componentDidUpdate(prevProps) {
     if (this.props.id !== prevProps.id) {
       fetchData(this.props);
+    }
+    if (this.props.error && this.props.error.modal) {
+      this.props.displayErrorModal(this.props.error.modal);
     }
   }
 }
