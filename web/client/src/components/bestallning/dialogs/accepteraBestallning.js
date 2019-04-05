@@ -45,7 +45,6 @@ const AccepteraBestallning = ({ handleOpen, handleClose, isOpen, accept }) => {
             color={'primary'}
             onClick={() => {
               accept(fritextForklaring)
-              handleClose()
             }}>
             Bekräfta
           </Button>
@@ -62,4 +61,5 @@ const AccepteraBestallning = ({ handleOpen, handleClose, isOpen, accept }) => {
   )
 }
 
-export default compose(modalContainer('accepteraBestallning'))(AccepteraBestallning)
+export const AccepteraBestallningId = 'accepteraBestallning'
+export default compose(modalContainer(AccepteraBestallningId))(AccepteraBestallning)

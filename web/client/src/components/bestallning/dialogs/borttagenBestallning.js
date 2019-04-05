@@ -3,8 +3,7 @@ import modalContainer from '../../modalContainer/modalContainer'
 import { compose } from 'recompose'
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 
-const BorttagenBestallning = ({handleOpen, handleClose, isOpen, onClose}) => {
-
+const BorttagenBestallning = ({ handleOpen, handleClose, isOpen, onClose }) => {
   return (
     <Fragment>
       <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
@@ -13,13 +12,19 @@ const BorttagenBestallning = ({handleOpen, handleClose, isOpen, onClose}) => {
           <p>Beställningen är nu raderad och finns inte längre tillgänglig i tjänsten.</p>
         </ModalBody>
         <ModalFooter>
-          <Button color={'primary'} onClick={() => {handleClose(); onClose()}}>Stäng</Button>
+          <Button
+            color={'primary'}
+            onClick={() => {
+              handleClose()
+              onClose()
+            }}>
+            Stäng
+          </Button>
         </ModalFooter>
       </Modal>
     </Fragment>
   )
 }
 
-export default compose(
-  modalContainer('borttagenBestallning')
-)(BorttagenBestallning)
+export const BorttagenBestallningId = 'borttagenBestallning'
+export default compose(modalContainer(BorttagenBestallningId))(BorttagenBestallning)

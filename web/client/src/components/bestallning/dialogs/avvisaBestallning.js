@@ -5,7 +5,6 @@ import modalContainer from '../../modalContainer/modalContainer'
 import { compose } from 'recompose'
 import { Block } from '../../styles/IbSvgIcons'
 import IbColors from '../../styles/IbColors'
-import BorttagenBestallning from './borttagenBestallning'
 import RadioButton from '../../radioButton'
 
 const StyledButton = styled(Button)`
@@ -17,7 +16,7 @@ const Textarea = styled.textarea`
   resize: none;
 `
 
-const AvvisaBestallning = ({ handleOpen, handleClose, isOpen, accept, goBack }) => {
+const AvvisaBestallning = ({ handleOpen, handleClose, isOpen, accept }) => {
   const [fritextForklaring, setFritextForklaring] = useState('')
   const [avvisa, setAvvisa] = useState(undefined)
 
@@ -57,7 +56,6 @@ const AvvisaBestallning = ({ handleOpen, handleClose, isOpen, accept, goBack }) 
             disabled={avvisa === undefined}
             onClick={() => {
               accept(fritextForklaring, avvisa)
-              handleClose()
             }}>
             Bekräfta
           </Button>
@@ -70,9 +68,9 @@ const AvvisaBestallning = ({ handleOpen, handleClose, isOpen, accept, goBack }) 
           </Button>
         </ModalFooter>
       </Modal>
-      <BorttagenBestallning onClose={goBack} />
     </Fragment>
   )
 }
 
-export default compose(modalContainer('avvisaBestallning'))(AvvisaBestallning)
+export const AvvisaBestallningId = 'avvisaBestallning'
+export default compose(modalContainer(AvvisaBestallningId))(AvvisaBestallning)

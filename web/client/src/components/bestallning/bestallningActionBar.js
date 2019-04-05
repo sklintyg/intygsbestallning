@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { AccepteraBestallning, AvvisaBestallning, SkrivUtBestallning } from './dialogs'
 import { Check, Reply, Print } from '../styles/IbSvgIcons'
 import IbColors from '../styles/IbColors'
+import BorttagenBestallning from './dialogs/borttagenBestallning'
 
 const StyledButton = styled(Button)`
   margin-right: 16px;
@@ -42,7 +43,7 @@ const BestallningActionBar = ({ bestallning, accepteraBestallning, rejectBestall
   return (
     <Fragment>
       {bestallning.status === 'Läst' ? <AccepteraBestallning accept={accept} /> : null}
-      {bestallning.status === 'Läst' ? <AvvisaBestallning accept={reject} goBack={goBack} /> : null}
+      {bestallning.status === 'Läst' ? <AvvisaBestallning accept={reject} /> : null}
       {bestallning.status === 'Accepterad' ? (
         <StyledButton onClick={complete} color={'primary'}>
           <Check color={IbColors.IB_COLOR_00} /> Klarmarkera
@@ -60,6 +61,7 @@ const BestallningActionBar = ({ bestallning, accepteraBestallning, rejectBestall
           <DropdownItem>Fakturaunderlag</DropdownItem>
         </DropdownMenu>
       </ButtonDropdown>
+      <BorttagenBestallning onClose={goBack} />
     </Fragment>
   )
 }

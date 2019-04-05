@@ -13,13 +13,25 @@ const SkrivUtBestallning = ({ handleOpen, handleClose, isOpen, accept, sekretess
         <IbAlert type={alertType.SEKRETESS}>Invånaren har sekretessmarkering. Hantera utskriften varsamt.</IbAlert>
       </ModalBody>
       <ModalFooter>
-        <Button color={'primary'} onClick={() => { accept(); handleClose() }}>Skriv ut</Button>
-        <Button color={'default'} onClick={() => { handleClose() }}>Avbryt</Button>
+        <Button
+          color={'primary'}
+          onClick={() => {
+            accept()
+            handleClose()
+          }}>
+          Skriv ut
+        </Button>
+        <Button
+          color={'default'}
+          onClick={() => {
+            handleClose()
+          }}>
+          Avbryt
+        </Button>
       </ModalFooter>
     </Modal>
   </Fragment>
 )
 
-export default compose(
-  modalContainer('skrivUtBestallning')
-)(SkrivUtBestallning)
+export const SkrivUtBestallningId = 'skrivUtBestallning'
+export default compose(modalContainer(SkrivUtBestallningId))(SkrivUtBestallning)
