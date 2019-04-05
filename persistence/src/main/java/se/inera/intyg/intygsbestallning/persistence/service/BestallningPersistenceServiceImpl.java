@@ -50,12 +50,12 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
 
         var invanareEntity = InvanareEntity.Factory.toEntity(bestallning.getInvanare());
         if (Objects.isNull(invanareEntity.getId())) {
-            invanareEntity = invanareRepository.saveAndFlush(invanareEntity);
+            invanareEntity = invanareRepository.save(invanareEntity);
         }
 
         var vardenhetEntity = VardenhetEntity.Factory.toEntity(bestallning.getVardenhet());
         if (Objects.isNull(vardenhetEntity.getId())) {
-            vardenhetEntity = vardenhetRepository.saveAndFlush(vardenhetEntity);
+            vardenhetEntity = vardenhetRepository.save(vardenhetEntity);
         }
 
         var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning, invanareEntity, vardenhetEntity);
