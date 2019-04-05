@@ -3,7 +3,10 @@ import styled from 'styled-components/macro'
 import { PageHeaderContainer } from '../styles/ibLayout'
 import ibColors from '../styles/IbColors'
 import { Navbar, Nav } from 'reactstrap'
-import FilterBarButton from './FilterBarButton';
+import FilterBarButton from './FilterBarButton'
+import { compose } from 'recompose'
+import { getStat } from '../../store/reducers/stat'
+import { connect } from 'react-redux'
 
 const Wrapper = styled.div`
   background-color: ${ibColors.IB_COLOR_26};
@@ -13,7 +16,7 @@ const Wrapper = styled.div`
   }
 
   & .navbar-ib li {
-    display: inline-block
+    display: inline-block;
   }
 
   & .navbar-nav {
@@ -21,20 +24,21 @@ const Wrapper = styled.div`
   }
 `
 
-const BestallningFilterBar = () => {
+const BestallningFilterBar = (stat) => {
   const menu = [
     {
       to: '/bestallningar/AKTUELLA',
-      text: 'Aktiva'
+      text: 'Aktiva',
+      stat: stat.stat.antalOlastaBestallningar,
     },
     {
       to: '/bestallningar/KLARA',
-      text: 'Klara'
+      text: 'Klara',
     },
     {
       to: '/bestallningar/AVVISADE',
-      text: 'Avvisade'
-    }
+      text: 'Avvisade',
+    },
   ]
 
   return (
@@ -42,7 +46,7 @@ const BestallningFilterBar = () => {
       <PageHeaderContainer>
         <Navbar className="navbar-ib">
           <Nav navbar>
-            {menu.map(menuItem => (
+            {menu.map((menuItem) => (
               <FilterBarButton key={menuItem.text} menuItem={menuItem} />
             ))}
           </Nav>
@@ -52,4 +56,15 @@ const BestallningFilterBar = () => {
   )
 }
 
-export default BestallningFilterBar
+const mapStateToProps = (state) => {
+  return {
+    stat: getStat(state),
+  }
+}
+
+export default compose(
+  connect(
+    mapStateToProps,
+    null
+  )
+)(BestallningFilterBar)

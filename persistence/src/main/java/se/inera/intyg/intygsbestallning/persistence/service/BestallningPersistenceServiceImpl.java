@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
+import se.inera.intyg.intygsbestallning.common.dto.CountBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarResult;
@@ -74,6 +75,19 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
     public void deleteBestallning(Bestallning bestallning) {
         var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning);
         bestallningRepository.delete(bestallningEntity);
+    }
+
+    public long countBestallningar(CountBestallningarQuery query) {
+
+        var pb = new BooleanBuilder();
+        var qe = QBestallningEntity.bestallningEntity;
+        if (!query.getStatusar().isEmpty()) {
+            pb.and(qe.status.in(query.getStatusar()));
+        }
+        pb.and(qe.vardenhet.hsaId.eq(query.getHsaId()));
+        pb.and(qe.vardenhet.organisationId.eq(query.getOrgNrVardgivare()));
+
+        return bestallningRepository.count(pb);
     }
 
     @Override

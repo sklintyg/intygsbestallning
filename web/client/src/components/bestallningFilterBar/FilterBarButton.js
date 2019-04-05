@@ -2,10 +2,9 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import ibColors from '../styles/IbColors'
-import { NavItem } from 'reactstrap'
+import { NavItem, Badge } from 'reactstrap'
 
 const Wrapper = styled.span`
-
   & .badge__stat {
     margin-left: 10px;
     background-color: ${ibColors.IB_COLOR_20};
@@ -44,15 +43,18 @@ const Wrapper = styled.span`
   }
 `
 
-const FilterBarButton = ({menuItem}) => {
+const FilterBarButton = ({ menuItem }) => {
   return (
     <Wrapper>
       <NavItem key={menuItem.text}>
         <NavLink to={menuItem.to}>
           {menuItem.text}
-          {/*<Badge color="primary" className="badge__stat">
-                    {5}
-                  </Badge>*/}
+          {
+            menuItem.stat &&
+            <Badge color="primary" className="badge__stat">
+              {menuItem.stat}
+            </Badge>
+          }
         </NavLink>
       </NavItem>
     </Wrapper>

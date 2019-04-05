@@ -16,6 +16,7 @@ import {ConnectedRouter} from "connected-react-router";
 import {closeAllModals} from "./store/actions/modal";
 import ErrorPage from "./pages/ErrorPage";
 import ErrorModal from "./components/errorModal";
+import StatPoll from "./components/statPoll"
 
 // TEST
 const TestLinks = () => (
@@ -41,6 +42,7 @@ const App = () => {
             <TestLinks />
             <Header/>
             <ErrorModal />
+            <StatPoll />
             <Switch>
               <UnsecuredRoute exact path="/" component={HomePage}/>
               <SecuredRoute allowMissingUnit={true} path="/valj-enhet" component={SelectEnhetPage} />

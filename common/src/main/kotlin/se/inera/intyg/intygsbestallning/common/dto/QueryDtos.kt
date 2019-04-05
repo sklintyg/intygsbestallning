@@ -6,6 +6,14 @@ import se.inera.intyg.intygsbestallning.common.domain.Invanare
 import se.inera.intyg.intygsbestallning.common.text.bestallning.BestallningTexter
 import java.time.LocalDate
 
+data class CountBestallningarQuery(
+    val statusar: List<BestallningStatus>,
+    val hsaId: String,
+    val orgNrVardgivare: String)
+
+data class StatResponse(
+    val antalOlastaBestallningar: Long)
+
 data class ListBestallningarQuery(
    val statusar: List<BestallningStatus>,
    val hsaId: String,

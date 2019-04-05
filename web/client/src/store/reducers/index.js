@@ -1,27 +1,28 @@
 import { combineReducers } from 'redux'
-import bestallningList from './bestallningList';
-import user from "./user";
+import bestallningList from './bestallningList'
+import user from './user'
 import { connectRouter } from 'connected-react-router'
-import bestallning from './bestallning';
-import modal from "./modal";
-import welcomeStats from "./welcomeStats.r"
+import bestallning from './bestallning'
+import modal from './modal'
+import stat from './stat'
+import welcomeStats from './welcomeStats.r'
 
-const appReducer = (history) => combineReducers({
-  bestallningList,
-  user,
-  router: connectRouter(history),
-  bestallning,
-  modal,
-  welcomeStats
-});
-
-
+const appReducer = (history) =>
+  combineReducers({
+    bestallningList,
+    user,
+    router: connectRouter(history),
+    bestallning,
+    modal,
+    stat,
+    welcomeStats,
+  })
 
 const reducers = (history) => (state, action) => {
-  if ((action.payload && action.payload.response && action.payload.response.status === 401)){
-    state = undefined;
+  if (action.payload && action.payload.response && action.payload.response.status === 401) {
+    state = undefined
   }
   return appReducer(history)(state, action)
-};
+}
 
-export default reducers;
+export default reducers
