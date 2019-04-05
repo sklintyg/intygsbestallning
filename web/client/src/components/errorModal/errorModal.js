@@ -3,11 +3,8 @@ import modalContainer from '../modalContainer/modalContainer'
 import { compose } from 'recompose'
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 
-const BorttagenBestallning = ({handleClose, isOpen, data}) => {
-
-  if (!data)
-    data = {}
-console.log(data);
+const BorttagenBestallning = ({ handleClose, isOpen, data }) => {
+  if (!data) data = {}
   return (
     <Fragment>
       <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
@@ -16,13 +13,13 @@ console.log(data);
           <p>{data.body}</p>
         </ModalBody>
         <ModalFooter>
-          <Button color={'primary'} onClick={handleClose}>Stäng</Button>
+          <Button color={'primary'} onClick={handleClose}>
+            Stäng
+          </Button>
         </ModalFooter>
       </Modal>
     </Fragment>
   )
 }
 
-export default compose(
-  modalContainer('errorModal')
-)(BorttagenBestallning)
+export default compose(modalContainer('errorModal'))(BorttagenBestallning)

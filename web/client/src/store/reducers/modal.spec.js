@@ -37,6 +37,38 @@ describe('modal reducer', () => {
     })
   });
 
+  describe('should handle ' + OPEN_MODAL + ' with data', () => {
+    const id = '123';
+    const extraData = 'modal data'
+    const action = {
+      type: OPEN_MODAL,
+      payload: {
+        id,
+        extraData
+      }
+    };
+
+    it('empty state', () => {
+      const stateBefore = {};
+      const stateAfter = {[id]: true, [id + 'Data']: {extraData}};
+
+      expect(reducer(stateBefore, action)).toEqual(stateAfter);
+    });
+
+    it('none empty state', () => {
+      const stateBefore = {
+        something: 'something'
+      };
+      const stateAfter = {
+        something: 'something',
+        [id]: true,
+        [id + 'Data']: {extraData}
+      };
+
+      expect(reducer(stateBefore, action)).toEqual(stateAfter);
+    })
+  });
+
   describe('should handle ' + CLOSE_MODAL, () => {
     const id = '123';
     const action = {
