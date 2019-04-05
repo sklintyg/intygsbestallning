@@ -1,5 +1,0 @@
-{
-  "/api/anvandare": "/anvandare",
-  "/api/bestallning": "/bestallning",
-  "/api/bestallning/:id": "/bestallning/:id"
-}
