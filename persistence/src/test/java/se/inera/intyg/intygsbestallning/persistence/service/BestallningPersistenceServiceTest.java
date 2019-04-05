@@ -65,7 +65,7 @@ public class BestallningPersistenceServiceTest extends TestSupport {
         var result = bestallningPersistenceService.listBestallningar(query);
         assertFalse(result.getBestallningar().isEmpty());
 
-        query = search(entity, String.valueOf(entity.getStatus().getBeskrivning().toLowerCase()));
+        query = search(entity, entity.getStatus().getBeskrivning().toLowerCase());
         result = bestallningPersistenceService.listBestallningar(query);
         assertFalse(result.getBestallningar().isEmpty());
 
