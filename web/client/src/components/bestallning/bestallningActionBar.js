@@ -12,30 +12,28 @@ const StyledButton = styled(Button)`
   margin-right: 16px;
 `
 
-const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestallning, deleteBestallning, completeBestallning, goBack}) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+const BestallningActionBar = ({ bestallning, accepteraBestallning, rejectBestallning, deleteBestallning, completeBestallning, goBack }) => {
+  const [dropdownOpen, setDropdownOpen] = useState(false)
 
-  const accept = (fritextForklaring) => accepteraBestallning(bestallning.id, {fritextForklaring});
+  const accept = (fritextForklaring) => accepteraBestallning(bestallning.id, { fritextForklaring })
 
   const reject = (fritextForklaring, avvisa) => {
-    if (avvisa) {
-      rejectBestallning(bestallning.id, {fritextForklaring});
+    if (avvisa === 'true') {
+      rejectBestallning(bestallning.id, { fritextForklaring })
     } else {
-      deleteBestallning(bestallning.id, {fritextForklaring});
+      deleteBestallning(bestallning.id, { fritextForklaring })
     }
   }
 
   const complete = () => {
-    completeBestallning(bestallning.id, 'COMPLETED');
+    completeBestallning(bestallning.id, 'COMPLETED')
   }
 
   const vidarebefodra = () => {
     //vidarebefodra(bestallning.id)
   }
 
-  const printBestallning = () => {
-
-  }
+  const printBestallning = () => {}
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen)
@@ -43,23 +41,32 @@ const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestalln
 
   return (
     <Fragment>
-      { bestallning.status === 'Läst' ? <AccepteraBestallning accept={accept} /> : null }
-      { bestallning.status === 'Läst' ? <AvvisaBestallning accept={reject} goBack={goBack} /> : null }
-      { bestallning.status === 'Accepterad' ? <StyledButton onClick={complete} color={'primary'}><Check color={IbColors.IB_COLOR_00}/> Klarmarkera</StyledButton> : null }
-      <StyledButton onClick={vidarebefodra} color={'primary'}><Reply color={IbColors.IB_COLOR_00}/> Vidarebefodra</StyledButton>
+      {bestallning.status === 'Läst' ? <AccepteraBestallning accept={accept} /> : null}
+      {bestallning.status === 'Läst' ? <AvvisaBestallning accept={reject} goBack={goBack} /> : null}
+      {bestallning.status === 'Accepterad' ? (
+        <StyledButton onClick={complete} color={'primary'}>
+          <Check color={IbColors.IB_COLOR_00} /> Klarmarkera
+        </StyledButton>
+      ) : null}
+      <StyledButton onClick={vidarebefodra} color={'primary'}>
+        <Reply color={IbColors.IB_COLOR_00} /> Vidarebefodra
+      </StyledButton>
       <ButtonDropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
         <DropdownToggle color={'primary'} className={dropdownOpen ? 'dropdown-toggle up-icon' : 'dropdown-toggle down-icon'}>
-          <Print color={IbColors.IB_COLOR_00}/> Skriv ut
+          <Print color={IbColors.IB_COLOR_00} /> Skriv ut
         </DropdownToggle>
         <DropdownMenu right={true}>
-          <SkrivUtBestallning sekretess={bestallning.invanare.sekretessMarkering} accept={printBestallning}/>
+          <SkrivUtBestallning sekretess={bestallning.invanare.sekretessMarkering} accept={printBestallning} />
           <DropdownItem>Fakturaunderlag</DropdownItem>
         </DropdownMenu>
       </ButtonDropdown>
     </Fragment>
   )
-};
+}
 
 export default compose(
-  connect(null, actions)
-)(BestallningActionBar);
+  connect(
+    null,
+    actions
+  )
+)(BestallningActionBar)
