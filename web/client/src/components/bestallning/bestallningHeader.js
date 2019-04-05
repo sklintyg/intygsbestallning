@@ -23,6 +23,8 @@ const CenterContainer = styled.div`
 const HeaderContainer = styled.div`
   box-shadow: 0px 5px 9px -6px #000;
   position: relative;
+  margin-left: -10px;
+  margin-right: -10px;
 `
 
 const ButtonRow = styled.div`

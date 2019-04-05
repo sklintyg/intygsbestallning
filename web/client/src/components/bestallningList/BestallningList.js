@@ -32,7 +32,7 @@ const BestallningarList = ({ bestallningList, onSort, errorMessage }) => {
       <ResultLine>
         Visar {bestallningList.start}-{bestallningList.end} av {bestallningList.totalElements} träffar
       </ResultLine>
-      <Table striped className="ib-table-striped">
+      <Table striped>
         <thead>
           <tr>
             <TableSortHead
