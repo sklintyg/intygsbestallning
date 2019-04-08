@@ -11,7 +11,6 @@ const FooterOuterContainer = styled.div`
   box-shadow: inset 1px 4px 9px -6px #000;
   width: 100%;
   padding: 38px 10px;
- 
 `
 const FooterContainer = styled.div`
   min-height: 80px;

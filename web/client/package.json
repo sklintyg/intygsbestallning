@@ -4,11 +4,14 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.3.1",
+    "chart.js": "^2.8.0",
     "connected-react-router": "^6.3.2",
+    "core-js": "2.6.5",
     "flat": "^4.1.0",
     "lodash": "^4.11.2",
     "node-sass": "^4.11.0",
     "react": "^16.8.6",
+    "react-chartkick": "^0.3.0",
     "react-dom": "^16.8.6",
     "react-js-pagination": "3.0.2",
     "react-redux": "^6.0.1",
@@ -21,8 +24,7 @@
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.2.0",
     "typeface-roboto": "0.0.54",
-    "uuid": "^3.3.2",
-    "core-js": "2.6.5"
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
