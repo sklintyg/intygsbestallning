@@ -11,6 +11,9 @@ import IbColors from '../styles/IbColors'
 const StyledButton = styled(Button)`
   margin-right: 16px;
 `
+const StyledButtonDropdown = styled(ButtonDropdown)`
+  margin-right: 16px;
+`
 
 const BestallningActionBar = ({ bestallning, accepteraBestallning, rejectBestallning, deleteBestallning, completeBestallning, goBack }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -48,10 +51,7 @@ const BestallningActionBar = ({ bestallning, accepteraBestallning, rejectBestall
           <Check color={IbColors.IB_COLOR_00} /> Klarmarkera
         </StyledButton>
       ) : null}
-      <StyledButton onClick={vidarebefodra} color={'primary'}>
-        <Reply color={IbColors.IB_COLOR_00} /> Vidarebefodra
-      </StyledButton>
-      <ButtonDropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
+      <StyledButtonDropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
         <DropdownToggle color={'primary'} className={dropdownOpen ? 'dropdown-toggle up-icon' : 'dropdown-toggle down-icon'}>
           <Print color={IbColors.IB_COLOR_00} /> Skriv ut
         </DropdownToggle>
@@ -59,7 +59,10 @@ const BestallningActionBar = ({ bestallning, accepteraBestallning, rejectBestall
           <SkrivUtBestallning sekretess={bestallning.invanare.sekretessMarkering} accept={printBestallning} />
           <DropdownItem>Fakturaunderlag</DropdownItem>
         </DropdownMenu>
-      </ButtonDropdown>
+      </StyledButtonDropdown>
+      <Button onClick={vidarebefodra} color={'primary'}>
+        <Reply color={IbColors.IB_COLOR_00} /> Vidarebefodra
+      </Button>
       <BorttagenBestallning onClose={goBack} />
     </Fragment>
   )

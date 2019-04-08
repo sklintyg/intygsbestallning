@@ -6,7 +6,7 @@ import IbAlert, { alertType } from '../../alert/Alert'
 
 const SkrivUtBestallning = ({ handleOpen, handleClose, isOpen, accept, sekretess }) => (
   <Fragment>
-    <DropdownItem onClick={sekretess ? handleOpen : accept}>Förfrågan</DropdownItem>
+    <DropdownItem onClick={sekretess ? handleOpen : accept}>Förfrågan/Beställning</DropdownItem>
     <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
       <ModalHeader toggle={handleClose}>Skriv ut beställning</ModalHeader>
       <ModalBody>

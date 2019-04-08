@@ -122,8 +122,8 @@ export const Alarm = () => (
 )
 
 //ib-ikon-49
-export const Error = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill={IbColors.IB_COLOR_06} width="16px" height="16px" viewBox="0 0 24 24">
+export const Error = ({color}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill={color ? color : IbColors.IB_COLOR_06} width="16px" height="16px" viewBox="0 0 24 24">
     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
   </svg>
 )
@@ -158,9 +158,9 @@ export const Reply = ({color}) => (
 
 //ib-ikon-07
 export const Print = ({color}) => (
-<svg xmlns="http://www.w3.org/2000/svg" fill={color} width="24px" height="24px" viewBox="0 0 24 24">
-  <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
-</svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill={color} width="24px" height="24px" viewBox="0 0 24 24">
+    <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
+  </svg>
 )
 
 //fel-01.svg
@@ -186,4 +186,9 @@ export const ErrorPageIcon = () => (
   </svg>
 )
 
-
+//ib-ikon-33
+export const Create = ({color}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill={color} width="16px" height="16px" viewBox="0 0 24 24">
+    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+  </svg>
+)
