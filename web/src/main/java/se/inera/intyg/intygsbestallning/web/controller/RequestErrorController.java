@@ -26,12 +26,16 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.WebAttributes;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import se.inera.intyg.infra.security.authorities.AuthoritiesException;
+import se.inera.intyg.infra.security.exception.HsaServiceException;
+import se.inera.intyg.infra.security.exception.MissingMedarbetaruppdragException;
 import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
 import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
 import se.inera.intyg.intygsbestallning.web.controller.dto.ApiErrorResponse;
@@ -48,12 +52,36 @@ import java.util.UUID;
 @RestController
 public class RequestErrorController implements ErrorController {
 
+    public static final String IB_ERROR_CONTROLLER_PATH = "/error";
+    public static final String IB_SPRING_SEC_ERROR_CONTROLLER_PATH = IB_ERROR_CONTROLLER_PATH + "/spring-sec-error";
     private static final String IB_CLIENT_ROOTPATH = "/#/";
     public static final String IB_CLIENT_EXIT_BOOT_PATH = IB_CLIENT_ROOTPATH + "exit/";
-
-    private static final String ERROR_PATH = "/error";
     private static final Logger LOG = LoggerFactory.getLogger(RequestErrorController.class);
     private ErrorAttributes errorAttributes = new DefaultErrorAttributes(true);
+
+
+    /**
+     * Intercept errors forwarded by a spring security AuthenticationFailureHandler.
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = IB_SPRING_SEC_ERROR_CONTROLLER_PATH, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView handleSpringSecurityErrorAsRedirect(WebRequest webRequest, HttpServletRequest request) {
+        final String errorContext = getErrorContext(webRequest);
+        //Check if Spring security saved an exception in request
+        final Throwable error = (Throwable) request.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+        ApiErrorResponse apiErrorResponse;
+        if (error != null) {
+            apiErrorResponse = fromException(error);
+        } else {
+            apiErrorResponse = fromHttpStatus(getDispatcherErrorStatusCode(request));
+        }
+        String redirectView = "redirect:" + IB_CLIENT_EXIT_BOOT_PATH + apiErrorResponse.getErrorCode() + "/" + apiErrorResponse.getLogId();
+
+        LOG.error(String.format("(Page) Spring Security error intercepted: %s, %s - responding with: %s", errorContext, apiErrorResponse.toString(), redirectView), error);
+        return new ModelAndView(redirectView);
+    }
 
     /**
      * For normal "browser navigation" initiated requests, we handle all error with a redirect to a specific
@@ -62,12 +90,12 @@ public class RequestErrorController implements ErrorController {
      * @param request
      * @return
      */
-    @RequestMapping(path = ERROR_PATH, produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(path = IB_ERROR_CONTROLLER_PATH, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView handleErrorAsRedirect(WebRequest webRequest, HttpServletRequest request) {
         final String errorContext = getErrorContext(webRequest);
 
         ApiErrorResponse apiErrorResponse = fromHttpStatus(getDispatcherErrorStatusCode(request));
-        String redirectView = "redirect:" + IB_CLIENT_EXIT_BOOT_PATH + apiErrorResponse.getErrorCode();
+        String redirectView = "redirect:" + IB_CLIENT_EXIT_BOOT_PATH + apiErrorResponse.getErrorCode() + "/" + apiErrorResponse.getLogId();
 
         LOG.error(String.format("(Page) Request error intercepted: %s - responding with: %s", errorContext, redirectView));
         return new ModelAndView(redirectView);
@@ -79,7 +107,7 @@ public class RequestErrorController implements ErrorController {
      * @param request
      * @return
      */
-    @RequestMapping(path = ERROR_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = IB_ERROR_CONTROLLER_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity handleErrorAsJsonResponse(WebRequest webRequest, HttpServletRequest request) {
         final HttpStatus httpStatus = getDispatcherErrorStatusCode(request);
@@ -98,7 +126,7 @@ public class RequestErrorController implements ErrorController {
 
     @Override
     public String getErrorPath() {
-        return ERROR_PATH;
+        return IB_ERROR_CONTROLLER_PATH;
     }
 
     private String getErrorContext(WebRequest webRequest) {
@@ -117,13 +145,35 @@ public class RequestErrorController implements ErrorController {
 
         if (error instanceof IbServiceException) {
             final IbServiceException ibException = (IbServiceException) error;
+            //A more fine grained IB exception thrown by our service layer
             return new ApiErrorResponse(error.getMessage(), ibException.getErrorCode().name(), ibException.getLogId());
-        } else if (error instanceof AuthoritiesException) {
-            return new ApiErrorResponse(error.getMessage(), IbErrorCodeEnum.UNAUTHORIZED.name(), UUID.randomUUID().toString());
+        } else if (error instanceof AuthenticationException) {
+            //Thrown by Spring security during authentication (login), also thrown by IB during various auth checks
+            return new ApiErrorResponse(error.getMessage(), getErrorCodeFromAuthException((AuthenticationException) error), UUID.randomUUID().toString());
         } else {
             return new ApiErrorResponse(error.getMessage(), IbErrorCodeEnum.UNKNOWN_INTERNAL_PROBLEM.name(), UUID.randomUUID().toString());
         }
     }
+
+    /**
+     * Map type of auth exception to error codes
+     *
+     * @param e
+     * @return
+     */
+    private String getErrorCodeFromAuthException(AuthenticationException e) {
+        if (e instanceof MissingMedarbetaruppdragException) {
+            return "LOGIN.FEL002";
+        } else if (e instanceof HsaServiceException) {
+            return "LOGIN.FEL004";
+        } else if (e instanceof AuthoritiesException) {
+            return IbErrorCodeEnum.UNAUTHORIZED.name();
+        } else {
+            //Generic tech error during login
+            return "LOGIN.FEL001";
+        }
+    }
+
 
     private ApiErrorResponse fromHttpStatus(final HttpStatus statusCode) {
         IbErrorCodeEnum errorCode = IbErrorCodeEnum.UNKNOWN_INTERNAL_PROBLEM;

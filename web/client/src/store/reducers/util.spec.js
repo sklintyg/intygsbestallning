@@ -3,11 +3,8 @@ import *  as messages from "../../messages/messages";
 
 messages.getMessage = (messageKey) => messageKey;
 messages.haveMessage = (messageKey) => {
-  if (messageKey === 'error.user.not_found') {
-    return true;
-  }
 
-  if (messageKey === 'error.common.network_error') {
+  if (messageKey === 'error.common.network_error.message') {
     return true;
   }
 
@@ -23,7 +20,7 @@ describe('util test', () => {
 
       const result = util.buildClientError(errorResponse, 'error.user');
 
-      expect(result).toEqual({message: 'error.common.unknown'})
+      expect(result).toEqual({title: 'error.common.unknown.title', message: 'error.common.unknown.message', logId: null})
     });
 
     it('missing errorCode', () => {
@@ -33,7 +30,7 @@ describe('util test', () => {
 
       const result = util.buildClientError(errorResponse, 'error.user');
 
-      expect(result).toEqual({message: 'error.common.unknown'})
+      expect(result).toEqual({title: 'error.common.unknown.title', message: 'error.common.unknown.message', logId: null})
     });
 
     it('errorCode found', () => {
@@ -45,7 +42,7 @@ describe('util test', () => {
 
       const result = util.buildClientError(errorResponse, 'error.user');
 
-      expect(result).toEqual({message: 'error.user.not_found'})
+      expect(result).toEqual({title: 'error.common.unknown.title', message: 'error.common.unknown.message', logId: null})
     });
 
     it('errorCode fallback', () => {
@@ -57,7 +54,7 @@ describe('util test', () => {
 
       const result = util.buildClientError(errorResponse, 'error.user');
 
-      expect(result).toEqual({message: 'error.common.network_error'})
+      expect(result).toEqual({title: 'error.common.network_error.title', message: 'error.common.network_error.message', logId: null})
     });
 
     it('errorCode fallback common', () => {
@@ -69,7 +66,7 @@ describe('util test', () => {
 
       const result = util.buildClientError(errorResponse, 'error.user');
 
-      expect(result).toEqual({message: 'error.common.unknown'})
+      expect(result).toEqual({title: 'error.common.unknown.title', message: 'error.common.unknown.message', logId: null})
     });
   })
 });

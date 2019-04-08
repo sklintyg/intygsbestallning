@@ -1,25 +1,35 @@
-import { haveMessage, getMessage } from "../../messages/messages";
+import {getMessage, haveMessage} from "../../messages/messages";
 
 export const buildClientError = (errorResponse, prefix) => {
 
   const {error} = errorResponse;
-  let messageKey;
+  let titleKey, messageKey, logId;
 
   if (!error || !error.hasOwnProperty('errorCode')) {
-    messageKey = 'error.common.unknown';
+    messageKey = 'error.common.unknown.message';
+    titleKey = 'error.common.unknown.title';
+    logId = null;
   } else {
     const errorKey = error.errorCode.toLowerCase();
-    messageKey = `${prefix}.${errorKey}`
+    logId = error.logId || null;
+
+    titleKey = `${prefix}.${errorKey}.title`
+    messageKey = `${prefix}.${errorKey}.message`
 
     if (!haveMessage(messageKey)) {
-      messageKey = `error.common.${errorKey}`;
+      titleKey = `error.common.${errorKey}.title`;
+      messageKey = `error.common.${errorKey}.message`;
       if (!haveMessage(messageKey)) {
-        messageKey = `error.common.unknown`;
+        titleKey = `error.common.unknown.title`;
+        messageKey = `error.common.unknown.message`;
       }
     }
   }
 
+
   return {
-    message: getMessage(messageKey)
+    title: getMessage(titleKey),
+    message: getMessage(messageKey),
+    logId : logId
   }
 }

@@ -37,13 +37,14 @@ const Alert = styled.div`
   display: inline-block;
   svg {
     position: absolute;
-    top: 2px;
+    top: 12px;
+    left: 12px;
     width: 16px;
   }
-  div {
-    margin-left: 20px;
+  > div {
+    margin-left: 30px;
   }
-  padding: 4px 8px;
+  padding: 16px 8px;
 `
 
 const IbAlert = ({type, children}) => {

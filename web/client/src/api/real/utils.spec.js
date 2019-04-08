@@ -117,7 +117,8 @@ describe('utils test', () => {
               statusCode: -1,
               error: {
                 errorCode: 'NETWORK_ERROR',
-                message: {message: 'failed'}
+                message: {message: 'failed'},
+                logId: null
               }
             };
 
@@ -152,6 +153,7 @@ describe('utils test', () => {
           utils[method.method]('test', {}).then().catch((response) => {
             expect(response.error).toEqual({
               errorCode: 'UNKNOWN_INTERNAL_PROBLEM',
+              logId: null,
               message: 'Invalid or missing JSON'
             });
 
@@ -168,6 +170,7 @@ describe('utils test', () => {
           utils[method.method]('test', {}).then().catch((response) => {
             expect(response.error).toEqual({
               errorCode: 'NOT_FOUND',
+              logId: null,
               message: 'Resource not found'
             });
 

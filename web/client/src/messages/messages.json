@@ -1,11 +1,21 @@
 {
   "error": {
+    "logid_footer": "Om problemet kvarstår, kontakta i första hand din lokala IT-avdelning och i andra hand {inerakundtjanst} och uppge då följande logg id: {logId}",
     "common": {
-      "unknown": "Prova igen om en stund. Om problemet kvarstår, kontakta i första hand din lokala IT-avdelning och i andra hand http://www.inera.se/kundtjanst och uppge då följande logg id: <logId>",
-      "network_error": "Network error"
+      "unknown": {
+        "title": "Tekniskt fel",
+        "message": "Prova igen om en stund."
+      },
+      "network_error": {
+        "title": "Tekniskt fel",
+        "message": "Det verkar vara problem kommunikationsproblem med tjänsten. Vänligen kontrollera din nätverkskoppling."
+      }
     },
     "user": {
-      "unauthorized": "Unauthorized"
+      "unauthorized": {
+        "title": "Behörighet saknas",
+        "message": "Du verkar sakna behörighet"
+      }
     }
   }
 }

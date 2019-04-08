@@ -19,14 +19,6 @@
 package se.inera.intyg.intygsbestallning.web.auth;
 
 import com.google.common.collect.Lists;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.velocity.app.VelocityEngine;
@@ -45,7 +37,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -82,7 +73,8 @@ import org.springframework.security.saml.websso.WebSSOProfileOptions;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.ForwardAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -97,15 +89,20 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import se.inera.intyg.infra.security.exception.HsaServiceException;
-import se.inera.intyg.infra.security.exception.MissingMedarbetaruppdragException;
-import se.inera.intyg.intygsbestallning.web.auth.exceptions.MissingIBSystemRoleException;
 import se.inera.intyg.intygsbestallning.web.auth.fake.FakeAuthenticationFilter;
 import se.inera.intyg.intygsbestallning.web.auth.fake.FakeAuthenticationProvider;
 import se.inera.intyg.intygsbestallning.web.auth.service.IntygsbestallningUserDetailsService;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static se.inera.intyg.intygsbestallning.web.controller.RequestErrorController.IB_CLIENT_EXIT_BOOT_PATH;
+import static se.inera.intyg.intygsbestallning.web.controller.RequestErrorController.IB_SPRING_SEC_ERROR_CONTROLLER_PATH;
 
 @EnableWebSecurity
 @ComponentScan({"se.inera.intyg.infra.security.authorities", "org.springframework.security.saml"})
@@ -183,20 +180,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    public static ExceptionMappingAuthenticationFailureHandler failureHandler() {
-        ExceptionMappingAuthenticationFailureHandler failureHandler = new ExceptionMappingAuthenticationFailureHandler();
-        HashMap<String, String> exceptionMappings = new HashMap<>();
-
-        exceptionMappings.put(BadCredentialsException.class.getName(), IB_CLIENT_EXIT_BOOT_PATH + "login.failed");
-        exceptionMappings.put(MissingMedarbetaruppdragException.class.getName(),
-                IB_CLIENT_EXIT_BOOT_PATH + "login.medarbetaruppdrag");
-        exceptionMappings.put(MissingIBSystemRoleException.class.getName(),
-                IB_CLIENT_EXIT_BOOT_PATH + "login.no-hsa-ib-systemrole");
-        exceptionMappings.put(HsaServiceException.class.getName(), IB_CLIENT_EXIT_BOOT_PATH + "login.hsaerror");
-
-        failureHandler.setExceptionMappings(exceptionMappings);
-        failureHandler.setDefaultFailureUrl(IB_CLIENT_EXIT_BOOT_PATH + "login.failed");
-        return failureHandler;
+    public static AuthenticationFailureHandler failureHandler() {
+        //Let our custom RequestErrorController handle any authentication failures
+        return new ForwardAuthenticationFailureHandler(IB_SPRING_SEC_ERROR_CONTROLLER_PATH);
     }
 
     @Bean

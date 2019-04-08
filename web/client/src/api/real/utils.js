@@ -6,7 +6,8 @@ const networkError = err => {
     statusCode: -1,
     error: {
       errorCode: 'NETWORK_ERROR',
-      message: err
+      message: err,
+      logId: null
     }
   });
 };
@@ -21,7 +22,8 @@ export const handleResponse = (config) => (response) => {
             statusCode: response.status,
             error: {
               errorCode: 'NOT_FOUND',
-              message: 'Resource not found'
+              message: 'Resource not found',
+              logId: null
             }
           };
 
@@ -34,7 +36,8 @@ export const handleResponse = (config) => (response) => {
           statusCode: response.status,
           error: {
             errorCode: 'UNKNOWN_INTERNAL_PROBLEM',
-            message: 'Invalid or missing JSON'
+            message: 'Invalid or missing JSON',
+            logId: null
           }
         };
 

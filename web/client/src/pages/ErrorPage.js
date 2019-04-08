@@ -3,7 +3,7 @@ import {FlexColumnContainer, ScrollingContainer, WorkareaContainer} from "../com
 import AppFooter from "../components/appFooter/AppFooter";
 import styled from "styled-components";
 import {ErrorPageIcon} from "../components/styles/IbSvgIcons";
-import IbAlert from "../components/alert/Alert";
+import ErrorMessageFormatter from '../messages/ErrorMessageFormatter'
 
 const CustomScrollingContainer = styled(ScrollingContainer)`
   max-width: none;
@@ -21,43 +21,42 @@ const PageContainer = styled(WorkareaContainer)`
 
 `
 const ErrorPage = ({match}) => {
-  let toShow = {title: 'unknown', message: 'unknown'};
+
+  let activeError = {title: 'Tekniskt fel', message: 'Ett tekniskt fel uppstod.', logId: match.params.logId};
+
   switch (match.params.errorCode) {
-  case 'login.hsaerror':
-    toShow = {title: 'Inloggning misslyckades', message: 'Det uppstod ett tekniskt fel när din behörighet skulle kontrolleras.'};
+  case 'LOGIN.FEL002':
+    activeError.title = 'Inloggning misslyckades';
+    activeError.message = 'Det uppstod ett tekniskt fel när din behörighet skulle kontrolleras.';
     break;
-  case 'login.medarbetaruppdrag':
-    toShow = {title: 'Inloggning misslyckades', message: 'Inget medarbetaruppdrag?'};
+  case 'LOGIN.FEL004':
+    activeError.title = 'Inloggning misslyckades';
+    activeError.message = 'Det uppstod ett tekniskt fel när din behörighet skulle kontrolleras.';
     break;
-  case 'login.failed':
-    toShow = {
-      title: 'Inloggning misslyckades',
-      message: 'Ett fel uppstod vid inloggning. Vänligen kontrollera att du matat in rätt uppgifter.'
-    };
+  case 'LOGIN.FEL001':
+    activeError.title = 'Inloggning misslyckades';
+    activeError.message = 'Ett fel uppstod vid inloggning. Vänligen kontrollera att du matat in rätt uppgifter.';
     break;
   case 'UNAUTHORIZED':
-    toShow = {
-      title: 'Behörighet saknas',
-      message: 'Du saknar behörighet för att ta del av den aktuella beställningen. För att ta del av en beställning krävs ett medarbetaruppdrag för vård och behandling på den vårdenhet dit beställningen inkommit. Om du anser dig ha behörighet att se beställningen, kontrollera att du har valt rätt vårdenhet och försök sedan att öppna beställningen igen.'
-    };
+    activeError.title = 'Behörighet saknas';
+    activeError.message =
+      'Du saknar behörighet för att ta del av den aktuella beställningen. För att ta del av en beställning krävs ett medarbetaruppdrag för vård och behandling på den vårdenhet dit beställningen inkommit. Om du anser dig ha behörighet att se beställningen, kontrollera att du har valt rätt vårdenhet och försök sedan att öppna beställningen igen.';
+
     break;
   case 'NOT_FOUND':
-    toShow = {title: 'Sidan du söker finns inte', message: 'Kontrollera att den länk du använder är korrekt.'};
+    activeError.title = 'Sidan du söker finns inte';
+    activeError.message = 'Kontrollera att den länk du använder är korrekt.';
     break;
   default:
-    toShow = {
-      title: 'Tekniskt fel',
-      message: 'Ett fel uppstod.'
-    };
+    break;
   }
   return (
     <FlexColumnContainer>
       <CustomScrollingContainer>
         <PageContainer>
           <ErrorPageIcon />
-          <br/>
-          <h2>{toShow.title}</h2>
-          <IbAlert type="error">{toShow.message}</IbAlert>
+          <br />
+          <ErrorMessageFormatter error={activeError} />
         </PageContainer>
         <AppFooter />
       </CustomScrollingContainer>

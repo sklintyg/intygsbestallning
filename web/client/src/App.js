@@ -47,7 +47,7 @@ const App = () => {
               <SecuredRoute path="/bestallningar/:filter" component={BestallningarPage} />
               <SecuredRoute path="/bestallningar" component={BestallningarIndexPage} />
               <SecuredRoute path="/bestallning/:id" component={BestallningPage} />
-              <UnsecuredRoute path="/exit/:errorCode" isErrorPage={true} component={ErrorPage} />
+              <UnsecuredRoute path="/exit/:errorCode/:logId?" isErrorPage={true} component={ErrorPage} />
             </Switch>
           </Fragment>
       </HashRouter>
