@@ -4,10 +4,9 @@ import { connect } from 'react-redux'
 import { Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
 import { compose } from 'recompose'
 import styled from 'styled-components'
-import { AccepteraBestallning, AvvisaBestallning, SkrivUtBestallning } from './dialogs'
+import { AccepteraBestallning, AvvisaBestallning, SkrivUtBestallning, BorttagenBestallning } from './dialogs'
 import { Check, Reply, Print } from '../styles/IbSvgIcons'
 import IbColors from '../styles/IbColors'
-import BorttagenBestallning from './dialogs/borttagenBestallning'
 
 const StyledButton = styled(Button)`
   margin-right: 16px;

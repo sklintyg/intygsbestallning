@@ -1,9 +1,7 @@
 import * as api from '../../api/bestallningApi'
 import { isFetching } from '../reducers/bestallning'
 import { openModal, closeModal } from './modal'
-import { AvvisaBestallningId } from '../../components/bestallning/dialogs/avvisaBestallning'
-import { BorttagenBestallningId } from '../../components/bestallning/dialogs/borttagenBestallning'
-import { AccepteraBestallningId } from '../../components/bestallning/dialogs/accepteraBestallning'
+import { AvvisaBestallningId , BorttagenBestallningId, AccepteraBestallningId } from '../../components/bestallning/dialogs'
 
 export const FETCH_BESTALLNING_REQUEST = 'FETCH_BESTALLNING_REQUEST'
 export const FETCH_BESTALLNING_SUCCESS = 'FETCH_BESTALLNING_SUCCESS'
