@@ -38,7 +38,7 @@ const AccepteraBestallning = ({ handleOpen, handleClose, isOpen, accept }) => {
             Observera att patientrelaterad information inte får lämnas ut utan stöd i patientdatalagen (2008:355), patientsäkerhetslagen
             (2010:659) eller Offentlighets- och sekretesslagen (2009:400).
           </p>
-          <Textarea rows="5" onChange={handleChange} />
+          <Textarea rows={5} onChange={handleChange} />
         </ModalBody>
         <ModalFooter>
           <Button
