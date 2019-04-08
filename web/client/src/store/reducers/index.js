@@ -4,13 +4,15 @@ import user from "./user";
 import { connectRouter } from 'connected-react-router'
 import bestallning from './bestallning';
 import modal from "./modal";
+import welcomeStats from "./welcomeStats.r"
 
 const appReducer = (history) => combineReducers({
   bestallningList,
   user,
   router: connectRouter(history),
   bestallning,
-  modal
+  modal,
+  welcomeStats
 });
 
 
