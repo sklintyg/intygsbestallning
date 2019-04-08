@@ -3,7 +3,6 @@ package se.inera.intyg.intygsbestallning.common.service.notifiering;
 import static java.lang.invoke.MethodHandles.lookup;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MoreCollectors;
 import io.vavr.control.Try;
@@ -15,7 +14,6 @@ import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -40,7 +38,6 @@ public class MailTextServiceImpl implements MailTextService {
         this.mailProperties = mailProperties;
         this.resourceLoader = resourceLoader;
     }
-
 
     @Override
     public MailTexter getMailContent(NotifieringTyp typ, String intyg) {
@@ -76,9 +73,7 @@ public class MailTextServiceImpl implements MailTextService {
 
     private List<MailTexter> loadResources(String location) throws IOException {
         LOG.info("Load mail texts from: {}", location);
-        return Stream.of(
-                ResourcePatternUtils
-                        .getResourcePatternResolver(resourceLoader).getResources(location))
+        return Stream.of(ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources(location))
                 .map(this::parse)
                 .collect(Collectors.toList());
     }
