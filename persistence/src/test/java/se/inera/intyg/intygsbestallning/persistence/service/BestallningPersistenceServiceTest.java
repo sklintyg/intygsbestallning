@@ -1,8 +1,10 @@
 package se.inera.intyg.intygsbestallning.persistence.service;
 
 
+import com.google.common.collect.Lists;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -95,6 +97,38 @@ public class BestallningPersistenceServiceTest extends TestSupport {
         assertEquals(1, result.getPageIndex());
         assertEquals(total / pageSize, result.getTotalPages());
         assertEquals(total, result.getTotalElements());
+    }
+
+    @Test
+    public void sortTest() {
+        var query = Mockito.mock(ListBestallningarQuery.class);
+        Mockito.when(query.getPageIndex()).thenReturn(0);
+        Mockito.when(query.getLimit()).thenReturn(pageSize);
+
+        // bestallning id asc
+        Mockito.when(query.getSortColumn()).thenReturn(ListBestallningSortColumn.ID);
+        Mockito.when(query.getSortDirection()).thenReturn(ListBestallningDirection.ASC);
+        var id1 = bestallningPersistenceService.listBestallningar(query)
+                .getBestallningar()
+                .stream()
+                .map(b -> b.getId())
+                .collect(Collectors.toList());
+        var id2 = Lists.newArrayList(id1);
+        id2.sort((o1, o2) -> o1.compareTo(o2));
+        assertEquals(id2, id1);
+
+        // person id desc
+        Mockito.when(query.getSortColumn()).thenReturn(ListBestallningSortColumn.INVANARE_PERSON_ID);
+        Mockito.when(query.getSortDirection()).thenReturn(ListBestallningDirection.DESC);
+
+        var p1 = bestallningPersistenceService.listBestallningar(query)
+                .getBestallningar()
+                .stream()
+                .map(b -> b.getInvanare().getPersonId())
+                .collect(Collectors.toList());
+        var p2 = Lists.newArrayList(p1);
+        p2.sort((o1, o2) -> o1.compareTo(o2));
+        assertEquals(Lists.reverse(p2), p1);
     }
 
     ListBestallningarQuery search(BestallningEntity entity, String text) {
