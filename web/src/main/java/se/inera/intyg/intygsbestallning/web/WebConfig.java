@@ -82,7 +82,7 @@ public class WebConfig implements WebMvcConfigurer {
         var path = bestallningProperties.getImageResourcePath();
 
         registry.addResourceHandler("/images/**")
-                .addResourceLocations("file:" + path);
+                .addResourceLocations(path);
     }
 
     @Bean

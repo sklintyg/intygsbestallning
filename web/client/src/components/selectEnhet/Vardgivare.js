@@ -19,6 +19,7 @@ const VardgivarTitle = styled(IbTypo05)`
   span {
     flex:1 0 auto;
   }
+  margin-top: 10px;
 `
 
 const Vardenhet = styled(IbTypo06)`

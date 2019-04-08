@@ -1,6 +1,5 @@
 package se.inera.intyg.intygsbestallning.persistence.service;
 
-import com.google.common.base.Enums;
 import com.google.common.primitives.Longs;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
@@ -8,10 +7,10 @@ import io.vavr.control.Try;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.transaction.Transactional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -51,12 +50,12 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
 
         var invanareEntity = InvanareEntity.Factory.toEntity(bestallning.getInvanare());
         if (Objects.isNull(invanareEntity.getId())) {
-            invanareEntity = invanareRepository.saveAndFlush(invanareEntity);
+            invanareEntity = invanareRepository.save(invanareEntity);
         }
 
         var vardenhetEntity = VardenhetEntity.Factory.toEntity(bestallning.getVardenhet());
         if (Objects.isNull(vardenhetEntity.getId())) {
-            vardenhetEntity = vardenhetRepository.saveAndFlush(vardenhetEntity);
+            vardenhetEntity = vardenhetRepository.save(vardenhetEntity);
         }
 
         var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning, invanareEntity, vardenhetEntity);
@@ -69,6 +68,12 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
         var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning);
         bestallningRepository.save(bestallningEntity);
         return BestallningEntity.Factory.toDomain(bestallningEntity);
+    }
+
+    @Override
+    public void deleteBestallning(Bestallning bestallning) {
+        var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning);
+        bestallningRepository.delete(bestallningEntity);
     }
 
     @Override
@@ -138,7 +143,9 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
         if (Objects.nonNull(id)) {
             return qe.id.eq(id);
         }
-        var status = Enums.getIfPresent(BestallningStatus.class, text);
+        var status = Stream.of(BestallningStatus.values())
+                .filter(v -> v.getBeskrivning().equalsIgnoreCase(text))
+                .findFirst();
         if (status.isPresent()) {
             return qe.status.eq(status.get());
         }

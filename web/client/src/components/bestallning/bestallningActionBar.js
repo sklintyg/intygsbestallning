@@ -1,60 +1,76 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import * as actions from '../../store/actions/bestallning'
 import { connect } from 'react-redux'
-import { Button, UncontrolledButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
+import { Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
 import { compose } from 'recompose'
 import styled from 'styled-components'
-import {AccepteraBestallning, AvvisaBestallning, SkrivUtBestallning} from './dialogs'
+import { AccepteraBestallning, AvvisaBestallning, SkrivUtBestallning, BorttagenBestallning } from './dialogs'
 import { Check, Reply, Print } from '../styles/IbSvgIcons'
 import IbColors from '../styles/IbColors'
 
 const StyledButton = styled(Button)`
   margin-right: 16px;
 `
+const StyledButtonDropdown = styled(ButtonDropdown)`
+  margin-right: 16px;
+`
 
-const BestallningActionBar = ({bestallning, accepteraBestallning, rejectBestallning, completeBestallning}) => {
+const BestallningActionBar = ({ bestallning, accepteraBestallning, rejectBestallning, deleteBestallning, completeBestallning, goBack }) => {
+  const [dropdownOpen, setDropdownOpen] = useState(false)
 
-  const accept = (fritextForklaring) => accepteraBestallning(bestallning.id, {fritextForklaring});
-  
+  const accept = (fritextForklaring) => accepteraBestallning(bestallning.id, { fritextForklaring })
+
   const reject = (fritextForklaring, avvisa) => {
-    if (avvisa) {
-      rejectBestallning(bestallning.id, {fritextForklaring});
+    if (avvisa === 'true') {
+      rejectBestallning(bestallning.id, { fritextForklaring })
     } else {
-      //raderaBestallning();
+      deleteBestallning(bestallning.id, { fritextForklaring })
     }
   }
-  
+
   const complete = () => {
-    completeBestallning(bestallning.id, 'COMPLETED');
+    completeBestallning(bestallning.id, 'COMPLETED')
   }
 
   const vidarebefodra = () => {
     //vidarebefodra(bestallning.id)
   }
 
-  const printBestallning = () => {
+  const printBestallning = () => {}
 
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen)
   }
 
   return (
     <Fragment>
-      { bestallning.status === 'Läst' ? <AccepteraBestallning accept={accept} /> : null }
-      { bestallning.status === 'Läst' ? <AvvisaBestallning accept={reject} /> : null }
-      { bestallning.status === 'Accepterad' ? <StyledButton onClick={complete} color={'primary'}><Check color={IbColors.IB_COLOR_00}/> Klarmarkera</StyledButton> : null }
-      <StyledButton onClick={vidarebefodra} color={'primary'}><Reply color={IbColors.IB_COLOR_00}/> Vidarebefodra</StyledButton>
-      <UncontrolledButtonDropdown>
-        <DropdownToggle caret color={'primary'}>
-        <Print color={IbColors.IB_COLOR_00}/> Skriv ut
+      {bestallning.status === 'Läst' ? <AccepteraBestallning accept={accept} /> : null}
+      {bestallning.status === 'Läst' ? <AvvisaBestallning accept={reject} /> : null}
+      {bestallning.status === 'Accepterad' ? (
+        <StyledButton onClick={complete} color={'primary'}>
+          <Check color={IbColors.IB_COLOR_00} /> Klarmarkera
+        </StyledButton>
+      ) : null}
+      <StyledButtonDropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
+        <DropdownToggle color={'primary'} className={dropdownOpen ? 'dropdown-toggle up-icon' : 'dropdown-toggle down-icon'}>
+          <Print color={IbColors.IB_COLOR_00} /> Skriv ut
         </DropdownToggle>
-        <DropdownMenu>
-          <SkrivUtBestallning sekretess={bestallning.invanare.sekretessMarkering} accept={printBestallning}/>
+        <DropdownMenu right={true}>
+          <SkrivUtBestallning sekretess={bestallning.invanare.sekretessMarkering} accept={printBestallning} />
           <DropdownItem>Fakturaunderlag</DropdownItem>
         </DropdownMenu>
-      </UncontrolledButtonDropdown>
+      </StyledButtonDropdown>
+      <Button onClick={vidarebefodra} color={'primary'}>
+        <Reply color={IbColors.IB_COLOR_00} /> Vidarebefodra
+      </Button>
+      <BorttagenBestallning onClose={goBack} />
     </Fragment>
   )
-};
+}
 
 export default compose(
-  connect(null, actions)
-)(BestallningActionBar);
+  connect(
+    null,
+    actions
+  )
+)(BestallningActionBar)

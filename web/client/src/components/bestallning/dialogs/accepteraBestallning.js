@@ -7,7 +7,7 @@ import { Check } from '../../styles/IbSvgIcons'
 import IbColors from '../../styles/IbColors'
 
 const StyledButton = styled(Button)`
-margin-right: 16px;
+  margin-right: 16px;
 `
 
 const Textarea = styled.textarea`
@@ -15,32 +15,51 @@ const Textarea = styled.textarea`
   resize: none;
 `
 
-const AccepteraBestallning = ({handleOpen, handleClose, isOpen, accept}) => {
-  const [fritextForklaring, setFritextForklaring] = useState("");
+const AccepteraBestallning = ({ handleOpen, handleClose, isOpen, accept }) => {
+  const [fritextForklaring, setFritextForklaring] = useState('')
 
   const handleChange = (e) => {
-    setFritextForklaring(e.target.value);
+    setFritextForklaring(e.target.value)
   }
 
   return (
     <Fragment>
-      <StyledButton onClick={handleOpen} color={'primary'}><Check color={IbColors.IB_COLOR_00}/> Acceptera</StyledButton>
+      <StyledButton onClick={handleOpen} color={'primary'}>
+        <Check color={IbColors.IB_COLOR_00} /> Acceptera
+      </StyledButton>
       <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
         <ModalHeader toggle={handleClose}>Acceptera</ModalHeader>
         <ModalBody>
-          <p>Ett meddelande om att beställningen accepteras kommer skickas till beställaren. Om du vill förtydliga något kan du ange ett meddelande.</p>
-          <p>Observera att patientrelaterad information inte får lämnas ut utan stöd i patientdatalagen (2008:355), patientsäkerhetslagen (2010:659) eller Offentlighets- och sekretesslagen (2009:400).</p>
-          <Textarea rows="5" onChange={handleChange} />
+          <p>
+            Ett meddelande om att beställningen accepteras kommer skickas till beställaren. Om du vill förtydliga något kan du ange ett
+            meddelande.
+          </p>
+          <p>
+            Observera att patientrelaterad information inte får lämnas ut utan stöd i patientdatalagen (2008:355), patientsäkerhetslagen
+            (2010:659) eller Offentlighets- och sekretesslagen (2009:400).
+          </p>
+          <Textarea rows={5} onChange={handleChange} />
         </ModalBody>
         <ModalFooter>
-          <Button color={'primary'} onClick={() => {accept(fritextForklaring); handleClose()}}>Bekräfta</Button>
-          <Button color={'default'} onClick={() => {handleClose()}}>Avbryt</Button>
+          <Button
+            color={'primary'}
+            onClick={() => {
+              accept(fritextForklaring)
+            }}>
+            Bekräfta
+          </Button>
+          <Button
+            color={'default'}
+            onClick={() => {
+              handleClose()
+            }}>
+            Avbryt
+          </Button>
         </ModalFooter>
       </Modal>
     </Fragment>
   )
 }
 
-export default compose(
-  modalContainer('accepteraBestallning')
-)(AccepteraBestallning)
+export const AccepteraBestallningId = 'accepteraBestallning'
+export default compose(modalContainer(AccepteraBestallningId))(AccepteraBestallning)

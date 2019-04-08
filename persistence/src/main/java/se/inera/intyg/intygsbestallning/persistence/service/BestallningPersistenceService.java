@@ -10,6 +10,8 @@ public interface BestallningPersistenceService {
 
     Bestallning updateBestallning(Bestallning bestallning);
 
+    void deleteBestallning(Bestallning bestallning);
+
     ListBestallningarResult listBestallningar(ListBestallningarQuery query);
 
     Optional<Bestallning> getBestallningByIdAndHsaIdAndOrgId(Long id, String hsaId, String orgNrVardgivare);

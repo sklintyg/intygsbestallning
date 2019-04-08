@@ -140,7 +140,7 @@ th .btn-link {
 // Table
 
 /* table striped style for all ib */
-.ib-table-striped {
+.table-striped {
   border-collapse: separate;
   border-spacing: 0 0;
   margin-bottom: 0;
@@ -308,4 +308,31 @@ th .btn-link {
 
 %ib-typo-14 {
   @include font-variant-bold(14px);
+}
+
+// Dropdown
+.dropdown-menu {
+  border-color: $ib-color-21;
+  padding: 0;
+}
+
+.dropdown-toggle {
+  &:active, &:focus {
+    background-color: $ib-color-21 !important;
+    box-shadow: 2px 2px 4px 0 $black_12 !important;
+  }
+
+  &.up-icon::after {
+    border-bottom: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-top: 0;
+    border-left: 0.3em solid transparent;
+  }
+}
+
+.dropdown-item {
+  &:hover, &:focus {
+    background-color: $ib-color-21;
+    color: $ib-color-00;
+  }
 }

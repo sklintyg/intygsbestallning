@@ -27,7 +27,7 @@ const ErrorPage = ({match}) => {
     toShow = {title: 'Inloggning misslyckades', message: 'Det uppstod ett tekniskt fel när din behörighet skulle kontrolleras.'};
     break;
   case 'login.medarbetaruppdrag':
-    toShow = {title: 'Inloggning misslyckades', message: 'Kontrollera att den länk du använder är korrekt.'};
+    toShow = {title: 'Inloggning misslyckades', message: 'Inget medarbetaruppdrag?'};
     break;
   case 'login.failed':
     toShow = {

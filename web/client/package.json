@@ -8,7 +8,6 @@
     "flat": "^4.1.0",
     "lodash": "^4.11.2",
     "node-sass": "^4.11.0",
-    "polyfill-array-includes": "^2.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-js-pagination": "3.0.2",
@@ -22,17 +21,28 @@
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.2.0",
     "typeface-roboto": "0.0.54",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "core-js": "2.6.5"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "mockapi": "json-server --watch mock-api/db/ib-api.json --routes mock-api/routes.json --port 8100"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "prettier": {
+    "printWidth": 140,
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "jsxSingleQuote": false,
+    "bracketSpacing": true,
+    "jsxBracketSameLine": true,
+    "arrowParens": "always"
   },
   "browserslist": [
     ">0.2%",
@@ -45,7 +55,7 @@
     "enzyme-adapter-react-16": "^1.11.2",
     "fetch-mock": "^7.3.1",
     "http-proxy-middleware": "^0.19.1",
-    "json-server": "^0.14.2",
+    "prettier": "^1.16.4",
     "redux-mock-store": "^1.5.3",
     "sinon": "^7.3.1"
   }

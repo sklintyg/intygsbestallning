@@ -18,6 +18,8 @@
  */
 package se.inera.intyg.intygsbestallning.web.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -36,6 +38,9 @@ import se.inera.intyg.intygsbestallning.web.controller.dto.ApiErrorResponse;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Custom ErrorController that overrides Spring boots default "whitepage" error handling.
@@ -43,10 +48,11 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class RequestErrorController implements ErrorController {
 
-    public static final String IB_CLIENT_ROOTPATH = "/#/";
+    private static final String IB_CLIENT_ROOTPATH = "/#/";
     public static final String IB_CLIENT_EXIT_BOOT_PATH = IB_CLIENT_ROOTPATH + "exit/";
 
     private static final String ERROR_PATH = "/error";
+    private static final Logger LOG = LoggerFactory.getLogger(RequestErrorController.class);
     private ErrorAttributes errorAttributes = new DefaultErrorAttributes(true);
 
     /**
@@ -57,25 +63,36 @@ public class RequestErrorController implements ErrorController {
      * @return
      */
     @RequestMapping(path = ERROR_PATH, produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView handleErrorAsRedirect(HttpServletRequest request) {
-        ApiErrorResponse apiErrorResponse = resolveByHttpStatus(getDispatcherErrorStatusCode(request));
+    public ModelAndView handleErrorAsRedirect(WebRequest webRequest, HttpServletRequest request) {
+        final String errorContext = getErrorContext(webRequest);
 
-        return new ModelAndView("redirect:" + IB_CLIENT_EXIT_BOOT_PATH + apiErrorResponse.getErrorCode());
+        ApiErrorResponse apiErrorResponse = fromHttpStatus(getDispatcherErrorStatusCode(request));
+        String redirectView = "redirect:" + IB_CLIENT_EXIT_BOOT_PATH + apiErrorResponse.getErrorCode();
+
+        LOG.error(String.format("(Page) Request error intercepted: %s - responding with: %s", errorContext, redirectView));
+        return new ModelAndView(redirectView);
     }
 
     /**
-     * For xhr-requests, we handle all error with a specific error code value that client can react to.
+     * For xhr-requests, we handle all errors by responding with a specific error code json struct that client can act on.
      *
      * @param request
      * @return
      */
     @RequestMapping(path = ERROR_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity handleErrorAsJson(WebRequest webRequest, HttpServletRequest request) {
-        final HttpStatus statusCode = getDispatcherErrorStatusCode(request);
-        ApiErrorResponse apiErrorResponse = buildApiErrorResponseErrorCode(this.errorAttributes.getError(webRequest), statusCode);
-
-        return new ResponseEntity<>(apiErrorResponse, statusCode);
+    public ResponseEntity handleErrorAsJsonResponse(WebRequest webRequest, HttpServletRequest request) {
+        final HttpStatus httpStatus = getDispatcherErrorStatusCode(request);
+        final String errorContext = getErrorContext(webRequest);
+        final Throwable error = this.errorAttributes.getError(webRequest);
+        ApiErrorResponse apiErrorResponse;
+        if (error != null) {
+            apiErrorResponse = fromException(error);
+        } else {
+            apiErrorResponse = fromHttpStatus(httpStatus);
+        }
+        LOG.error(String.format("(REST) Request error intercepted: %s - responding with: %s", errorContext, apiErrorResponse.toString()), error);
+        return new ResponseEntity<>(apiErrorResponse, httpStatus);
     }
 
 
@@ -84,34 +101,31 @@ public class RequestErrorController implements ErrorController {
         return ERROR_PATH;
     }
 
+    private String getErrorContext(WebRequest webRequest) {
+        Map<String, Object> attributes = this.errorAttributes.getErrorAttributes(webRequest, false);
+        return Arrays.toString(attributes.entrySet().toArray());
+    }
+
+
     private HttpStatus getDispatcherErrorStatusCode(HttpServletRequest request) {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
         return (status != null) ? HttpStatus.valueOf(Integer.valueOf(status.toString())) : HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
-    private ApiErrorResponse buildApiErrorResponseErrorCode(Throwable error, HttpStatus statusCode) {
-        ApiErrorResponse result;
-        if (error != null) {
-            result = resolveByException(error);
-        } else {
-            result = resolveByHttpStatus(statusCode);
-        }
-        return result;
-    }
+    private ApiErrorResponse fromException(Throwable error) {
 
-    private ApiErrorResponse resolveByException(Throwable error) {
         if (error instanceof IbServiceException) {
             final IbServiceException ibException = (IbServiceException) error;
-            return new ApiErrorResponse(error.getMessage(), ibException.getErrorCode().name());
+            return new ApiErrorResponse(error.getMessage(), ibException.getErrorCode().name(), ibException.getLogId());
         } else if (error instanceof AuthoritiesException) {
-            return new ApiErrorResponse(error.getMessage(), IbErrorCodeEnum.UNAUTHORIZED.name());
+            return new ApiErrorResponse(error.getMessage(), IbErrorCodeEnum.UNAUTHORIZED.name(), UUID.randomUUID().toString());
         } else {
-            return new ApiErrorResponse(error.getMessage(), IbErrorCodeEnum.UNKNOWN_INTERNAL_PROBLEM.name());
+            return new ApiErrorResponse(error.getMessage(), IbErrorCodeEnum.UNKNOWN_INTERNAL_PROBLEM.name(), UUID.randomUUID().toString());
         }
     }
 
-    private ApiErrorResponse resolveByHttpStatus(final HttpStatus statusCode) {
+    private ApiErrorResponse fromHttpStatus(final HttpStatus statusCode) {
         IbErrorCodeEnum errorCode = IbErrorCodeEnum.UNKNOWN_INTERNAL_PROBLEM;
 
         if (statusCode == HttpStatus.FORBIDDEN) {
@@ -119,8 +133,7 @@ public class RequestErrorController implements ErrorController {
         } else if (statusCode == HttpStatus.NOT_FOUND) {
             errorCode = IbErrorCodeEnum.NOT_FOUND;
         }
-
-        return new ApiErrorResponse("no message", errorCode.name());
+        return new ApiErrorResponse("<no message>", errorCode.name(), UUID.randomUUID().toString());
     }
 
 }

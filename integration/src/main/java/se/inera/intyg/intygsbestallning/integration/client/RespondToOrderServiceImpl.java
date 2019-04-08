@@ -25,14 +25,8 @@ public class RespondToOrderServiceImpl implements RespondToOrderService {
     }
 
     @Override
-    public void sendRespondToOrder(AccepteraBestallningRequest accepteraBestallningRequest) {
-        var respondToOrderType = createResponderType(accepteraBestallningRequest);
-        respondToOrderResponderInterface.respondToOrder(integrationProperties.getSourceSystemHsaId(), respondToOrderType);
-    }
-
-    @Override
-    public void sendRespondToOrder(AvvisaBestallningRequest avvisaBestallningRequest) {
-        var respondToOrderType = createResponderType(avvisaBestallningRequest);
+    public void sendRespondToOrder(SimpleBestallningRequest rRequest) {
+        var respondToOrderType = createResponderType(rRequest);
         respondToOrderResponderInterface.respondToOrder(integrationProperties.getSourceSystemHsaId(), respondToOrderType);
     }
 

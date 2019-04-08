@@ -57,19 +57,8 @@ const listBestallningarByFilter = combineReducers({
   AVVISADE: createBestallningarList('AVVISADE'),
 });
 
-
-const textFilter = (state = '', action) => {
-  switch (action.type) {
-    case 'SET_BESTALLNING_LIST_TEXT_FILTER':
-      return action.textFilter;
-    default:
-      return state;
-  }
-};
-
 const bestallningarReducer = combineReducers({
-  listBestallningarByFilter,
-  textFilter
+  listBestallningarByFilter
 });
 
 export default bestallningarReducer;
@@ -84,6 +73,3 @@ export const getIsFetching = (state, filter) =>
 
 export const getErrorMessage = (state, filter) =>
   state.bestallningList.listBestallningarByFilter[filter].errorMessage;
-
-export const getTextFilter = (state) =>
-  state.bestallningList.textFilter;

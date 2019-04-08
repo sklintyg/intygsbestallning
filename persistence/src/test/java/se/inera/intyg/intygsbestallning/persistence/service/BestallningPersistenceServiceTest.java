@@ -20,6 +20,7 @@ import se.inera.intyg.intygsbestallning.persistence.repository.BestallningReposi
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @TestContext
@@ -64,7 +65,7 @@ public class BestallningPersistenceServiceTest extends TestSupport {
         var result = bestallningPersistenceService.listBestallningar(query);
         assertFalse(result.getBestallningar().isEmpty());
 
-        query = search(entity, String.valueOf(entity.getStatus()));
+        query = search(entity, entity.getStatus().getBeskrivning().toLowerCase());
         result = bestallningPersistenceService.listBestallningar(query);
         assertFalse(result.getBestallningar().isEmpty());
 
@@ -102,5 +103,23 @@ public class BestallningPersistenceServiceTest extends TestSupport {
                 0, pageSize, ListBestallningSortColumn.ID, ListBestallningDirection.ASC);
     }
 
+    @Test
+    public void getBestallningByIdAndHsaIdAndOrgIdTest() {
+        var list = bestallningRepository.findAll();
+
+        var entity = list.get(0);
+
+        var domain = bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(entity.getId(),
+                entity.getVardenhet().getHsaId(), entity.getVardenhet().getOrganisationId());
+        assertTrue(domain.isPresent());
+
+        domain = bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(-1L,
+                null, null);
+        assertTrue(domain.isEmpty());
+
+        domain = bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(entity.getId(),
+                null, null);
+        assertTrue(domain.isPresent());
+    }
 
 }

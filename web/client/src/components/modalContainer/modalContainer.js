@@ -3,7 +3,8 @@ import {closeModal, openModal} from "../../store/actions/modal";
 
 const mapStateToProps = (modalId) => (state) => {
   return {
-    isOpen: !!state.modal[modalId]
+    isOpen: !!state.modal[modalId],
+    data: state.modal[modalId + 'Data']
   }
 };
 // expose selected dispatchable methods to App props

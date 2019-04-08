@@ -42,6 +42,10 @@ dependencies {
 
   implementation("org.springframework.security.extensions:spring-security-saml2-core:1.0.3.RELEASE")
   implementation("com.querydsl:querydsl-core:${Dependencies.querydslVersion}")
+
+  // FIXME: shall not be bundled with app!
+  implementation("se.inera.intyg.refdata:refdata:${extra["refDataVersion"]}")
+
 }
 
 tasks.clean {
@@ -118,12 +122,6 @@ tasks {
   }
 
   bootRun {
-    systemProperties = mapOf(
-       "resource.dir" to "${project.rootProject.projectDir}/src/main/resources",
-       "certificate.folder" to "${project.rootProject.projectDir}/devops/openshift/test/env",
-       "config.dir" to "${project.rootProject.projectDir}/devops/openshift/test/config",
-       "credentials.file" to "${project.rootProject.projectDir}/devops/openshift/test/env/secret-env.properties"
-    )
   }
 
   if (buildClient) {

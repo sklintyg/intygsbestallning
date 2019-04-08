@@ -7,14 +7,14 @@ export const UpDownIcon = () => (
   </svg>
 )
 
-export const DownIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="#000" width="12px" height="12px" viewBox="0 -150 1000 1000">
+export const DownIcon = ({color}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill={ color ? color : '#000' } width="12px" height="12px" viewBox="0 -150 1000 1000">
     <path d="M0 227l194-189 195-188 194 188 195 189h-386-392z"/>
   </svg>
 )
 
-export const UpIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="#000" width="12px" height="12px" viewBox="0 -150 1000 1000">
+export const UpIcon = ({color}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill={ color ? color : '#000' }  width="12px" height="12px" viewBox="0 -150 1000 1000">
     <path d="M392 474h-392l194 188 198 188 194-188 195-188h-389z" />
   </svg>
 )
@@ -122,8 +122,8 @@ export const Alarm = () => (
 )
 
 //ib-ikon-49
-export const Error = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill={IbColors.IB_COLOR_06} width="16px" height="16px" viewBox="0 0 24 24">
+export const Error = ({color}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill={color ? color : IbColors.IB_COLOR_06} width="16px" height="16px" viewBox="0 0 24 24">
     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
   </svg>
 )
@@ -132,6 +132,13 @@ export const Error = () => (
 export const Archive = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill={IbColors.IB_COLOR_06} width="24px" height="24px" viewBox="0 0 24 24">
     <path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM12 17.5L6.5 12H10v-2h4v2h3.5L12 17.5zM5.12 5l.81-1h12l.94 1H5.12z"/>
+  </svg>
+)
+
+//ib-ikon-51
+export const EventAvailableIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill={IbColors.IB_COLOR_06} width="16px" height="16px" viewBox="0 0 24 24">
+    <path d="M16.53 11.06L15.47 10l-4.88 4.88-2.12-2.12-1.06 1.06L10.59 17l5.94-5.94zM19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
   </svg>
 )
 
@@ -151,9 +158,9 @@ export const Reply = ({color}) => (
 
 //ib-ikon-07
 export const Print = ({color}) => (
-<svg xmlns="http://www.w3.org/2000/svg" fill={color} width="24px" height="24px" viewBox="0 0 24 24">
-  <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
-</svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill={color} width="24px" height="24px" viewBox="0 0 24 24">
+    <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
+  </svg>
 )
 
 //fel-01.svg
@@ -179,4 +186,9 @@ export const ErrorPageIcon = () => (
   </svg>
 )
 
-
+//ib-ikon-33
+export const Create = ({color}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill={color} width="16px" height="16px" viewBox="0 0 24 24">
+    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+  </svg>
+)

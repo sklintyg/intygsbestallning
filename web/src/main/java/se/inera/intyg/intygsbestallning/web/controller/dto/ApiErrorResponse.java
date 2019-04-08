@@ -21,13 +21,15 @@ package se.inera.intyg.intygsbestallning.web.controller.dto;
 public class ApiErrorResponse {
     private String message;
     private String errorCode;
+    private String logId;
 
     public ApiErrorResponse() {
     }
 
-    public ApiErrorResponse(String message, String errorCode) {
+    public ApiErrorResponse(String message, String errorCode, String logId) {
         this.message = message;
         this.errorCode = errorCode;
+        this.logId = logId;
     }
 
     public String getMessage() {
@@ -44,5 +46,21 @@ public class ApiErrorResponse {
 
     public void setErrorCode(String errorCode) {
         this.errorCode = errorCode;
+    }
+
+    public String getLogId() {
+        return logId;
+    }
+
+    public void setLogId(String logId) {
+        this.logId = logId;
+    }
+
+    public String toString() {
+        return "ApiErrorResponse {"
+                + "  message='" + message + "'"
+                + ", errorCode='" + errorCode + "'"
+                + ", logId='" + logId + "'"
+                + '}';
     }
 }
