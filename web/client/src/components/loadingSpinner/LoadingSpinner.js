@@ -5,8 +5,7 @@ import { Spinner } from 'reactstrap'
 const SpinnerBox = styled.div`
   width: 100%;
   text-align: center;
-  margin-top: auto;
-  margin-bottom: auto;
+  margin-top: 120px;
 `
 
 const SpinnerWrapper = styled.div`
@@ -24,15 +23,12 @@ const LoadingSpinner = ({ loading, message }) => {
   useEffect(() => {
     let timeout
     if (loading && !showSpinner) {
-      timeout = setTimeout(() => setShowSpinner(true), 500)
+      timeout = setTimeout(() => setShowSpinner(true), 300)
     }
-    return () => clearInterval(timeout)
+    return () => clearTimeout(timeout)
   })
 
-  if (loading) {
-    if (!showSpinner) {
-      return null
-    }
+  if (loading && showSpinner) {
     return (
       <SpinnerWrapper>
         <SpinnerBox>
@@ -41,6 +37,8 @@ const LoadingSpinner = ({ loading, message }) => {
         </SpinnerBox>
       </SpinnerWrapper>
     )
+  } else {
+    return null
   }
 }
 
