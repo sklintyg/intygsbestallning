@@ -76,7 +76,7 @@ const BestallningarList = ({ bestallningList, onSort, errorMessage }) => {
         <tbody>
           {errorMessage && (
             <tr>
-              <td>
+              <td colSpan={5}>
                 <FetchError message={errorMessage} />
               </td>
             </tr>
