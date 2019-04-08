@@ -26,6 +26,7 @@ import java.lang.invoke.MethodHandles;
 import java.text.MessageFormat;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
+import se.inera.intyg.intygsbestallning.common.property.MailProperties;
 
 @Service
 public class NotifieringSendServiceImpl implements NotifieringSendService {
@@ -35,24 +36,24 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
     private MailService mailService;
     private MailTextService mailTextService;
     private NotifieringMailBodyFactory notifieringMailBodyFactory;
-    private MaillinkRedirectUrlBuilder maillinkRedirectUrlBuilder;
+    private MailProperties mailProperties;
 
     public NotifieringSendServiceImpl(
             MailService mailService,
             MailTextService mailTextService,
             NotifieringMailBodyFactory notifieringMailBodyFactory,
-            MaillinkRedirectUrlBuilder maillinkRedirectUrlBuilder) {
+            MailProperties mailProperties) {
         this.mailService = mailService;
         this.mailTextService = mailTextService;
         this.notifieringMailBodyFactory = notifieringMailBodyFactory;
-        this.maillinkRedirectUrlBuilder = maillinkRedirectUrlBuilder;
+        this.mailProperties = mailProperties;
     }
 
     @Override
     public void nyBestallning(Bestallning bestallning) {
         var nyBestallning = NotifieringTyp.NY_BESTALLNING;
         var mailTexter= mailTextService.getMailContent(nyBestallning, bestallning.getIntygTyp());
-        notifieringMailBodyFactory.buildBody(bestallning, mailTexter, "");
+        notifieringMailBodyFactory.buildBody(bestallning, mailTexter, getMailLinkRedirect(bestallning.getId().toString()));
 
     }
 
@@ -69,5 +70,9 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
         } catch (MessagingException e) {
             LOG.error(MessageFormat.format("Error sending notification by email: {0}", e.getMessage()));
         }
+    }
+
+    private String getMailLinkRedirect(String bestallningId) {
+        return mailProperties.getHost() + "/maillink/bestallning/" + bestallningId;
     }
 }
