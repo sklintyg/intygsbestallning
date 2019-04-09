@@ -32,8 +32,8 @@ sakerhetstjanst:
 activemq:
   broker:
     url: vm://localhost?broker.persistent=false
-    password: password
-    username: username
+    password:
+    username:
 
 mailsender:
   maximum-redeliveries: 5

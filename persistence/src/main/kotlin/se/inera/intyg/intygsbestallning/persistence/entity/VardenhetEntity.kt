@@ -24,11 +24,11 @@ class VardenhetEntity(builder: Builder) {
   @Column(name = "NAMN", nullable = false)
   val namn: String
 
-  @Column(name = "EPOST")
-  val epost: String? = null
+  @Column(name = "EPOST", nullable = false)
+  val epost: String
 
   @Column(name = "STANDARD_SVAR")
-  val standardSvar: String? = null
+  val standardSvar: String?
 
   init {
     this.id = builder.id
@@ -36,6 +36,8 @@ class VardenhetEntity(builder: Builder) {
     this.vardgivareHsaId = builder.vardgivareHsaId ?: throw IllegalArgumentException("vardgivareHsaId may not be null")
     this.organisationId = builder.organisationId ?: throw IllegalArgumentException("organisationId may not be null")
     this.namn = builder.namn ?: throw IllegalArgumentException("namn may not be null")
+    this.epost = builder.epost?: throw IllegalArgumentException("epost may not be null")
+    this.standardSvar = builder.standardSvar
   }
 
   class Builder {

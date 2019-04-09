@@ -25,7 +25,7 @@ import se.inera.intyg.schemas.contract.Personnummer;
 @Transactional
 public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponderInterface {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().getClass());
+    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private CreateBestallningService createBestallningService;
     private IntegrationProperties integrationProperties;

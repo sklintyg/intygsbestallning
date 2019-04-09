@@ -1,9 +1,0 @@
-mailsender:
-  maximum-redeliveries: 5
-  redelivery-delay: 100
-  back-off-multiplier: 1
-  queue-name: ib.mailsender.queue
-
-activemq:
-  broker:
-    url: vm://localhost?broker.persistent=false

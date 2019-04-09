@@ -34,10 +34,13 @@ import se.inera.intyg.intygsbestallning.common.mail.NotificationEmail;
 @Service
 public class MailServiceImpl implements MailService {
 
-    @Autowired
-    private JmsTemplate jmsTemplate;
-
     private ObjectMapper objectMapper = new CustomObjectMapper();
+
+    private final JmsTemplate jmsTemplate;
+
+    public MailServiceImpl(JmsTemplate jmsTemplate) {
+        this.jmsTemplate = jmsTemplate;
+    }
 
     @Override
     public void sendNotifieringToVardenhet(String mailAddress, String subject, String body) {

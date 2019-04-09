@@ -24,11 +24,9 @@ import org.apache.camel.spring.SpringRouteBuilder;
 import org.apache.camel.spring.spi.SpringTransactionPolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import se.inera.intyg.intygsbestallning.mailsender.exception.TemporaryException;
 import se.inera.intyg.intygsbestallning.mailsender.service.MailSender;
 
@@ -40,24 +38,27 @@ public class MailSenderRouteBuilder extends SpringRouteBuilder {
     private static final String JMS_QUEUE_PREFIX = "jms:queue:";
     private static final String MY_TX_POLICY = "myTxPolicy";
 
-    @Value("${mailsender.maximum.redeliveries}")
+    @Value("${mailsender.maximum-redeliveries}")
     private Integer maximumRedeliveries;
 
-    @Value("${mailsender.redelivery.delay}")
+    @Value("${mailsender.redelivery-delay}")
     private Integer redeliveryDelay;
 
-    @Value("${mailsender.back.off.multiplier}")
+    @Value("${mailsender.back-off-multiplier}")
     private Integer backOffMultiplier;
 
-    @Value("${mailsender.queue.name}")
+    @Value("${mailsender.queue-name}")
     private String mailSenderQueueName;
 
-    @Autowired
     private MailSender ibMailSender;
-
-    @Autowired
-    @Qualifier("myTxPolicy")
     private SpringTransactionPolicy myPolicy;
+
+    public MailSenderRouteBuilder(
+            MailSender ibMailSender,
+            @Qualifier("myTxPolicy") SpringTransactionPolicy myPolicy) {
+        this.ibMailSender = ibMailSender;
+        this.myPolicy = myPolicy;
+    }
 
     @Override
     public void configure() {

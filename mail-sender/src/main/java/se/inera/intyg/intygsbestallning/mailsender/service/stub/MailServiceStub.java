@@ -59,9 +59,10 @@ public class MailServiceStub implements MailSender {
         }
 
         LOG.info("ENTER - MailServiceStub");
-        NotificationEmail notificationEmail = null;
+        NotificationEmail notificationEmail;
         try {
             notificationEmail = objectMapper.readValue(notificationEmailJson, NotificationEmail.class);
+            LOG.info("Epost-message: \n" + notificationEmail);
             mailStore.add(notificationEmail);
         } catch (Exception e) {
             LOG.error("Error deserializing email notification TextMessage: " + e.getMessage());

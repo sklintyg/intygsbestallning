@@ -84,18 +84,22 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
 
         var existingVardenhet = vardenhetPersistenceService.getVardenhetByHsaId(vardenhetRespons.getId());
 
+        if (vardenhetRespons.getEpost() == null) {
+            throw new IllegalArgumentException("Vårdenheten saknar e-postadress");
+        }
+
         Vardenhet vardenhet;
         if (existingVardenhet.isPresent()) {
             vardenhet = existingVardenhet.get();
             vardenhet.setHsaId(vardenhetRespons.getId());
-            vardenhet.setVardgivareHsaId(vardGivareRespons);
+            vardenhet.setVardgivareHsaId(vardGivareRespons.getId());
             vardenhet.setNamn(vardenhetRespons.getNamn());
             vardenhet.setEpost(vardenhetRespons.getEpost());
         } else {
             vardenhet = Vardenhet.Factory.newVardenhet(
                     vardenhetRespons.getId(),
-                    vardGivareRespons,
-                    vardenhetRespons.getVardgivareOrgnr(),
+                    vardGivareRespons.getId(),
+                    vardGivareRespons.getOrgId(),
                     vardenhetRespons.getNamn(),
                     vardenhetRespons.getEpost(),
                     null);

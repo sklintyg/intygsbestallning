@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
+import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
 import se.inera.intyg.infra.integration.hsa.services.HsaOrganizationsService;
 import se.inera.intyg.infra.integration.pu.model.Person;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
@@ -66,9 +67,14 @@ class CreateBestallningServiceImplTest {
 
     @BeforeEach
     void setup() {
+
+        var vardgivare = new Vardgivare();
+        vardgivare.setId("hsaId");
+        vardgivare.setOrgId("orgId");
+
         when(patientService.lookupPersonnummerFromPU(any(Personnummer.class))).thenReturn(buildPerson());
         when(hsaOrganizationsService.getVardenhet(any(String.class))).thenReturn(buildVardenhetFromHsa());
-        when(hsaOrganizationsService.getVardgivareOfVardenhet(any(String.class))).thenReturn("VG-hsa");
+        when(hsaOrganizationsService.getVardgivareOfVardenhet(any(String.class))).thenReturn(vardgivare);
         when(vardenhetPersistenceService.getVardenhetByHsaId(any(String.class))).thenReturn(buildVardenhet());
         when(bestallningPersistenceService.saveNewBestallning(any(Bestallning.class))).thenReturn(buildBestallning());
     }

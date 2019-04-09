@@ -21,60 +21,49 @@ package se.inera.intyg.intygsbestallning.mailsender.config;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.camel.spring.javaconfig.CamelConfiguration;
 import org.apache.camel.spring.spi.SpringTransactionPolicy;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.connection.JmsTransactionManager;
-import org.springframework.jms.connection.TransactionAwareConnectionFactoryProxy;
 import org.springframework.jms.core.JmsTemplate;
 import javax.jms.ConnectionFactory;
+import se.inera.intyg.intygsbestallning.common.property.ActiveMqProperties;
+import se.inera.intyg.intygsbestallning.common.property.MailSenderProperties;
 
 @EnableJms
 @Configuration
-@ComponentScan(value = "se.inera.intyg.intygsbestallning.mailsender")
+@ComponentScan(basePackages = {"se.inera.intyg.intygsbestallning.mailsender", "se.inera.intyg.intygsbestallning.common.property"})
 public class MailSenderConfig extends CamelConfiguration {
 
-    @Value("${activemq.broker.url}")
-    private String activeMqBrokerUrl;
+    private final MailSenderProperties mailSenderProperties;
+    private final ActiveMqProperties activeMqProperties;
 
-    @Value("${activemq.broker.username}")
-    private String activeMqBrokerUsername;
-
-    @Value("${activemq.broker.password")
-    private String activeMqBrokerPassword;
+    public MailSenderConfig(
+            MailSenderProperties mailSenderProperties,
+            ActiveMqProperties activeMqProperties) {
+        this.mailSenderProperties = mailSenderProperties;
+        this.activeMqProperties = activeMqProperties;
+    }
 
     @Bean
     public SpringTransactionPolicy myTxPolicy() {
-        return new SpringTransactionPolicy(jmsTransactionManager());
-    }
-
-    @Bean
-    public TransactionAwareConnectionFactoryProxy transactionAwareConnectionFactoryProxy() {
-        JmsTemplate jmsTemplate = jmsTemplate(connectionFactory());
-        ConnectionFactory connectionFactory = jmsTemplate.getConnectionFactory();
-        if (connectionFactory != null) {
-            return new TransactionAwareConnectionFactoryProxy(connectionFactory);
-        }
-        throw new IllegalStateException("Unable to create TransactionAwareConnectionFactoryProxy, ConnectionFactory was null.");
-    }
-
-    @Bean
-    public JmsTransactionManager jmsTransactionManager() {
-        return new JmsTransactionManager(transactionAwareConnectionFactoryProxy());
+        return new SpringTransactionPolicy(new JmsTransactionManager(connectionFactory()));
     }
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        return new ActiveMQConnectionFactory(activeMqBrokerUsername, activeMqBrokerPassword, activeMqBrokerUrl);
+        return new ActiveMQConnectionFactory(
+                activeMqProperties.getUsername(),
+                activeMqProperties.getPassword(),
+                activeMqProperties.getUrl());
     }
 
     @Bean
     public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
         jmsTemplate.setSessionTransacted(true);
+        jmsTemplate.setDefaultDestinationName(mailSenderProperties.getQueueName());
         return jmsTemplate;
     }
 }

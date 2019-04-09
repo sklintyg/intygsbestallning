@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.context.annotation.Import;
 import se.inera.intyg.intygsbestallning.common.CommonConfig;
 import se.inera.intyg.intygsbestallning.integration.IntegrationConfig;
+import se.inera.intyg.intygsbestallning.mailsender.config.MailSenderConfig;
 import se.inera.intyg.intygsbestallning.persistence.PersistenceConfig;
 import se.inera.intyg.intygsbestallning.web.auth.SecurityConfig;
 
@@ -16,7 +17,8 @@ import se.inera.intyg.intygsbestallning.web.auth.SecurityConfig;
         IntegrationConfig.class,
         WebConfig.class,
         SecurityConfig.class,
-        SwaggerConfig.class
+        SwaggerConfig.class,
+        MailSenderConfig.class
 })
 public class IntygsbestallningApplication {
     public static void main(String[] args) {
