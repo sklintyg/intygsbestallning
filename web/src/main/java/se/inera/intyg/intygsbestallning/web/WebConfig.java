@@ -8,12 +8,15 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import org.apache.cxf.Bus;
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.jms.annotation.EnableJms;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import se.inera.intyg.infra.security.filter.PrincipalUpdatedFilter;
@@ -30,6 +33,8 @@ import static se.inera.intyg.intygsbestallning.web.controller.UserController.API
 import static se.inera.intyg.intygsbestallning.web.controller.UserController.API_UNIT_CONTEXT;
 
 @Configuration
+@EnableAutoConfiguration
+@EnableTransactionManagement
 @ComponentScan(basePackages = "se.inera.intyg.intygsbestallning.web")
 public class WebConfig implements WebMvcConfigurer {
 

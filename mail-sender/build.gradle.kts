@@ -6,9 +6,8 @@ dependencies {
     implementation(project(":common"))
 
     // External dependencies
-    compile("org.springframework.boot:spring-boot-starter-mail")
-    compile("org.springframework.boot:spring-boot-starter-activemq")
-    compile("org.apache.camel:camel-spring-boot-starter:${Dependencies.camelBootStarterVersion}")
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+    implementation("org.apache.camel:camel-spring-boot-starter:${Dependencies.camelBootStarterVersion}")
 
     implementation("org.apache.camel:camel-jackson:${Dependencies.camelVersion}")
     implementation("org.apache.camel:camel-spring-javaconfig:${Dependencies.camelVersion}")

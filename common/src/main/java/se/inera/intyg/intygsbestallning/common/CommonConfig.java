@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Import;
 import se.inera.intyg.intygsbestallning.common.property.BestallningProperties;
 import se.inera.intyg.intygsbestallning.common.property.IntegrationProperties;
 import se.inera.intyg.intygsbestallning.common.property.MailProperties;
+import se.inera.intyg.intygsbestallning.common.property.MailSenderProperties;
 import se.inera.intyg.intygsbestallning.common.property.PdlLoggingProperties;
 import se.inera.intyg.intygsbestallning.common.property.PersistenceProperties;
 
@@ -17,6 +18,7 @@ import se.inera.intyg.intygsbestallning.common.property.PersistenceProperties;
         BestallningProperties.class,
         IntegrationProperties.class,
         MailProperties.class,
+        MailSenderProperties.class,
         PdlLoggingProperties.class,
         PersistenceProperties.class
 })

@@ -19,10 +19,7 @@
 package se.inera.intyg.intygsbestallning.common.service.notifiering;
 
 import org.springframework.stereotype.Component;
-import org.stringtemplate.v4.ST;
-import org.stringtemplate.v4.STGroup;
-import org.stringtemplate.v4.STGroupFile;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.mail.MailContent;
@@ -34,25 +31,18 @@ public class NotifieringMailBodyFactory implements MailBodyFactory {
 
     private MailProperties mailProperties;
 
-    private STGroup templateGroup = new STGroupFile("notifiering-templates/notifiering.stg");
-
     public NotifieringMailBodyFactory(MailProperties mailProperties) {
         this.mailProperties = mailProperties;
     }
 
     public String buildBody(Bestallning bestallning, MailTexter texter, String url) {
-
-        ST utredningTemplate = templateGroup.getInstanceOf("mail");
         enrichInkomstDatum(bestallning, texter);
-        utredningTemplate.add("data", new MailContent(mailProperties.getHost(), texter, url));
-
-        return utredningTemplate.render();
+        return MailContent.Template.toHtml(new MailContent(mailProperties.host, texter, url));
     }
 
     private void enrichInkomstDatum(Bestallning bestallning, MailTexter mailTexter) {
-        var daysAgo = ChronoUnit.DAYS.between(bestallning.getAnkomstDatum(), LocalDate.now());
+        var daysAgo = ChronoUnit.DAYS.between(bestallning.getAnkomstDatum(), LocalDateTime.now());
         var replaced = mailTexter.getBody().getText1().replace("{0}", Long.toString(daysAgo));
-
         mailTexter.getBody().setText1(replaced);
     }
 }

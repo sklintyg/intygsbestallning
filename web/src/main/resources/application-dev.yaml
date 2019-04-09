@@ -28,3 +28,15 @@ sakerhetstjanst:
   saml:
     keystore:
       password: dummy
+
+activemq:
+  broker:
+    url: vm://localhost?broker.persistent=false
+    password: password
+    username: username
+
+mailsender:
+  maximum-redeliveries: 5
+  redelivery-delay: 100
+  back-off-multiplier: 1
+  queue-name: ib.mailsender.queue

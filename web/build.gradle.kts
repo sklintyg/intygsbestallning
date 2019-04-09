@@ -10,9 +10,10 @@ plugins {
 }
 
 dependencies {
+
   // Project dependencies
   implementation(project(":common"))
-  compile(project(":integration"))
+  implementation(project(":integration"))
   implementation(project(":persistence"))
   implementation(project(":mail-sender"))
 

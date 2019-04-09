@@ -21,6 +21,7 @@ package se.inera.intyg.intygsbestallning.mailsender.config;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.camel.spring.javaconfig.CamelConfiguration;
 import org.apache.camel.spring.spi.SpringTransactionPolicy;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -35,7 +36,7 @@ import javax.jms.ConnectionFactory;
 @EnableJms
 @Configuration
 @ComponentScan(value = "se.inera.intyg.intygsbestallning.mailsender")
-public class MailSenderConfig extends CamelConfiguration {
+public class MailSenderConfig {
 
     @Value("${activemq.broker.url}")
     private String activeMqBrokerUrl;
@@ -47,12 +48,13 @@ public class MailSenderConfig extends CamelConfiguration {
     private String activeMqBrokerPassword;
 
     @Bean
+    @Qualifier("myTxPolicy")
     public SpringTransactionPolicy myTxPolicy() {
         return new SpringTransactionPolicy(jmsTransactionManager());
     }
 
     @Bean
-    public TransactionAwareConnectionFactoryProxy transactionAwareConnectionFactoryProxy() {
+    protected TransactionAwareConnectionFactoryProxy transactionAwareConnectionFactoryProxy() {
         JmsTemplate jmsTemplate = jmsTemplate(connectionFactory());
         ConnectionFactory connectionFactory = jmsTemplate.getConnectionFactory();
         if (connectionFactory != null) {
@@ -62,17 +64,18 @@ public class MailSenderConfig extends CamelConfiguration {
     }
 
     @Bean
-    public JmsTransactionManager jmsTransactionManager() {
+    @Qualifier("jmsTransactionManager")
+    protected JmsTransactionManager jmsTransactionManager() {
         return new JmsTransactionManager(transactionAwareConnectionFactoryProxy());
     }
 
     @Bean
-    public ConnectionFactory connectionFactory() {
+    protected ConnectionFactory connectionFactory() {
         return new ActiveMQConnectionFactory(activeMqBrokerUsername, activeMqBrokerPassword, activeMqBrokerUrl);
     }
 
     @Bean
-    public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
+    protected JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
         jmsTemplate.setSessionTransacted(true);
         return jmsTemplate;

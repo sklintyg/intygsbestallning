@@ -24,11 +24,9 @@ import org.apache.camel.spring.SpringRouteBuilder;
 import org.apache.camel.spring.spi.SpringTransactionPolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
+import se.inera.intyg.intygsbestallning.common.property.MailSenderProperties;
 import se.inera.intyg.intygsbestallning.mailsender.exception.TemporaryException;
 import se.inera.intyg.intygsbestallning.mailsender.service.MailSender;
 
@@ -40,24 +38,15 @@ public class MailSenderRouteBuilder extends SpringRouteBuilder {
     private static final String JMS_QUEUE_PREFIX = "jms:queue:";
     private static final String MY_TX_POLICY = "myTxPolicy";
 
-    @Value("${mailsender.maximum.redeliveries}")
-    private Integer maximumRedeliveries;
-
-    @Value("${mailsender.redelivery.delay}")
-    private Integer redeliveryDelay;
-
-    @Value("${mailsender.back.off.multiplier}")
-    private Integer backOffMultiplier;
-
-    @Value("${mailsender.queue.name}")
-    private String mailSenderQueueName;
-
-    @Autowired
+    private MailSenderProperties mailSenderProperties;
     private MailSender ibMailSender;
 
-    @Autowired
-    @Qualifier("myTxPolicy")
-    private SpringTransactionPolicy myPolicy;
+    public MailSenderRouteBuilder(
+            MailSenderProperties mailSenderProperties,
+            MailSender ibMailSender) {
+        this.mailSenderProperties = mailSenderProperties;
+        this.ibMailSender = ibMailSender;
+    }
 
     @Override
     public void configure() {
@@ -67,19 +56,18 @@ public class MailSenderRouteBuilder extends SpringRouteBuilder {
         redeliveryPolicy.setLogHandled(true);
         redeliveryPolicy.setLogRetryAttempted(true);
         redeliveryPolicy.setLogNewException(true);
-        redeliveryPolicy.setMaximumRedeliveries(maximumRedeliveries);
-        redeliveryPolicy.setRedeliveryDelay(redeliveryDelay);
-        redeliveryPolicy.setBackOffMultiplier(backOffMultiplier);
+        redeliveryPolicy.setMaximumRedeliveries(mailSenderProperties.getMaximumRedeliveries());
+        redeliveryPolicy.setRedeliveryDelay(mailSenderProperties.getRedeliveryDelay());
+        redeliveryPolicy.setBackOffMultiplier(mailSenderProperties.getBackOffMultiplier());
         redeliveryPolicy.setUseExponentialBackOff(true);
         redeliveryPolicy.setMaximumRedeliveryDelay(-1L);
 
-        from(JMS_QUEUE_PREFIX + mailSenderQueueName).routeId("mailSenderRoute")
-                .errorHandler(transactionErrorHandler(myPolicy)
-                        .logExhausted(true))
+        from(JMS_QUEUE_PREFIX + mailSenderProperties.getQueueName()).routeId("mailSenderRoute")
                 .onException(TemporaryException.class).redeliveryPolicy(redeliveryPolicy)
-                .maximumRedeliveries(maximumRedeliveries).to("direct:temporaryErrorHandlerEndpoint").end()
+                .maximumRedeliveries(mailSenderProperties.getMaximumRedeliveries()).to("direct:temporaryErrorHandlerEndpoint").end()
                 .onException(Exception.class).handled(true).to("direct:permanentErrorHandlerEndpoint").end()
-                .transacted(MY_TX_POLICY)
+                .transacted()
+//                .transacted(MY_TX_POLICY)
                 .bean(ibMailSender, "process")
                 .end();
 

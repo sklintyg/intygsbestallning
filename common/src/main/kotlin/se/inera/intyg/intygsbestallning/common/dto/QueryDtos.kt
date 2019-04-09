@@ -193,25 +193,25 @@ data class VisaBestallningDto(
                   Delfraga(etikett = textMap.getValue(ETK_3_3), svar = bestallning.planeradeAktiviteter))
             ),
             Fraga(
-               rubrik = textMap.getValue(RBK_5),
+               rubrik = textMap.getValue(RBK_4),
                delfragor = listOf(
-                  Delfraga(etikett = textMap.getValue(ETK_5_1), svar = listOfNotNull(
+                  Delfraga(etikett = textMap.getValue(ETK_4_1), svar = listOfNotNull(
                      bestallning.handlaggare.fullstandigtNamn,
                      bestallning.handlaggare.email,
                      bestallning.handlaggare.telefonnummer).joinToString(separator = "\n")),
-                  Delfraga(etikett = textMap.getValue(ETK_5_2), svar = listOfNotNull(
+                  Delfraga(etikett = textMap.getValue(ETK_4_2), svar = listOfNotNull(
                      bestallning.handlaggare.kontor,
                      bestallning.handlaggare.adress).joinToString(separator = "\n"))
                )
             ),
             Fraga(
-               rubrik = textMap.getValue(RBK_6),
+               rubrik = textMap.getValue(RBK_5),
                delfragor = listOf(
-                  Delfraga(etikett = textMap.getValue(ETK_6_1), text = textMap.getValue(TEXT_6_1_1)),
-                  Delfraga(etikett = textMap.getValue(ETK_6_2), svar = bestallning.id.toString()),
-                  Delfraga(etikett = textMap.getValue(ETK_6_3), svar = bestallning.handlaggare.kostnadsstalle),
-                  Delfraga(etikett = textMap.getValue(ETK_6_4), text = textMap.getValue(TEXT_6_4_1)),
-                  Delfraga(etikett = textMap.getValue(ETK_6_5), text = textMap.getValue(TEXT_6_5_1)))
+                  Delfraga(etikett = textMap.getValue(ETK_5_1), text = textMap.getValue(TEXT_5_1_1)),
+                  Delfraga(etikett = textMap.getValue(ETK_5_2), svar = bestallning.id.toString()),
+                  Delfraga(etikett = textMap.getValue(ETK_5_3), svar = bestallning.handlaggare.kostnadsstalle),
+                  Delfraga(etikett = textMap.getValue(ETK_5_4), text = textMap.getValue(TEXT_5_4_1)),
+                  Delfraga(etikett = textMap.getValue(ETK_5_5), text = textMap.getValue(TEXT_5_5_1)))
             )
          )
       )
@@ -246,17 +246,17 @@ const val RBK_3: String = "RBK_3"
 const val ETK_3_1: String = "ETK_3.1"
 const val ETK_3_2: String = "ETK_3.2"
 const val ETK_3_3: String = "ETK_3.3"
-const val RBK_5: String = "RBK_5"
-const val ETK_5_1: String = "ETK_5.1"
-const val ETK_5_2: String = "ETK_5.2"
+const val RBK_4: String = "RBK_4"
+const val ETK_4_1: String = "ETK_4.1"
+const val ETK_4_2: String = "ETK_4.2"
 
 //Faktureringsunderlag
-const val RBK_6: String = "RBK_6"
-const val ETK_6_1: String = "ETK_6.1"
-const val TEXT_6_1_1: String = "TEXT_6.1.1"
-const val ETK_6_2: String = "ETK_6.2"
-const val ETK_6_3: String = "ETK_6.3"
-const val ETK_6_4: String = "ETK_6.4"
-const val TEXT_6_4_1: String = "TEXT_6.4.1"
-const val ETK_6_5: String = "ETK_6.5"
-const val TEXT_6_5_1: String = "TEXT_6.5.1"
+const val RBK_5: String = "RBK_5"
+const val ETK_5_1: String = "ETK_5.1"
+const val TEXT_5_1_1: String = "TEXT_5.1.1"
+const val ETK_5_2: String = "ETK_5.2"
+const val ETK_5_3: String = "ETK_5.3"
+const val ETK_5_4: String = "ETK_5.4"
+const val TEXT_5_4_1: String = "TEXT_5.4.1"
+const val ETK_5_5: String = "ETK_5.5"
+const val TEXT_5_5_1: String = "TEXT_5.5.1"

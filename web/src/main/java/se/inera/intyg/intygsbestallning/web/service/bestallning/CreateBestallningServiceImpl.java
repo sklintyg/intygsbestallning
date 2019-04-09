@@ -80,20 +80,21 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
         }
 
         var vardenhetRespons = hsaOrganizationsService.getVardenhet(createBestallningRequest.getVardenhet());
+        var vardGivareRespons = hsaOrganizationsService.getVardgivareOfVardenhet(createBestallningRequest.getVardenhet());
 
-        var existingVardenhet = vardenhetPersistenceService.getVardenhetByHsaId(vardenhetRespons.getVardgivareOrgnr());
+        var existingVardenhet = vardenhetPersistenceService.getVardenhetByHsaId(vardenhetRespons.getId());
 
         Vardenhet vardenhet;
         if (existingVardenhet.isPresent()) {
             vardenhet = existingVardenhet.get();
             vardenhet.setHsaId(vardenhetRespons.getId());
-            vardenhet.setVardgivareHsaId(vardenhetRespons.getVardgivareHsaId());
+            vardenhet.setVardgivareHsaId(vardGivareRespons);
             vardenhet.setNamn(vardenhetRespons.getNamn());
             vardenhet.setEpost(vardenhetRespons.getEpost());
         } else {
             vardenhet = Vardenhet.Factory.newVardenhet(
                     vardenhetRespons.getId(),
-                    vardenhetRespons.getVardgivareHsaId(),
+                    vardGivareRespons,
                     vardenhetRespons.getVardgivareOrgnr(),
                     vardenhetRespons.getNamn(),
                     vardenhetRespons.getEpost(),

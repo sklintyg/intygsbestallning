@@ -25,8 +25,8 @@ object Config {
     const val springDependencyManagementVersion = "1.0.7.RELEASE"
 
     const val activemqVersion = "5.13.5"
-    const val camelVersion = "2.16.0"
-    const val camelBootStarterVersion = "2.17.0"
+    const val camelVersion = "2.23.1"
+    const val camelBootStarterVersion = "2.23.1"
     const val commonsLang3Version = "3.7"
     const val cxfBootStarterVersion = "3.3.0"
     const val guavaVersion = "27.0.1-jre"

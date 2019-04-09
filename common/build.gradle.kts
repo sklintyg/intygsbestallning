@@ -2,6 +2,7 @@ import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 
 dependencies {
     // Project dependencies
+    compile("org.springframework.boot:spring-boot-starter-activemq")
     compile("se.riv.intygsbestallning.certificate.order:intygsbestallning-certificate-order-schemas:${Dependencies.intygsbestallningCertificateOrderSchemasVersion}")
     compile("se.inera.intyg.schemas:schemas-contract:${Dependencies.schemasContractVersion}")
 

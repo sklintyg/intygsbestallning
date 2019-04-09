@@ -27,6 +27,7 @@ import java.text.MessageFormat;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
 import se.inera.intyg.intygsbestallning.common.property.MailProperties;
+import se.inera.intyg.intygsbestallning.common.text.mail.MailTexter;
 
 @Service
 public class NotifieringSendServiceImpl implements NotifieringSendService {
@@ -51,16 +52,33 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
 
     @Override
     public void nyBestallning(Bestallning bestallning) {
-        var nyBestallning = NotifieringTyp.NY_BESTALLNING;
-        var mailTexter= mailTextService.getMailContent(nyBestallning, bestallning.getIntygTyp());
-        notifieringMailBodyFactory.buildBody(bestallning, mailTexter, getMailLinkRedirect(bestallning.getId().toString()));
-
+        var mailTexter = mailTextService.getMailContent(NotifieringTyp.NY_BESTALLNING, bestallning.getIntygTyp());
+        var mailBody = buildMailBody(bestallning, mailTexter);
+        var subject = mailTexter.getArendeRad().getArende();
+        var emailAddress = getEmailAddress(bestallning);
+        sendNotifiering(emailAddress, subject, mailBody, bestallning.getId());
     }
 
     @Override
     public void vidarebefordrad(Bestallning bestallning) {
-        var nyBestallning = NotifieringTyp.NY_BESTALLNING;
-        var mailContent = mailTextService.getMailContent(nyBestallning, bestallning.getIntygTyp());
+        var mailTexter = mailTextService.getMailContent(NotifieringTyp.NY_BESTALLNING_PAMINNELSE, bestallning.getIntygTyp());
+        var mailBody = buildMailBody(bestallning, mailTexter);
+        var subject = mailTexter.getArendeRad().getArende();
+        var emailAddress = getEmailAddress(bestallning);
+        sendNotifiering(emailAddress, subject, mailBody, bestallning.getId());
+    }
+
+    private String buildMailBody(Bestallning bestallning, MailTexter mailTexter) {
+        var mailLink = getMailLinkRedirect(bestallning.getId());
+        return notifieringMailBodyFactory.buildBody(bestallning, mailTexter, mailLink);
+    }
+
+    private String getMailLinkRedirect(Long bestallningId) {
+        return mailProperties.getHost() + "/maillink/bestallning/" + bestallningId;
+    }
+
+    private String getEmailAddress(Bestallning bestallning) {
+        return bestallning.getVardenhet().getEpost();
     }
 
     private void sendNotifiering(String email, String subject, String body, Long bestallningId) {
@@ -70,9 +88,5 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
         } catch (MessagingException e) {
             LOG.error(MessageFormat.format("Error sending notification by email: {0}", e.getMessage()));
         }
-    }
-
-    private String getMailLinkRedirect(String bestallningId) {
-        return mailProperties.getHost() + "/maillink/bestallning/" + bestallningId;
     }
 }
