@@ -1,9 +1,9 @@
-
 @import 'ibColors';
 @import 'ibCommon';
 
 // Override default variables before the import
-$font-family-sans-serif: Roboto, "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-family-sans-serif: Roboto, 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, 'Noto Sans', sans-serif,
+  'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 $font-size-base: 0.875rem; //This will set base font-size to equivalent of 14px ( default in browsers is 1rem = 16 px, so 16/14 = 0.875rem)
 
 //Set base default font color for body, so we only need to override where its different
@@ -57,7 +57,7 @@ $alert-padding-x: 0.5rem;
 
 //1. Modal footer buttons should be left aligned
 .modal-footer {
-  justify-content:flex-start;
+  justify-content: flex-start;
 }
 
 .alert-info {
@@ -100,7 +100,8 @@ $alert-padding-x: 0.5rem;
   &:active,
   &:active:focus,
   &.active {
-    &:disabled, fieldset[disabled] & {
+    &:disabled,
+    fieldset[disabled] & {
       background-color: $ib-color-13;
       border-color: $ib-color-13;
       color: $ib-color-22;
@@ -126,7 +127,7 @@ $alert-padding-x: 0.5rem;
 }
 
 .btn-link {
-  padding: 0
+  padding: 0;
 }
 
 th .btn-link {
@@ -169,7 +170,7 @@ th .btn-link {
   }
   // Table body ---------------
   > tbody > tr {
-      height: 50px;
+    height: 50px;
 
     &:hover {
       > td {
@@ -217,7 +218,7 @@ th .btn-link {
 
 .pagination {
   > li > a {
-    border: none
+    border: none;
   }
 
   > li:first-child > a {
@@ -317,7 +318,8 @@ th .btn-link {
 }
 
 .dropdown-toggle {
-  &:active, &:focus {
+  &:active,
+  &:focus {
     background-color: $ib-color-21 !important;
     box-shadow: 2px 2px 4px 0 $black_12 !important;
   }
@@ -331,8 +333,15 @@ th .btn-link {
 }
 
 .dropdown-item {
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background-color: $ib-color-21;
     color: $ib-color-00;
   }
+}
+
+// Badge
+
+.badge {
+  border-radius: 9px;
 }
