@@ -11,6 +11,8 @@ import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTe
 import se.inera.intyg.intygsbestallning.common.text.bestallning.BestallningTexter;
 import se.inera.intyg.intygsbestallning.integration.pu.PatientService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
+import se.inera.intyg.intygsbestallning.web.pdl.LogEvent;
+import se.inera.intyg.intygsbestallning.web.service.pdl.LogService;
 
 @Service
 public class VisaBestallningServiceImpl implements VisaBestallningService {
@@ -20,18 +22,21 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
     private BestallningTextService bestallningTextService;
     private PatientService patientService;
     private BestallningProperties bestallningProperties;
+    private LogService pdlLogService;
 
     public VisaBestallningServiceImpl(
             BestallningPersistenceService bestallningPersistenceService,
             BestallningStatusResolver bestallningStatusResolver,
             BestallningTextService bestallningTextService,
             PatientService patientService,
-            BestallningProperties bestallningProperties) {
+            BestallningProperties bestallningProperties,
+            LogService pdlLogService) {
         this.bestallningPersistenceService = bestallningPersistenceService;
         this.bestallningStatusResolver = bestallningStatusResolver;
         this.bestallningTextService = bestallningTextService;
         this.patientService = patientService;
         this.bestallningProperties = bestallningProperties;
+        this.pdlLogService = pdlLogService;
     }
 
     @Override
@@ -52,6 +57,8 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
         }
 
         var bestallningTexter = bestallningTextService.getBestallningTexter(bestallning.get());
+
+        pdlLogService.log(bestallning.get(), LogEvent.BESTALLNING_OPPNAS_OCH_LASES);
 
         return Optional.of(VisaBestallningDto.Factory.toDto(bestallning.get(), getBildUrl(bestallningTexter), bestallningTexter));
     }
