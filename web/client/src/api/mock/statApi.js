@@ -2,7 +2,7 @@ import { delay } from "./util";
 
 const test500 = false
 
-export const fetchWelcomeStats = () => {
+export const fetchStat = () => {
   return delay(1000).then(() => {
 
     if(test500){

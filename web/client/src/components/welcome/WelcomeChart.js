@@ -12,7 +12,7 @@ const WelcomeChart = (props) => (
     <IbTypo02 as="h1">Beställningar just nu</IbTypo02>
     <PieChart
       width="200px"
-      data={[['Olästa', props.stats.unread], ['Aktiva', props.stats.active], ['Klara', props.stats.completed]]}
+      data={[['Olästa', props.stats.antalOlastaBestallningar], ['Aktiva', props.stats.active], ['Klara', props.stats.completed]]}
       colors={[ibColors.IB_COLOR_21, ibColors.IB_COLOR_06, ibColors.IB_COLOR_16]}
       library={options}
       suffix=" st beställningar"

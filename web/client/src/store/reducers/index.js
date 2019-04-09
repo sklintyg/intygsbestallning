@@ -5,7 +5,6 @@ import { connectRouter } from 'connected-react-router'
 import bestallning from './bestallning'
 import modal from './modal'
 import stat from './stat'
-import welcomeStats from './welcomeStats.r'
 
 const appReducer = (history) =>
   combineReducers({
@@ -15,7 +14,6 @@ const appReducer = (history) =>
     bestallning,
     modal,
     stat,
-    welcomeStats,
   })
 
 const reducers = (history) => (state, action) => {

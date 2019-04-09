@@ -2,8 +2,8 @@ import React, { Fragment } from 'react'
 import { compose, lifecycle } from 'recompose'
 import { connect } from 'react-redux'
 
-import { getWelcomeStats, getIsFetching } from '../../store/reducers/welcomeStats.r'
-import * as actions from '../../store/actions/welcomeStats.a'
+import { getStat, isFetching } from '../../store/reducers/stat'
+import * as actions from '../../store/actions/stat'
 
 import WelcomeChart from './WelcomeChart'
 
@@ -57,14 +57,14 @@ const WelcomeContainer = ({ welcomeStats, isFetching }) => (
 
 const lifeCycleValues = {
   componentDidMount() {
-    this.props.fetchWelcomeStats()
+    this.props.fetchStat()
   },
 }
 
 const mapStateToProps = (state) => {
   return {
-    welcomeStats: getWelcomeStats(state),
-    isFetching: getIsFetching(state),
+    welcomeStats: getStat(state),
+    isFetching: isFetching(state),
   }
 }
 
