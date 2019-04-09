@@ -23,6 +23,12 @@ public class StatServiceImpl implements StatService {
         long antalOlastaBestallningar = bestallningPersistenceService.countBestallningar(
                 new CountBestallningarQuery(List.of(BestallningStatus.OLAST), hsaId, orgNrVardgivare));
 
-        return new StatResponse(antalOlastaBestallningar);
+        long antalAktivaBestallningar = bestallningPersistenceService.countBestallningar(
+                new CountBestallningarQuery(List.of(BestallningStatus.ACCEPTERAD, BestallningStatus.OLAST, BestallningStatus.LAST), hsaId, orgNrVardgivare));
+
+        long antalKlaraBestallningar = bestallningPersistenceService.countBestallningar(
+                new CountBestallningarQuery(List.of(BestallningStatus.KLAR), hsaId, orgNrVardgivare));
+
+        return new StatResponse(antalOlastaBestallningar, antalAktivaBestallningar, antalKlaraBestallningar);
     }
 }

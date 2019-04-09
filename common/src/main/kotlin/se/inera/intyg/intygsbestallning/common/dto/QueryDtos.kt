@@ -12,7 +12,9 @@ data class CountBestallningarQuery(
     val orgNrVardgivare: String)
 
 data class StatResponse(
-    val antalOlastaBestallningar: Long)
+    val antalOlastaBestallningar: Long,
+    val antalAktivaBestallningar: Long,
+    val antalKlaraBestallningar: Long)
 
 data class ListBestallningarQuery(
    val statusar: List<BestallningStatus>,
