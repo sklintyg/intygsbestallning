@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { buildClientError } from './util';
+import * as ActionConstants from '../actions/bestallningList'
 
 const createBestallningarList = filter => {
   const bestallningList = (
@@ -7,7 +8,7 @@ const createBestallningarList = filter => {
     action
   ) => {
     switch (action.type) {
-      case 'FETCH_BESTALLNINGAR_SUCCESS':
+      case ActionConstants.FETCH_BESTALLNINGAR_SUCCESS:
         return filter === action.categoryFilter ? action.response : state;
       default:
         return state;
@@ -19,10 +20,10 @@ const createBestallningarList = filter => {
       return state;
     }
     switch (action.type) {
-      case 'FETCH_BESTALLNINGAR_REQUEST':
+      case ActionConstants.FETCH_BESTALLNINGAR_REQUEST:
         return true;
-      case 'FETCH_BESTALLNINGAR_SUCCESS':
-      case 'FETCH_BESTALLNINGAR_FAILURE':
+      case ActionConstants.FETCH_BESTALLNINGAR_SUCCESS:
+      case ActionConstants.FETCH_BESTALLNINGAR_FAILURE:
         return false;
       default:
         return state;
@@ -34,10 +35,10 @@ const createBestallningarList = filter => {
       return state;
     }
     switch (action.type) {
-      case 'FETCH_BESTALLNINGAR_FAILURE':
+      case ActionConstants.FETCH_BESTALLNINGAR_FAILURE:
         return buildClientError(action.payload, 'error.bestallninglist').message;
-      case 'FETCH_BESTALLNINGAR_REQUEST':
-      case 'FETCH_BESTALLNINGAR_SUCCESS':
+      case ActionConstants.FETCH_BESTALLNINGAR_REQUEST:
+      case ActionConstants.FETCH_BESTALLNINGAR_SUCCESS:
         return null;
       default:
         return state;

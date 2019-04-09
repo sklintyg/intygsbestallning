@@ -2,7 +2,7 @@ import * as actions from './bestallning'
 import * as api from '../../api/bestallningApi'
 import { functionToTest, mockStore } from '../../testUtils/actionUtils'
 
-describe('actions', () => {
+describe('beställning actions', () => {
   let store
 
   beforeEach(() => {
