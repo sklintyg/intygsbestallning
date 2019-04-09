@@ -154,4 +154,3 @@ sakerhetstjanst:
     keystore:
       file: file:${certificate.folder}/login.certificate.jks
       alias: verifiering.rehabstod.intygstjanster.sjunet.org
-

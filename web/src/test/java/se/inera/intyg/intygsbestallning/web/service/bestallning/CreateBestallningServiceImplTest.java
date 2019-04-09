@@ -68,6 +68,7 @@ class CreateBestallningServiceImplTest {
     void setup() {
         when(patientService.lookupPersonnummerFromPU(any(Personnummer.class))).thenReturn(buildPerson());
         when(hsaOrganizationsService.getVardenhet(any(String.class))).thenReturn(buildVardenhetFromHsa());
+        when(hsaOrganizationsService.getVardgivareOfVardenhet(any(String.class))).thenReturn("VG-hsa");
         when(vardenhetPersistenceService.getVardenhetByHsaId(any(String.class))).thenReturn(buildVardenhet());
         when(bestallningPersistenceService.saveNewBestallning(any(Bestallning.class))).thenReturn(buildBestallning());
     }

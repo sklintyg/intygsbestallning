@@ -30,13 +30,12 @@ import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.jms.connection.TransactionAwareConnectionFactoryProxy;
 import org.springframework.jms.core.JmsTemplate;
-
 import javax.jms.ConnectionFactory;
 
 @EnableJms
 @Configuration
 @ComponentScan(value = "se.inera.intyg.intygsbestallning.mailsender")
-public class MailSenderConfig {
+public class MailSenderConfig extends CamelConfiguration {
 
     @Value("${activemq.broker.url}")
     private String activeMqBrokerUrl;
@@ -48,13 +47,12 @@ public class MailSenderConfig {
     private String activeMqBrokerPassword;
 
     @Bean
-    @Qualifier("myTxPolicy")
     public SpringTransactionPolicy myTxPolicy() {
         return new SpringTransactionPolicy(jmsTransactionManager());
     }
 
     @Bean
-    protected TransactionAwareConnectionFactoryProxy transactionAwareConnectionFactoryProxy() {
+    public TransactionAwareConnectionFactoryProxy transactionAwareConnectionFactoryProxy() {
         JmsTemplate jmsTemplate = jmsTemplate(connectionFactory());
         ConnectionFactory connectionFactory = jmsTemplate.getConnectionFactory();
         if (connectionFactory != null) {
@@ -64,18 +62,17 @@ public class MailSenderConfig {
     }
 
     @Bean
-    @Qualifier("jmsTransactionManager")
-    protected JmsTransactionManager jmsTransactionManager() {
+    public JmsTransactionManager jmsTransactionManager() {
         return new JmsTransactionManager(transactionAwareConnectionFactoryProxy());
     }
 
     @Bean
-    protected ConnectionFactory connectionFactory() {
+    public ConnectionFactory connectionFactory() {
         return new ActiveMQConnectionFactory(activeMqBrokerUsername, activeMqBrokerPassword, activeMqBrokerUrl);
     }
 
     @Bean
-    protected JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
+    public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
         jmsTemplate.setSessionTransacted(true);
         return jmsTemplate;

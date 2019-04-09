@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 @ConfigurationProperties(prefix = "mailsender")
 open class MailSenderProperties {
-  lateinit var maximumRedeliveries: Integer
-  lateinit var redeliveryDelay: Integer
-  lateinit var backOffMultiplier: Integer
-  lateinit var queueName: String
+  var maximumRedeliveries: Int? = 0
+  var redeliveryDelay: Int? = 0
+  var backOffMultiplier: Int? = 0
+  var queueName: String? = ""
 }
