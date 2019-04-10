@@ -150,25 +150,29 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
                 .map(BestallningEntity.Factory::toDomain);
     }
 
-    //
     private Predicate textPredicate(String text) {
         var qe = QBestallningEntity.bestallningEntity;
+
+        var booleanBuilder = new BooleanBuilder();
+
         var id = Longs.tryParse(text);
         if (Objects.nonNull(id)) {
-            return qe.id.eq(id);
+            booleanBuilder.or(qe.id.eq(id));
         }
         var status = Stream.of(BestallningStatus.values())
                 .filter(v -> v.getBeskrivning().equalsIgnoreCase(text))
                 .findFirst();
         if (status.isPresent()) {
-            return qe.status.eq(status.get());
+            booleanBuilder.or(qe.status.eq(status.get()));
         }
         var date = Try.of(() -> LocalDate.parse(text, DateTimeFormatter.ISO_LOCAL_DATE));
         if (date.isSuccess()) {
             var from = date.get().atStartOfDay();
-            return qe.ankomstDatum.between(from, from.plusDays(1).minus(Duration.ofMillis(1L)));
+            booleanBuilder.or(qe.ankomstDatum.between(from, from.plusDays(1).minus(Duration.ofMillis(1L))));
         }
-        return new BooleanBuilder(qe.invanare.fornamn.containsIgnoreCase(text))
+        return booleanBuilder
+                .or(qe.intygTyp.containsIgnoreCase(text))
+                .or(qe.invanare.fornamn.containsIgnoreCase(text))
                 .or(qe.invanare.mellannamn.containsIgnoreCase(text))
                 .or(qe.invanare.efternamn.containsIgnoreCase(text))
                 .or(qe.invanare.personId.containsIgnoreCase(text))
