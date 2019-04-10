@@ -9,11 +9,7 @@
   "arendeReferens": "referens",
   "invanare": {
     "personId": "19540123-2540",
-    "fornamn": "Maj",
-    "mellannamn": "",
-    "efternamn": "Pärsson",
-    "bakgrundNulage": null,
-    "sektretessMarkering": true
+    "bakgrundNulage": null
   },
   "handlaggare": {
     "fullstandigtNamn": "Fullt Handlaggarnamn",

@@ -76,22 +76,9 @@
       <column name="PERSON_ID" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
-      <column name="FORNAMN" type="varchar(64)">
-        <constraints nullable="true"/>
-      </column>
-      <column name="MELLANNAMN" type="varchar(64)">
-        <constraints nullable="true"/>
-      </column>
-      <column name="EFTERNAMN" type="varchar(64)">
-        <constraints nullable="true"/>
-      </column>
       <column name="BAKGRUND_NULAGE" type="varchar(64)">
         <constraints nullable="true"/>
       </column>
-      <column name="SEKRETESSMARKERING" type="bit">
-        <constraints nullable="false"/>
-      </column>
-
     </createTable>
 
     <createTable tableName="HANDLAGGARE">

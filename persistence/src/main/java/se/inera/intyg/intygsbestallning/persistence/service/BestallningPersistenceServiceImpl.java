@@ -4,6 +4,10 @@ import com.google.common.primitives.Longs;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import io.vavr.control.Try;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -13,10 +17,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import javax.transaction.Transactional;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.dto.CountBestallningarQuery;
@@ -188,9 +188,6 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
         }
         return booleanBuilder
                 .or(qe.intygTyp.containsIgnoreCase(text))
-                .or(qe.invanare.fornamn.containsIgnoreCase(text))
-                .or(qe.invanare.mellannamn.containsIgnoreCase(text))
-                .or(qe.invanare.efternamn.containsIgnoreCase(text))
                 .or(qe.invanare.personId.containsIgnoreCase(text))
                 .getValue();
     }

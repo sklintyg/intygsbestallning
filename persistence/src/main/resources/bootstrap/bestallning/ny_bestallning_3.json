@@ -9,11 +9,7 @@
   "arendeReferens": "referens",
   "invanare": {
     "personId": "19900511-2389",
-    "fornamn": "Anita",
-    "mellannamn": "Ewa",
-    "efternamn": "Nordén",
-    "bakgrundNulage": null,
-    "sektretessMarkering": false
+    "bakgrundNulage": null
   },
   "handlaggare": {
     "fullstandigtNamn": "Fullt Handlaggarnamn",

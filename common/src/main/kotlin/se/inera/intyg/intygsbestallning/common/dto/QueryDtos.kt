@@ -102,42 +102,27 @@ data class ListBestallningInvanareDto(
    val personId: String
 )
 
-data class BestallningDto(
-   val id: Long,
-   val status: String,
-   val ankomstDatum: LocalDate,
-   val intygTyp: String,
-   val invanare: BestallningInvanareDto
-) {
-  companion object Factory {
-    fun toDto(bestallning: Bestallning): BestallningDto {
-      return BestallningDto(
-         id = bestallning.id!!,
-         status = bestallning.status!!.beskrivning,
-         ankomstDatum = bestallning.ankomstDatum.toLocalDate(),
-         intygTyp = bestallning.intygTyp,
-         invanare = BestallningInvanareDto.toDto(bestallning.invanare)
-      )
-    }
-  }
-}
-
 data class BestallningInvanareDto(
    val personId: String,
    val sekretessMarkering: Boolean,
    val name: String
 ) {
   companion object Factory {
-    fun toDto(invanare: Invanare): BestallningInvanareDto {
+    fun toDto(
+       invanare: Invanare,
+       fornamn: String,
+       mellannamn: String?,
+       efternamn: String,
+       sekretessMarkering: Boolean): BestallningInvanareDto {
       return BestallningInvanareDto(
          personId = invanare.personId.personnummerWithDash,
-         sekretessMarkering = invanare.sektretessMarkering ?: false,
+         sekretessMarkering = sekretessMarkering,
          name =
-         if (!invanare.sektretessMarkering!!)
+         if (!sekretessMarkering)
            listOfNotNull(
-              invanare.fornamn,
-              invanare.mellannamn,
-              invanare.efternamn).joinToString(separator = " ")
+              fornamn,
+              mellannamn,
+              efternamn).joinToString(separator = " ")
          else "Namn okänt"
       )
     }
@@ -155,25 +140,20 @@ data class VisaBestallningDto(
   companion object Factory {
     fun toDto(
        bestallning: Bestallning,
+       invanareDto: BestallningInvanareDto,
        bild: String,
        bestallningTexter: BestallningTexter): VisaBestallningDto {
 
       val textMap = bestallningTexter.texter.map { it.id to it.value }.toMap()
 
-      val invanareName =
-         if (!bestallning.invanare.sektretessMarkering!!)
-           listOfNotNull(
-              bestallning.invanare.fornamn,
-              bestallning.invanare.mellannamn,
-              bestallning.invanare.efternamn).joinToString(separator = "\n")
-         else "Namn okänt"
+      val invanareName = if (!invanareDto.sekretessMarkering) invanareDto.name.replace(" ", "\n") else "Namn okänt"
 
       return VisaBestallningDto(
          id = bestallning.id!!,
          status = bestallning.status!!.beskrivning,
          ankomstDatum = bestallning.ankomstDatum.toLocalDate(),
          intygTyp = bestallning.intygTyp,
-         invanare = BestallningInvanareDto.toDto(bestallning.invanare),
+         invanare = invanareDto,
          fragor = listOf(
             Fraga(
                rubrik = textMap.getValue(RBK_1),

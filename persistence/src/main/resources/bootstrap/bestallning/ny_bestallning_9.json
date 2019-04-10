@@ -9,11 +9,7 @@
   "arendeReferens": "referens",
   "invanare": {
     "personId": "19900614-2385",
-    "fornamn": "Charlotta",
-    "mellannamn": "Evelina",
-    "efternamn": "Blomgren",
-    "bakgrundNulage": null,
-    "sektretessMarkering": false
+    "bakgrundNulage": null
   },
   "handlaggare": {
     "fullstandigtNamn": "Fullt Handlaggarnamn",

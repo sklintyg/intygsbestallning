@@ -144,6 +144,6 @@ class ListBestallningServiceImplTest {
 
     private Invanare buildInvanare(String personnummer) {
         return Invanare.Factory.newInvanare(
-                Personnummer.createPersonnummer(personnummer).get(), "Fornamn", "Mellannanmn", "Efternamn", "Läge", false);
+                Personnummer.createPersonnummer(personnummer).get(),"Läge");
     }
 }

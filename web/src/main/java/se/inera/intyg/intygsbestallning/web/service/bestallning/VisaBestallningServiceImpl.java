@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.Handelse;
+import se.inera.intyg.intygsbestallning.common.dto.BestallningInvanareDto;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningDto;
 import se.inera.intyg.intygsbestallning.common.property.BestallningProperties;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
@@ -48,8 +49,6 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
             return Optional.empty();
         }
 
-        patientService.updatePersonDetaljer(bestallning.get().getInvanare());
-
         if (bestallning.get().getStatus() == BestallningStatus.OLAST) {
             bestallning.get().getHandelser().add(Handelse.Factory.las());
             bestallningStatusResolver.setStatus(bestallning.get());
@@ -58,9 +57,26 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
 
         var bestallningTexter = bestallningTextService.getBestallningTexter(bestallning.get());
 
+        var personSvar = patientService.lookupPersonnummerFromPU(bestallning.get().getInvanare().getPersonId());
+
+        if (personSvar.isEmpty()) {
+            throw new IllegalArgumentException("Person was not found in PU");
+        }
+
         pdlLogService.log(bestallning.get(), LogEvent.BESTALLNING_OPPNAS_OCH_LASES);
 
-        return Optional.of(VisaBestallningDto.Factory.toDto(bestallning.get(), getBildUrl(bestallningTexter), bestallningTexter));
+        var invanareDto = BestallningInvanareDto.Factory.toDto(
+                bestallning.get().getInvanare(),
+                personSvar.get().getFornamn(),
+                personSvar.get().getMellannamn(),
+                personSvar.get().getEfternamn(),
+                personSvar.get().isSekretessmarkering());
+
+        return Optional.of(VisaBestallningDto.Factory.toDto(
+                bestallning.get(),
+                invanareDto,
+                getBildUrl(bestallningTexter),
+                bestallningTexter));
     }
 
     private String getBildUrl(BestallningTexter bestallningTexter) {

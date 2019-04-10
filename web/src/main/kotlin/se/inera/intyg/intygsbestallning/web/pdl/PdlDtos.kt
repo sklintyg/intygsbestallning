@@ -65,9 +65,6 @@ enum class LogEvent private constructor(val activityArgs: String, val activityTy
   BESTALLNING_SKRIV_UT("Beställning utskriven", ActivityType.PRINT),
   PERSONINFORMATION_VISAS_I_LISTA("Visad i lista", ActivityType.READ);
 
-  val id: String
+  val id: String = this.name
 
-  init {
-    this.id = this.name
-  }
 }

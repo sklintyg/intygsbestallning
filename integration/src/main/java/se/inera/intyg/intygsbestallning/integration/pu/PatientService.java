@@ -9,7 +9,5 @@ import se.inera.intyg.schemas.contract.Personnummer;
 public interface PatientService {
     Optional<Person> lookupPersonnummerFromPU(Personnummer personnummer);
 
-    void updatePersonDetaljer(Invanare invanare);
-
     Optional<Boolean> isSekretessmarkerad(Personnummer personnummer);
 }

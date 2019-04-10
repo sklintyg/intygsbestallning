@@ -9,11 +9,7 @@
   "arendeReferens": "referens",
   "invanare": {
     "personId": "19660407-2667",
-    "fornamn": "Anna-Stina",
-    "mellannamn": "",
-    "efternamn": "Klingberg",
-    "bakgrundNulage": null,
-    "sektretessMarkering": false
+    "bakgrundNulage": null
   },
   "handlaggare": {
     "fullstandigtNamn": "Fullt Handlaggarnamn",

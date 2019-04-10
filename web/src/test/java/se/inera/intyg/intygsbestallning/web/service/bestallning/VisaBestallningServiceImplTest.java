@@ -24,6 +24,7 @@ import org.springframework.util.ReflectionUtils;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import se.inera.intyg.infra.integration.pu.model.Person;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
@@ -82,8 +83,13 @@ class VisaBestallningServiceImplTest {
 
     @BeforeEach
     void setup() throws NoSuchFieldException {
+
+        var person = new Person(Personnummer.createPersonnummer("19121212-1212").get(),
+                false, false, "Tolvan", "Tolvenius", "Tolvansson", "postaddress", "postnummer", "postOrt");
+
         ReflectionUtils.setField(BestallningProperties.class.getField("host"), bestallningProperties, "host-url");
         when(bestallningTextService.getBestallningTexter(any(Bestallning.class))).thenReturn(bestallningTexter);
+        when(patientService.lookupPersonnummerFromPU(any(Personnummer.class))).thenReturn(Optional.of(person));
     }
 
     @Test
@@ -93,7 +99,6 @@ class VisaBestallningServiceImplTest {
 
         visaBestallningService.getBestallningByIdAndHsaIdAndOrgId(ID_OLAST, HSA_ID, ORG_ID);
 
-        verify(patientService, times(1)).updatePersonDetaljer(any(Invanare.class));
         verify(bestallningStatusResolver, times(1)).setStatus(any(Bestallning.class));
         verify(pdlLogService, times(1)).log(any(Bestallning.class), eq(LogEvent.BESTALLNING_OPPNAS_OCH_LASES));
 
@@ -106,7 +111,6 @@ class VisaBestallningServiceImplTest {
 
         visaBestallningService.getBestallningByIdAndHsaIdAndOrgId(ID_LAST, HSA_ID, ORG_ID);
 
-        verify(patientService, times(1)).updatePersonDetaljer(any(Invanare.class));
         verify(pdlLogService, times(1)).log(any(Bestallning.class), eq(LogEvent.BESTALLNING_OPPNAS_OCH_LASES));
 
     }
@@ -131,14 +135,7 @@ class VisaBestallningServiceImplTest {
     }
 
     private Invanare buildInvanare() {
-        return Invanare.Factory.newInvanare(
-                Personnummer.createPersonnummer("19121212-1212").get(),
-                "tolvan",
-                "tolvenius",
-                "tolvansson",
-                null,
-                false
-        );
+        return Invanare.Factory.newInvanare(Personnummer.createPersonnummer("19121212-1212").get(), null);
     }
 
     private Vardenhet buildVardenhet() {

@@ -9,11 +9,7 @@
   "arendeReferens": "referens",
   "invanare": {
     "personId": "19520617-2339",
-    "fornamn": "Björn Anders Daniel",
-    "mellannamn": "Annat",
-    "efternamn": "Pärsson",
-    "bakgrundNulage": null,
-    "sektretessMarkering": false
+    "bakgrundNulage": null
   },
   "handlaggare": {
     "fullstandigtNamn": "Fullt Handlaggarnamn",

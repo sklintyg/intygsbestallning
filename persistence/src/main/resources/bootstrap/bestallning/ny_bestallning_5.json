@@ -9,11 +9,7 @@
   "arendeReferens": "referens",
   "invanare": {
     "personId": "19931230-2384",
-    "fornamn": "Anna-Stina",
-    "mellannamn": "Marianne",
-    "efternamn": "Rönnberg",
-    "bakgrundNulage": null,
-    "sektretessMarkering": false
+    "bakgrundNulage": null
   },
   "handlaggare": {
     "fullstandigtNamn": "Fullt Handlaggarnamn",

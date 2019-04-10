@@ -34,35 +34,6 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void updatePersonDetaljer(Invanare invanare) {
-        var personSvar = puLookup(invanare.getPersonId());
-
-        switch (personSvar.getStatus()) {
-            case FOUND:
-                var person = personSvar.getPerson();
-
-                invanare.setSektretessMarkering(person.isSekretessmarkering());
-
-                if (person.isSekretessmarkering()) {
-                    invanare.setFornamn(null);
-                    invanare.setMellannamn(null);
-                    invanare.setEfternamn(null);
-
-                } else {
-                    invanare.setFornamn(person.getFornamn());
-                    invanare.setEfternamn(person.getEfternamn());
-                    invanare.setMellannamn(person.getMellannamn());
-                }
-                break;
-            case NOT_FOUND:
-                throw new RuntimeException("Could not find person with id: " + invanare.getPersonId() + " from PU"); //TODO: Throw better exception
-            case ERROR:
-            default:
-                throw new RuntimeException("Could not get uppslag from PU"); //TODO: Throw better exception
-        }
-    }
-
-    @Override
     public Optional<Boolean> isSekretessmarkerad(Personnummer personnummer) {
         var personSvar = puLookup(personnummer);
 

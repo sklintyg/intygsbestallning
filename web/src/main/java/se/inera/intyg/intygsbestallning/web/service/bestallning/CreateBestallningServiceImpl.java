@@ -68,12 +68,7 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
             var foundPerson = person.get();
 
             invanare = Invanare.Factory.newInvanare(
-                    foundPerson.getPersonnummer(),
-                    foundPerson.getFornamn(),
-                    foundPerson.getMellannamn(),
-                    foundPerson.getEfternamn(),
-                    createBestallningRequest.getInvanare().getBakgrundNulage(),
-                    foundPerson.isSekretessmarkering());
+                    foundPerson.getPersonnummer(), createBestallningRequest.getInvanare().getBakgrundNulage());
 
         } else {
             invanare = existing.get();

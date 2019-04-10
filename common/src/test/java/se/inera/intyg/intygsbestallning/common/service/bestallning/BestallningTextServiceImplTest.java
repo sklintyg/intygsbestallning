@@ -67,14 +67,7 @@ class BestallningTextServiceImplTest {
 
     private Bestallning buildBestallning(String typ, Double version) {
         return Bestallning.Factory.newBestallning(
-                Invanare.Factory.newInvanare(
-                        Personnummer.createPersonnummer("19121212-1212").get(),
-                        "tolvan",
-                        "tolvenius",
-                        "tolvansson",
-                        null,
-                        false
-                ),
+                Invanare.Factory.newInvanare(Personnummer.createPersonnummer("19121212-1212").get(), null),
                 Handlaggare.Factory.newHandlaggare(
                         "namn",
                         "073-000",

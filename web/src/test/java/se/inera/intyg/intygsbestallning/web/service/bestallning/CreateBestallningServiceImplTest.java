@@ -107,7 +107,7 @@ class CreateBestallningServiceImplTest {
 
     private Invanare buildInvanare() {
         Personnummer personnummer = createPersonnummer("191212121212").get();
-        return new Invanare(1L, personnummer, "Tolvan", "Mellan", "Tolvansson", "", false);
+        return new Invanare(1L, personnummer, "");
     }
 
     private Handlaggare buildHandlaggare() {

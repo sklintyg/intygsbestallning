@@ -16,48 +16,24 @@ class InvanareEntity private constructor(builder: Builder) {
   @Column(name = "PERSON_ID", nullable = false)
   val personId: String
 
-  @Column(name = "FORNAMN")
-  var fornamn: String? = null
-
-  @Column(name = "MELLANNAMN")
-  var mellannamn: String? = null
-
-  @Column(name = "EFTERNAMN")
-  var efternamn: String? = null
-
   @Column(name = "BAKGRUND_NULAGE")
   var bakgrundNulage: String? = null
-
-  @Column(name = "SEKRETESSMARKERING", nullable = false)
-  var sekretessMarkering: Boolean
 
   init {
     this.id = builder.id
     this.personId = builder.personId ?: throw IllegalArgumentException("personId may not be null")
-    this.fornamn = builder.fornamn
-    this.mellannamn = builder.mellannamn
-    this.efternamn = builder.efternamn
     this.bakgrundNulage = builder.bakgrundNulage
-    this.sekretessMarkering = builder.sekretessMarkering ?: throw IllegalArgumentException("sekretessMarkering may not be null")
   }
 
 
   class Builder {
     var id: Long? = null
     var personId: String? = null
-    var fornamn: String? = null
-    var mellannamn: String? = null
-    var efternamn: String? = null
     var bakgrundNulage: String? = null
-    var sekretessMarkering: Boolean? = false
 
     fun id(id: Long?) = apply { this.id = id }
     fun personId(personId: String) = apply { this.personId = personId }
-    fun fornamn(fornamn: String?) = apply { this.fornamn = fornamn }
-    fun mellannamn(mellannamn: String?) = apply { this.mellannamn = mellannamn }
-    fun efternamn(efternamn: String?) = apply { this.efternamn = efternamn }
     fun bakgrundNulage(bakgrundNulage: String?) = apply { this.bakgrundNulage = bakgrundNulage }
-    fun sekretessMarkering(sekretessMarkering: Boolean) = apply { this.sekretessMarkering = sekretessMarkering }
     fun build() = InvanareEntity(this)
   }
 
@@ -67,22 +43,14 @@ class InvanareEntity private constructor(builder: Builder) {
       return Invanare(
          id = invanareEntity.id,
          personId = Personnummer.createPersonnummer(invanareEntity.personId).get(),
-         fornamn = invanareEntity.fornamn,
-         mellannamn = invanareEntity.mellannamn,
-         efternamn = invanareEntity.efternamn,
-         bakgrundNulage = invanareEntity.bakgrundNulage,
-         sektretessMarkering = invanareEntity.sekretessMarkering)
+         bakgrundNulage = invanareEntity.bakgrundNulage)
     }
 
     fun toEntity(invanare: Invanare): InvanareEntity {
       return InvanareEntity.Builder()
          .id(invanare.id)
          .personId(invanare.personId.personnummerWithDash)
-         .fornamn(invanare.fornamn)
-         .mellannamn(invanare.mellannamn)
-         .efternamn(invanare.efternamn)
          .bakgrundNulage(invanare.bakgrundNulage)
-         .sekretessMarkering(invanare.sektretessMarkering ?: false)
          .build()
     }
   }
