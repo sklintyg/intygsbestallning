@@ -47,7 +47,8 @@ bestallning:
   text-resource-path: ${resources.folder}/intygsbestallning/texts/bestallning/*.xml
   image-resource-path: ${resources.folder}/images/
   host: ${ib.host.url}
-
+  paminnelse:
+    cron: DUMMY
 #AUTH
 authorities:
   configuration:

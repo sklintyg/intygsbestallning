@@ -20,5 +20,6 @@ package se.inera.intyg.intygsbestallning.common.domain
 
 enum class NotifieringTyp(val label: String) {
   NY_BESTALLNING("Ny intygsbeställning mottagen av vårdenhet"),
-  NY_BESTALLNING_PAMINNELSE("Ny intygsbeställning mottagen av vårdenhet - Påminnelse")
+  NY_BESTALLNING_PAMINNELSE_1("Ny intygsbeställning mottagen av vårdenhet - Påminnelse 1"),
+  NY_BESTALLNING_PAMINNELSE_2("Ny intygsbeställning mottagen av vårdenhet - Påminnelse 2")
 }

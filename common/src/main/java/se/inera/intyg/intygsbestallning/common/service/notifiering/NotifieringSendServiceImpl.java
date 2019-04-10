@@ -18,13 +18,17 @@
  */
 package se.inera.intyg.intygsbestallning.common.service.notifiering;
 
+import java.lang.invoke.MethodHandles;
+import java.text.MessageFormat;
+
+import javax.mail.MessagingException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import javax.mail.MessagingException;
-import java.lang.invoke.MethodHandles;
-import java.text.MessageFormat;
+
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
+import se.inera.intyg.intygsbestallning.common.domain.Notifiering;
 import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
 import se.inera.intyg.intygsbestallning.common.property.MailProperties;
 import se.inera.intyg.intygsbestallning.common.text.mail.MailTexter;
@@ -52,21 +56,29 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
 
     @Override
     public void nyBestallning(Bestallning bestallning) {
-        var mailTexter = mailTextService.getMailContent(NotifieringTyp.NY_BESTALLNING, bestallning.getIntygTyp());
+        doEmail(bestallning, NotifieringTyp.NY_BESTALLNING);
+    }
+
+    @Override
+    public void vidarebefordrad(Bestallning bestallning) {
+        doEmail(bestallning, NotifieringTyp.NY_BESTALLNING);
+    }
+
+    @Override
+    public void paminnelse(Bestallning bestallning, NotifieringTyp typ) {
+        LOG.info("Sending Paminnelse");
+        doEmail(bestallning, typ);
+
+    }
+
+    private void doEmail(Bestallning bestallning, NotifieringTyp notifieringTyp) {
+        var mailTexter = mailTextService.getMailContent(notifieringTyp, bestallning.getIntygTyp());
         var mailBody = buildMailBody(bestallning, mailTexter);
         var subject = mailTexter.getArendeRad().getArende();
         var emailAddress = getEmailAddress(bestallning);
         sendNotifiering(emailAddress, subject, mailBody, bestallning.getId());
     }
 
-    @Override
-    public void vidarebefordrad(Bestallning bestallning) {
-        var mailTexter = mailTextService.getMailContent(NotifieringTyp.NY_BESTALLNING_PAMINNELSE, bestallning.getIntygTyp());
-        var mailBody = buildMailBody(bestallning, mailTexter);
-        var subject = mailTexter.getArendeRad().getArende();
-        var emailAddress = getEmailAddress(bestallning);
-        sendNotifiering(emailAddress, subject, mailBody, bestallning.getId());
-    }
 
     private String buildMailBody(Bestallning bestallning, MailTexter mailTexter) {
         var mailLink = getMailLinkRedirect(bestallning.getId());

@@ -19,6 +19,12 @@ class BestallningTexter {
   @JacksonXmlProperty(localName = "bild", isAttribute = true)
   val bild: String = ""
 
+  @JacksonXmlProperty(localName = "paminnelse1", isAttribute = true)
+  val paminnelse1: String = ""
+
+  @JacksonXmlProperty(localName = "paminnelse2", isAttribute = true)
+  val paminnelse2: String = ""
+
   @JacksonXmlElementWrapper(localName = "texter")
   val texter: List<Text> = mutableListOf()
 }

@@ -109,7 +109,7 @@ public class TestDataBootstrapper {
     }
 
     private LocalDateTime randomizeDate() {
-        var daySpan = 7;
+        var daySpan = 30;
         return LocalDateTime.now().minusDays(new Random().nextInt(daySpan + 1));
     }
 }

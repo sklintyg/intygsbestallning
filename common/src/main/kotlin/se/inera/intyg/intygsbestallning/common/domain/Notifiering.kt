@@ -9,10 +9,18 @@ data class Notifiering(
    val skickad: LocalDateTime? = null
 ) {
   companion object Factory {
+
     fun nyBestallning(hsaId: String): Notifiering {
       return Notifiering(
          typ = NotifieringTyp.NY_BESTALLNING,
          mottagareHsaId = hsaId
+      )
+    }
+
+    fun paminnelse(hsaId: String, paminnelseTyp: NotifieringTyp): Notifiering {
+      return Notifiering(
+          typ = paminnelseTyp,
+          mottagareHsaId = hsaId
       )
     }
   }

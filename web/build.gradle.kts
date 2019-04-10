@@ -31,6 +31,9 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-data-redis")
   //implementation("org.springframework.boot:spring-boot-starter-actuator")
 
+  implementation("net.javacrumbs.shedlock:shedlock-spring:1.3.0")
+
+
   //api documentation
   implementation("io.springfox:springfox-swagger2:2.9.2")
   implementation("io.springfox:springfox-swagger-ui:2.9.2")

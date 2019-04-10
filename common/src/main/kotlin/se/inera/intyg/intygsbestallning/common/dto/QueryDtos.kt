@@ -16,6 +16,9 @@ data class StatResponse(
     val antalAktivaBestallningar: Long,
     val antalKlaraBestallningar: Long)
 
+data class ListBestallningarBasedOnStatusQuery(
+    val statusar: List<BestallningStatus>)
+
 data class ListBestallningarQuery(
    val statusar: List<BestallningStatus>,
    val hsaId: String,

@@ -1,6 +1,7 @@
 package se.inera.intyg.intygsbestallning.common.service.notifiering;
 
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
+import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
 
 /**
  * Used for sending notifications by email to vardenhet users. Notifications will include a deep link to the related
@@ -22,4 +23,6 @@ public interface NotifieringSendService {
      * @param bestallning
      */
     void vidarebefordrad(Bestallning bestallning);
+
+    void paminnelse(Bestallning bestallning, NotifieringTyp typ);
 }

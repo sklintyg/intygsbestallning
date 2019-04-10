@@ -7,10 +7,12 @@ import io.vavr.control.Try;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import javax.transaction.Transactional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -19,6 +21,7 @@ import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.dto.CountBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
+import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarBasedOnStatusQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarResult;
 import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
@@ -148,6 +151,19 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
 
         return bestallningRepository.findOne(pb.getValue())
                 .map(BestallningEntity.Factory::toDomain);
+    }
+
+    @Override
+    public List<Bestallning> listBestallningarBasedOnStatus(ListBestallningarBasedOnStatusQuery query) {
+        var pb = new BooleanBuilder();
+        var qe = QBestallningEntity.bestallningEntity;
+        if (!query.getStatusar().isEmpty()) {
+            pb.and(qe.status.in(query.getStatusar()));
+        }
+        var result = bestallningRepository.findAll(pb.getValue());
+        return StreamSupport.stream(result.spliterator(), false)
+                .map(BestallningEntity.Factory::toDomain)
+                .collect(Collectors.toList());
     }
 
     private Predicate textPredicate(String text) {

@@ -1,8 +1,10 @@
 package se.inera.intyg.intygsbestallning.persistence.service;
 
+import java.util.List;
 import java.util.Optional;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.dto.CountBestallningarQuery;
+import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarBasedOnStatusQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarResult;
 
@@ -18,4 +20,6 @@ public interface BestallningPersistenceService {
     ListBestallningarResult listBestallningar(ListBestallningarQuery query);
 
     Optional<Bestallning> getBestallningByIdAndHsaIdAndOrgId(Long id, String hsaId, String orgNrVardgivare);
+
+    List<Bestallning> listBestallningarBasedOnStatus(ListBestallningarBasedOnStatusQuery query);
 }
