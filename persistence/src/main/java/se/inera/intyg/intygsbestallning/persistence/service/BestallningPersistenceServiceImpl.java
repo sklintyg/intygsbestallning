@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Year;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
@@ -169,24 +171,45 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
     private Predicate textPredicate(String text) {
         var qe = QBestallningEntity.bestallningEntity;
 
-        var booleanBuilder = new BooleanBuilder();
+        var pb = new BooleanBuilder();
 
         var id = Longs.tryParse(text);
         if (Objects.nonNull(id)) {
-            booleanBuilder.or(qe.id.eq(id));
+            pb.or(qe.id.eq(id));
         }
+
         var status = Stream.of(BestallningStatus.values())
                 .filter(v -> v.getBeskrivning().equalsIgnoreCase(text))
                 .findFirst();
         if (status.isPresent()) {
-            booleanBuilder.or(qe.status.eq(status.get()));
+            pb.or(qe.status.eq(status.get()));
         }
+
         var date = Try.of(() -> LocalDate.parse(text, DateTimeFormatter.ISO_LOCAL_DATE));
         if (date.isSuccess()) {
             var from = date.get().atStartOfDay();
-            booleanBuilder.or(qe.ankomstDatum.between(from, from.plusDays(1).minus(Duration.ofMillis(1L))));
+            pb.or(qe.ankomstDatum.between(from, from.plusDays(1).minus(Duration.ofMillis(1L))));
         }
-        return booleanBuilder
+
+        if (date.isFailure()) {
+            var yearAndMonth = Try.of(() -> YearMonth.parse(text, DateTimeFormatter.ofPattern("yyyy-MM")));
+            if (yearAndMonth.isSuccess()) {
+                var from = yearAndMonth.get().atDay(1).atStartOfDay();
+                var to = yearAndMonth.get().atEndOfMonth().plusDays(1L).atStartOfDay().minus(Duration.ofMillis(1L));
+                pb.or(qe.ankomstDatum.between(from, to));
+            }
+
+            if (yearAndMonth.isFailure()) {
+                var year = Try.of(() -> Year.parse(text, DateTimeFormatter.ofPattern("yyyy")));
+                if (year.isSuccess()) {
+                    var from = year.get().atDay(1).atStartOfDay();
+                    var to = year.get().atMonth(12).atEndOfMonth().plusDays(1L).atStartOfDay().minus(Duration.ofMillis(1L));
+                    pb.or(qe.ankomstDatum.between(from, to));
+                }
+            }
+        }
+
+        return pb
                 .or(qe.intygTyp.containsIgnoreCase(text))
                 .or(qe.invanare.personId.containsIgnoreCase(text))
                 .getValue();
