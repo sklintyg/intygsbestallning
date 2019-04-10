@@ -1,5 +1,6 @@
 import com.moowork.gradle.node.npm.NpmTask
 import org.gradle.internal.os.OperatingSystem
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 
 val buildClient = project.hasProperty("client")
@@ -50,6 +51,14 @@ dependencies {
   implementation("se.inera.intyg.refdata:refdata:${extra["refDataVersion"]}")
 
 }
+
+tasks.getByName<BootJar>("bootJar") {
+  manifest {
+    attributes("Main-Class" to "org.springframework.boot.loader.PropertiesLauncher")
+    attributes("Start-Class" to  "se.inera.intyg.intygsbestallning.web.IntygsbestallningApplication")
+  }
+}
+
 
 tasks.clean {
   delete("client/build")
