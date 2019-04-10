@@ -39,7 +39,6 @@ dependencies {
   implementation("jakarta.jws:jakarta.jws-api:1.1.1")
   implementation("javax.xml.ws:jaxws-api:${Dependencies.jaxVersion}")
   implementation("javax.servlet:javax.servlet-api:${Dependencies.jaxServletApiVersion}")
-  implementation("org.antlr:stringtemplate:${Dependencies.stringTemplateVersion}")
 
   implementation("org.springframework.security.extensions:spring-security-saml2-core:1.0.3.RELEASE")
   implementation("com.querydsl:querydsl-core:${Dependencies.querydslVersion}")

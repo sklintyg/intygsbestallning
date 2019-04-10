@@ -35,7 +35,6 @@ object Config {
     const val jacksonVersion = "2.9.4"
     const val javaxJmsVersion = "1.1-rev-1"
     const val javaxMailVersion = "1.5.2"
-    const val stringTemplateVersion = "4.0.2"
     const val vavrVersion = "0.10.0"
     const val jaxServletApiVersion = "4.0.1"
     const val jaxVersion = "2.3.0"

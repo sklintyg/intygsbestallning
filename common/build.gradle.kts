@@ -14,7 +14,6 @@ dependencies {
 
 
     compile("io.vavr:vavr:${Dependencies.vavrVersion}")
-    implementation("org.antlr:stringtemplate:${Dependencies.stringTemplateVersion}")
 
     implementation("org.springframework.boot:spring-boot-starter-activemq")
     implementation("org.springframework.boot:spring-boot-starter-mail")
