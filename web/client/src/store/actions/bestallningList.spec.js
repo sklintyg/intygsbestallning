@@ -21,8 +21,10 @@ describe('beställningList actions', () => {
         return Promise.resolve(response)
       }
 
-      const expectedActions = [{ type: actions.FETCH_BESTALLNINGAR_REQUEST, categoryFilter: 'AKTUELLA' },
-      { type: actions.FETCH_BESTALLNINGAR_SUCCESS, categoryFilter: 'AKTUELLA', response}]
+      const expectedActions = [
+        { type: actions.FETCH_BESTALLNINGAR_REQUEST, categoryFilter: 'AKTUELLA' },
+        { type: actions.FETCH_BESTALLNINGAR_SUCCESS, categoryFilter: 'AKTUELLA', response },
+      ]
 
       return functionToTest(
         store,
@@ -38,8 +40,10 @@ describe('beställningList actions', () => {
         return Promise.reject(response)
       }
 
-      const expectedActions = [{ type: actions.FETCH_BESTALLNINGAR_REQUEST, categoryFilter: 'AKTUELLA' },
-      { type: actions.FETCH_BESTALLNINGAR_FAILURE, categoryFilter: 'AKTUELLA', payload: response}]
+      const expectedActions = [
+        { type: actions.FETCH_BESTALLNINGAR_REQUEST, categoryFilter: 'AKTUELLA' },
+        { type: actions.FETCH_BESTALLNINGAR_FAILURE, categoryFilter: 'AKTUELLA', payload: response },
+      ]
 
       return functionToTest(
         store,

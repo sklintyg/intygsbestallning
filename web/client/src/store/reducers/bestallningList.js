@@ -2,9 +2,11 @@ import { combineReducers } from 'redux';
 import { buildClientError } from './util';
 import * as ActionConstants from '../actions/bestallningList'
 
+export const BestallningListDefaultState = { bestallningar: [], 'pageIndex': 0, 'totalPages': 0, 'numberOfElements': 0, 'totalElements': 0, 'sortColumn': 'ID', 'sortDirection': 'ASC' }
+
 const createBestallningarList = filter => {
   const bestallningList = (
-    state = { bestallningar: [], 'pageIndex': 0, 'totalPages': 0, 'numberOfElements': 0, 'totalElements': 0, 'sortColumn': 'ID', 'sortDirection': 'ASC' },
+    state = {...BestallningListDefaultState},
     action
   ) => {
     switch (action.type) {
