@@ -9,8 +9,10 @@ import static se.inera.intyg.schemas.contract.Personnummer.createPersonnummer;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -79,8 +81,21 @@ class AvvisaBestallningServiceImplTest {
     }
 
     private Optional<Bestallning> buildBestallning() {
-        return Optional.of(new Bestallning(BESTALLNING_ID, "typ", 1.0, ANKOMST_DATUM, AVSLUT_DATUM, "", "",
-                BestallningStatus.LAST, buildInvanare(), buildHandlaggare(), buildVardenhet(), new ArrayList<>(), new ArrayList<>()));
+        return Optional.of(new Bestallning(
+                BESTALLNING_ID,
+                "typ",
+                1.0,
+                ANKOMST_DATUM,
+                AVSLUT_DATUM,
+                "",
+                "",
+                BestallningStatus.LAST,
+                buildInvanare(),
+                buildHandlaggare(),
+                buildVardenhet(),
+                "referens",
+                Lists.newArrayList(),
+                Lists.newArrayList()));
     }
 
     private Vardenhet buildVardenhet() {

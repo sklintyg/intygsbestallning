@@ -1,6 +1,5 @@
 package se.inera.intyg.intygsbestallning.persistence.testdata
 
-import com.fasterxml.jackson.annotation.JacksonInject
 import se.inera.intyg.intygsbestallning.common.domain.*
 import java.time.LocalDateTime
 
@@ -11,6 +10,7 @@ data class BootstrapBestallning(
    var ankomstDatum: LocalDateTime,
    val avslutDatum: LocalDateTime? = null,
    val syfte: String? = null,
+   val arendeReferens: String? = null,
    val planeradeAktiviteter: String? = null,
    var status: BestallningStatus? = BestallningStatus.UNDEFINED,
    val invanare: Invanare,
@@ -30,6 +30,7 @@ data class BootstrapBestallning(
          syfte = bootstrapBestallning.syfte,
          planeradeAktiviteter = bootstrapBestallning.planeradeAktiviteter,
          status = bootstrapBestallning.status,
+         arendeReferens = bootstrapBestallning.arendeReferens,
          invanare = bootstrapBestallning.invanare,
          handlaggare = bootstrapBestallning.handlaggare,
          vardenhet = bootstrapBestallning.vardenhet,

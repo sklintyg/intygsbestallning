@@ -119,6 +119,7 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
                 request.getPlannedActions(),
                 intygTyp,
                 intygVersion,
-                vardenhet);
+                vardenhet,
+                request.getCaseReference());
     }
 }

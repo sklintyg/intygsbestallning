@@ -31,6 +31,9 @@ class BestallningEntity private constructor(builder: Builder) {
   @Column(name = "SYFTE")
   val syfte: String?
 
+  @Column(name = "ARENDE_REFERENS")
+  val arendeReferens: String?
+
   @Column(name = "PLANERADE_AKTIVITETER")
   val planeradeAktiviteter: String?
 
@@ -70,6 +73,7 @@ class BestallningEntity private constructor(builder: Builder) {
     this.ankomstDatum = builder.ankomstDatum ?: throw IllegalArgumentException("ankomstDatum may not be null")
     this.avslutDatum = builder.avslutDatum
     this.syfte = builder.syfte
+    this.arendeReferens = builder.arendeReferens
     this.planeradeAktiviteter = builder.planeradeAktiviteter
     this.status = builder.status ?: throw IllegalArgumentException("status may not be null")
     this.invanare = builder.invanare ?: throw IllegalArgumentException("invanare may not be null")
@@ -86,6 +90,7 @@ class BestallningEntity private constructor(builder: Builder) {
     var ankomstDatum: LocalDateTime? = null
     var avslutDatum: LocalDateTime? = null
     var syfte: String? = null
+    var arendeReferens: String? = null
     var planeradeAktiviteter: String? = null
     var status: BestallningStatus? = null
     var invanare: InvanareEntity? = null
@@ -100,6 +105,7 @@ class BestallningEntity private constructor(builder: Builder) {
     fun ankomstDatum(ankomstDatum: LocalDateTime) = apply { this.ankomstDatum = ankomstDatum }
     fun avslutDatum(avslutDatum: LocalDateTime?) = apply { this.avslutDatum = avslutDatum }
     fun syfte(syfte: String?) = apply { this.syfte = syfte }
+    fun arendeReferens(arendeReferens: String?) = apply { this.arendeReferens = arendeReferens }
     fun planeradeAktiviteter(planeradeAktiviteter: String?) = apply { this.planeradeAktiviteter = planeradeAktiviteter }
     fun status(status: BestallningStatus?) = apply { this.status = status }
     fun invanare(invanare: InvanareEntity?) = apply { this.invanare = invanare }
@@ -119,6 +125,7 @@ class BestallningEntity private constructor(builder: Builder) {
          ankomstDatum = bestallningEntity.ankomstDatum,
          avslutDatum = bestallningEntity.avslutDatum,
          syfte = bestallningEntity.syfte,
+         arendeReferens = bestallningEntity.arendeReferens,
          planeradeAktiviteter = bestallningEntity.planeradeAktiviteter,
          status = bestallningEntity.status,
          invanare = InvanareEntity.toDomain(bestallningEntity.invanare),
@@ -136,6 +143,7 @@ class BestallningEntity private constructor(builder: Builder) {
          .ankomstDatum(bestallning.ankomstDatum)
          .avslutDatum(bestallning.avslutDatum)
          .status(bestallning.status)
+         .arendeReferens(bestallning.arendeReferens)
          .invanare(InvanareEntity.toEntity(bestallning.invanare))
          .handlaggare(HandlaggareEntity.toEntity(bestallning.handlaggare))
          .vardenhet(VardenhetEntity.toEntity(bestallning.vardenhet))
@@ -156,6 +164,7 @@ class BestallningEntity private constructor(builder: Builder) {
          .ankomstDatum(bestallning.ankomstDatum)
          .avslutDatum(bestallning.avslutDatum)
          .syfte(bestallning.syfte)
+         .arendeReferens(bestallning.arendeReferens)
          .planeradeAktiviteter(bestallning.planeradeAktiviteter)
          .status(bestallning.status)
          .invanare(invanareEntity)

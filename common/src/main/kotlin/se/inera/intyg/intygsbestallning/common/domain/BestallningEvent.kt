@@ -4,8 +4,7 @@ enum class BestallningEvent {
   SKAPA,
   LAS,
   AVVISA,
-  AVVISA_RADERA,
   ACCEPTERA,
   KLARMARKERA,
-  VIDAREBEFORDRAD
+  VIDAREBEFORDRA
 }

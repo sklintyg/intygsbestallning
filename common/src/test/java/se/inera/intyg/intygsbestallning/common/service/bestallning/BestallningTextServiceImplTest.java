@@ -95,7 +95,8 @@ class BestallningTextServiceImplTest {
                         "namn",
                         "e@mail.se",
                         "svar"
-                )
+                ),
+                "referens"
         );
     }
 }

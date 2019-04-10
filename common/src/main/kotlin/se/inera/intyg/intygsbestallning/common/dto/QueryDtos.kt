@@ -208,7 +208,7 @@ data class VisaBestallningDto(
                rubrik = textMap.getValue(RBK_5),
                delfragor = listOf(
                   Delfraga(etikett = textMap.getValue(ETK_5_1), text = textMap.getValue(TEXT_5_1_1)),
-                  Delfraga(etikett = textMap.getValue(ETK_5_2), svar = bestallning.id.toString()),
+                  Delfraga(etikett = textMap.getValue(ETK_5_2), svar = bestallning.arendeReferens),
                   Delfraga(etikett = textMap.getValue(ETK_5_3), svar = bestallning.handlaggare.kostnadsstalle),
                   Delfraga(etikett = textMap.getValue(ETK_5_4), text = textMap.getValue(TEXT_5_4_1)),
                   Delfraga(etikett = textMap.getValue(ETK_5_5), text = textMap.getValue(TEXT_5_5_1)))

@@ -121,7 +121,8 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
                 handlaggare,
                 createBestallningRequest.getIntygTyp(),
                 createBestallningRequest.getIntygVersion(),
-                vardenhet);
+                vardenhet,
+                createBestallningRequest.getArendeReferens());
 
         bestallningStatusResolver.setStatus(bestallning);
 

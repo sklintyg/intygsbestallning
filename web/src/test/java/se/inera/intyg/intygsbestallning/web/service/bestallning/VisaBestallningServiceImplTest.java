@@ -7,11 +7,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Optional;
-
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.module.kotlin.KotlinModule;
+import com.google.common.collect.Lists;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,10 +21,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ReflectionUtils;
-
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.module.kotlin.KotlinModule;
-
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Optional;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
@@ -115,9 +112,22 @@ class VisaBestallningServiceImplTest {
     }
 
     private Optional<Bestallning> buildBestallning(Long id, BestallningStatus status) {
-        return Optional.of(new Bestallning(id, "typ", 1.0, ANKOMST_DATUM, AVSLUT_DATUM, "", "",
-                status, buildInvanare(), buildHandlaggare(), buildVardenhet(),
-                new ArrayList<>(), new ArrayList<>()));
+        return Optional.of(new Bestallning(
+                id,
+                "typ",
+                1.0,
+                ANKOMST_DATUM,
+                AVSLUT_DATUM,
+                "",
+                "",
+                status,
+                buildInvanare(),
+                buildHandlaggare(),
+                buildVardenhet(),
+                "referens",
+                Lists.newArrayList(),
+                Lists.newArrayList())
+        );
     }
 
     private Invanare buildInvanare() {

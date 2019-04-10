@@ -1,5 +1,6 @@
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
+import com.google.common.collect.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +24,7 @@ import se.inera.intyg.schemas.contract.Personnummer;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -72,8 +74,21 @@ class KlarmarkeraBestallningServiceImplTest {
     }
 
     private Optional<Bestallning> buildBestallning() {
-        return Optional.of(new Bestallning(BESTALLNING_ID, "typ", 1.0, ANKOMST_DATUM, AVSLUT_DATUM, "", "",
-                BestallningStatus.LAST, buildInvanare(), buildHandlaggare(), buildVardenhet(), new ArrayList<>(), new ArrayList<>()));
+        return Optional.of(new Bestallning(
+                BESTALLNING_ID,
+                "typ",
+                1.0,
+                ANKOMST_DATUM,
+                AVSLUT_DATUM,
+                "",
+                "",
+                BestallningStatus.LAST,
+                buildInvanare(),
+                buildHandlaggare(),
+                buildVardenhet(),
+                "referens",
+                Lists.newArrayList(),
+                Lists.newArrayList()));
     }
 
     private Vardenhet buildVardenhet() {

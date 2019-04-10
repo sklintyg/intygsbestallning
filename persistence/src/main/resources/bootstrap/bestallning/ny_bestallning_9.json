@@ -6,6 +6,7 @@
   "syfte": "ett syfte",
   "planeradeAktiviteter": "planerade aktiviteter",
   "status": "OLAST",
+  "arendeReferens": "referens",
   "invanare": {
     "personId": "19900614-2385",
     "fornamn": "Charlotta",

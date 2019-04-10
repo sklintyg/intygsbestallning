@@ -13,15 +13,15 @@ object Config {
 
     //Project dependencies
     const val intygPluginVersion = "2.0.3"
-    const val intygsbestallningCertificateOrderSchemasVersion = "1.0-RC6"
+    const val intygsbestallningCertificateOrderSchemasVersion = "1.0-RC7"
     const val schemasContractVersion = "2.1.7"
 
     //External dependencies
     const val nodePluginVersion = "1.2.0"
 
     const val kotlinVersion = "1.3.21"
-    const val springVersion = "5.1.5.RELEASE"
-    const val springBootVersion = "2.1.3.RELEASE"
+    const val springVersion = "5.1.6.RELEASE"
+    const val springBootVersion = "2.1.4.RELEASE"
     const val springDependencyManagementVersion = "1.0.7.RELEASE"
 
     const val activemqVersion = "5.13.5"
@@ -29,7 +29,7 @@ object Config {
     const val camelBootStarterVersion = "2.23.1"
     const val commonsLang3Version = "3.7"
     const val cxfBootStarterVersion = "3.3.0"
-    const val guavaVersion = "27.0.1-jre"
+    const val guavaVersion = "27.1-jre"
     const val h2Version = "1.4.198"
     const val liquibaseVersion = "3.6.3"
     const val jacksonVersion = "2.9.4"
@@ -46,7 +46,7 @@ object Config {
   object TestDependencies {
     const val mockitoCoreVersion = "2.24.5"
     const val junit4Version = "4.12"
-    const val junit5Version = "5.4.0"
+    const val junit5Version = "5.4.1"
     const val awaitilityVersion = "1.4.0"
     const val dbUnitVersion = "2.4.9"
     const val springockitoVersion = "1.0.8"

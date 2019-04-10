@@ -43,12 +43,6 @@ public class BestallningStatusResolverImpl implements BestallningStatusResolver 
                 }
                 bestallning.setStatus(BestallningStatus.AVVISAD);
                 break;
-            case AVVISA_RADERA:
-                if (nuvarandeStatus != BestallningStatus.LAST) {
-                    throw new IllegalStateException("Can not update state from LAST to RADERAD unless latest handelse is of typ AVVISA_RADERA");
-                }
-                bestallning.setStatus(BestallningStatus.RADERAD);
-                break;
             case ACCEPTERA:
                 if (nuvarandeStatus != BestallningStatus.LAST) {
                     throw new IllegalStateException("Can not update state from LAST to ACCEPTERA unless latest handelse is of typ ACCEPTERAD");

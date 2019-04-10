@@ -7,6 +7,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static se.inera.intyg.schemas.contract.Personnummer.createPersonnummer;
 
+import com.google.common.collect.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +19,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
@@ -77,8 +79,21 @@ class AccepteraBestallningServiceImplTest {
     }
 
     private Optional<Bestallning> buildBestallning() {
-        return Optional.of(new Bestallning(BESTALLNING_ID, "typ", 1.0, ANKOMST_DATUM, AVSLUT_DATUM, "", "",
-                BestallningStatus.LAST, buildInvanare(), buildHandlaggare(), buildVardenhet(), new ArrayList<>(), new ArrayList<>()));
+        return Optional.of(new Bestallning(
+                BESTALLNING_ID,
+                "typ",
+                1.0,
+                ANKOMST_DATUM,
+                AVSLUT_DATUM,
+                "",
+                "",
+                BestallningStatus.LAST,
+                buildInvanare(),
+                buildHandlaggare(),
+                buildVardenhet(),
+                "referens",
+                Lists.newArrayList(),
+                Lists.newArrayList()));
     }
 
     private Vardenhet buildVardenhet() {

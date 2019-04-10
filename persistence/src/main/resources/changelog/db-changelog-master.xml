@@ -25,6 +25,9 @@
       <column name="SYFTE" type="varchar(64)">
         <constraints nullable="true"/>
       </column>
+      <column name="ARENDE_REFERENS" type="varchar(64)">
+        <constraints nullable="true"/>
+      </column>
       <column name="PLANERADE_AKTIVITETER" type="varchar(64)">
         <constraints nullable="true"/>
       </column>

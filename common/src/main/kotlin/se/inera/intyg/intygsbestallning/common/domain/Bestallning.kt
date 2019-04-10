@@ -14,6 +14,7 @@ data class Bestallning(
    val invanare: Invanare,
    val handlaggare: Handlaggare,
    val vardenhet: Vardenhet,
+   val arendeReferens: String?,
    var handelser: List<Handelse>? = mutableListOf(),
    var notifieringar: List<Notifiering>? = mutableListOf()) {
 
@@ -23,7 +24,8 @@ data class Bestallning(
        handlaggare: Handlaggare,
        intygTyp: String,
        intygVersion: Double,
-       vardenhet: Vardenhet): Bestallning {
+       vardenhet: Vardenhet,
+       arendeReferens: String?): Bestallning {
       return Bestallning(
          intygTyp = intygTyp,
          intygVersion = intygVersion,
@@ -31,6 +33,7 @@ data class Bestallning(
          invanare = invanare,
          handlaggare = handlaggare,
          vardenhet = vardenhet,
+         arendeReferens = arendeReferens,
          handelser = listOf(Handelse.skapa()),
          notifieringar = listOf(Notifiering.nyBestallning(vardenhet.hsaId)))
     }
