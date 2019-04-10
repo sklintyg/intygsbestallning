@@ -7,13 +7,13 @@ export const UpDownIcon = () => (
   </svg>
 )
 
-export const DownIcon = ({color}) => (
+export const UpIcon = ({color}) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill={ color ? color : '#000' } width="12px" height="12px" viewBox="0 -150 1000 1000">
     <path d="M0 227l194-189 195-188 194 188 195 189h-386-392z"/>
   </svg>
 )
 
-export const UpIcon = ({color}) => (
+export const DownIcon = ({color}) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill={ color ? color : '#000' }  width="12px" height="12px" viewBox="0 -150 1000 1000">
     <path d="M392 474h-392l194 188 198 188 194-188 195-188h-389z" />
   </svg>
