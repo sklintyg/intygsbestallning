@@ -5,6 +5,7 @@ import com.querydsl.core.annotations.QueryType
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.persistence.*
 
 @Entity
@@ -16,6 +17,9 @@ class BestallningEntity private constructor(builder: Builder) {
   @Column(name = "ID", nullable = false)
   val id: Long?
 
+  @Column(name = "ID_STRING", nullable = false)
+  val idString: String
+
   @Column(name = "INTYG_TYP", nullable = false)
   val intygTyp: String
 
@@ -24,6 +28,9 @@ class BestallningEntity private constructor(builder: Builder) {
 
   @Column(name = "ANKOMST_DATUM", nullable = false)
   val ankomstDatum: LocalDateTime
+
+  @Column(name = "ANKOMST_DATUM_STRING", nullable = false)
+  val ankomstDatumString: String
 
   @Column(name = "AVSLUT_DATUM")
   var avslutDatum: LocalDateTime? = null
@@ -40,6 +47,9 @@ class BestallningEntity private constructor(builder: Builder) {
   @Enumerated(EnumType.STRING)
   @Column(name = "STATUS", nullable = false)
   val status: BestallningStatus
+
+  @Column(name = "STATUS_STRING", nullable = false)
+  val statusString: String
 
   @ManyToOne(cascade = [CascadeType.MERGE])
   @JoinColumn(name = "INVANARE_ID", nullable = false)
@@ -67,15 +77,20 @@ class BestallningEntity private constructor(builder: Builder) {
   var textSearch: String = ""
 
   init {
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
     this.id = builder.id
+    this.idString = builder.id.toString()
     this.intygTyp = builder.intygTyp ?: throw IllegalArgumentException("intygTyp may not be null")
     this.intygVersion = builder.intygVersion ?: throw IllegalArgumentException("intygVersion may not be null")
     this.ankomstDatum = builder.ankomstDatum ?: throw IllegalArgumentException("ankomstDatum may not be null")
+    this.ankomstDatumString = formatter.format(builder.ankomstDatum)
     this.avslutDatum = builder.avslutDatum
     this.syfte = builder.syfte
     this.arendeReferens = builder.arendeReferens
     this.planeradeAktiviteter = builder.planeradeAktiviteter
     this.status = builder.status ?: throw IllegalArgumentException("status may not be null")
+    this.statusString = builder.status!!.beskrivning
     this.invanare = builder.invanare ?: throw IllegalArgumentException("invanare may not be null")
     this.handlaggare = builder.handlaggare ?: throw IllegalArgumentException("handlaggare may not be null")
     this.vardenhet = builder.vardenhet ?: throw IllegalArgumentException("vardenhet may not be null")

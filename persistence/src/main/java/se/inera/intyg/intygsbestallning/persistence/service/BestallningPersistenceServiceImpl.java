@@ -3,16 +3,10 @@ package se.inera.intyg.intygsbestallning.persistence.service;
 import com.google.common.primitives.Longs;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import io.vavr.control.Try;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.Year;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -182,36 +176,15 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
                 .filter(v -> v.getBeskrivning().equalsIgnoreCase(text))
                 .findFirst();
         if (status.isPresent()) {
-            pb.or(qe.status.eq(status.get()));
-        }
-
-        var date = Try.of(() -> LocalDate.parse(text, DateTimeFormatter.ISO_LOCAL_DATE));
-        if (date.isSuccess()) {
-            var from = date.get().atStartOfDay();
-            pb.or(qe.ankomstDatum.between(from, from.plusDays(1).minus(Duration.ofMillis(1L))));
-        }
-
-        if (date.isFailure()) {
-            var yearAndMonth = Try.of(() -> YearMonth.parse(text, DateTimeFormatter.ofPattern("yyyy-MM")));
-            if (yearAndMonth.isSuccess()) {
-                var from = yearAndMonth.get().atDay(1).atStartOfDay();
-                var to = yearAndMonth.get().atEndOfMonth().plusDays(1L).atStartOfDay().minus(Duration.ofMillis(1L));
-                pb.or(qe.ankomstDatum.between(from, to));
-            }
-
-            if (yearAndMonth.isFailure()) {
-                var year = Try.of(() -> Year.parse(text, DateTimeFormatter.ofPattern("yyyy")));
-                if (year.isSuccess()) {
-                    var from = year.get().atDay(1).atStartOfDay();
-                    var to = year.get().atMonth(12).atEndOfMonth().plusDays(1L).atStartOfDay().minus(Duration.ofMillis(1L));
-                    pb.or(qe.ankomstDatum.between(from, to));
-                }
-            }
+            pb.or(qe.statusString.equalsIgnoreCase(status.get().getBeskrivning()));
+        } else {
+            pb.or(qe.statusString.containsIgnoreCase(text));
         }
 
         return pb
                 .or(qe.intygTyp.containsIgnoreCase(text))
                 .or(qe.invanare.personId.containsIgnoreCase(text))
+                .or(qe.ankomstDatumString.containsIgnoreCase(text))
                 .getValue();
     }
 

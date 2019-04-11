@@ -10,6 +10,9 @@
       <column name="ID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
         <constraints primaryKey="true" nullable="false"/>
       </column>
+      <column name="ID_STRING" type="varchar(64)">
+        <constraints nullable="false"/>
+      </column>
       <column name="INTYG_TYP" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
@@ -17,6 +20,9 @@
         <constraints nullable="false"/>
       </column>
       <column name="ANKOMST_DATUM" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ANKOMST_DATUM_STRING" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
       <column name="AVSLUT_DATUM" type="datetime">
@@ -32,6 +38,9 @@
         <constraints nullable="true"/>
       </column>
       <column name="STATUS" type="varchar(64)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="STATUS_STRING" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
       <column name="INVANARE_ID" type="bigint">
@@ -112,7 +121,6 @@
       <column name="KOSTNADSSTALLE" type="varchar(64)">
         <constraints nullable="true"/>
       </column>
-
     </createTable>
 
     <addForeignKeyConstraint
