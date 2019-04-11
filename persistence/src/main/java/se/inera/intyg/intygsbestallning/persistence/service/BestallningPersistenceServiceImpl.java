@@ -66,8 +66,7 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
     @Override
     public Bestallning updateBestallning(Bestallning bestallning) {
         var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning);
-        bestallningRepository.save(bestallningEntity);
-        return BestallningEntity.Factory.toDomain(bestallningEntity);
+        return BestallningEntity.Factory.toDomain(bestallningRepository.save(bestallningEntity));
     }
 
     @Override

@@ -81,9 +81,10 @@ public class OlastBestallningPaminnelseJob {
 
     private void sendNotificationAndUpdateBestallning(List<Bestallning> filtered, NotifieringTyp notifieringTyp) {
         filtered.forEach(it -> {
-            notifieringSendService.paminnelse(it, notifieringTyp);
             it.getNotifieringar().add(Notifiering.Factory.paminnelse(it.getVardenhet().getHsaId(), notifieringTyp));
-            bestallningPersistenceService.updateBestallning(it);
+            var saved = bestallningPersistenceService.updateBestallning(it);
+            notifieringSendService.paminnelse(saved, notifieringTyp);
+            bestallningPersistenceService.updateBestallning(saved);
         });
     }
 
