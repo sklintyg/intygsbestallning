@@ -17,9 +17,6 @@ class BestallningEntity private constructor(builder: Builder) {
   @Column(name = "ID", nullable = false)
   val id: Long?
 
-  @Column(name = "ID_STRING", nullable = false)
-  val idString: String
-
   @Column(name = "INTYG_TYP", nullable = false)
   val intygTyp: String
 
@@ -80,7 +77,6 @@ class BestallningEntity private constructor(builder: Builder) {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
     this.id = builder.id
-    this.idString = builder.id.toString()
     this.intygTyp = builder.intygTyp ?: throw IllegalArgumentException("intygTyp may not be null")
     this.intygVersion = builder.intygVersion ?: throw IllegalArgumentException("intygVersion may not be null")
     this.ankomstDatum = builder.ankomstDatum ?: throw IllegalArgumentException("ankomstDatum may not be null")

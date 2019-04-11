@@ -10,9 +10,6 @@
       <column name="ID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="ID_STRING" type="varchar(64)">
-        <constraints nullable="false"/>
-      </column>
       <column name="INTYG_TYP" type="varchar(64)">
         <constraints nullable="false"/>
       </column>

@@ -163,8 +163,8 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
     }
 
     private Predicate textPredicate(String text) {
-        var qe = QBestallningEntity.bestallningEntity;
 
+        var qe = QBestallningEntity.bestallningEntity;
         var pb = new BooleanBuilder();
 
         var id = Longs.tryParse(text);
