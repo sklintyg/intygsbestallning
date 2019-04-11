@@ -5,6 +5,5 @@ import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.schemas.contract.Personnummer;
 
 public interface InvanarePersistenceService {
-    Invanare saveNewInvanare(Invanare invanare);
     Optional<Invanare> getInvanareByPersonnummer(Personnummer personnummer);
 }

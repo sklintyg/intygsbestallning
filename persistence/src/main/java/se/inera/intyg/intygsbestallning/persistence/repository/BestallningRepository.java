@@ -28,5 +28,4 @@ public interface BestallningRepository extends JpaRepository<BestallningEntity, 
      * @return the optional with entity.
      */
     Optional<BestallningEntity> findOne(Predicate predicate);
-
 }

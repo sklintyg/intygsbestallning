@@ -43,6 +43,7 @@ enum class ListBestallningDirection {
 }
 
 data class ListBestallningarResult(
+   val ingaRegistreradeBestallningar: Boolean,
    val bestallningar: List<ListBestallningDto>,
    val pageIndex: Int? = 0,
    val start: Int,
@@ -55,6 +56,7 @@ data class ListBestallningarResult(
 ) {
   companion object Factory {
     fun toDto(
+       isFritextSok: Boolean,
        bestallningar: List<Bestallning>,
        pageIndex: Int? = 0,
        start: Int,
@@ -65,6 +67,7 @@ data class ListBestallningarResult(
        sortColumn: ListBestallningSortColumn,
        sortDirection: ListBestallningDirection): ListBestallningarResult {
       return ListBestallningarResult(
+         ingaRegistreradeBestallningar = !isFritextSok && bestallningar.isEmpty(),
          bestallningar = bestallningar.map { ListBestallningDto.toDto(it) },
          pageIndex = pageIndex,
          start = start,

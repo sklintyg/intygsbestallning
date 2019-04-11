@@ -92,7 +92,6 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
     @Override
     public ListBestallningarResult listBestallningar(ListBestallningarQuery query) {
 
-
         var pb = new BooleanBuilder();
         var qe = QBestallningEntity.bestallningEntity;
         if (!query.getStatusar().isEmpty()) {
@@ -120,6 +119,7 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
         var bestallningar = pageResult.get().map(BestallningEntity.Factory::toDomain).collect(Collectors.toList());
 
         return ListBestallningarResult.Factory.toDto(
+                query.getTextSearch() != null,
                 bestallningar,
                 pageResult.getNumber(),
                 pageResult.getNumber() * pageResult.getSize() + 1,

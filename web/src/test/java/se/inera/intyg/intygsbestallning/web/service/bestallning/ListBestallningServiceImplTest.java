@@ -1,5 +1,6 @@
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
+import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -121,6 +122,7 @@ class ListBestallningServiceImplTest {
         }
 
         return ListBestallningarResult.Factory.toDto(
+                false,
                 bestallningList,
                 0,
                 0,

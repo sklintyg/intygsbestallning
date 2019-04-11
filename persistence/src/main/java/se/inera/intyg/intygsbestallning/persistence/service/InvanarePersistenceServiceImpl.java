@@ -19,13 +19,6 @@ public class InvanarePersistenceServiceImpl implements InvanarePersistenceServic
     }
 
     @Override
-    public Invanare saveNewInvanare(Invanare invanare) {
-        var invanareEntity = InvanareEntity.Factory.toEntity(invanare);
-        invanareRepository.save(invanareEntity);
-        return InvanareEntity.Factory.toDomain(invanareEntity);
-    }
-
-    @Override
     public Optional<Invanare> getInvanareByPersonnummer(Personnummer personnummer) {
         return invanareRepository.findByPersonId(personnummer.getPersonnummerWithDash())
                 .map(InvanareEntity.Factory::toDomain);
