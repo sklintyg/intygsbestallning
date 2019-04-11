@@ -18,7 +18,18 @@
  */
 package se.inera.intyg.intygsbestallning.web.auth;
 
-import com.google.common.collect.Lists;
+import static se.inera.intyg.intygsbestallning.web.controller.RequestErrorController.IB_SPRING_SEC_ERROR_CONTROLLER_PATH;
+import static se.inera.intyg.intygsbestallning.web.controller.SessionStatController.SESSION_STAT_REQUEST_MAPPING;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.velocity.app.VelocityEngine;
@@ -89,20 +100,12 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import com.google.common.collect.Lists;
+
 import se.inera.intyg.intygsbestallning.web.auth.fake.FakeAuthenticationFilter;
 import se.inera.intyg.intygsbestallning.web.auth.fake.FakeAuthenticationProvider;
 import se.inera.intyg.intygsbestallning.web.auth.service.IntygsbestallningUserDetailsService;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static se.inera.intyg.intygsbestallning.web.controller.RequestErrorController.IB_SPRING_SEC_ERROR_CONTROLLER_PATH;
 
 @EnableWebSecurity
 @ComponentScan({"se.inera.intyg.infra.security.authorities", "org.springframework.security.saml"})
@@ -111,6 +114,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     private static final String DEV_PROFILE = "dev-security";
     private static final String TEST_PROFILE = "ib-security-test";
     public static final String FAKE_LOGOUT_URL = "/logout";
+    public static final String SUCCESSFUL_LOGOUT_REDIRECT_URL = "/#/loggedout/m";
 
     private MultiThreadedHttpConnectionManager multiThreadedHttpConnectionManager;
 
@@ -353,7 +357,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     @Profile({"prod", "ib-security-test", "ib-security-prod"})
     public SimpleUrlLogoutSuccessHandler successLogoutHandler() {
         SimpleUrlLogoutSuccessHandler successLogoutHandler = new SimpleUrlLogoutSuccessHandler();
-        successLogoutHandler.setDefaultTargetUrl("/");
+        successLogoutHandler.setDefaultTargetUrl(SUCCESSFUL_LOGOUT_REDIRECT_URL);
         successLogoutHandler.setAlwaysUseDefaultTargetUrl(true);
         return successLogoutHandler;
     }
@@ -522,7 +526,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
                 .antMatchers("/saml/web/**").permitAll()
                 .antMatchers("/saml2/web/**").permitAll()
                 .antMatchers("/services/**").permitAll()
-                .antMatchers("/api/config/**").permitAll();
+                .antMatchers("/api/config/**").permitAll()
+                .antMatchers( SESSION_STAT_REQUEST_MAPPING + "/**").permitAll();
 
         if (profiles.contains(DEV_PROFILE)) {
             http

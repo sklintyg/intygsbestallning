@@ -6,7 +6,9 @@ server:
   error:
     whitelabel:
       enabled: false
-
+  servlet:
+    session:
+      timeout: 30m
 spring:
   datasource:
     url: jdbc:h2:mem:dataSource;MODE=MySQL;DB_CLOSE_DELAY=-1

@@ -28,14 +28,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import se.inera.intyg.infra.security.filter.SessionTimeoutFilter;
-import se.inera.intyg.intygsbestallning.web.controller.dto.GetSessionStatusResponse;
+import se.inera.intyg.intygsbestallning.common.dto.StatResponse;
+import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
+import se.inera.intyg.intygsbestallning.web.controller.dto.GetSessionStatResponse;
+import se.inera.intyg.intygsbestallning.web.controller.dto.SessionState;
+import se.inera.intyg.intygsbestallning.web.service.stat.StatService;
+import se.inera.intyg.intygsbestallning.web.service.user.UserService;
 
 /**
- * Reports basic information about the current session status.
+ * Reports basic information about the current session status and user stats (if authenticated).
  * This controller works in cooperation with SessionTimeoutFilter that makes sure that requests to:
  * <ul>
  * <li>getSessionStatus does NOT extend the session</li>
- * <li>getExtendSession does extend the session.</li>
+ * <li>returns current stats (if available)</li>
  * </ul>
  *
  * @see SessionTimeoutFilter
@@ -45,32 +50,46 @@ import se.inera.intyg.intygsbestallning.web.controller.dto.GetSessionStatusRespo
  */
 
 @RestController
-@RequestMapping(SessionStatusController.SESSION_STATUS_REQUEST_MAPPING)
-public class SessionStatusController {
+@RequestMapping(SessionStatController.SESSION_STAT_REQUEST_MAPPING)
+public class SessionStatController {
 
-    public static final String SESSION_STATUS_REQUEST_MAPPING = "/api/session-auth-check";
+    public static final String SESSION_STAT_REQUEST_MAPPING = "/public-api/session-stat";
     public static final String SESSION_STATUS_PING = "/ping";
-    public static final String SESSION_STATUS_EXTEND = "/extend";
 
-    public static final String SESSION_STATUS_CHECK_URI = SESSION_STATUS_REQUEST_MAPPING + SESSION_STATUS_PING;
+    public static final String SESSION_STATUS_CHECK_URI = SESSION_STAT_REQUEST_MAPPING + SESSION_STATUS_PING;
 
-    @RequestMapping(value = SessionStatusController.SESSION_STATUS_PING, method = RequestMethod.GET)
-    public GetSessionStatusResponse getSessionStatus(HttpServletRequest request) {
+    private StatService statService;
+    private UserService userService;
+
+    public SessionStatController(StatService statService, UserService userService) {
+        this.statService = statService;
+        this.userService = userService;
+    }
+    @RequestMapping(value = SessionStatController.SESSION_STATUS_PING, method = RequestMethod.GET)
+    public GetSessionStatResponse getSessionStatus(HttpServletRequest request) {
         return createStatusResponse(request);
     }
 
-    @RequestMapping(value = SessionStatusController.SESSION_STATUS_EXTEND, method = RequestMethod.GET)
-    public GetSessionStatusResponse getExtendSession(HttpServletRequest request) {
-        return createStatusResponse(request);
-    }
-
-    private GetSessionStatusResponse createStatusResponse(HttpServletRequest request) {
+    private GetSessionStatResponse createStatusResponse(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         // The sessionTimeoutFilter should have put a secondsLeft attribute in the request for us to use.
         Long secondsLeft = (Long) request.getAttribute(SessionTimeoutFilter.SECONDS_UNTIL_SESSIONEXPIRE_ATTRIBUTE_KEY);
+        final boolean isAuthenticated = hasAuthenticatedPrincipalSession(session);
+        return new GetSessionStatResponse(new SessionState(session != null, isAuthenticated,
+                secondsLeft == null ? 0 : secondsLeft), isAuthenticated ? getStats() : null);
+    }
 
-        return new GetSessionStatusResponse(session != null, hasAuthenticatedPrincipalSession(session),
-                secondsLeft == null ? 0 : secondsLeft);
+    private StatResponse getStats() {
+        var user = userService.getUser();
+        if (user!=null &&  user.getUnitContext() !=null) {
+            var hsaId = user.getUnitContext().getId();
+            var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
+
+            return statService.getStat(hsaId, orgNrVardgivare);
+        } else {
+            return null;
+        }
+
     }
 
     private boolean hasAuthenticatedPrincipalSession(HttpSession session) {

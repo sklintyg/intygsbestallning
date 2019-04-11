@@ -8,6 +8,6 @@ if (process.env.NODE_ENV === 'production' || true) {
 
 export const fetchAnvandare = () => api.fetchAnvandare();
 
-export const logoutUser = () => api.logoutUser();
-
 export const changeEnhet = (hsaId) => api.changeEnhet(hsaId);
+
+export const pollSession = () => api.pollSession();

@@ -1,10 +1,10 @@
-import { combineReducers } from 'redux'
+import {combineReducers} from 'redux'
 import bestallningList from './bestallningList'
 import user from './user'
-import { connectRouter } from 'connected-react-router'
+import {connectRouter} from 'connected-react-router'
 import bestallning from './bestallning'
 import modal from './modal'
-import stat from './stat'
+import sessionPoll from './sessionPoll'
 
 const appReducer = (history) =>
   combineReducers({
@@ -13,7 +13,7 @@ const appReducer = (history) =>
     router: connectRouter(history),
     bestallning,
     modal,
-    stat,
+    sessionPoll
   })
 
 const reducers = (history) => (state, action) => {

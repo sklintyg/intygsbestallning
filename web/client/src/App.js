@@ -1,35 +1,36 @@
-import React, { Fragment } from 'react'
-import { HashRouter, Switch } from 'react-router-dom'
+import React, {Fragment} from 'react'
+import {HashRouter, Switch} from 'react-router-dom'
 import HomePage from './pages/IndexPage'
 import SelectEnhetPage from './pages/SelectEnhetPage'
 import BestallningarIndexPage from './pages/BestallningarIndexPage'
 import BestallningarPage from './pages/BestallningarPage'
 import BestallningPage from './pages/BestallningPage'
 import Header from './components/header'
-import { getUser } from './store/actions/user'
-import { connect } from 'react-redux'
-import { compose, lifecycle } from 'recompose'
+import {getUser} from './store/actions/user'
+import {connect} from 'react-redux'
+import {compose, lifecycle} from 'recompose'
 import SecuredRoute from './components/auth/SecuredRoute'
 import UnsecuredRoute from './components/auth/UnsecuredRoute'
-import { history } from './store/configureStore'
-import { ConnectedRouter } from 'connected-react-router'
-import { closeAllModals } from './store/actions/modal'
+import {history} from './store/configureStore'
+import {ConnectedRouter} from 'connected-react-router'
+import {closeAllModals} from './store/actions/modal'
 import ErrorPage from './pages/ErrorPage'
 import ErrorModal from './components/errorModal'
-import StatPoll from './components/statPoll'
 import TestLinks from './components/TestLinks/TestLinks'
+import SessionPoller from './components/sessionPoller'
 
 const App = () => {
   return (
     <ConnectedRouter history={history}>
       <HashRouter>
         <Fragment>
+          <SessionPoller/>
           {process.env.NODE_ENV !== 'production' && <TestLinks />}
           <Header />
           <ErrorModal />
-          <StatPoll />
           <Switch>
             <UnsecuredRoute exact path="/" component={HomePage} />
+            <UnsecuredRoute path="/loggedout/:method" component={HomePage} />
             <SecuredRoute allowMissingUnit={true} path="/valj-enhet" component={SelectEnhetPage} />
             <SecuredRoute path="/bestallningar/:filter" component={BestallningarPage} />
             <SecuredRoute path="/bestallningar" component={BestallningarIndexPage} />

@@ -5,8 +5,8 @@ import ibColors from '../styles/IbColors'
 import { Navbar, Nav } from 'reactstrap'
 import FilterBarButton from './FilterBarButton'
 import { compose } from 'recompose'
-import { getStat } from '../../store/reducers/stat'
 import { connect } from 'react-redux'
+import {getStat} from '../../store/reducers/sessionPoll'
 
 const Wrapper = styled.div`
   background-color: ${ibColors.IB_COLOR_26};
@@ -24,12 +24,12 @@ const Wrapper = styled.div`
   }
 `
 
-const BestallningFilterBar = (stat) => {
+const BestallningFilterBar = ({stat}) => {
   const menu = [
     {
       to: '/bestallningar/AKTUELLA',
       text: 'Aktiva',
-      stat: stat.stat.antalOlastaBestallningar,
+      stat: stat.antalOlastaBestallningar,
     },
     {
       to: '/bestallningar/KLARA',
@@ -58,7 +58,7 @@ const BestallningFilterBar = (stat) => {
 
 const mapStateToProps = (state) => {
   return {
-    stat: getStat(state),
+    stat: getStat(state)
   }
 }
 

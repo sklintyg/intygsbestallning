@@ -15,11 +15,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.jms.annotation.EnableJms;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import se.inera.intyg.infra.security.filter.PrincipalUpdatedFilter;
+import se.inera.intyg.infra.security.filter.SessionTimeoutFilter;
 import se.inera.intyg.intygsbestallning.common.property.BestallningProperties;
 import se.inera.intyg.intygsbestallning.web.controller.LocalDateTimeDeserializer;
 import se.inera.intyg.intygsbestallning.web.controller.LocalDateTimeSerializer;
@@ -29,6 +29,7 @@ import se.inera.intyg.intygsbestallning.web.service.user.UserService;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static se.inera.intyg.intygsbestallning.web.controller.SessionStatController.SESSION_STATUS_CHECK_URI;
 import static se.inera.intyg.intygsbestallning.web.controller.UserController.API_ANVANDARE;
 import static se.inera.intyg.intygsbestallning.web.controller.UserController.API_UNIT_CONTEXT;
 
@@ -102,6 +103,18 @@ public class WebConfig implements WebMvcConfigurer {
 
         registrationBean.setFilter(new UnitContextSelectedAssuranceFilter(userService, List.of(API_ANVANDARE, API_UNIT_CONTEXT)));
         registrationBean.addUrlPatterns("/api/*");
+
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<SessionTimeoutFilter> sessionTimeoutFilter() {
+        final SessionTimeoutFilter sessionTimeoutFilter = new SessionTimeoutFilter();
+        sessionTimeoutFilter.setGetSessionStatusUri(SESSION_STATUS_CHECK_URI);
+
+        FilterRegistrationBean<SessionTimeoutFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(sessionTimeoutFilter);
+        registrationBean.addUrlPatterns("/*");
 
         return registrationBean;
     }
