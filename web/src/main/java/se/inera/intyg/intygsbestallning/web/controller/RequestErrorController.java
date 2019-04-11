@@ -38,7 +38,7 @@ import se.inera.intyg.infra.security.exception.HsaServiceException;
 import se.inera.intyg.infra.security.exception.MissingMedarbetaruppdragException;
 import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
 import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
-import se.inera.intyg.intygsbestallning.web.controller.dto.ApiErrorResponse;
+import se.inera.intyg.intygsbestallning.web.auth.ApiErrorResponse;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;

@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import se.inera.intyg.infra.security.authorities.AuthoritiesException;
+import se.inera.intyg.intygsbestallning.web.auth.GetUserResponse;
 import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
-import se.inera.intyg.intygsbestallning.web.controller.dto.GetUserResponse;
 import se.inera.intyg.intygsbestallning.web.service.user.UserService;
 
 @RestController

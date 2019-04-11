@@ -29,9 +29,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import se.inera.intyg.infra.security.filter.SessionTimeoutFilter;
 import se.inera.intyg.intygsbestallning.common.dto.StatResponse;
+import se.inera.intyg.intygsbestallning.web.auth.GetSessionStatResponse;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
-import se.inera.intyg.intygsbestallning.web.controller.dto.GetSessionStatResponse;
-import se.inera.intyg.intygsbestallning.web.controller.dto.SessionState;
+import se.inera.intyg.intygsbestallning.web.auth.SessionState;
 import se.inera.intyg.intygsbestallning.web.service.stat.StatService;
 import se.inera.intyg.intygsbestallning.web.service.user.UserService;
 
