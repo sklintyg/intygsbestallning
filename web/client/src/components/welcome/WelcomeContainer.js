@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react'
-import {compose, lifecycle} from 'recompose'
+import {compose} from 'recompose'
 import {connect} from 'react-redux'
 
 import WelcomeChart from './WelcomeChart'
@@ -9,7 +9,6 @@ import {IbTypo02, IbTypo07} from '../styles/IbTypography'
 import styled from 'styled-components'
 
 import LoadingSpinner from '../loadingSpinner'
-import {requestPollUpdate} from '../../store/actions/sessionPoll'
 import {getStat, isPending} from '../../store/reducers/sessionPoll'
 
 const Color07 = styled.div`
@@ -47,23 +46,17 @@ const WelcomeContainer = ({ welcomeStats, isFetching }) => (
         </Color07>
       </WelcomeTextCol>
       <WelcomeChartCol>
-        {isFetching && <SpinnerContainer><LoadingSpinner loading={isFetching} message={'Hämtar diagram'} /></SpinnerContainer>}
+        {isFetching && (
+          <SpinnerContainer>
+            <LoadingSpinner loading={isFetching} message={'Hämtar diagram'} />
+          </SpinnerContainer>
+        )}
         {!isFetching && <WelcomeChart stats={welcomeStats} />}
       </WelcomeChartCol>
     </Wrapper>
   </Fragment>
 )
 
-const lifeCycleValues = {
-  componentDidMount() {
-    this.props.requestPollUpdate()
-  },
-}
-const mapDispatchToProps = (dispatch) => {
-  return {
-    requestPollUpdate: () => dispatch(requestPollUpdate())
-  }
-}
 const mapStateToProps = (state) => {
   return {
     welcomeStats: getStat(state),
@@ -71,10 +64,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  lifecycle(lifeCycleValues)
-)(WelcomeContainer)
+export default compose(connect(mapStateToProps))(WelcomeContainer)

@@ -2,6 +2,7 @@ import * as actions from './user'
 import * as api from '../../api/userApi';
 import * as modals from "./modal";
 import { routerAction, functionToTest, mockStore } from '../../testUtils/actionUtils';
+import {GET_POLL_REQUEST} from './sessionPoll'
 
 describe('actions', () => {
   let store;
@@ -58,7 +59,8 @@ describe('actions', () => {
         { type: actions.SET_ENHET },
         { type: actions.SET_ENHET_SUCCESS, payload: reponse },
         routerAction("/bestallningar"),
-        modalAction
+        modalAction,
+        { type: GET_POLL_REQUEST }
       ]
 
       return functionToTest(store, tested, expectedActions)

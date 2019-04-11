@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { compose, lifecycle } from 'recompose'
-import { startPoll, stopPoll } from '../../store/actions/sessionPoll'
+import {requestPollUpdate, startPoll, stopPoll} from '../../store/actions/sessionPoll'
 
 const SessionPollerContainer = () => {
   //This is a non-visual component
@@ -16,6 +16,7 @@ const lifeCycleValues = {
 
   componentDidUpdate() {
     if (this.props.isAuthenticated) {
+      this.props.requestPollUpdateNow()
       this.props.startPolling()
     }
   },
@@ -26,6 +27,7 @@ const lifeCycleValues = {
 }
 
 const mapDispatchToProps = (dispatch) => ({
+  requestPollUpdateNow: ()  => dispatch(requestPollUpdate()),
   startPolling: () => dispatch(startPoll()),
   stopPolling: () => dispatch(stopPoll()),
 })

@@ -1,6 +1,7 @@
 import {changeEnhet, fetchAnvandare} from "../../api/userApi";
 import {push} from 'connected-react-router'
 import {closeAllModals} from "./modal";
+import {requestPollUpdate} from './sessionPoll'
 
 export const GET_USER = 'GET_USER';
 export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
@@ -44,6 +45,7 @@ export const selectEnhet = (hsaId) => {
 
         dispatch(push('/bestallningar'));
         dispatch(closeAllModals());
+        dispatch(requestPollUpdate());
       }
     ).catch(
       errorResponse => dispatch({
