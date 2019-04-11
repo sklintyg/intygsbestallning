@@ -41,7 +41,7 @@ class NotifieringEntity private constructor(builder: Builder) {
   private val mottagareHsaId: String
 
   @Column(name = "SKICKAD")
-  private val skickad: LocalDateTime?
+  private var skickad: LocalDateTime?
 
   init {
     this.id = builder.id

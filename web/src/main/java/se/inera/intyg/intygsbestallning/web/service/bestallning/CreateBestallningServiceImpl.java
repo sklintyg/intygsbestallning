@@ -123,6 +123,7 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
 
         final Bestallning savedBestallning = bestallningPersistenceService.saveNewBestallning(bestallning);
         notifieringSendService.nyBestallning(savedBestallning);
+        bestallningPersistenceService.updateBestallning(savedBestallning);
 
         return savedBestallning.getId();
     }

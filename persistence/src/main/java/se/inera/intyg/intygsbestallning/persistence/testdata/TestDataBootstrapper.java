@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Random;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
 import se.inera.intyg.intygsbestallning.common.property.PersistenceProperties;
+import se.inera.intyg.intygsbestallning.common.service.notifiering.NotifieringSendService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
 import se.inera.intyg.intygsbestallning.persistence.service.VardenhetPersistenceService;
 
@@ -33,6 +34,7 @@ public class TestDataBootstrapper {
     private PersistenceProperties persistenceProperties;
     private VardenhetPersistenceService vardenhetPersistenceService;
     private BestallningPersistenceService bestallningPersistenceService;
+    private NotifieringSendService notifieringSendService;
 
 
     private ObjectMapper objectMapper;
@@ -41,10 +43,11 @@ public class TestDataBootstrapper {
             PersistenceProperties persistenceProperties,
             VardenhetPersistenceService vardenhetPersistenceService,
             BestallningPersistenceService bestallningPersistenceService,
-            @Qualifier("customObjectMapper") ObjectMapper objectMapper) {
+            NotifieringSendService notifieringSendService, @Qualifier("customObjectMapper") ObjectMapper objectMapper) {
         this.persistenceProperties = persistenceProperties;
         this.vardenhetPersistenceService = vardenhetPersistenceService;
         this.bestallningPersistenceService = bestallningPersistenceService;
+        this.notifieringSendService = notifieringSendService;
         this.objectMapper = objectMapper;
     }
 
@@ -79,7 +82,11 @@ public class TestDataBootstrapper {
 
             loadResources(bestallningBootstrapDirectory, BootstrapBestallning.class).stream()
                     .map(BootstrapBestallning.Factory::toDomain)
-                    .forEach(bestallningPersistenceService::saveNewBestallning);
+                    .forEach(bestallning -> {
+                        var savedBestallning = bestallningPersistenceService.saveNewBestallning(bestallning);
+                        notifieringSendService.nyBestallning(savedBestallning);
+                        bestallningPersistenceService.updateBestallning(savedBestallning);
+                    });
         });
 
         if (bootstrapResult.isFailure()) {

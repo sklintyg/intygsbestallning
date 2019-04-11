@@ -6,7 +6,7 @@ data class Notifiering(
    val id: Long? = null,
    val typ: NotifieringTyp,
    val mottagareHsaId: String,
-   val skickad: LocalDateTime? = null
+   var skickad: LocalDateTime? = null
 ) {
   companion object Factory {
 

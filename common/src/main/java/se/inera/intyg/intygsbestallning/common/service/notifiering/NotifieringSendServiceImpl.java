@@ -20,6 +20,10 @@ package se.inera.intyg.intygsbestallning.common.service.notifiering;
 
 import java.lang.invoke.MethodHandles;
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Objects;
 
 import javax.mail.MessagingException;
 
@@ -77,8 +81,8 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
         var subject = mailTexter.getArendeRad().getArende();
         var emailAddress = getEmailAddress(bestallning);
         sendNotifiering(emailAddress, subject, mailBody, bestallning.getId());
+        setSkickadTimestamp(bestallning);
     }
-
 
     private String buildMailBody(Bestallning bestallning, MailTexter mailTexter) {
         var mailLink = getMailLinkRedirect(bestallning.getId());
@@ -100,5 +104,10 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
         } catch (MessagingException e) {
             LOG.error(MessageFormat.format("Error sending notification by email: {0}", e.getMessage()));
         }
+    }
+
+    private void setSkickadTimestamp(Bestallning bestallning) {
+        Collections.max(Objects.requireNonNull(bestallning.getNotifieringar()), Comparator.comparing(Notifiering::getId))
+                .setSkickad(LocalDateTime.now());
     }
 }

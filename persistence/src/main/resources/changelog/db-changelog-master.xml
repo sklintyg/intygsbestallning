@@ -186,7 +186,7 @@
         <constraints nullable="false"/>
       </column>
       <column name="SKICKAD" type="datetime">
-        <constraints nullable="false"/>
+        <constraints nullable="true"/>
       </column>
     </createTable>
 

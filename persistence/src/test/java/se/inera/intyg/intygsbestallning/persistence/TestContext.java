@@ -10,8 +10,9 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import se.inera.intyg.intygsbestallning.common.CommonConfig;
 
-@SpringJUnitConfig(PersistenceConfig.class)
+@SpringJUnitConfig(value = { PersistenceConfig.class, CommonConfig.class })
 @ActiveProfiles("test")
 @EnableAutoConfiguration
 @TestPropertySource("classpath:test.properties")
