@@ -5,6 +5,7 @@ import TableSortHead from './TableSortHead'
 import { Error } from '../styles/IbSvgIcons'
 import { Table, Button } from 'reactstrap'
 import FetchError from './FetchError'
+import { getMessage } from '../../messages/messages'
 
 const ResultLine = styled.div`
   padding: 20px 0 10px 0;
@@ -16,11 +17,17 @@ const Wrapper = styled.div`
   }
 `
 
-const BestallningarList = ({ bestallningList, onSort, errorMessage }) => {
+const BestallningarList = ({ bestallningList, onSort, errorMessage, categoryFilter }) => {
   if (bestallningList.bestallningar && bestallningList.bestallningar.length === 0) {
-    return (
-      <ResultLine>Inget resultat hittades för den valda filtreringen. Överväg att ändra filtreringen för att utöka resultatet.</ResultLine>
-    )
+    if (bestallningList.ingaRegistreradeBestallningar) {
+      return (
+        <ResultLine>
+          Det finns inga {getMessage('list.category.' + categoryFilter)} beställningar eller förfrågningar för den enhet som du inloggad på
+        </ResultLine>
+      )
+    } else {
+      return <ResultLine>Inga träffar för den valda filtreringen. Överväg att ändra filtreringen för att utöka resultatet.</ResultLine>
+    }
   }
 
   const handleSort = (sortColumn) => {

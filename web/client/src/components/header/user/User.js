@@ -1,9 +1,8 @@
-import React from 'react';
-import styled from "styled-components";
-import {HeaderSectionContainer, SingleTextRowContainer, VerticalContainer} from "../styles";
-import IbColors from "../../styles/IbColors";
-import {UserIcon} from "../../styles/IbSvgIcons";
-
+import React from 'react'
+import styled from 'styled-components'
+import { HeaderSectionContainer, SingleTextRowContainer, VerticalContainer } from '../styles'
+import IbColors from '../../styles/IbColors'
+import { UserIcon } from '../../styles/IbSvgIcons'
 
 const UserComponentWrapper = styled(HeaderSectionContainer)`
   flex: 1 1 auto;
@@ -16,13 +15,12 @@ const UserTitle = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   padding-left: 4px;
-  
 `
 
-const User = ({userName}) => {
+const User = ({ userName }) => {
   return (
     <UserComponentWrapper>
-      <UserIcon/>
+      <UserIcon />
       <VerticalContainer>
         <SingleTextRowContainer>
           <UserTitle id="currentUserTitle">{userName}</UserTitle>
@@ -30,7 +28,6 @@ const User = ({userName}) => {
       </VerticalContainer>
     </UserComponentWrapper>
   )
-};
+}
 
-
-export default User;
+export default User

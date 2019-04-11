@@ -14,7 +14,7 @@ const ListWrapper = styled.div`
 `
 
 const BestallningarListContainer = (props) => {
-  const { isFetching, errorMessage, bestallningList } = props
+  const { isFetching, errorMessage, bestallningList, categoryFilter } = props
 
   const handleSort = (newSortColumn) => {
     let { sortColumn, sortDirection } = bestallningList
@@ -30,7 +30,7 @@ const BestallningarListContainer = (props) => {
   return (
     <Fragment>
       <ListWrapper>
-        <BestallningList bestallningList={bestallningList} errorMessage={errorMessage} onSort={handleSort} />
+        <BestallningList bestallningList={bestallningList} categoryFilter={categoryFilter} errorMessage={errorMessage} onSort={handleSort} />
         {isFetching && !bestallningList.length && <LoadingSpinner loading={isFetching} message={'Laddar beställningar'} />}
       </ListWrapper>
     </Fragment>
