@@ -24,7 +24,7 @@ public class StatServiceImpl implements StatService {
                 new CountBestallningarQuery(List.of(BestallningStatus.OLAST), hsaId, orgNrVardgivare));
 
         long antalAktivaBestallningar = bestallningPersistenceService.countBestallningar(
-                new CountBestallningarQuery(List.of(BestallningStatus.ACCEPTERAD, BestallningStatus.OLAST, BestallningStatus.LAST), hsaId, orgNrVardgivare));
+                new CountBestallningarQuery(List.of(BestallningStatus.ACCEPTERAD, BestallningStatus.LAST), hsaId, orgNrVardgivare));
 
         long antalKlaraBestallningar = bestallningPersistenceService.countBestallningar(
                 new CountBestallningarQuery(List.of(BestallningStatus.KLAR), hsaId, orgNrVardgivare));
