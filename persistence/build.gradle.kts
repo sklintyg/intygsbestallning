@@ -19,7 +19,7 @@ dependencies {
     implementation("com.querydsl:querydsl-jpa:${Dependencies.querydslVersion}")
 
     runtime("mysql:mysql-connector-java")
-    runtime("com.h2database:h2:${Dependencies.h2Version}")
+    runtime("com.h2database:h2")
 
     kapt("com.querydsl:querydsl-apt:${Dependencies.querydslVersion}:jpa")
 }

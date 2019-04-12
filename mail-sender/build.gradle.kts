@@ -13,9 +13,6 @@ dependencies {
     implementation("org.apache.camel:camel-spring-javaconfig:${Dependencies.camelVersion}")
     implementation("org.apache.camel:camel-jms:${Dependencies.camelVersion}")
 
-    // Embedded database for development
-    runtime("com.h2database:h2:${Dependencies.h2Version}")
-
     // External test dependencies
     testImplementation("com.jayway.awaitility:awaitility:${TestDependencies.awaitilityVersion}")
     testImplementation("org.apache.camel:camel-test-spring:${Dependencies.camelVersion}")

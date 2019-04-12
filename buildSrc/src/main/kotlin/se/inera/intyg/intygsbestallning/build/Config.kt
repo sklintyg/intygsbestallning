@@ -30,7 +30,6 @@ object Config {
     const val commonsLang3Version = "3.7"
     const val cxfBootStarterVersion = "3.3.0"
     const val guavaVersion = "27.1-jre"
-    const val h2Version = "1.4.198"
     const val liquibaseVersion = "3.6.3"
     const val jacksonVersion = "2.9.4"
     const val javaxJmsVersion = "1.1-rev-1"

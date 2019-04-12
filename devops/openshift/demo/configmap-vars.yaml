@@ -3,7 +3,6 @@ data:
   SPRING_PROFILES_ACTIVE: "default,myndighet-stub,dev,caching-enabled,wc-hsa-stub,dev-security"
   REDIS_PORT: "${redis.service.port}"
   REDIS_HOST: "${redis.service.host}"
-  SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/${database.name}"
 kind: ConfigMap
 metadata:
   name: intygsbestallning-demo-configmap-envvar
