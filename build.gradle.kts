@@ -80,6 +80,8 @@ subprojects {
   }
 
   tasks {
+    register<TagReleaseTask>("tagRelease")
+
     withType<Test> {
       useJUnitPlatform()
     }
@@ -111,5 +113,3 @@ publishing {
 dependencies {
   subprojects.forEach { archives(it) }
 }
-
-tasks.register<TagReleaseTask>("tagRelease") 
