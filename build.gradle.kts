@@ -22,6 +22,7 @@ allprojects {
   extra.apply {
     set("intygInfraVersion", System.getenv("infraVersion") ?: "0-SNAPSHOT")
     set("refDataVersion", System.getenv("refDataVersion") ?: "1.0-SNAPSHOT")
+    set("infraGroupId", "se.inera.intyg.infra-spring5")
   }
 
   repositories {

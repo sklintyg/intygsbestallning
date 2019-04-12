@@ -4,8 +4,8 @@ dependencies {
   // Project dependencies
   implementation(project(":common"))
 
-  implementation("se.inera.intyg.infra:hsa-integration:${extra["intygInfraVersion"]}")
-  implementation("se.inera.intyg.infra:pu-integration:${extra["intygInfraVersion"]}")
+  implementation("${extra["infraGroupId"]}:hsa-integration:${extra["intygInfraVersion"]}")
+  implementation("${extra["infraGroupId"]}:pu-integration:${extra["intygInfraVersion"]}")
 
 
   // External dependencies
