@@ -2,6 +2,7 @@ import React from 'react'
 import { Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actions from '../../store/actions/bestallning'
+import * as modalActions from '../../store/actions/modal'
 import { getBestallning, getErrorMessage, isFetching } from '../../store/reducers/bestallning'
 import BestallningFraga from './bestallningFraga'
 import BestallningHeader from './bestallningHeader'
@@ -66,6 +67,7 @@ const lifeCycleValues = {
       fetchData(this.props)
     }
     if (this.props.error && this.props.error.modal) {
+      this.props.closeAllModals()
       this.props.displayErrorModal(this.props.error.modal)
     }
   },
@@ -86,7 +88,7 @@ export default compose(
   withRouter,
   connect(
     mapStateToProps,
-    actions
+    { ...actions, ...modalActions }
   ),
   lifecycle(lifeCycleValues)
 )(BestallningContainer)

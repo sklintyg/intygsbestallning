@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import io.vavr.control.Try;
+import org.springframework.transaction.annotation.Transactional;
 import se.inera.intyg.intygsbestallning.common.domain.Handelse;
 import se.inera.intyg.intygsbestallning.common.dto.AvvisaBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
@@ -34,6 +35,7 @@ public class AvvisaBestallningServiceImpl implements AvvisaBestallningService {
     }
 
     @Override
+    @Transactional
     public void avvisaBestallning(AvvisaBestallningRequest request) {
         if (request == null) {
             throw new IllegalArgumentException("avvisaBestallningRequest may not be null");

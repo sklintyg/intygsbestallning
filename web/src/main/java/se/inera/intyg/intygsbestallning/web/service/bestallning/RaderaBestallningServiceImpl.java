@@ -4,6 +4,7 @@ import io.vavr.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import se.inera.intyg.intygsbestallning.common.dto.RaderaBestallningRequest;
 import se.inera.intyg.intygsbestallning.integration.client.RespondToOrderService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
@@ -23,6 +24,7 @@ public class RaderaBestallningServiceImpl implements RaderaBestallningService {
     }
 
     @Override
+    @Transactional
     public void raderaBestallning(RaderaBestallningRequest request) {
         if (request == null) {
             throw new IllegalArgumentException("raderaBestallningRequest may not be null");

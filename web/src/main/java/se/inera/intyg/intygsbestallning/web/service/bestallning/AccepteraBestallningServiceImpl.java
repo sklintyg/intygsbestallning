@@ -2,6 +2,7 @@ package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import se.inera.intyg.intygsbestallning.common.domain.Handelse;
 import se.inera.intyg.intygsbestallning.common.dto.AccepteraBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
@@ -31,6 +32,7 @@ public class AccepteraBestallningServiceImpl implements AccepteraBestallningServ
     }
 
     @Override
+    @Transactional
     public void accepteraBestallning(AccepteraBestallningRequest request) {
 
         if (request == null) {

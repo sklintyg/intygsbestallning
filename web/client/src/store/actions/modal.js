@@ -27,3 +27,7 @@ export const closeAllModals = () => {
     payload: {}
   }
 };
+
+export const displayErrorModal = (data) => (dispatch) => {
+  dispatch(openModal('errorModal', data))
+}

@@ -1,6 +1,7 @@
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import se.inera.intyg.intygsbestallning.common.domain.Handelse;
 import se.inera.intyg.intygsbestallning.common.dto.KlarmarkeraBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
@@ -28,6 +29,7 @@ public class KlarmarkeraBestallningServiceImpl implements KlarmarkeraBestallning
     }
 
     @Override
+    @Transactional
     public void klarmarkeraBestallning(KlarmarkeraBestallningRequest request) {
 
         if (request == null) {

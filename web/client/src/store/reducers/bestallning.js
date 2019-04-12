@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux'
 import * as ActionConstants from '../actions/bestallning'
+import {buildClientError} from "./util"
 
+export const FAIL_MODAL_HEADER = 'Ett tekniskt fel uppstod'
 export const DELETE_FAIL_MODAL_HEADER = 'Ett fel uppstod vid radering.'
 export const DELETE_FAIL_MODAL_BODY = 'Det gick inte att radera beställningen. '
 
@@ -36,12 +38,13 @@ const fetching = (state = false, action) => {
 const errorMessage = (state = null, action) => {
   switch (action.type) {
     case ActionConstants.FETCH_BESTALLNING_FAILURE:
+      return action.payload
     case ActionConstants.REJECT_BESTALLNING_FAILURE:
     case ActionConstants.ACCEPTERA_BESTALLNING_FAILURE:
     case ActionConstants.COMPLETE_BESTALLNING_FAILURE:
-      return action.payload
+      return { ...action.payload, modal: buildClientError(action.payload) }
     case ActionConstants.DELETE_BESTALLNING_FAILURE:
-      return { ...action.payload, modal: { header: DELETE_FAIL_MODAL_HEADER, body: DELETE_FAIL_MODAL_BODY } }
+      return { ...action.payload, modal: { title: DELETE_FAIL_MODAL_HEADER, message: DELETE_FAIL_MODAL_BODY } }
     case ActionConstants.FETCH_BESTALLNING_REQUEST:
     case ActionConstants.FETCH_BESTALLNING_SUCCESS:
     case ActionConstants.REJECT_BESTALLNING_SUCCESS:

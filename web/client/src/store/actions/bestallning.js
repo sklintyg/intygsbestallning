@@ -143,7 +143,3 @@ export const deleteBestallning = (id, fritextForklaring) => (dispatch) => {
     }
   )
 }
-
-export const displayErrorModal = (headerText, bodyText) => (dispatch) => {
-  dispatch(openModal('errorModal', headerText, bodyText))
-}

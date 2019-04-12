@@ -46,7 +46,7 @@ describe('beställning reducer', () => {
     expect(reducer(stateBefore, action)).toEqual(stateAfter)
   })
 
-  test('should contain modal header and body if delete fails', () => {
+  test('should contain modal title and message if delete fails', () => {
     const errorMessage = { message: 'ANY', errorCode: 0 }
     const action = {
       type: actions.DELETE_BESTALLNING_FAILURE,
@@ -55,7 +55,7 @@ describe('beställning reducer', () => {
     const stateAfter = {
       ...stateBefore,
       bestallning: {},
-      errorMessage: { ...errorMessage, modal: { body: DELETE_FAIL_MODAL_BODY, header: DELETE_FAIL_MODAL_HEADER } },
+      errorMessage: { ...errorMessage, modal: { message: DELETE_FAIL_MODAL_BODY, title: DELETE_FAIL_MODAL_HEADER } },
     }
     expect(reducer({}, action)).toEqual(stateAfter)
   })

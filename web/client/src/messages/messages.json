@@ -17,6 +17,10 @@
       "network_error": {
         "title": "Tekniskt fel",
         "message": "Det verkar vara problem kommunikationsproblem med tjänsten. Vänligen kontrollera din nätverkskoppling."
+      },
+      "external_error": {
+        "title": "Ett tekniskt fel uppstod",
+        "message": "Ett tekniskt fel uppstod i kontakten med avsändaren av förfrågan eller beställningen."
       }
     },
     "user": {
