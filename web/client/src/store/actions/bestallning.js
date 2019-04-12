@@ -1,7 +1,5 @@
 import * as api from '../../api/bestallningApi'
 import { isFetching } from '../reducers/bestallning'
-import { openModal, closeModal } from './modal'
-import { AvvisaBestallningId , BorttagenBestallningId, AccepteraBestallningId } from '../../components/bestallning/dialogs'
 
 export const FETCH_BESTALLNING_REQUEST = 'FETCH_BESTALLNING_REQUEST'
 export const FETCH_BESTALLNING_SUCCESS = 'FETCH_BESTALLNING_SUCCESS'
@@ -62,7 +60,6 @@ export const accepteraBestallning = (id, fritextForklaring) => (dispatch) => {
       dispatch({
         type: ACCEPTERA_BESTALLNING_SUCCESS,
       })
-      dispatch(closeModal(AccepteraBestallningId))
     },
     (errorResponse) => {
       dispatch({
@@ -85,7 +82,6 @@ export const rejectBestallning = (id, fritextForklaring) => (dispatch) => {
       dispatch({
         type: REJECT_BESTALLNING_SUCCESS,
       })
-      dispatch(closeModal(AvvisaBestallningId))
     },
     (errorResponse) => {
       dispatch({
@@ -130,11 +126,8 @@ export const deleteBestallning = (id, fritextForklaring) => (dispatch) => {
       dispatch({
         type: DELETE_BESTALLNING_SUCCESS,
       })
-      dispatch(closeModal(AvvisaBestallningId))
-      dispatch(openModal(BorttagenBestallningId))
     },
     (errorResponse) => {
-      dispatch(closeModal(AvvisaBestallningId))
       dispatch({
         type: DELETE_BESTALLNING_FAILURE,
         id,

@@ -3,20 +3,15 @@ import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 import styled from 'styled-components'
 import modalContainer from '../../modalContainer/modalContainer'
 import { compose } from 'recompose'
-import { Block } from '../../styles/IbSvgIcons'
-import IbColors from '../../styles/IbColors'
 import RadioButton from '../../radioButton'
-
-const StyledButton = styled(Button)`
-  margin-right: 16px;
-`
+import SpinnerButton from '../../spinnerButton'
 
 const Textarea = styled.textarea`
   width: 100%;
   resize: none;
 `
 
-const AvvisaBestallning = ({ handleOpen, handleClose, isOpen, accept }) => {
+const AvvisaBestallning = ({ handleClose, isOpen, accept }) => {
   const [fritextForklaring, setFritextForklaring] = useState('')
   const [avvisa, setAvvisa] = useState(undefined)
 
@@ -30,9 +25,6 @@ const AvvisaBestallning = ({ handleOpen, handleClose, isOpen, accept }) => {
 
   return (
     <Fragment>
-      <StyledButton onClick={handleOpen} color={'primary'}>
-        <Block color={IbColors.IB_COLOR_00} /> Avvisa
-      </StyledButton>
       <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
         <ModalHeader toggle={handleClose}>Avvisa</ModalHeader>
         <ModalBody>
@@ -51,14 +43,12 @@ const AvvisaBestallning = ({ handleOpen, handleClose, isOpen, accept }) => {
           <Textarea rows={5} onChange={handleTextareaChange} />
         </ModalBody>
         <ModalFooter>
-          <Button
+          <SpinnerButton
             color={'primary'}
             disabled={avvisa === undefined}
-            onClick={() => {
-              accept(fritextForklaring, avvisa)
-            }}>
+            accept={() => accept(fritextForklaring, avvisa).then(handleClose)}>
             Bekräfta
-          </Button>
+          </SpinnerButton>
           <Button
             color={'default'}
             onClick={() => {

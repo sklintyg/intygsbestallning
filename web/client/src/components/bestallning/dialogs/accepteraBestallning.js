@@ -3,19 +3,14 @@ import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 import styled from 'styled-components'
 import modalContainer from '../../modalContainer/modalContainer'
 import { compose } from 'recompose'
-import { Check } from '../../styles/IbSvgIcons'
-import IbColors from '../../styles/IbColors'
-
-const StyledButton = styled(Button)`
-  margin-right: 16px;
-`
+import SpinnerButton from '../../spinnerButton'
 
 const Textarea = styled.textarea`
   width: 100%;
   resize: none;
 `
 
-const AccepteraBestallning = ({ handleOpen, handleClose, isOpen, accept }) => {
+const AccepteraBestallning = ({ handleClose, isOpen, accept }) => {
   const [fritextForklaring, setFritextForklaring] = useState('')
 
   const handleChange = (e) => {
@@ -24,9 +19,6 @@ const AccepteraBestallning = ({ handleOpen, handleClose, isOpen, accept }) => {
 
   return (
     <Fragment>
-      <StyledButton onClick={handleOpen} color={'primary'}>
-        <Check color={IbColors.IB_COLOR_00} /> Acceptera
-      </StyledButton>
       <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
         <ModalHeader toggle={handleClose}>Acceptera</ModalHeader>
         <ModalBody>
@@ -41,13 +33,9 @@ const AccepteraBestallning = ({ handleOpen, handleClose, isOpen, accept }) => {
           <Textarea rows={5} onChange={handleChange} />
         </ModalBody>
         <ModalFooter>
-          <Button
-            color={'primary'}
-            onClick={() => {
-              accept(fritextForklaring)
-            }}>
+          <SpinnerButton color={'primary'} accept={() => accept(fritextForklaring).then(handleClose)}>
             Bekräfta
-          </Button>
+          </SpinnerButton>
           <Button
             color={'default'}
             onClick={() => {

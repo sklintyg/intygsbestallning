@@ -4,9 +4,19 @@ import { connect } from 'react-redux'
 import { Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
 import { compose } from 'recompose'
 import styled from 'styled-components'
-import { AccepteraBestallning, AvvisaBestallning, SkrivUtBestallning, BorttagenBestallning } from './dialogs'
-import { Check, Reply, Print } from '../styles/IbSvgIcons'
+import {
+  AccepteraBestallning,
+  AccepteraBestallningId,
+  AvvisaBestallning,
+  AvvisaBestallningId,
+  SkrivUtBestallning,
+  SkrivUtBestallningId,
+  BorttagenBestallning,
+  BorttagenBestallningId,
+} from './dialogs'
+import { Check, Reply, Print, Block } from '../styles/IbSvgIcons'
 import IbColors from '../styles/IbColors'
+import * as modalActions from '../../store/actions/modal'
 
 const StyledButton = styled(Button)`
   margin-right: 16px;
@@ -15,22 +25,28 @@ const StyledButtonDropdown = styled(ButtonDropdown)`
   margin-right: 16px;
 `
 
-const BestallningActionBar = ({ bestallning, accepteraBestallning, rejectBestallning, deleteBestallning, completeBestallning, goBack }) => {
+const BestallningActionBar = ({
+  bestallning,
+  accepteraBestallning,
+  rejectBestallning,
+  deleteBestallning,
+  completeBestallning,
+  goBack,
+  openModal,
+}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
   const accept = (fritextForklaring) => accepteraBestallning(bestallning.id, { fritextForklaring })
 
   const reject = (fritextForklaring, avvisa) => {
     if (avvisa === 'true') {
-      rejectBestallning(bestallning.id, { fritextForklaring })
+      return rejectBestallning(bestallning.id, { fritextForklaring })
     } else {
-      deleteBestallning(bestallning.id, { fritextForklaring })
+      return deleteBestallning(bestallning.id, { fritextForklaring }).then(openBorttagenDialog)
     }
   }
 
-  const complete = () => {
-    completeBestallning(bestallning.id, 'COMPLETED')
-  }
+  const complete = () => completeBestallning(bestallning.id, 'COMPLETED')
 
   const vidarebefodra = () => {
     //vidarebefodra(bestallning.id)
@@ -42,21 +58,36 @@ const BestallningActionBar = ({ bestallning, accepteraBestallning, rejectBestall
     setDropdownOpen(!dropdownOpen)
   }
 
+  const openAcceptDialog = () => openModal(AccepteraBestallningId)
+  const openAvvisaDialog = () => openModal(AvvisaBestallningId)
+  const openSkrivUtDialog = () => openModal(SkrivUtBestallningId)
+  const openBorttagenDialog = () => openModal(BorttagenBestallningId)
+
   return (
     <Fragment>
-      {bestallning.status === 'Läst' ? <AccepteraBestallning accept={accept} /> : null}
-      {bestallning.status === 'Läst' ? <AvvisaBestallning accept={reject} /> : null}
-      {bestallning.status === 'Accepterad' ? (
+      {bestallning.status === 'Läst' && (
+        <Fragment>
+          <StyledButton onClick={openAcceptDialog} color={'primary'}>
+            <Check color={IbColors.IB_COLOR_00} /> Acceptera
+          </StyledButton>
+          <StyledButton onClick={openAvvisaDialog} color={'primary'}>
+            <Block color={IbColors.IB_COLOR_00} /> Avvisa
+          </StyledButton>
+        </Fragment>
+      )}
+      {bestallning.status === 'Accepterad' && (
         <StyledButton onClick={complete} color={'primary'}>
           <Check color={IbColors.IB_COLOR_00} /> Klarmarkera
         </StyledButton>
-      ) : null}
+      )}
       <StyledButtonDropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
         <DropdownToggle color={'primary'} className={dropdownOpen ? 'dropdown-toggle up-icon' : 'dropdown-toggle down-icon'}>
           <Print color={IbColors.IB_COLOR_00} /> Skriv ut
         </DropdownToggle>
         <DropdownMenu right={true}>
-          <SkrivUtBestallning sekretess={bestallning.invanare.sekretessMarkering} accept={printBestallning} />
+          <DropdownItem onClick={bestallning.invanare.sekretessMarkering ? openSkrivUtDialog : printBestallning}>
+            Förfrågan/Beställning
+          </DropdownItem>
           <DropdownItem>Fakturaunderlag</DropdownItem>
         </DropdownMenu>
       </StyledButtonDropdown>
@@ -64,6 +95,9 @@ const BestallningActionBar = ({ bestallning, accepteraBestallning, rejectBestall
         <Reply color={IbColors.IB_COLOR_00} /> Vidarebefodra
       </Button>
       <BorttagenBestallning onClose={goBack} />
+      <AccepteraBestallning accept={accept} />
+      <AvvisaBestallning accept={reject} />
+      <SkrivUtBestallning sekretess={bestallning.invanare.sekretessMarkering} accept={printBestallning} />
     </Fragment>
   )
 }
@@ -71,6 +105,6 @@ const BestallningActionBar = ({ bestallning, accepteraBestallning, rejectBestall
 export default compose(
   connect(
     null,
-    actions
+    { ...actions, ...modalActions }
   )
 )(BestallningActionBar)
