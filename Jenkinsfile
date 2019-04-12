@@ -19,7 +19,7 @@ node {
     }
 
     stage('tag and upload') {
-        sh "${gradle} uploadArchives tagRelease -DbuildVersion=${buildVersion}"
+        sh "${gradle} uploadArchives -DbuildVersion=${buildVersion}"
     }
 
     stage('propagate') {
@@ -28,7 +28,7 @@ node {
         build job: "intygsbestallning-dintyg-build", wait: false, parameters: [
                 [$class: 'StringParameterValue', name: 'BUILD_VERSION', value: buildVersion],
                 [$class: 'StringParameterValue', name: 'INFRA_VERSION', value: infraVersion],
-                [$class: 'StringParameterValue', name: 'GIT_REF', value: gitRef],
+                [$class: 'StringParameterValue', name: 'GIT_REF', value: 'develop'],
                 [$class: 'StringParameterValue', name: 'RELEASE_FLAG', value: releaseFlag]
         ]
     }
