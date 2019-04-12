@@ -18,7 +18,7 @@ dependencies {
     implementation("com.querydsl:querydsl-core:${Dependencies.querydslVersion}")
     implementation("com.querydsl:querydsl-jpa:${Dependencies.querydslVersion}")
 
-    // Embedded database for development
+    runtime("mysql:mysql-connector-java")
     runtime("com.h2database:h2:${Dependencies.h2Version}")
 
     kapt("com.querydsl:querydsl-apt:${Dependencies.querydslVersion}:jpa")
