@@ -20,8 +20,8 @@ allprojects {
   version = System.getenv("buildVersion") ?: "0-SNAPSHOT"
 
   extra.apply {
-    set("intygInfraVersion", System.getenv("infraVersion") ?: "0-SNAPSHOT")
-    set("refDataVersion", System.getenv("refDataVersion") ?: "1.0-SNAPSHOT")
+    set("intygInfraVersion", System.getProperty("infraVersion", "0-SNAPSHOT"))
+    set("refDataVersion", System.getProperty("refDataVersion", "1.0-SNAPSHOT"))
     set("infraGroupId", "se.inera.intyg.infra-spring5")
   }
 
