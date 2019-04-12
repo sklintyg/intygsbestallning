@@ -126,7 +126,7 @@ data class BestallningInvanareDto(
               fornamn,
               mellannamn,
               efternamn).joinToString(separator = " ")
-         else "Namn okänt"
+         else "Sekretessmarkerade uppgifter"
       )
     }
   }
@@ -149,7 +149,7 @@ data class VisaBestallningDto(
 
       val textMap = bestallningTexter.texter.map { it.id to it.value }.toMap()
 
-      val invanareName = if (!invanareDto.sekretessMarkering) invanareDto.name.replace(" ", "\n") else "Namn okänt"
+      val invanareName = if (!invanareDto.sekretessMarkering) invanareDto.name.replace(" ", "\n") else "Sekretessmarkerade uppgifter"
 
       return VisaBestallningDto(
          id = bestallning.id!!,
