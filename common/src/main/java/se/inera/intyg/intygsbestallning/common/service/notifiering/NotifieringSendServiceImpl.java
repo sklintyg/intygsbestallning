@@ -64,8 +64,11 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
     }
 
     @Override
-    public void vidarebefordrad(Bestallning bestallning) {
-        doEmail(bestallning, NotifieringTyp.NY_BESTALLNING);
+    public String vidarebefordrad(Bestallning bestallning) {
+        var notifieringTyp = NotifieringTyp.NY_BESTALLNING;
+        var mailTexter = mailTextService.getMailContent(notifieringTyp, bestallning.getIntygTyp());
+        var mailLink = getMailLinkRedirect(bestallning.getId());
+        return notifieringMailBodyFactory.buildBodyRawText(bestallning, mailTexter, mailLink);
     }
 
     @Override

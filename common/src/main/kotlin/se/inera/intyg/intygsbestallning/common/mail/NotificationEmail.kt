@@ -14,6 +14,15 @@ data class MailContent(
    val url: String
 ) {
   companion object Template {
+    fun toText(data: MailContent): String {
+      return """
+        ${data.texter.halsning.text}
+        ${data.texter.body.text1}
+        ${data.url}
+        ${data.texter.body.text2}
+      """.trimIndent()
+    }
+
     fun toHtml(data: MailContent): String {
       return """
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

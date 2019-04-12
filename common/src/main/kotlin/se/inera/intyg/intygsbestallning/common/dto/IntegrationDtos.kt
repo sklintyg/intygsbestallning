@@ -43,6 +43,7 @@ abstract class SimpleBestallningRequest {
     abstract val fritextForklaring: String?
 }
 
+
 data class AccepteraBestallningRequest(
         override val bestallningId: String,
         override val hsaId: String,
@@ -71,4 +72,10 @@ data class KlarmarkeraBestallningRequest(
     val bestallningId: String,
     val hsaId: String,
     val orgNrVardgivare: String
+)
+
+data class VidareBefordraBestallningRequest(
+   val bestallningId: String,
+   val hsaId: String,
+   val orgNrVardgivare: String
 )

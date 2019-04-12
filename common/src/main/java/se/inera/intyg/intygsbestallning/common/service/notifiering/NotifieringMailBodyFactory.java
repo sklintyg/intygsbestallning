@@ -27,7 +27,7 @@ import se.inera.intyg.intygsbestallning.common.property.MailProperties;
 import se.inera.intyg.intygsbestallning.common.text.mail.MailTexter;
 
 @Component
-public class NotifieringMailBodyFactory implements MailBodyFactory {
+public class NotifieringMailBodyFactory {
 
     private MailProperties mailProperties;
 
@@ -38,6 +38,11 @@ public class NotifieringMailBodyFactory implements MailBodyFactory {
     public String buildBody(Bestallning bestallning, MailTexter texter, String url) {
         enrichInkomstDatum(bestallning, texter);
         return MailContent.Template.toHtml(new MailContent(mailProperties.host, texter, url));
+    }
+
+    public String buildBodyRawText(Bestallning bestallning, MailTexter texter, String url) {
+        enrichInkomstDatum(bestallning, texter);
+        return MailContent.Template.toText(new MailContent(mailProperties.host, texter, url));
     }
 
     private void enrichInkomstDatum(Bestallning bestallning, MailTexter mailTexter) {

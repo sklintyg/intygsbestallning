@@ -21,8 +21,9 @@ public interface NotifieringSendService {
      * Note: notification is sent to the vardenhet receiving the forwarded intygsbestallning.
      *
      * @param bestallning
+     * @return
      */
-    void vidarebefordrad(Bestallning bestallning);
+    String vidarebefordrad(Bestallning bestallning);
 
     void paminnelse(Bestallning bestallning, NotifieringTyp typ);
 }

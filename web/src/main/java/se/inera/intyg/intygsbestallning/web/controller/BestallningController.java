@@ -1,7 +1,5 @@
 package se.inera.intyg.intygsbestallning.web.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +17,8 @@ import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningSortColumn;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.RaderaBestallningRequest;
+import se.inera.intyg.intygsbestallning.common.dto.VidareBefordraBestallningRequest;
+import se.inera.intyg.intygsbestallning.common.service.notifiering.NotifieringSendService;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
 import se.inera.intyg.intygsbestallning.web.bestallning.AccepteraBestallning;
 import se.inera.intyg.intygsbestallning.web.bestallning.AvvisaBestallning;
@@ -29,6 +29,7 @@ import se.inera.intyg.intygsbestallning.web.service.bestallning.AvvisaBestallnin
 import se.inera.intyg.intygsbestallning.web.service.bestallning.KlarmarkeraBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.ListBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.RaderaBestallningService;
+import se.inera.intyg.intygsbestallning.web.service.bestallning.VidarebefordraBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.VisaBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.user.UserService;
 
@@ -42,10 +43,8 @@ public class BestallningController {
     private AvvisaBestallningService avvisaBestallningService;
     private RaderaBestallningService raderaBestallningService;
     private KlarmarkeraBestallningService klarmarkeraBestallningService;
+    private VidarebefordraBestallningService vidarebefordraBestallningService;
     private UserService userService;
-
-    @Autowired
-    ObjectMapper customObjectMapper;
 
     public BestallningController(
             AccepteraBestallningService accepteraBestallningService,
@@ -54,6 +53,7 @@ public class BestallningController {
             AvvisaBestallningService avvisaBestallningService,
             RaderaBestallningService raderaBestallningService,
             KlarmarkeraBestallningService klarmarkeraBestallningService,
+            VidarebefordraBestallningService vidarebefordraBestallningService,
             UserService userService) {
         this.accepteraBestallningService = accepteraBestallningService;
         this.listBestallningService = listBestallningService;
@@ -61,6 +61,7 @@ public class BestallningController {
         this.avvisaBestallningService = avvisaBestallningService;
         this.raderaBestallningService = raderaBestallningService;
         this.klarmarkeraBestallningService = klarmarkeraBestallningService;
+        this.vidarebefordraBestallningService = vidarebefordraBestallningService;
         this.userService = userService;
     }
 
@@ -110,7 +111,6 @@ public class BestallningController {
         return ResponseEntity.ok(result);
     }
 
-
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity visaBestallning(@PathVariable String id) {
 
@@ -131,6 +131,23 @@ public class BestallningController {
             return ResponseEntity.ok(aktuellBestallning);
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping(path = "/{id}/vidarebefordraMail")
+    public ResponseEntity getvidarebefordraMail(@PathVariable String id) {
+        var user = userService.getUser();
+        var hsaId = user.getUnitContext().getId();
+        var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
+
+
+        var text = vidarebefordraBestallningService.getVidareBefordraMailBody(
+                new VidareBefordraBestallningRequest(id, hsaId, orgNrVardgivare));
+
+        if (text.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(text.get());
         }
     }
 
