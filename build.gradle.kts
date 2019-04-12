@@ -112,6 +112,4 @@ dependencies {
   subprojects.forEach { archives(it) }
 }
 
-tasks.register<TagReleaseTask>("tagRelease") {
-
-}
+tasks.register<TagReleaseTask>("tagRelease") 
