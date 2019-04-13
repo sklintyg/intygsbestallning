@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.apache.cxf.Bus;
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import se.inera.intyg.infra.security.filter.PrincipalUpdatedFilter;
 import se.inera.intyg.infra.security.filter.SessionTimeoutFilter;
@@ -26,8 +27,6 @@ import se.inera.intyg.intygsbestallning.web.controller.LocalDateTimeSerializer;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning;
 import se.inera.intyg.intygsbestallning.web.service.user.UserService;
 
-import java.time.LocalDateTime;
-import java.util.List;
 
 import static se.inera.intyg.intygsbestallning.web.controller.SessionStatController.SESSION_STATUS_CHECK_URI;
 import static se.inera.intyg.intygsbestallning.web.controller.UserController.API_ANVANDARE;
@@ -80,15 +79,6 @@ public class WebConfig implements WebMvcConfigurer {
         EndpointImpl endpoint = new EndpointImpl(bus, orderAssessment);
         endpoint.publish("/order-assessment-responder");
         return endpoint;
-    }
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-
-        var path = bestallningProperties.getImageResourcePath();
-
-        registry.addResourceHandler("/images/**")
-                .addResourceLocations(path);
     }
 
     @Bean
