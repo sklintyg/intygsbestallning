@@ -37,17 +37,16 @@ const Alert = styled.div`
   display: inline-block;
   svg {
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: 2px;
     width: 16px;
   }
   > div {
-    margin-left: 30px;
+    margin-left: 20px;
   }
-  padding: 16px 8px;
+  padding: 4px 8px;
 `
 
-const IbAlert = ({type, children}) => {
+const IbAlert = ({type, children, className}) => {
   function getIcon(type) {
     switch (type) {
     case alertType.INFO:
@@ -66,7 +65,7 @@ const IbAlert = ({type, children}) => {
   }
 
   return (
-    <Alert type={type}>
+    <Alert type={type} className={className}>
       {getIcon(type)}
       <div>{children}</div>
     </Alert>

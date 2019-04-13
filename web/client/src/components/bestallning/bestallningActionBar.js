@@ -21,9 +21,6 @@ import * as modalActions from '../../store/actions/modal'
 const StyledButton = styled(Button)`
   margin-right: 16px;
 `
-const StyledButtonDropdown = styled(ButtonDropdown)`
-  margin-right: 16px;
-`
 
 const BestallningActionBar = ({
   bestallning,
@@ -80,7 +77,10 @@ const BestallningActionBar = ({
           <Check color={IbColors.IB_COLOR_00} /> Klarmarkera
         </StyledButton>
       )}
-      <StyledButtonDropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
+      <StyledButton onClick={vidarebefodra} color={'primary'}>
+        <Reply color={IbColors.IB_COLOR_00} /> Vidarebefodra
+      </StyledButton>
+      <ButtonDropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
         <DropdownToggle color={'primary'} className={dropdownOpen ? 'dropdown-toggle up-icon' : 'dropdown-toggle down-icon'}>
           <Print color={IbColors.IB_COLOR_00} /> Skriv ut
         </DropdownToggle>
@@ -90,10 +90,7 @@ const BestallningActionBar = ({
           </DropdownItem>
           <DropdownItem>Fakturaunderlag</DropdownItem>
         </DropdownMenu>
-      </StyledButtonDropdown>
-      <Button onClick={vidarebefodra} color={'primary'}>
-        <Reply color={IbColors.IB_COLOR_00} /> Vidarebefodra
-      </Button>
+      </ButtonDropdown>
       <BorttagenBestallning onClose={goBack} />
       <AccepteraBestallning accept={accept} />
       <AvvisaBestallning accept={reject} />

@@ -83,12 +83,12 @@ const BestallningHeader = ({ props }) => {
             Avser {props.bestallning.intygTyp}
           </IbTypo09>
           <IconSpan as="span" color={IbColors.IB_COLOR_07}>
-            <EventAvailableIcon />
-            Inkom {props.bestallning.ankomstDatum}
-          </IconSpan>
-          <IconSpan as="span" color={IbColors.IB_COLOR_07}>
             {getStatusIcon()}
             Status {props.bestallning.status}
+          </IconSpan>
+          <IconSpan as="span" color={IbColors.IB_COLOR_07}>
+            <EventAvailableIcon />
+            Inkom {props.bestallning.ankomstDatum}
           </IconSpan>
         </div>
         <ButtonRow>
