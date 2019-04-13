@@ -80,6 +80,6 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
     }
 
     private String getBildUrl(BestallningTexter bestallningTexter) {
-        return bestallningProperties.getHost() + "/images/" + bestallningTexter.getBild();
+        return "/images/" + bestallningTexter.getBild();
     }
 }
