@@ -77,7 +77,7 @@ class VisaBestallningServiceImplTest {
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.registerModule(new KotlinModule());
         bestallningTexter = xmlMapper.readValue(
-                new ClassPathResource("/VisaBestallningServiceImplTest/TEST_BESTALLNING_TEXT.xml").getFile(),
+                new ClassPathResource("/TEST_BESTALLNING_TEXT.xml").getFile(),
                 BestallningTexter.class);
     }
 

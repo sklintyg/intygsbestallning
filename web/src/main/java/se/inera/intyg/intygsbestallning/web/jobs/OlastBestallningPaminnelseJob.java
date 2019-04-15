@@ -3,10 +3,12 @@ package se.inera.intyg.intygsbestallning.web.jobs;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.Lists;
 import net.javacrumbs.shedlock.core.SchedulerLock;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -59,7 +61,7 @@ public class OlastBestallningPaminnelseJob {
         pb.and(qe.status.eq(BestallningStatus.OLAST));
 
         var bestallningList = bestallningPersistenceService.listBestallningarBasedOnStatus(
-                new ListBestallningarBasedOnStatusQuery(List.of(BestallningStatus.OLAST)));
+                new ListBestallningarBasedOnStatusQuery(Lists.newArrayList(BestallningStatus.OLAST)));
 
         var filteredFirstReminderList = bestallningList.stream()
                 .filter(paminnelse1Filter())
