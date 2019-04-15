@@ -16,7 +16,9 @@ import se.inera.intyg.intygsbestallning.common.dto.KlarmarkeraBestallningRequest
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningSortColumn;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
+import se.inera.intyg.intygsbestallning.common.dto.PdfBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.dto.RaderaBestallningRequest;
+import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningScope;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
 import se.inera.intyg.intygsbestallning.web.bestallning.AccepteraBestallning;
 import se.inera.intyg.intygsbestallning.web.bestallning.AvvisaBestallning;
@@ -26,10 +28,13 @@ import se.inera.intyg.intygsbestallning.web.service.bestallning.AccepteraBestall
 import se.inera.intyg.intygsbestallning.web.service.bestallning.AvvisaBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.KlarmarkeraBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.ListBestallningService;
+import se.inera.intyg.intygsbestallning.web.service.bestallning.PdfBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.RaderaBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.VidarebefordraBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.VisaBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.user.UserService;
+
+import javax.ws.rs.Produces;
 
 @RestController
 @RequestMapping("/api/bestallningar")
@@ -41,6 +46,7 @@ public class BestallningController {
     private AvvisaBestallningService avvisaBestallningService;
     private RaderaBestallningService raderaBestallningService;
     private KlarmarkeraBestallningService klarmarkeraBestallningService;
+    private PdfBestallningService pdfBestallningService;
     private UserService userService;
 
     public BestallningController(
@@ -50,6 +56,7 @@ public class BestallningController {
             AvvisaBestallningService avvisaBestallningService,
             RaderaBestallningService raderaBestallningService,
             KlarmarkeraBestallningService klarmarkeraBestallningService,
+            PdfBestallningService pdfBestallningService,
             UserService userService) {
         this.accepteraBestallningService = accepteraBestallningService;
         this.listBestallningService = listBestallningService;
@@ -57,6 +64,7 @@ public class BestallningController {
         this.avvisaBestallningService = avvisaBestallningService;
         this.raderaBestallningService = raderaBestallningService;
         this.klarmarkeraBestallningService = klarmarkeraBestallningService;
+        this.pdfBestallningService = pdfBestallningService;
         this.userService = userService;
     }
 
@@ -182,5 +190,18 @@ public class BestallningController {
                 hsaId,
                 orgNrVardgivare));
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/{id}/pdfForfragan", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity pdfBestallning(@PathVariable String id) {
+        var user = userService.getUser();
+        var hsaId = user.getUnitContext().getId();
+        var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
+        byte[] pdf = pdfBestallningService.pdf(new PdfBestallningRequest(
+                id,
+                hsaId,
+                orgNrVardgivare,
+                VisaBestallningScope.FORFRAGAN));
+        return ResponseEntity.ok(pdf);
     }
 }

@@ -132,6 +132,10 @@ data class BestallningInvanareDto(
   }
 }
 
+enum class VisaBestallningScope{
+    ALL, FORFRAGAN, FAKTURERINGSUNDERLAG
+}
+
 data class VisaBestallningDto(
    val id: Long,
    val status: String,
@@ -147,11 +151,15 @@ data class VisaBestallningDto(
        invanareDto: BestallningInvanareDto,
        bild: String,
        metaData: List<BestallningMetaData>,
-       bestallningTexter: BestallningTexter): VisaBestallningDto {
+       bestallningTexter: BestallningTexter,
+       scope: VisaBestallningScope): VisaBestallningDto {
 
       val textMap = bestallningTexter.texter.map { it.id to it.value }.toMap()
 
       val invanareName = if (!invanareDto.sekretessMarkering) invanareDto.name.replace(" ", "\n") else "Namn Okänt"
+
+      val isForfragan: (Fraga) -> Boolean = { scope == VisaBestallningScope.ALL || scope == VisaBestallningScope.FORFRAGAN }
+      val isFaktureringsunderlag: (Fraga) -> Boolean = { scope == VisaBestallningScope.ALL || scope == VisaBestallningScope.FAKTURERINGSUNDERLAG }
 
       return VisaBestallningDto(
          id = bestallning.id!!,
@@ -160,27 +168,27 @@ data class VisaBestallningDto(
          intygTyp = bestallning.intygTyp,
          invanare = invanareDto,
          metaData = metaData,
-         fragor = listOf(
+         fragor = listOfNotNull(
             Fraga(
                rubrik = textMap.getValue(RBK_1),
                delfragor = listOf(
                   Delfraga(etikett = textMap.getValue(ETK_1_1), bild = bild),
                   Delfraga(etikett = textMap.getValue(ETK_1_2), text = textMap.getValue(TEXT_1_2_1)),
                   Delfraga(etikett = textMap.getValue(ETK_1_3), text = textMap.getValue(TEXT_1_3_1)))
-            ),
+            ).takeIf(isForfragan),
             Fraga(
                rubrik = textMap.getValue(RBK_2),
                delfragor = listOf(
                   Delfraga(etikett = textMap.getValue(ETK_2_1), svar = bestallning.invanare.personId.personnummerWithDash),
                   Delfraga(etikett = textMap.getValue(ETK_2_2), svar = invanareName))
-            ),
+            ).takeIf(isForfragan),
             Fraga(
                rubrik = textMap.getValue(RBK_3),
                delfragor = listOf(
                   Delfraga(etikett = textMap.getValue(ETK_3_1), svar = bestallning.syfte),
                   Delfraga(etikett = textMap.getValue(ETK_3_2), svar = bestallning.invanare.bakgrundNulage),
                   Delfraga(etikett = textMap.getValue(ETK_3_3), svar = bestallning.planeradeAktiviteter))
-            ),
+            ).takeIf(isForfragan),
             Fraga(
                rubrik = textMap.getValue(RBK_4),
                delfragor = listOf(
@@ -192,7 +200,7 @@ data class VisaBestallningDto(
                      bestallning.handlaggare.kontor,
                      bestallning.handlaggare.adress).joinToString(separator = "\n"))
                )
-            ),
+            ).takeIf(isForfragan),
             Fraga(
                rubrik = textMap.getValue(RBK_5),
                delfragor = listOf(
@@ -201,7 +209,7 @@ data class VisaBestallningDto(
                   Delfraga(etikett = textMap.getValue(ETK_5_3), svar = bestallning.handlaggare.kostnadsstalle),
                   Delfraga(etikett = textMap.getValue(ETK_5_4), text = textMap.getValue(TEXT_5_4_1)),
                   Delfraga(etikett = textMap.getValue(ETK_5_5), text = textMap.getValue(TEXT_5_5_1)))
-            )
+            ).takeIf(isFaktureringsunderlag)
          )
       )
     }

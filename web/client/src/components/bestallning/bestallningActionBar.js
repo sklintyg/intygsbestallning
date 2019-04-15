@@ -49,7 +49,10 @@ const BestallningActionBar = ({
     window.location.href = `mailto:?subject=Vidarebefordrad beställning&body=${bestallning.metaData.filter(metaData => metaData.typ === 'MAIL_VIDAREBEFORDRA')[0].text}`;
   }
 
-  const printBestallning = () => {}
+  const printBestallning = () => {
+    window.open('/api/bestallningar/' + bestallning.id + '/pdf', '_blank')
+    return Promise.resolve();
+  }
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen)

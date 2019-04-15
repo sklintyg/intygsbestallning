@@ -35,6 +35,7 @@ dependencies {
 
   implementation("net.javacrumbs.shedlock:shedlock-spring:1.3.0")
 
+  implementation("com.itextpdf:itext7-core:7.1.5")
 
   //api documentation
   implementation("io.springfox:springfox-swagger2:2.9.2")

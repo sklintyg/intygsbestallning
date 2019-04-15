@@ -79,3 +79,10 @@ data class VidareBefordraBestallningRequest(
    val hsaId: String,
    val orgNrVardgivare: String
 )
+
+data class PdfBestallningRequest(
+        val bestallningId: String,
+        val hsaId: String,
+        val orgNrVardgivare: String,
+        val scope: VisaBestallningScope
+)

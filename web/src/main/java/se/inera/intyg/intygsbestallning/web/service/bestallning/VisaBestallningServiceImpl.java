@@ -11,6 +11,7 @@ import se.inera.intyg.intygsbestallning.common.domain.Handelse;
 import se.inera.intyg.intygsbestallning.common.dto.BestallningInvanareDto;
 import se.inera.intyg.intygsbestallning.common.dto.BestallningMetaData;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningDto;
+import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningScope;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTextService;
 import se.inera.intyg.intygsbestallning.common.service.notifiering.NotifieringSendService;
@@ -87,7 +88,8 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
                 invanareDto,
                 getBildUrl(bestallningTexter),
                 metaDataList,
-                bestallningTexter));
+                bestallningTexter,
+                VisaBestallningScope.ALL));
     }
 
     private String getBildUrl(BestallningTexter bestallningTexter) {
