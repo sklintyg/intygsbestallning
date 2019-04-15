@@ -192,8 +192,8 @@ public class BestallningController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/{id}/pdfForfragan", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity pdfBestallning(@PathVariable String id) {
+    @GetMapping(value = "/{id}/pdf/forfragan", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity pdfForfragan(@PathVariable String id) {
         var user = userService.getUser();
         var hsaId = user.getUnitContext().getId();
         var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
@@ -202,6 +202,19 @@ public class BestallningController {
                 hsaId,
                 orgNrVardgivare,
                 VisaBestallningScope.FORFRAGAN));
+        return ResponseEntity.ok(pdf);
+    }
+
+    @GetMapping(value = "/{id}/pdf/faktureringsunderlag", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity pdfFaktureringsunderlag(@PathVariable String id) {
+        var user = userService.getUser();
+        var hsaId = user.getUnitContext().getId();
+        var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
+        byte[] pdf = pdfBestallningService.pdf(new PdfBestallningRequest(
+                id,
+                hsaId,
+                orgNrVardgivare,
+                VisaBestallningScope.FAKTURERINGSUNDERLAG));
         return ResponseEntity.ok(pdf);
     }
 }

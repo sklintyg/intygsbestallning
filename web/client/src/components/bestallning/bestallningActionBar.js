@@ -49,8 +49,8 @@ const BestallningActionBar = ({
     window.location.href = `mailto:?subject=Vidarebefordrad beställning&body=${bestallning.metaData.filter(metaData => metaData.typ === 'MAIL_VIDAREBEFORDRA')[0].text}`;
   }
 
-  const printBestallning = () => {
-    window.open('/api/bestallningar/' + bestallning.id + '/pdf', '_blank')
+  const printBestallning = (type) => {
+    window.open('/api/bestallningar/' + bestallning.id + '/pdf/' + type, '_blank')
     return Promise.resolve();
   }
 
@@ -88,16 +88,16 @@ const BestallningActionBar = ({
           <Print color={IbColors.IB_COLOR_00} /> Skriv ut
         </DropdownToggle>
         <DropdownMenu right={true}>
-          <DropdownItem onClick={bestallning.invanare.sekretessMarkering ? openSkrivUtDialog : printBestallning}>
+          <DropdownItem onClick={bestallning.invanare.sekretessMarkering ? openSkrivUtDialog : () => printBestallning('forfragan')}>
             Förfrågan/Beställning
           </DropdownItem>
-          <DropdownItem>Fakturaunderlag</DropdownItem>
+          <DropdownItem onClick={() => printBestallning('faktureringsunderlag')}>Fakturaunderlag</DropdownItem>
         </DropdownMenu>
       </ButtonDropdown>
       <BorttagenBestallning onClose={goBack} />
       <AccepteraBestallning accept={accept} />
       <AvvisaBestallning accept={reject} />
-      <SkrivUtBestallning sekretess={bestallning.invanare.sekretessMarkering} accept={printBestallning} />
+      <SkrivUtBestallning sekretess={bestallning.invanare.sekretessMarkering} accept={() => printBestallning('forfragan')} />
     </Fragment>
   )
 }
