@@ -138,6 +138,7 @@ data class VisaBestallningDto(
    val ankomstDatum: LocalDate,
    val intygTyp: String,
    val invanare: BestallningInvanareDto,
+   val metaData: List<BestallningMetaData>,
    val fragor: List<Fraga>
 ) {
   companion object Factory {
@@ -145,11 +146,12 @@ data class VisaBestallningDto(
        bestallning: Bestallning,
        invanareDto: BestallningInvanareDto,
        bild: String,
+       metaData: List<BestallningMetaData>,
        bestallningTexter: BestallningTexter): VisaBestallningDto {
 
       val textMap = bestallningTexter.texter.map { it.id to it.value }.toMap()
 
-      val invanareName = if (!invanareDto.sekretessMarkering) invanareDto.name.replace(" ", "\n") else "Sekretessmarkerade uppgifter"
+      val invanareName = if (!invanareDto.sekretessMarkering) invanareDto.name.replace(" ", "\n") else "Namn Okänt"
 
       return VisaBestallningDto(
          id = bestallning.id!!,
@@ -157,6 +159,7 @@ data class VisaBestallningDto(
          ankomstDatum = bestallning.ankomstDatum.toLocalDate(),
          intygTyp = bestallning.intygTyp,
          invanare = invanareDto,
+         metaData = metaData,
          fragor = listOf(
             Fraga(
                rubrik = textMap.getValue(RBK_1),
@@ -216,6 +219,12 @@ data class Delfraga(
    val bild: String? = null,
    val svar: String? = null
 )
+
+enum class BestallningMetadataTyp {
+  MAIL_VIDAREBEFORDRA
+}
+
+data class BestallningMetaData(val typ: BestallningMetadataTyp, val text: String)
 
 
 //Forfragan

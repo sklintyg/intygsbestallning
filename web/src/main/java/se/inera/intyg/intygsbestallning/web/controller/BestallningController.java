@@ -17,8 +17,6 @@ import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningSortColumn;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.RaderaBestallningRequest;
-import se.inera.intyg.intygsbestallning.common.dto.VidareBefordraBestallningRequest;
-import se.inera.intyg.intygsbestallning.common.service.notifiering.NotifieringSendService;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
 import se.inera.intyg.intygsbestallning.web.bestallning.AccepteraBestallning;
 import se.inera.intyg.intygsbestallning.web.bestallning.AvvisaBestallning;
@@ -43,7 +41,6 @@ public class BestallningController {
     private AvvisaBestallningService avvisaBestallningService;
     private RaderaBestallningService raderaBestallningService;
     private KlarmarkeraBestallningService klarmarkeraBestallningService;
-    private VidarebefordraBestallningService vidarebefordraBestallningService;
     private UserService userService;
 
     public BestallningController(
@@ -53,7 +50,6 @@ public class BestallningController {
             AvvisaBestallningService avvisaBestallningService,
             RaderaBestallningService raderaBestallningService,
             KlarmarkeraBestallningService klarmarkeraBestallningService,
-            VidarebefordraBestallningService vidarebefordraBestallningService,
             UserService userService) {
         this.accepteraBestallningService = accepteraBestallningService;
         this.listBestallningService = listBestallningService;
@@ -61,7 +57,6 @@ public class BestallningController {
         this.avvisaBestallningService = avvisaBestallningService;
         this.raderaBestallningService = raderaBestallningService;
         this.klarmarkeraBestallningService = klarmarkeraBestallningService;
-        this.vidarebefordraBestallningService = vidarebefordraBestallningService;
         this.userService = userService;
     }
 
@@ -131,23 +126,6 @@ public class BestallningController {
             return ResponseEntity.ok(aktuellBestallning);
         } else {
             return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping(path = "/{id}/vidarebefordraMail")
-    public ResponseEntity getvidarebefordraMail(@PathVariable String id) {
-        var user = userService.getUser();
-        var hsaId = user.getUnitContext().getId();
-        var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
-
-
-        var text = vidarebefordraBestallningService.getVidareBefordraMailBody(
-                new VidareBefordraBestallningRequest(id, hsaId, orgNrVardgivare));
-
-        if (text.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(text.get());
         }
     }
 

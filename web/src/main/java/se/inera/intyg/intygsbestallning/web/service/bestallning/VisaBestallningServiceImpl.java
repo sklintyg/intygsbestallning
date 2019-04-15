@@ -1,14 +1,19 @@
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
+import static se.inera.intyg.intygsbestallning.common.dto.BestallningMetadataTyp.MAIL_VIDAREBEFORDRA;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 import java.util.Optional;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.Handelse;
 import se.inera.intyg.intygsbestallning.common.dto.BestallningInvanareDto;
+import se.inera.intyg.intygsbestallning.common.dto.BestallningMetaData;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningDto;
-import se.inera.intyg.intygsbestallning.common.property.BestallningProperties;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTextService;
+import se.inera.intyg.intygsbestallning.common.service.notifiering.NotifieringSendService;
 import se.inera.intyg.intygsbestallning.common.text.bestallning.BestallningTexter;
 import se.inera.intyg.intygsbestallning.integration.pu.PatientService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
@@ -16,13 +21,14 @@ import se.inera.intyg.intygsbestallning.web.pdl.LogEvent;
 import se.inera.intyg.intygsbestallning.web.service.pdl.LogService;
 
 @Service
+@Transactional
 public class VisaBestallningServiceImpl implements VisaBestallningService {
 
     private BestallningPersistenceService bestallningPersistenceService;
     private BestallningStatusResolver bestallningStatusResolver;
     private BestallningTextService bestallningTextService;
     private PatientService patientService;
-    private BestallningProperties bestallningProperties;
+    private NotifieringSendService notifieringSendService;
     private LogService pdlLogService;
 
     public VisaBestallningServiceImpl(
@@ -30,13 +36,13 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
             BestallningStatusResolver bestallningStatusResolver,
             BestallningTextService bestallningTextService,
             PatientService patientService,
-            BestallningProperties bestallningProperties,
+            NotifieringSendService notifieringSendService,
             LogService pdlLogService) {
         this.bestallningPersistenceService = bestallningPersistenceService;
         this.bestallningStatusResolver = bestallningStatusResolver;
         this.bestallningTextService = bestallningTextService;
         this.patientService = patientService;
-        this.bestallningProperties = bestallningProperties;
+        this.notifieringSendService = notifieringSendService;
         this.pdlLogService = pdlLogService;
     }
 
@@ -72,10 +78,15 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
                 personSvar.get().getEfternamn(),
                 personSvar.get().isSekretessmarkering());
 
+        var metaDataList = List.of(
+                new BestallningMetaData(MAIL_VIDAREBEFORDRA, notifieringSendService.vidarebefordrad(bestallning.get()))
+        );
+
         return Optional.of(VisaBestallningDto.Factory.toDto(
                 bestallning.get(),
                 invanareDto,
                 getBildUrl(bestallningTexter),
+                metaDataList,
                 bestallningTexter));
     }
 

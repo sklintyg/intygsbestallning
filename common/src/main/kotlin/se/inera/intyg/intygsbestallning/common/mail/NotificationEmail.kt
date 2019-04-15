@@ -20,7 +20,7 @@ data class MailContent(
         ${data.texter.body.text1}
         ${data.url}
         ${data.texter.body.text2}
-      """.trimIndent()
+      """.trimIndent().trim()
     }
 
     fun toHtml(data: MailContent): String {

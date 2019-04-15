@@ -33,6 +33,7 @@ import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
 import se.inera.intyg.intygsbestallning.common.property.BestallningProperties;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTextService;
+import se.inera.intyg.intygsbestallning.common.service.notifiering.NotifieringSendService;
 import se.inera.intyg.intygsbestallning.common.text.bestallning.BestallningTexter;
 import se.inera.intyg.intygsbestallning.integration.pu.PatientService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
@@ -69,6 +70,9 @@ class VisaBestallningServiceImplTest {
     @Mock
     private BestallningProperties bestallningProperties;
 
+    @Mock
+    private NotifieringSendService notifieringSendService;
+
     @InjectMocks
     private VisaBestallningServiceImpl visaBestallningService;
 
@@ -90,6 +94,7 @@ class VisaBestallningServiceImplTest {
         ReflectionUtils.setField(BestallningProperties.class.getField("host"), bestallningProperties, "host-url");
         when(bestallningTextService.getBestallningTexter(any(Bestallning.class))).thenReturn(bestallningTexter);
         when(patientService.lookupPersonnummerFromPU(any(Personnummer.class))).thenReturn(Optional.of(person));
+        when(notifieringSendService.vidarebefordrad(any(Bestallning.class))).thenReturn("bra mail-text");
     }
 
     @Test
