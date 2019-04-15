@@ -19,7 +19,7 @@ object Config {
     //External dependencies
     const val nodePluginVersion = "1.2.0"
 
-    const val kotlinVersion = "1.3.21"
+    const val kotlinVersion = "1.3.30"
     const val springVersion = "5.1.6.RELEASE"
     const val springBootVersion = "2.1.4.RELEASE"
     const val springDependencyManagementVersion = "1.0.7.RELEASE"
