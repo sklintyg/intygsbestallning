@@ -37,6 +37,7 @@ import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarBasedOnStatu
 import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTextService;
 import se.inera.intyg.intygsbestallning.common.service.notifiering.NotifieringSendService;
 import se.inera.intyg.intygsbestallning.common.text.bestallning.BestallningTexter;
+import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
 import se.inera.intyg.schemas.contract.Personnummer;
 
@@ -74,45 +75,57 @@ class OlastBestallningPaminnelseJobTest {
 
     @Test
     void testOlastBestallingPaminnelse1SentCorrectly() {
+
+        var bestallning = buildBestallning(8L, false);
+
+        when(bestallningPersistenceService.updateBestallning(any(Bestallning.class))).thenReturn(bestallning.get(0));
         when(bestallningPersistenceService.listBestallningarBasedOnStatus(any(ListBestallningarBasedOnStatusQuery.class)))
                 .thenReturn(buildBestallning(8L, false));
 
         job.checkBestallningar();
 
         verify(bestallningPersistenceService, times(1)).listBestallningarBasedOnStatus(any(ListBestallningarBasedOnStatusQuery.class));
-        verify(bestallningPersistenceService, times(1)).updateBestallning(any(Bestallning.class));
+        verify(bestallningPersistenceService, times(2)).updateBestallning(any(Bestallning.class));
         verify(notifieringSendService, times(1)).paminnelse(any(Bestallning.class), eq(NotifieringTyp.NY_BESTALLNING_PAMINNELSE_1));
     }
 
     @Test
     void testOlastBestallingPaminnelse2SentCorrectly() {
+
+        var bestallning = buildBestallning(15L, true);
+
+        when(bestallningPersistenceService.updateBestallning(any(Bestallning.class))).thenReturn(bestallning.get(0));
         when(bestallningPersistenceService.listBestallningarBasedOnStatus(any(ListBestallningarBasedOnStatusQuery.class)))
-                .thenReturn(buildBestallning(15L, true));
+                .thenReturn(bestallning);
 
         job.checkBestallningar();
 
         verify(bestallningPersistenceService, times(1)).listBestallningarBasedOnStatus(any(ListBestallningarBasedOnStatusQuery.class));
-        verify(bestallningPersistenceService, times(1)).updateBestallning(any(Bestallning.class));
+        verify(bestallningPersistenceService, times(2)).updateBestallning(any(Bestallning.class));
         verify(notifieringSendService, times(1)).paminnelse(any(Bestallning.class), eq(NotifieringTyp.NY_BESTALLNING_PAMINNELSE_2));
     }
 
     @Test
     void testOnlyPaminnelse1SentAfterTwoWeeksSinceNoPriorPaminnelseSent() {
+        var bestallning = buildBestallning(15L, false);
+        when(bestallningPersistenceService.updateBestallning(any(Bestallning.class))).thenReturn(bestallning.get(0));
         when(bestallningPersistenceService.listBestallningarBasedOnStatus(any(ListBestallningarBasedOnStatusQuery.class)))
-                .thenReturn(buildBestallning(15L, false));
+                .thenReturn(bestallning);
 
         job.checkBestallningar();
 
         verify(bestallningPersistenceService, times(1)).listBestallningarBasedOnStatus(any(ListBestallningarBasedOnStatusQuery.class));
-        verify(bestallningPersistenceService, times(1)).updateBestallning(any(Bestallning.class));
+        verify(bestallningPersistenceService, times(2)).updateBestallning(any(Bestallning.class));
         verify(notifieringSendService, times(1)).paminnelse(any(Bestallning.class), eq(NotifieringTyp.NY_BESTALLNING_PAMINNELSE_1));
         verify(notifieringSendService, times(0)).paminnelse(any(Bestallning.class), eq(NotifieringTyp.NY_BESTALLNING_PAMINNELSE_2));
     }
 
     @Test
     void testBorderValuesForPaminnelse1() {
+        var bestallning = buildBestallning(7L, false);
+
         when(bestallningPersistenceService.listBestallningarBasedOnStatus(any(ListBestallningarBasedOnStatusQuery.class)))
-                .thenReturn(buildBestallning(7L, false));
+                .thenReturn(bestallning);
 
         job.checkBestallningar();
 
@@ -123,8 +136,11 @@ class OlastBestallningPaminnelseJobTest {
 
     @Test
     void testBorderValuesForPaminnelse2() {
+
+        var bestallning = buildBestallning(14L, true);
+
         when(bestallningPersistenceService.listBestallningarBasedOnStatus(any(ListBestallningarBasedOnStatusQuery.class)))
-                .thenReturn(buildBestallning(14L, true));
+                .thenReturn(bestallning);
 
         job.checkBestallningar();
 
@@ -141,7 +157,7 @@ class OlastBestallningPaminnelseJobTest {
 
         return Lists.newArrayList(new Bestallning(1L, "intygTyp", 1.0, LocalDate.now().atStartOfDay().minusDays(daysAgo), LocalDateTime.now().plusDays(1L),
                 "syfte", "planeradeAktiviteter", BestallningStatus.OLAST,
-                Invanare.Factory.newInvanare(Personnummer.createPersonnummer("191212121212").get(), "Tolvan", "Middle", "Tolvansson", "", false),
+                Invanare.Factory.newInvanare(Personnummer.createPersonnummer("191212121212").get(), ""),
                 Handlaggare.Factory.newHandlaggare("", "", "", "", "", "", "", "", ""),
                 Vardenhet.Factory.newVardenhet("hsaId", "vardgivareHsaId", "orgNr", "vardenhet", "a@b.c", "Hej"),
                 "ärendeReferens",
