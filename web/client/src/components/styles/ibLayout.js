@@ -13,7 +13,6 @@ export const FlexColumnContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  
 `
 
 export const PageHeaderContainer = styled.div`
@@ -34,4 +33,6 @@ export const WorkareaContainer = styled.div`
   padding: 30px;
 `
 
-
+export const Section = styled.div`
+  padding-bottom: 10px;
+`
