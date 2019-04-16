@@ -33,7 +33,7 @@ const BestallningFilterBar = ({stat}) => {
     },
     {
       to: '/bestallningar/KLARA',
-      text: 'Klara',
+      text: 'Klarmarkerade',
     },
     {
       to: '/bestallningar/AVVISADE',
