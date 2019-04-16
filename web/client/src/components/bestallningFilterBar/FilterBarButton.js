@@ -49,8 +49,9 @@ const FilterBarButton = ({ menuItem }) => {
       <NavItem key={menuItem.text}>
         <NavLink to={menuItem.to}>
           {menuItem.text}
+
           {
-            menuItem.stat &&
+            (menuItem.stat !== 0) &&
             <Badge color="primary" className="badge__stat">
               {menuItem.stat}
             </Badge>
