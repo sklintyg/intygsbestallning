@@ -34,7 +34,7 @@ const AvvisaBestallning = ({ handleClose, isOpen, accept }) => {
             beställningen inte har upprättats.
           </p>
           <RadioButton onChange={handleRadioChange} label={'Avvisa'} selected={avvisa} value={'true'} />
-          <RadioButton onChange={handleRadioChange} label={'Radera'} selected={avvisa} value={'false'} />
+          <RadioButton onChange={handleRadioChange} label={'Avvisa och radera'} selected={avvisa} value={'false'} />
           <p>Vänligen förtydliga skälet till varför beställningen avvisas eller raderas.</p>
           <p>
             Observera att patientrelaterad information inte får lämnas ut utan stöd i patientdatalagen (2008:355), patientsäkerhetslagen
