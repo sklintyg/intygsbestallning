@@ -72,6 +72,7 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
 
         } else {
             invanare = existing.get();
+            invanare.setBakgrundNulage(createBestallningRequest.getInvanare().getBakgrundNulage());
         }
 
         var vardenhetRespons = hsaOrganizationsService.getVardenhet(createBestallningRequest.getVardenhet());
@@ -113,6 +114,8 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
 
         var bestallning = Bestallning.Factory.newBestallning(
                 invanare,
+                createBestallningRequest.getSyfte(),
+                createBestallningRequest.getPlaneradeInsatser(),
                 handlaggare,
                 createBestallningRequest.getIntygTyp(),
                 createBestallningRequest.getIntygVersion(),

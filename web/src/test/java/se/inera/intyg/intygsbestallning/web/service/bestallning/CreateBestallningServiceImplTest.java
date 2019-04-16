@@ -115,7 +115,7 @@ class CreateBestallningServiceImplTest {
     }
 
     private Bestallning buildBestallning() {
-        return Bestallning.Factory.newBestallning(buildInvanare(), buildHandlaggare(), "intygsTyp", 1.0, buildVardenhet().get(), "ref");
+        return Bestallning.Factory.newBestallning(buildInvanare(), "syfte", "insats", buildHandlaggare(), "intygsTyp", 1.0, buildVardenhet().get(), "ref");
     }
 
     private se.inera.intyg.infra.integration.hsa.model.Vardenhet buildVardenhetFromHsa() {

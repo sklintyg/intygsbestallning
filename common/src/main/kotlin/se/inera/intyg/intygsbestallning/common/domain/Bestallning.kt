@@ -21,6 +21,8 @@ data class Bestallning(
   companion object Factory {
     fun newBestallning(
        invanare: Invanare,
+       syfte: String?,
+       planeradeAktiviteter: String?,
        handlaggare: Handlaggare,
        intygTyp: String,
        intygVersion: Double,
@@ -31,6 +33,8 @@ data class Bestallning(
          intygVersion = intygVersion,
          ankomstDatum = LocalDateTime.now(),
          invanare = invanare,
+         syfte = syfte,
+         planeradeAktiviteter = planeradeAktiviteter,
          handlaggare = handlaggare,
          vardenhet = vardenhet,
          arendeReferens = arendeReferens,

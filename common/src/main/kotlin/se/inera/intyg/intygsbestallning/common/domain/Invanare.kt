@@ -5,7 +5,7 @@ import se.inera.intyg.schemas.contract.Personnummer
 data class Invanare(
    val id: Long? = null,
    var personId: Personnummer,
-   val bakgrundNulage: String? = null) {
+   var bakgrundNulage: String? = null) {
 
   companion object Factory {
     fun newInvanare(

@@ -17,7 +17,7 @@ class InvanareEntity private constructor(builder: Builder) {
   val personId: String
 
   @Column(name = "BAKGRUND_NULAGE")
-  var bakgrundNulage: String? = null
+  var bakgrundNulage: String?
 
   init {
     this.id = builder.id
