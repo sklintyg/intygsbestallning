@@ -37,7 +37,7 @@ import static se.inera.intyg.intygsbestallning.web.service.util.PdfUtil.millimet
 @Service
 public class PdfBestallningServiceImpl implements PdfBestallningService {
 
-    private static final String AF_LOGOTYPE_CLASSPATH_URI = "pdf/af_logo.png";
+    private static final String AF_LOGOTYPE_CLASSPATH_URI = "static/images/af_logo.png";
 
     private static final Color IB_COLOR_07 = new DeviceRgb(0x21, 0x21, 0x21);
     private static final Color IB_COLOR_09 = new DeviceRgb(0x6A, 0x6A, 0x6A);
