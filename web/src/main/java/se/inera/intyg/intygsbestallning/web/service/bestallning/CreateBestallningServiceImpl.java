@@ -1,16 +1,20 @@
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
+import io.vavr.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.lang.invoke.MethodHandles;
+import java.util.List;
 import se.inera.intyg.infra.integration.hsa.services.HsaOrganizationsService;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
 import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequest;
+import se.inera.intyg.intygsbestallning.common.exception.IbResponderValidationErrorCode;
+import se.inera.intyg.intygsbestallning.common.exception.IbResponderValidationException;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.common.service.notifiering.NotifieringSendService;
 import se.inera.intyg.intygsbestallning.integration.pu.PatientService;
@@ -75,30 +79,47 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
             invanare.setBakgrundNulage(createBestallningRequest.getInvanare().getBakgrundNulage());
         }
 
-        var vardenhetRespons = hsaOrganizationsService.getVardenhet(createBestallningRequest.getVardenhet());
+        var vardenhetRespons = Try.of(() -> hsaOrganizationsService.getVardenhet(createBestallningRequest.getVardenhet()));
+
+        if (vardenhetRespons.isFailure()) {
+            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL03, List.of());
+        }
+
         var vardGivareRespons = hsaOrganizationsService.getVardgivareOfVardenhet(createBestallningRequest.getVardenhet());
 
-        var existingVardenhet = vardenhetPersistenceService.getVardenhetByHsaId(vardenhetRespons.getId());
+        if (vardGivareRespons == null) {
+            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL04, List.of());
+        }
 
-        if (vardenhetRespons.getEpost() == null) {
+        if (vardGivareRespons.getId() == null) {
+            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL04, List.of());
+        }
+
+        var existingVardenhet = vardenhetPersistenceService.getVardenhetByHsaId(vardenhetRespons.get().getId());
+
+        if (vardenhetRespons.get().getEpost() == null) {
             throw new IllegalArgumentException("Vårdenheten saknar e-postadress");
         }
 
         Vardenhet vardenhet;
         if (existingVardenhet.isPresent()) {
             vardenhet = existingVardenhet.get();
-            vardenhet.setHsaId(vardenhetRespons.getId());
+            vardenhet.setHsaId(vardenhetRespons.get().getId());
             vardenhet.setVardgivareHsaId(vardGivareRespons.getId());
-            vardenhet.setNamn(vardenhetRespons.getNamn());
-            vardenhet.setEpost(vardenhetRespons.getEpost());
+            vardenhet.setNamn(vardenhetRespons.get().getNamn());
+            vardenhet.setEpost(vardenhetRespons.get().getEpost());
         } else {
             vardenhet = Vardenhet.Factory.newVardenhet(
-                    vardenhetRespons.getId(),
+                    vardenhetRespons.get().getId(),
                     vardGivareRespons.getId(),
                     vardGivareRespons.getOrgId(),
-                    vardenhetRespons.getNamn(),
-                    vardenhetRespons.getEpost(),
+                    vardenhetRespons.get().getNamn(),
+                    vardenhetRespons.get().getEpost(),
                     null);
+        }
+
+        if (vardenhet.getEpost() == null) {
+            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL09, List.of());
         }
 
         var handlaggare = Handlaggare.Factory.newHandlaggare(

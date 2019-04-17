@@ -126,7 +126,7 @@ data class BestallningInvanareDto(
               fornamn,
               mellannamn,
               efternamn).joinToString(separator = " ")
-         else "Sekretessmarkerade uppgifter"
+         else "Namn Okänt"
       )
     }
   }
