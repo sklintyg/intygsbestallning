@@ -1,5 +1,7 @@
 package se.inera.intyg.intygsbestallning.common.exception
 
+import se.riv.intygsbestallning.certificate.order.v1.ErrorIdType
+import java.text.MessageFormat
 import java.util.*
 
 open class IbServiceException : RuntimeException {
@@ -27,10 +29,11 @@ class IbJMSException : IbServiceException {
 
 class IbNotFoundException : IbServiceException {
   var type: NotFoundType? = null
+
   constructor(message: String) : super(IbErrorCodeEnum.NOT_FOUND, message)
   constructor(message: String, errorEntityId: Long?) : super(IbErrorCodeEnum.NOT_FOUND, message, errorEntityId)
   constructor(message: String, errorEntityId: Long?, type: NotFoundType) : super(IbErrorCodeEnum.NOT_FOUND, message, errorEntityId) {
-    this.type= type
+    this.type = type
   }
 }
 
@@ -46,4 +49,27 @@ enum class IbErrorCodeEnum {
   UNKNOWN_INTERNAL_PROBLEM,
   EXTERNAL_ERROR,
   UNAUTHORIZED
+}
+
+
+data class IbResponderValidationException(
+   val errorCode: IbResponderValidationErrorCode,
+   private val templateArguments: List<Any>) : RuntimeException() {
+
+  override val message: String?
+    get() {
+      return MessageFormat.format(errorCode.errorMsgTemplate, templateArguments)
+    }
+}
+
+enum class IbResponderValidationErrorCode(val errorMsgTemplate: String, val errorIdType: ErrorIdType) {
+  GTA_FEL01("Unexpected codeSystem: {0}", ErrorIdType.VALIDATION_ERROR),
+  GTA_FEL02("Unknown code: {0} for codeSystem: {1}", ErrorIdType.VALIDATION_ERROR),
+  GTA_FEL03("Received technical error from HSA", ErrorIdType.TECHNICAL_ERROR),
+  GTA_FEL04("Det uppstod ett fel när HSA Katalogen anropades. Beställningen kunde därför inte tas emot.", ErrorIdType.APPLICATION_ERROR),
+  GTA_FEL05("{0} does not match expected format YYYYMMDDNNNN", ErrorIdType.VALIDATION_ERROR),
+  GTA_FEL06("Vårdgivare saknar organisationsnummer", ErrorIdType.APPLICATION_ERROR),
+  GTA_FEL07("Unexpected use of assessmentId", ErrorIdType.VALIDATION_ERROR),
+  GTA_FEL08("Angiven intygstyp går inte att beställa", ErrorIdType.APPLICATION_ERROR),
+  GTA_FEL09("Vårdenheten saknar e-postadress", ErrorIdType.EMAIL_ERROR),
 }

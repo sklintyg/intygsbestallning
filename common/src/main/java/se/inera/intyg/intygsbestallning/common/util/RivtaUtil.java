@@ -39,18 +39,18 @@ public final class RivtaUtil {
         return result;
     }
 
-    public static ResultType aResultTypeError(final Exception exception) {
+    public static ResultType aResultTypeError(final Throwable throwable) {
 
         String resultText;
 
-        if (exception instanceof IbNotFoundException) {
-            final NotFoundType notFoundType = ((IbNotFoundException) exception).getType();
-            final Long entityId = ((IbNotFoundException) exception).getErrorEntityId();
+        if (throwable instanceof IbNotFoundException) {
+            final NotFoundType notFoundType = ((IbNotFoundException) throwable).getType();
+            final Long entityId = ((IbNotFoundException) throwable).getErrorEntityId();
             resultText = notFoundType != null
                     ? String.format(notFoundType.getErrorText(), Objects.toString(entityId))
-                    : exception.getMessage();
+                    : throwable.getMessage();
         } else {
-            resultText = exception.getMessage();
+            resultText = throwable.getMessage();
         }
 
         ResultType result = new ResultType();
