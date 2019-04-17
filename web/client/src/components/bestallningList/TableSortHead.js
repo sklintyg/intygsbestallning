@@ -1,6 +1,12 @@
 import React, { Fragment } from "react";
 import { Button } from "reactstrap";
 import { DownIcon, UpIcon, UpDownIcon } from "../styles/IbSvgIcons";
+import styled from 'styled-components'
+
+// IE11 hack to fix gray background color on server
+const SortButton = styled(Button)`
+  background-color: transparent !important;
+`
 
 const TableSortHead = ({
   currentSortColumn,
@@ -24,14 +30,14 @@ const TableSortHead = ({
   return (
     <Fragment>
       <th>
-        <Button
+        <SortButton
           color="link"
           onClick={() => {
             handleSort(sortId);
           }}
         >
           {text}
-        </Button>{" "}
+        </SortButton>{" "}
         {renderSortIcon(sortId)}
       </th>
     </Fragment>
