@@ -101,7 +101,7 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
 
         var vardenhet = Optional.of(request.getCareUnitId()).map(IIType::getExtension).get();
         var vardenhetRoot = Optional.of(request.getCareUnitId()).map(IIType::getRoot).get();
-        if (!vardenhet.equals(HSA_ID_ROOT)) {
+        if (!vardenhetRoot.equals(HSA_ID_ROOT)) {
             throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(vardenhetRoot));
         }
 
