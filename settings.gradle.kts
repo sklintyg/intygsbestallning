@@ -10,6 +10,12 @@ pluginManagement {
 			if (requested.id.id.startsWith("org.jetbrains.kotlin.")) {
 				useVersion(Dependencies.kotlinVersion)
 			}
+			if (requested.id.id.startsWith("se.inera.intyg.plugin.common")) {
+				useVersion(Dependencies.intygPluginVersion)
+			}
+			if (requested.id.id.startsWith("io.spring.dependency-management")) {
+				useVersion(Dependencies.springDependencyManagementVersion)
+			}
 		}
 	}
 }

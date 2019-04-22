@@ -120,7 +120,7 @@ tasks {
     bootRun {
       dependsOn(pathingJar)
 
-      doFirst {
+      doLast {
 
         classpath = files(
            "${project.projectDir}/build/classes/java/main",
@@ -130,16 +130,16 @@ tasks {
            "${project.rootProject.projectDir}/src/main/resources",
            "${project.rootProject.projectDir}/devops/openshift/test/env",
            "${project.rootProject.projectDir}/devops/openshift/test/config",
+           "${project.projectDir}/client/public",
            pathingJar.archiveFile)
       }
     }
   }
 
-  bootRun {
-  }
-
   if (buildClient) {
+
     bootJar {
+      dependsOn(buildReactApp)
       from("client/build/") {
         into("static")
       }
@@ -147,10 +147,6 @@ tasks {
 
     bootRun {
       dependsOn(copyReactbuild)
-    }
-
-    bootJar {
-      dependsOn(buildReactApp)
     }
 
     test {

@@ -11,8 +11,8 @@ plugins {
   maven
   `maven-publish`
 
-  id("se.inera.intyg.plugin.common") version "2.0.3" apply false
-  id("io.spring.dependency-management") version "1.0.7.RELEASE"
+  id("se.inera.intyg.plugin.common") apply false
+  id("io.spring.dependency-management")
 }
 
 allprojects {
