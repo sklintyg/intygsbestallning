@@ -1,11 +1,13 @@
 package se.inera.intyg.intygsbestallning.common.util;
 
 import se.riv.intygsbestallning.certificate.order.v1.CVType;
+import se.riv.intygsbestallning.certificate.order.v1.ErrorIdType;
 import se.riv.intygsbestallning.certificate.order.v1.IIType;
 import se.riv.intygsbestallning.certificate.order.v1.ResultCodeType;
 import se.riv.intygsbestallning.certificate.order.v1.ResultType;
 import java.util.Objects;
 import se.inera.intyg.intygsbestallning.common.exception.IbNotFoundException;
+import se.inera.intyg.intygsbestallning.common.exception.IbResponderValidationException;
 import se.inera.intyg.intygsbestallning.common.exception.NotFoundType;
 
 public final class RivtaUtil {
@@ -42,6 +44,7 @@ public final class RivtaUtil {
     public static ResultType aResultTypeError(final Throwable throwable) {
 
         String resultText;
+        ErrorIdType errorIdType;
 
         if (throwable instanceof IbNotFoundException) {
             final NotFoundType notFoundType = ((IbNotFoundException) throwable).getType();
@@ -49,13 +52,19 @@ public final class RivtaUtil {
             resultText = notFoundType != null
                     ? String.format(notFoundType.getErrorText(), Objects.toString(entityId))
                     : throwable.getMessage();
-        } else {
+            errorIdType = ErrorIdType.APPLICATION_ERROR;
+        } else if (throwable instanceof IbResponderValidationException) {
             resultText = throwable.getMessage();
+            errorIdType = ErrorIdType.VALIDATION_ERROR;
+        } else{
+            resultText = throwable.getMessage();
+            errorIdType = ErrorIdType.APPLICATION_ERROR;
         }
 
         ResultType result = new ResultType();
         result.setResultCode(ResultCodeType.ERROR);
         result.setResultText(resultText);
+        result.getErrorId().add(errorIdType);
         return result;
     }
 }

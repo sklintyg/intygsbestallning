@@ -57,9 +57,9 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
 
         var result = Try.of(() -> {
             var createBestallningRequest = fromType(orderAssessmentType);
-            createBestallningService.create(createBestallningRequest);
+            var id = createBestallningService.create(createBestallningRequest);
             OrderAssessmentResponseType response = new OrderAssessmentResponseType();
-            response.setAssessmentId(RivtaUtil.anII(integrationProperties.getSourceSystemHsaId(), ""));
+            response.setAssessmentId(RivtaUtil.anII(integrationProperties.getSourceSystemHsaId(), id.toString()));
             response.setResult(RivtaUtil.aResultTypeOK());
             return response;
         });
@@ -106,17 +106,17 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
         }
 
         var intygTyp = Optional.ofNullable(request.getCertificateType()).map(CVType::getCode).get();
+        var intygTypCodeSystem = Optional.ofNullable(request.getCertificateType()).map(CVType::getCodeSystem).get();
+
+        if (!intygTypCodeSystem.equals(KV_INTYGSTYP)) {
+            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(intygTypCodeSystem));
+        }
 
         var intygVersion = Try.of(() -> bestallningTextService.getLatestVersionForBestallningsbartIntyg(intygTyp));
         if (intygVersion.isFailure()) {
             throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL08, List.of());
         }
 
-        var intygTypCodeSystem = Optional.ofNullable(request.getCertificateType()).map(CVType::getCodeSystem).get();
-
-        if (!intygTypCodeSystem.equals(KV_INTYGSTYP)) {
-            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(intygTypCodeSystem));
-        }
 
         var invanare = new CreateBestallningRequestInvanare(personnummer, request.getCitizen().getSituationBackground());
 
@@ -147,7 +147,7 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
 
         var mappadMyndighet = Try.of(() -> MyndighetTyp.valueOf(auktoritet.getMyndighet()));
         if (mappadMyndighet.isFailure()) {
-            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL02, List.of(personnummerRoot));
+            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL02, List.of(auktoritet.getMyndighet()));
         }
 
         return new CreateBestallningRequest(
