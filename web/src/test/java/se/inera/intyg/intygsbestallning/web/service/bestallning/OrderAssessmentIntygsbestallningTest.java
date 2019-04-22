@@ -217,7 +217,7 @@ class OrderAssessmentIntygsbestallningTest {
         assertThat(response).isNotNull();
         assertThat(response.getResult()).isNotNull();
         assertThat(response.getResult().getResultCode()).isEqualTo(ResultCodeType.ERROR);
-        assertThat(response.getResult().getErrorId().get(0)).isEqualTo(ErrorIdType.VALIDATION_ERROR);
+        assertThat(response.getResult().getErrorId().get(0)).isEqualTo(ErrorIdType.APPLICATION_ERROR);
         assertThat(response.getResult().getResultText()).isEqualTo(expectedError.getMessage());
     }
 

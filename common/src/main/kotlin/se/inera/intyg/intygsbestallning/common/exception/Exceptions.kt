@@ -27,16 +27,6 @@ class IbJMSException : IbServiceException {
   constructor(errorCode: IbErrorCodeEnum, message: String, errorEntityId: Long?) : super(errorCode, message, errorEntityId)
 }
 
-class IbNotFoundException : IbServiceException {
-  var type: NotFoundType? = null
-
-  constructor(message: String) : super(IbErrorCodeEnum.NOT_FOUND, message)
-  constructor(message: String, errorEntityId: Long?) : super(IbErrorCodeEnum.NOT_FOUND, message, errorEntityId)
-  constructor(message: String, errorEntityId: Long?, type: NotFoundType) : super(IbErrorCodeEnum.NOT_FOUND, message, errorEntityId) {
-    this.type = type
-  }
-}
-
 enum class NotFoundType(val errorText: String) {
   BESTALLNING("Felaktig bestallningsid: %s. Bestallningen existerar inte.")
 }
@@ -50,7 +40,6 @@ enum class IbErrorCodeEnum {
   EXTERNAL_ERROR,
   UNAUTHORIZED
 }
-
 
 data class IbResponderValidationException(
    val errorCode: IbResponderValidationErrorCode,

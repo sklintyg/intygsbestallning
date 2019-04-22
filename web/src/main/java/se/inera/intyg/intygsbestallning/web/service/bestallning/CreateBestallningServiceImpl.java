@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
+import se.inera.intyg.infra.integration.hsa.exception.HsaServiceCallException;
 import se.inera.intyg.infra.integration.hsa.services.HsaOrganizationsService;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
@@ -66,7 +67,7 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
 
             if (person.isEmpty()) {
                 throw new IllegalArgumentException("invanare with personnummer: " +
-                        createBestallningRequest.getInvanare().getPersonnummer().getPersonnummerWithDash() + "was not found");
+                        createBestallningRequest.getInvanare().getPersonnummer().getPersonnummerWithDash() + " was not found");
             }
 
             var foundPerson = person.get();
@@ -81,25 +82,32 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
 
         var vardenhetRespons = Try.of(() -> hsaOrganizationsService.getVardenhet(createBestallningRequest.getVardenhet()));
 
-        if (vardenhetRespons.isFailure()) {
+        if (vardenhetRespons.isFailure() && vardenhetRespons.getCause() instanceof HsaServiceCallException) {
             throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL03, List.of());
+        } else if (vardenhetRespons.isFailure()) {
+            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL04, List.of());
+        }
+
+        if (vardenhetRespons.get().getEpost() == null) {
+            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL09, List.of());
         }
 
         var vardGivareRespons = hsaOrganizationsService.getVardgivareOfVardenhet(createBestallningRequest.getVardenhet());
 
         if (vardGivareRespons == null) {
-            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL04, List.of());
+            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL03, List.of());
         }
 
         if (vardGivareRespons.getId() == null) {
             throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL04, List.of());
         }
 
+        if (vardGivareRespons.getOrgId() == null) {
+            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL06, List.of());
+        }
+
         var existingVardenhet = vardenhetPersistenceService.getVardenhetByHsaId(vardenhetRespons.get().getId());
 
-        if (vardenhetRespons.get().getEpost() == null) {
-            throw new IllegalArgumentException("Vårdenheten saknar e-postadress");
-        }
 
         Vardenhet vardenhet;
         if (existingVardenhet.isPresent()) {
