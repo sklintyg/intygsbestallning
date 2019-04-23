@@ -66,7 +66,7 @@ export default combineReducers({
 })
 
 //Selectors
-export const isPending = (state) => state.sessionPoll.pending
+export const isPending = (state) => Object.keys(state.sessionPoll.statResponse).length === 0
 
 export const getStat = (state) => {
   return state.sessionPoll.statResponse
