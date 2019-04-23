@@ -37,17 +37,18 @@ include(":test")
 
 fun getProjectDirName(project: String): String {
 	return when(project) {
-		"common" ->"$rootDir/common"
-		"mail-sender" ->"$rootDir/mail-sender"
-		"integration" ->"$rootDir/integration"
-		"persistence" ->"$rootDir/persistence"
-		"web" ->"$rootDir/web"
-		"test" ->"$rootDir/test"
+		"${rootProject.name}-common" ->"$rootDir/common"
+		"${rootProject.name}-mail-sender" ->"$rootDir/mail-sender"
+		"${rootProject.name}-integration" ->"$rootDir/integration"
+		"${rootProject.name}-persistence" ->"$rootDir/persistence"
+		"${rootProject.name}-web" ->"$rootDir/web"
+		"${rootProject.name}-test" ->"$rootDir/test"
 		else -> throw IllegalArgumentException("Project module $project does not exist.")
 	}
 }
 
 for (project in rootProject.children) {
+	project.name = "${rootProject.name}-${project.name}"
 	val projectName = project.name
 
 	project.projectDir = file(getProjectDirName(projectName))

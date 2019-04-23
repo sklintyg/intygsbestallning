@@ -2,7 +2,7 @@ import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 
 dependencies {
   // Project dependencies
-  implementation(project(":common"))
+  implementation(project(":${rootProject.name}-common"))
 
   implementation("${extra["infraGroupId"]}:hsa-integration:${extra["intygInfraVersion"]}")
   implementation("${extra["infraGroupId"]}:pu-integration:${extra["intygInfraVersion"]}")

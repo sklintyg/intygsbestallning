@@ -1,11 +1,12 @@
 import com.moowork.gradle.node.npm.NpmTask
 import org.gradle.internal.os.OperatingSystem
-import org.springframework.boot.gradle.tasks.bundling.BootJar
 import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 import se.inera.intyg.intygsbestallning.build.Config.TestDependencies
 
 // FIXME: Openshift build pipeline passes useMinifiedJavaScript to build (not client)
 val buildClient = project.hasProperty("client") || project.hasProperty("useMinifiedJavaScript")
+
+val infraBuildVersion = extra["intygInfraVersion"]
 
 plugins {
   id("org.springframework.boot")
@@ -15,10 +16,10 @@ plugins {
 dependencies {
 
   // Project dependencies
-  implementation(project(":common"))
-  implementation(project(":integration"))
-  implementation(project(":persistence"))
-  implementation(project(":mail-sender"))
+  implementation(project(":${rootProject.name}-common"))
+  implementation(project(":${rootProject.name}-integration"))
+  implementation(project(":${rootProject.name}-persistence"))
+  implementation(project(":${rootProject.name}-mail-sender"))
 
   implementation("${extra["infraGroupId"]}:hsa-integration:${extra["intygInfraVersion"]}")
   implementation("${extra["infraGroupId"]}:log-messages:${extra["intygInfraVersion"]}")
@@ -32,7 +33,6 @@ dependencies {
   // External dependencies
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-data-redis")
-  //implementation("org.springframework.boot:spring-boot-starter-actuator")
 
   implementation("net.javacrumbs.shedlock:shedlock-spring:1.3.0")
 
@@ -59,26 +59,18 @@ dependencies {
 
 }
 
-tasks.getByName<BootJar>("bootJar") {
-  manifest {
-    attributes("Main-Class" to "org.springframework.boot.loader.PropertiesLauncher")
-    attributes("Start-Class" to  "se.inera.intyg.intygsbestallning.web.IntygsbestallningApplication")
-  }
+node {
+  version = "10.15.1"
+  download = true
+  distBaseUrl = "https://build-inera.nordicmedtest.se/node/"
+  nodeModulesDir = file("${project.projectDir}/client")
 }
 
-
-tasks.clean {
-  delete("client/build")
+springBoot {
+  buildInfo()
 }
-
 
 tasks {
-  node {
-    version = "10.15.1"
-    download = true
-    distBaseUrl = "https://build-inera.nordicmedtest.se/node/"
-    nodeModulesDir = file("${project.projectDir}/client")
-  }
 
   val buildReactApp by creating(NpmTask::class) {
     dependsOn(npmInstall)
@@ -121,6 +113,27 @@ tasks {
     }
   }
 
+  val restAssuredTest by creating(Test::class) {
+    outputs.upToDateWhen { false }
+    systemProperty("integration.tests.baseUrl", project.findProperty("baseUrl") ?: "http://localhost:8080")
+    include("**/*IT*")
+  }
+
+  test {
+    exclude("**/*IT*")
+  }
+
+  bootJar {
+    manifest {
+      attributes("Main-Class" to "org.springframework.boot.loader.PropertiesLauncher")
+      attributes("Start-Class" to  "se.inera.intyg.intygsbestallning.web.IntygsbestallningApplication")
+    }
+  }
+
+  clean {
+    delete("client/build")
+  }
+
   if (OperatingSystem.current().isWindows) {
     bootRun {
       dependsOn(pathingJar)
@@ -152,15 +165,5 @@ tasks {
     test {
       dependsOn(testReactApp)
     }
-  }
-
-  test {
-    exclude("**/*IT*")
-  }
-
-  val restAssuredTest by creating(Test::class) {
-    outputs.upToDateWhen { false }
-    systemProperty("integration.tests.baseUrl", project.findProperty("baseUrl") ?: "http://localhost:8080")
-    include("**/*IT*")
   }
 }

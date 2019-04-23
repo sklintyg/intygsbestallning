@@ -9,9 +9,11 @@ node {
     def gradletool = tool name: 'gradle', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
     def gradle = "${gradletool}/gradle-5.2.1/bin/gradle -Dorg.gradle.java.home=/${javaHome}"
 
+    def versionFlags = "-DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
+
     stage('build') {
             try {
-                sh "${gradle} --refresh-dependencies clean build -P client"
+                sh "${gradle} --refresh-dependencies clean build -P client ${versionFlags}"
               } finally {
                 publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/allTests', \
                     reportFiles: 'index.html', reportName: 'JUnit results'
