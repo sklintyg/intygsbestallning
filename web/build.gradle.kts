@@ -120,8 +120,8 @@ tasks {
     bootRun {
       dependsOn(pathingJar)
 
-      doLast {
-
+      //doLast {
+      doFirst {
         classpath = files(
            "${project.projectDir}/build/classes/java/main",
            "${project.projectDir}/build/classes/kotlin/main",
