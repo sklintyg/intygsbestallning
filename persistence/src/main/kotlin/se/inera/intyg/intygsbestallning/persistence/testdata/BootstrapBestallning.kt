@@ -13,9 +13,9 @@ data class BootstrapBestallning(
    val arendeReferens: String? = null,
    val planeradeAktiviteter: String? = null,
    var status: BestallningStatus? = BestallningStatus.UNDEFINED,
-   val invanare: Invanare,
+   var invanare: Invanare,
    val handlaggare: Handlaggare,
-   val vardenhet: Vardenhet,
+   var vardenhet: Vardenhet,
    var handelser: List<Handelse>? = mutableListOf(),
    var notifieringar: List<Notifiering>? = mutableListOf()
 ) {

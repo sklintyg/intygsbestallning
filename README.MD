@@ -55,3 +55,26 @@ För att köra med live-reload.
     npm start
     
 Läs mer på i [README-filen](web/client/README.md) för frontend
+
+### Köra integrationstester
+Vi har integrationstester skrivna med [REST-Assured](https://github.com/jayway/rest-assured)
+
+De körs inte automatiskt vid bygge av applikationen utan man behöver köra dem med kommandot
+
+    $ ./gradlew restassured
+    
+Man kan exekvera enskilda tester genom exempelvis:
+
+    $ ./gradlew restassured --tests *BestallningControllerIT.testGetBestallningar
+    
+För att debugga själva testet, lägg på --debug-jvm dvs:
+
+    $ ./gradlew restassured --debug-jvm
+    ... loggar ...
+    Listening for transport dt_socket at address: 5005
+
+Anslut nu remote debugging i IDEA.
+
+För att logga från testet till stdout:
+
+    $ ./gradlew restassured -info
