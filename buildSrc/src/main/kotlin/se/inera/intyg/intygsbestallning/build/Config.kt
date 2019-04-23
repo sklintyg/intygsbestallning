@@ -18,6 +18,7 @@ object Config {
 
     //External dependencies
     const val nodePluginVersion = "1.2.0"
+    const val nodeVersion = "10.15.1"
 
     const val kotlinVersion = "1.3.30"
     const val springVersion = "5.1.6.RELEASE"
@@ -39,6 +40,11 @@ object Config {
     const val jaxVersion = "2.3.0"
     const val jaxWsVersion = "2.3.0"
     const val querydslVersion = "4.2.1"
+    const val shedlockVersion = "1.3.0"
+    const val itext7Version = "7.1.5"
+    const val swaggerVersion = "2.9.2"
+    const val jakartaJwsVersion = "1.1.1"
+    const val springSecuritySaml2Version = "1.0.3.RELEASE"
 
   }
 

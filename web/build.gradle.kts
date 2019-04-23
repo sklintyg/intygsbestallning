@@ -34,20 +34,20 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
-  implementation("net.javacrumbs.shedlock:shedlock-spring:1.3.0")
+  implementation("net.javacrumbs.shedlock:shedlock-spring:${Dependencies.shedlockVersion}")
 
-  implementation("com.itextpdf:itext7-core:7.1.5")
+  implementation("com.itextpdf:itext7-core:${Dependencies.itext7Version}")
 
   //api documentation
-  implementation("io.springfox:springfox-swagger2:2.9.2")
-  implementation("io.springfox:springfox-swagger-ui:2.9.2")
+  implementation("io.springfox:springfox-swagger2:${Dependencies.swaggerVersion}")
+  implementation("io.springfox:springfox-swagger-ui:${Dependencies.swaggerVersion}")
 
 
-  implementation("jakarta.jws:jakarta.jws-api:1.1.1")
+  implementation("jakarta.jws:jakarta.jws-api:${Dependencies.jakartaJwsVersion}")
   implementation("javax.xml.ws:jaxws-api:${Dependencies.jaxVersion}")
   implementation("javax.servlet:javax.servlet-api:${Dependencies.jaxServletApiVersion}")
 
-  implementation("org.springframework.security.extensions:spring-security-saml2-core:1.0.3.RELEASE")
+  implementation("org.springframework.security.extensions:spring-security-saml2-core:${Dependencies.springSecuritySaml2Version}")
   implementation("com.querydsl:querydsl-core:${Dependencies.querydslVersion}")
 
   // FIXME: shall not be bundled with app!
@@ -60,7 +60,7 @@ dependencies {
 }
 
 node {
-  version = "10.15.1"
+  version = Dependencies.nodeVersion
   download = true
   distBaseUrl = "https://build-inera.nordicmedtest.se/node/"
   nodeModulesDir = file("${project.projectDir}/client")

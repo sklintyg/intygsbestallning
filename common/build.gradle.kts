@@ -12,7 +12,6 @@ dependencies {
     compile("com.fasterxml.jackson.datatype:jackson-datatype-jdk8")
     compile("com.fasterxml.jackson.module:jackson-module-kotlin")
 
-
     compile("io.vavr:vavr:${Dependencies.vavrVersion}")
 
     implementation("org.springframework.boot:spring-boot-starter-activemq")
