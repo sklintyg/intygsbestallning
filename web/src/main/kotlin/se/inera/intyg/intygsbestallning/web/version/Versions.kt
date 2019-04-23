@@ -2,9 +2,9 @@ package se.inera.intyg.intygsbestallning.web.version
 
 import java.time.LocalDateTime
 
-data class Versions(
-   val applicationName: String? = null,
-   val buildVersion: String? = null,
-   val buildTimestamp: LocalDateTime? = null,
-   val infraversion: String? = null
+data class VersionInfo(
+   val applicationName: String,
+   val buildVersion: String,
+   val buildTimestamp: LocalDateTime,
+   val activeProfiles: String
 )

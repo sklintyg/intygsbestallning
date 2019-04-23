@@ -1,37 +1,33 @@
 package se.inera.intyg.intygsbestallning.web.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.info.BuildProperties;
-import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import se.inera.intyg.intygsbestallning.web.version.Versions;
+import se.inera.intyg.intygsbestallning.web.version.VersionInfo;
 
-@Profile("!prod")
 @RestController
-public class VersionsController {
+public class VersionInfoController {
 
     private BuildProperties buildProperties;
+    private Environment environment;
 
-    public VersionsController(BuildProperties buildProperties) {
+    public VersionInfoController(BuildProperties buildProperties, Environment environment) {
         this.buildProperties = buildProperties;
+        this.environment = environment;
     }
 
-    @GetMapping("/api/versions")
+    @GetMapping(path = "/api/versions", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity getVersions() {
         var applicationName = buildProperties.getArtifact();
         var buildVersion = buildProperties.getVersion();
         var buildTimestamp = LocalDateTime.ofInstant(buildProperties.getTime(), ZoneId.systemDefault());
-
-        return ResponseEntity.ok(
-                new Versions(
-                        applicationName,
-                        buildVersion,
-                        buildTimestamp,
-                        System.getProperty("infraVersion")
-                )
-        );
+        var activeProfiles = StringUtils.join(environment.getActiveProfiles(), ", ");
+        return ResponseEntity.ok(new VersionInfo(applicationName, buildVersion, buildTimestamp, activeProfiles));
     }
 }

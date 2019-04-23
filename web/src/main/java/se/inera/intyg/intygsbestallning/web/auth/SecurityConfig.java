@@ -516,6 +516,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
             .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/welcome-assets/**").permitAll()
+                .antMatchers("/versions-assets/**").permitAll()
                 .antMatchers("/favicon.ico").permitAll()
                 .antMatchers("/index.html").permitAll()
                 .antMatchers("/static/**").permitAll()
@@ -533,8 +534,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
             http
                     .authorizeRequests()
                     .antMatchers("/welcome.html").permitAll()
+                    .antMatchers("/versions.html").permitAll()
                     .antMatchers("/api/stub/**").permitAll()
                     .antMatchers("/api/test/**").permitAll()
+                    .antMatchers("/api/versions").permitAll()
                     .antMatchers("/h2-console/**").permitAll();
 
             // @formatter:off
