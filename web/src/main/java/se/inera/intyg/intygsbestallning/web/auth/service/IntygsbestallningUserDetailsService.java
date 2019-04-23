@@ -18,6 +18,9 @@
  */
 package se.inera.intyg.intygsbestallning.web.auth.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opensaml.saml2.core.Assertion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +29,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.stereotype.Service;
+
 import se.inera.intyg.infra.integration.hsa.model.UserCredentials;
 import se.inera.intyg.infra.integration.hsa.model.Vardenhet;
 import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
@@ -34,17 +38,14 @@ import se.inera.intyg.infra.security.common.exception.GenericAuthenticationExcep
 import se.inera.intyg.infra.security.common.model.IntygUser;
 import se.inera.intyg.infra.security.common.model.Privilege;
 import se.inera.intyg.infra.security.common.model.Role;
+import se.inera.intyg.infra.security.exception.MissingMedarbetaruppdragException;
 import se.inera.intyg.infra.security.siths.BaseSakerhetstjanstAssertion;
 import se.inera.intyg.infra.security.siths.BaseUserDetailsService;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardgivare;
 import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
 import se.inera.intyg.intygsbestallning.web.auth.authorities.AuthoritiesConstants;
-import se.inera.intyg.intygsbestallning.web.auth.exceptions.MissingIBSystemRoleException;
 import se.riv.infrastructure.directory.v1.PersonInformationType;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class IntygsbestallningUserDetailsService extends BaseUserDetailsService implements UserDetailsService {
@@ -70,7 +71,7 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
         buildSystemAuthoritiesTree(ibUser);
 
         if (ibUser.getSystemAuthorities().size() == 0) {
-            throw new MissingIBSystemRoleException(ibUser.getHsaId());
+            throw new MissingMedarbetaruppdragException(ibUser.getHsaId());
         }
 
         // If only a single possible entity to select as loggedInAt exists, do that...
