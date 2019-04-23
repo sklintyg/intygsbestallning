@@ -22,8 +22,8 @@ public class VersionInfoController {
         this.environment = environment;
     }
 
-    @GetMapping(path = "/api/versions", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity getVersions() {
+    @GetMapping(path = "/api/version", produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity getVersion() {
         var applicationName = buildProperties.getArtifact();
         var buildVersion = buildProperties.getVersion();
         var buildTimestamp = LocalDateTime.ofInstant(buildProperties.getTime(), ZoneId.systemDefault());
