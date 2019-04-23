@@ -125,17 +125,12 @@ tasks {
     bootRun {
       dependsOn(pathingJar)
 
-      //doLast {
       doFirst {
         classpath = files(
            "${project.projectDir}/build/classes/java/main",
            "${project.projectDir}/build/classes/kotlin/main",
            "${project.projectDir}/src/main/resources",
-           "${project.projectDir}/build/main/resources",
-           "${project.rootProject.projectDir}/src/main/resources",
-           "${project.rootProject.projectDir}/devops/openshift/test/env",
-           "${project.rootProject.projectDir}/devops/openshift/test/config",
-           "${project.projectDir}/client/public",
+           "${project.projectDir}/build/resources/main",
            pathingJar.archiveFile)
       }
     }
