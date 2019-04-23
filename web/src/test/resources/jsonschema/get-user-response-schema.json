@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Defines the transport model of an authenticated IB user model, e.g returned by /api/user",
+  "properties": {
+    "hsaId": {
+      "type": "string"
+    },
+    "namn": {
+      "type": "string"
+    },
+    "authenticationScheme": {
+      "type": "string"
+    },
+    "logoutUrl": {
+      "type": "string"
+    },
+    "authoritiesTree": {
+      "additionalItems": false,
+      "items": {},
+      "minItems": 1,
+      "type": "array"
+    },
+    "currentRole": {
+      "type": "object"
+    },
+    "features": {
+      "additionalProperties": false,
+      "properties": {
+        "EXTERNFORFRAGAN_FAR_AVVISAS": {
+          "additionalProperties": false,
+          "properties": {
+            "desc": {
+              "type": "string"
+            },
+            "intygstyper": {
+              "additionalItems": false,
+              "items": {},
+              "minItems": 0,
+              "type": "array"
+            },
+            "global": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "unitContext": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "parentHsaId": {
+          "type": "string"
+        },
+        "parentHsaName": {
+          "type": "string"
+        },
+        "orgNrVardgivare": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "parentHsaId",
+        "parentHsaName",
+        "orgNrVardgivare"
+      ]
+    },
+    "totaltAntalVardenheter": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "hsaId",
+    "namn",
+    "authenticationScheme",
+    "logoutUrl",
+    "features",
+    "authoritiesTree",
+    "currentRole",
+    "unitContext",
+    "totaltAntalVardenheter"
+  ],
+  "type": "object",
+  "additionalProperties": false
+}

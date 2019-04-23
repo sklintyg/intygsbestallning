@@ -2,6 +2,7 @@ import com.moowork.gradle.node.npm.NpmTask
 import org.gradle.internal.os.OperatingSystem
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import se.inera.intyg.intygsbestallning.build.Config.Dependencies
+import se.inera.intyg.intygsbestallning.build.Config.TestDependencies
 
 // FIXME: Openshift build pipeline passes useMinifiedJavaScript to build (not client)
 val buildClient = project.hasProperty("client") || project.hasProperty("useMinifiedJavaScript")
@@ -51,6 +52,10 @@ dependencies {
 
   // FIXME: shall not be bundled with app!
   implementation("se.inera.intyg.refdata:refdata:${extra["refDataVersion"]}")
+
+  testImplementation("com.jayway.restassured:rest-assured:${TestDependencies.restAssuredVersion}")
+  testImplementation("com.jayway.restassured:json-schema-validator:${TestDependencies.restAssuredVersion}")
+  testImplementation("org.antlr:ST4:${TestDependencies.stAntlr4Version}")
 
 }
 
@@ -152,5 +157,15 @@ tasks {
     test {
       dependsOn(testReactApp)
     }
+  }
+
+  test {
+    exclude("**/*IT*")
+  }
+
+  val restAssuredTest by creating(Test::class) {
+    outputs.upToDateWhen { false }
+    systemProperty("integration.tests.baseUrl", project.findProperty("baseUrl") ?: "http://localhost:8080")
+    include("**/*IT*")
   }
 }

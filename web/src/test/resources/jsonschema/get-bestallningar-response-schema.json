@@ -1,0 +1,84 @@
+{
+  "type": "object",
+  "required": [
+    "ingaRegistreradeBestallningar",
+    "bestallningar",
+    "pageIndex",
+    "start",
+    "end",
+    "totalPages",
+    "numberOfElements",
+    "totalElements",
+    "sortColumn",
+    "sortDirection"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "ingaRegistreradeBestallningar": {
+      "type": "boolean"
+    },
+    "bestallningar": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "ankomstDatum",
+          "intygTyp",
+          "invanare"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string"
+          },
+          "ankomstDatum": {
+            "type": "string"
+          },
+          "intygTyp": {
+            "type": "string"
+          },
+          "invanare": {
+            "type": "object",
+            "required": [
+              "personId"
+            ],
+            "properties": {
+              "personId": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "pageIndex": {
+      "type": "integer"
+    },
+    "start": {
+      "type": "integer"
+    },
+    "end": {
+      "type": "integer"
+    },
+    "totalPages": {
+      "type": "integer"
+    },
+    "numberOfElements": {
+      "type": "integer"
+    },
+    "totalElements": {
+      "type": "integer"
+    },
+    "sortColumn": {
+      "type": "string"
+    },
+    "sortDirection": {
+      "type": "string"
+    }
+  }
+}

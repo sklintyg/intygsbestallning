@@ -50,5 +50,7 @@ object Config {
     const val dbUnitVersion = "2.4.9"
     const val springockitoVersion = "1.0.8"
     const val randomBeansVersion = "3.9.0"
+    const val restAssuredVersion = "2.9.0"
+    const val stAntlr4Version = "4.0.8"
   }
 }
