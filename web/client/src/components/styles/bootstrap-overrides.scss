@@ -56,6 +56,21 @@ $alert-padding-x: 0.5rem;
 // Bootstrap non-variable overrides for those things we cannot affect with just using variables.
 
 //1. Modal footer buttons should be left aligned
+.modal-title {
+  @extend %ib-typo-02;
+  color: $ib-color-07;
+}
+
+.modal-body {
+  @extend %ib-typo-07;
+  color: $ib-color-07;
+
+  h5 {
+    @extend %ib-typo-06;
+    color: $ib-color-07;
+  }
+}
+
 .modal-footer {
   justify-content: flex-start;
 }
