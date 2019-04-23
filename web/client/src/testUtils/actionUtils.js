@@ -7,6 +7,15 @@ export const functionToTest = (store, actionHelper, expectedActions) =>
     expect(store.getActions()).toEqual(expectedActions)
   });
 
+export const syncronousActionTester = (store, actionHelper, expectedActions) => {
+  store.dispatch(actionHelper())
+  if (expectedActions) {
+    expect(store.getActions()).toEqual(expectedActions)
+  } else {
+    return store.getActions()
+  }
+};
+
 export const routerAction = (url) => (
   {
   "payload": {"args": [url], "method": "push"},
