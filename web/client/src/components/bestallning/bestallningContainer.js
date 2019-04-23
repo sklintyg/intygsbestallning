@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actions from '../../store/actions/bestallning'
 import * as modalActions from '../../store/actions/modal'
@@ -7,7 +7,6 @@ import { getBestallning, getErrorMessage, isFetching } from '../../store/reducer
 import BestallningFraga from './bestallningFraga'
 import BestallningHeader from './bestallningHeader'
 import { FlexColumnContainer, ScrollingContainer, WorkareaContainer } from '../styles/ibLayout'
-import AppFooter from '../appFooter/AppFooter'
 import styled from 'styled-components'
 import Colors from '../styles/IbColors'
 import { compose, lifecycle } from 'recompose'
@@ -27,10 +26,6 @@ const SpinnerContainer = styled.div`
 const BestallningContainer = ({ error, bestallning, history, fetching }) => {
   const bestallningIsEmpty = Object.entries(bestallning).length === 0 && bestallning.constructor === Object
 
-  if (error && bestallningIsEmpty) {
-    return <Redirect to={'/exit/' + error.error.errorCode} />
-  }
-
   if (fetching) {
     return (
       <SpinnerContainer>
@@ -48,7 +43,6 @@ const BestallningContainer = ({ error, bestallning, history, fetching }) => {
             <BestallningFraga key={i} props={b} />
           ))}
         </WorkareaContainer>
-        <AppFooter />
       </CustomScrollingContainer>
     </FlexColumnContainer>
   )
