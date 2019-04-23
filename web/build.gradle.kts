@@ -7,8 +7,8 @@ import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 val buildClient = project.hasProperty("client") || project.hasProperty("useMinifiedJavaScript")
 
 plugins {
-  id("org.springframework.boot") version "2.1.3.RELEASE"
-  id("com.moowork.node") version "1.2.0"
+  id("org.springframework.boot")
+  id("com.moowork.node")
 }
 
 dependencies {

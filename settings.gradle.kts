@@ -16,9 +16,16 @@ pluginManagement {
 			if (requested.id.id.startsWith("io.spring.dependency-management")) {
 				useVersion(Dependencies.springDependencyManagementVersion)
 			}
+			if (requested.id.id.startsWith("org.springframework.boot")) {
+				useVersion(Dependencies.springBootVersion)
+			}
+			if (requested.id.id.startsWith("com.moowork.node")) {
+				useVersion(Dependencies.nodePluginVersion)
+			}
 		}
 	}
 }
+
 rootProject.name = "intygsbestallning"
 
 include(":common")
