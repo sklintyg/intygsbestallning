@@ -39,7 +39,7 @@ const BestallningActionBar = ({
     if (avvisa === 'true') {
       return rejectBestallning(bestallning.id, { fritextForklaring })
     } else {
-      return deleteBestallning(bestallning.id, { fritextForklaring }).then(openBorttagenDialog)
+      return deleteBestallning(bestallning.id, { fritextForklaring }).then(openBorttagenDialog).catch(()=>{})
     }
   }
 

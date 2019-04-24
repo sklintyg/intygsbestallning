@@ -26,16 +26,16 @@ const ErrorPage = ({match}) => {
 
   switch (match.params.errorCode) {
   case 'LOGIN.FEL002':
-    activeError.title = 'Inloggning misslyckades';
-    activeError.message = 'Det uppstod ett tekniskt fel när din behörighet skulle kontrolleras.';
+    activeError.title = 'Behörighet saknas';
+    activeError.message = 'Du saknar behörighet för att ta del av den aktuella förfrågan eller beställningen. För att ta del av en förfrågan eller beställning krävs ett medarbetaruppdrag med ändamål vård och behandling på den vårdenhet dit beställningen inkommit.';
     break;
   case 'LOGIN.FEL004':
-    activeError.title = 'Inloggning misslyckades';
+    activeError.title = 'Tekniskt fel';
     activeError.message = 'Det uppstod ett tekniskt fel när din behörighet skulle kontrolleras.';
     break;
   case 'LOGIN.FEL001':
-    activeError.title = 'Inloggning misslyckades';
-    activeError.message = 'Ett fel uppstod vid inloggning. Vänligen kontrollera att du matat in rätt uppgifter.';
+    activeError.title = 'Ett fel uppstod vid inloggningen';
+    activeError.message = '';
     break;
   case 'UNAUTHORIZED':
     activeError.title = 'Behörighet saknas';

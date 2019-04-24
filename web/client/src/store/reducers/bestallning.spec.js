@@ -28,12 +28,12 @@ describe('beställning reducer', () => {
   })
 
   test('should return ErrorMessage', () => {
-    const errorMessage = { message: 'ANY', errorCode: 0 }
+    const errorMessage = { message: 'ANY', errorCode: 'BAD_REQUEST', logId: 'aaa' }
     const action = {
       type: actions.FETCH_BESTALLNING_FAILURE,
-      payload: errorMessage,
+      payload: { error: errorMessage },
     }
-    const stateAfter = { ...stateBefore, errorMessage: errorMessage }
+    const stateAfter = { ...stateBefore, errorMessage: { logId: 'aaa', title: 'Tekniskt fel', message:'Prova igen om en stund.' } }
     expect(reducer({}, action)).toEqual(stateAfter)
   })
 
@@ -55,7 +55,7 @@ describe('beställning reducer', () => {
     const stateAfter = {
       ...stateBefore,
       bestallning: {},
-      errorMessage: { ...errorMessage, modal: { message: DELETE_FAIL_MODAL_BODY, title: DELETE_FAIL_MODAL_HEADER } },
+      errorMessage: { ...errorMessage, modal: { message: '', title: DELETE_FAIL_MODAL_HEADER } },
     }
     expect(reducer({}, action)).toEqual(stateAfter)
   })

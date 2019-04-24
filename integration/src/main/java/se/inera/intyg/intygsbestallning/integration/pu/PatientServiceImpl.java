@@ -7,6 +7,8 @@ import se.inera.intyg.infra.integration.pu.model.Person;
 import se.inera.intyg.infra.integration.pu.model.PersonSvar;
 import se.inera.intyg.infra.integration.pu.services.PUService;
 import se.inera.intyg.intygsbestallning.common.domain.Invanare;
+import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
+import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
 import se.inera.intyg.schemas.contract.Personnummer;
 
 @Service
@@ -29,7 +31,7 @@ public class PatientServiceImpl implements PatientService {
                 return Optional.empty();
             case ERROR:
             default:
-                throw new RuntimeException("Could not get uppslag from PU"); //TODO: Throw better exception
+                throw new IbServiceException(IbErrorCodeEnum.PU_ERROR, "Could not get uppslag from PU");
         }
     }
 
@@ -44,14 +46,14 @@ public class PatientServiceImpl implements PatientService {
                 return Optional.empty();
             case ERROR:
             default:
-                throw new RuntimeException("Could not get uppslag from PU"); //TODO: Throw better exception
+                throw new IbServiceException(IbErrorCodeEnum.PU_ERROR, "Could not get uppslag from PU");
         }
     }
 
     private PersonSvar puLookup(Personnummer personnummer) {
         var personSvar = Try.of(() -> puService.getPerson(personnummer));
         if (personSvar.isFailure()) {
-            throw new RuntimeException("Could not get uppslag from PU"); //TODO: Throw better exception
+            throw new IbServiceException(IbErrorCodeEnum.PU_ERROR, "Could not get uppslag from PU");
         }
         return personSvar.get();
     }

@@ -11,6 +11,8 @@ import styled from 'styled-components'
 import Colors from '../styles/IbColors'
 import { compose, lifecycle } from 'recompose'
 import LoadingSpinner from '../loadingSpinner'
+import {ErrorPageIcon} from "../styles/IbSvgIcons"
+import ErrorMessageFormatter from "../../messages/ErrorMessageFormatter"
 
 const CustomScrollingContainer = styled(ScrollingContainer)`
   background-color: ${Colors.IB_COLOR_27};
@@ -23,6 +25,18 @@ const SpinnerContainer = styled.div`
   width: 100%;
 `
 
+const ErrorContainer = styled.div`
+  margin: auto;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 290px);
+  padding-bottom: 60px;
+  justify-content: center;
+  align-items: center;
+`
+
 const BestallningContainer = ({ error, bestallning, history, fetching }) => {
   const bestallningIsEmpty = Object.entries(bestallning).length === 0 && bestallning.constructor === Object
 
@@ -31,6 +45,19 @@ const BestallningContainer = ({ error, bestallning, history, fetching }) => {
       <SpinnerContainer>
         <LoadingSpinner loading={fetching} message={'Hämtar Beställning'} />
       </SpinnerContainer>
+    )
+  }
+
+  if (error && !error.modal) {
+    return (
+      <FlexColumnContainer>
+        <BestallningHeader props={{ error, bestallning, history }} />
+        <ErrorContainer>
+          <ErrorPageIcon />
+          <br />
+          <ErrorMessageFormatter error={error} />
+        </ErrorContainer>
+      </FlexColumnContainer>
     )
   }
 

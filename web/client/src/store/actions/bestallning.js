@@ -133,6 +133,7 @@ export const deleteBestallning = (id, fritextForklaring) => (dispatch) => {
         id,
         payload: errorResponse,
       })
+      throw new Error(errorResponse)
     }
   )
 }

@@ -21,6 +21,8 @@ import se.inera.intyg.intygsbestallning.common.dto.BestallningInvanareDto;
 import se.inera.intyg.intygsbestallning.common.dto.PdfBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningDto;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningScope;
+import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
+import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
 import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTextService;
 import se.inera.intyg.intygsbestallning.integration.pu.PatientService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
@@ -89,7 +91,7 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
         var personSvar = patientService.lookupPersonnummerFromPU(bestallning.get().getInvanare().getPersonId());
 
         if (personSvar.isEmpty()) {
-            throw new IllegalArgumentException("Person was not found in PU");
+            throw new IbServiceException(IbErrorCodeEnum.PU_ERROR, "Person was not found in PU");
         }
 
         var invanareDto = BestallningInvanareDto.Factory.toDto(
