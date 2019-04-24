@@ -5,6 +5,10 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import { School, AboutIcon } from '../../styles/IbSvgIcons'
 import styled from 'styled-components'
 import colors from '../../styles/IbColors'
+import { compose, lifecycle } from 'recompose'
+import { connect } from 'react-redux'
+import * as actions from '../../../store/actions/versionInfo'
+import { getVersionInfo, getErrorMessage, getIsFetching } from '../../../store/reducers/versionInfo'
 
 const Intygsskola = styled.div`
   background-color: ${colors.IB_COLOR_20};
@@ -25,7 +29,8 @@ const StyledSchool = styled.span`
   padding-right: 10px;
 `
 
-const About = ({ handleOpen, handleClose, isOpen }) => {
+const About = ({ handleOpen, handleClose, isOpen, versionInfo }) => {
+  console.log(versionInfo.versionInfo.buildVersion)
   return (
     <Fragment>
       <ActionButton onClick={handleOpen} id="changeUnitBtn">
@@ -43,7 +48,7 @@ const About = ({ handleOpen, handleClose, isOpen }) => {
             </a>
           </Intygsskola>
           <p>Intygsbeställning är en tjänst som drivs av Inera AB.</p>
-          <p>Nuvarande version är AKTUELLT_VERSIONSNUMMER</p>
+          <p>Nuvarande version är {versionInfo.versionInfo.buildVersion}</p>
           <p>
             Intygsbeställning är utvecklat för Inernet Explorer 11 och efterföljande versioner. Andra webbläsare kan användas, men då finns
             det risk att problem uppstår.
@@ -125,4 +130,24 @@ About.propTypes = {
   isOpen: PropTypes.bool.isRequired,
 }
 
-export default About
+const lifeCycleValues = {
+  componentDidMount() {
+    this.props.fetchVersionInfo()
+  },
+}
+
+const mapStateToProps = (state) => {
+  return {
+    versionInfo: getVersionInfo(state),
+    isFetching: getIsFetching(state),
+    errorMessage: getErrorMessage(state),
+  }
+}
+
+export default compose(
+  connect(
+    mapStateToProps,
+    actions
+  ),
+  lifecycle(lifeCycleValues)
+)(About)

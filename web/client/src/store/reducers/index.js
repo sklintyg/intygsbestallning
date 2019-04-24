@@ -6,6 +6,7 @@ import bestallning from './bestallning'
 import modal from './modal'
 import sessionPoll from './sessionPoll'
 import cookieBanner from './cookieBanner'
+import versionInfo from './versionInfo'
 
 const appReducer = (history) =>
   combineReducers({
@@ -16,6 +17,7 @@ const appReducer = (history) =>
     modal,
     sessionPoll,
     cookieBanner,
+    versionInfo
   })
 
 const reducers = (history) => (state, action) => {
