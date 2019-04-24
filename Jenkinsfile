@@ -7,14 +7,16 @@ node {
     def java11tool = tool name: 'jdk11', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
     def javaHome= "${java11tool}/jdk-11.0.2+9"
 
-    def gradletool = tool name: 'gradle', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
-    def gradle = "${gradletool}/gradle-5.2.1/bin/gradle -Dorg.gradle.java.home=${javaHome}"
+    def versionFlags = "-Dorg.gradle.java.home=${javaHome} -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
 
-    def versionFlags = "-DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
+    stage('checkout') {
+        git url: "https://github.com/sklintyg/intygsbestallning.git", branch: GIT_BRANCH
+        util.run { checkout scm }
+    }
 
     stage('build') {
         try {
-            sh "${gradle} --refresh-dependencies clean build -P client ${versionFlags}"
+            shgradle "--refresh-dependencies clean build -P client ${versionFlags}"
         } finally {
             publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/allTests', \
                     reportFiles: 'index.html', reportName: 'JUnit results'
@@ -23,7 +25,7 @@ node {
 
     stage('tag') {
         try {
-            shgradle "tagRelease -Dorg.gradle.java.home=${javaHome} ${versionFlags}"
+            shgradle "tagRelease ${versionFlags}"
         } catch (e) {
             echo "FIXME: tagRelease task error ignored (works locally but not on Jenkins): ${e.message}"
         }
