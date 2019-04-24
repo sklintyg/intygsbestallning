@@ -24,11 +24,7 @@ node {
     }
 
     stage('tag') {
-        try {
-            shgradle "tagRelease ${versionFlags}"
-        } catch (e) {
-            echo "FIXME: tagRelease task error ignored (works locally but not on Jenkins): ${e.message}"
-        }
+        shgradle "tagRelease ${versionFlags}"
     }
 
     stage('propagate') {
