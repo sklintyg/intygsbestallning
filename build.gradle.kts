@@ -1,5 +1,8 @@
 
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
+import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import se.inera.intyg.TagReleaseTask
 import se.inera.intyg.intygsbestallning.build.Config.Dependencies
@@ -34,6 +37,10 @@ allprojects {
 }
 
 apply(plugin = "se.inera.intyg.plugin.common")
+
+tasks {
+  register<TagReleaseTask>("tagRelease")
+}
 
 subprojects {
   apply(plugin = "org.gradle.maven")
@@ -80,7 +87,6 @@ subprojects {
   }
 
   tasks {
-    register<TagReleaseTask>("tagRelease")
 
     withType<Test> {
       useJUnitPlatform()
