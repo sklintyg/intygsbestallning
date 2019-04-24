@@ -20,8 +20,8 @@ node {
             }
     }
 
-    stage('tag and upload') {
-        sh "${gradle} uploadArchives -DbuildVersion=${buildVersion}"
+    stage('tag') {
+	shgradle "tagRelease -DbuildVersion=${buildVersion}"
     }
 
     stage('propagate') {
