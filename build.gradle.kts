@@ -17,7 +17,7 @@ plugins {
 
 allprojects {
   group = "se.inera.intyg.intygsbestallning"
-  version = System.getenv("buildVersion") ?: "0-SNAPSHOT"
+  version = System.getProperty("buildVersion", "0-SNAPSHOT")
 
   extra.apply {
     set("intygInfraVersion", System.getProperty("infraVersion", "0-SNAPSHOT"))
