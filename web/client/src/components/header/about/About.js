@@ -2,7 +2,28 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { ActionButton } from '../styles'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
-import { AboutIcon } from '../../styles/IbSvgIcons'
+import { School, AboutIcon } from '../../styles/IbSvgIcons'
+import styled from 'styled-components'
+import colors from '../../styles/IbColors'
+
+const Intygsskola = styled.div`
+  background-color: ${colors.IB_COLOR_20};
+  padding: 20px;
+  margin-bottom: 10px;
+
+  & a {
+    text-decoration: underline;
+    color: ${colors.IB_COLOR_31} !important;
+  }
+
+  & a:hover {
+    color: ${colors.IB_COLOR_21};
+  }
+`
+
+const StyledSchool = styled.span`
+  padding-right: 10px;
+`
 
 const About = ({ handleOpen, handleClose, isOpen }) => {
   return (
@@ -15,9 +36,12 @@ const About = ({ handleOpen, handleClose, isOpen }) => {
       <Modal isOpen={isOpen} size={'lg'} backdrop={true} toggle={handleClose}>
         <ModalHeader toggle={handleClose}>Om Intygsbeställning</ModalHeader>
         <ModalBody>
-          <p>
-            <a href="https://www.inera.se/aktuellt/utbildningar/intygsskolan/intygsbestallning/">Hitta svar på dina frågor i Ineras Intygsskola</a>
-          </p>
+          <Intygsskola>
+            <StyledSchool><School color={colors.IB_COLOR_31}/></StyledSchool>
+            <a className="extern" href="https://www.inera.se/aktuellt/utbildningar/intygsskolan/intygsbestallning/">
+              Hitta svar på dina frågor i Ineras Intygsskola
+            </a>
+          </Intygsskola>
           <p>Intygsbeställning är en tjänst som drivs av Inera AB.</p>
           <p>Nuvarande version är AKTUELLT_VERSIONSNUMMER</p>
           <p>
@@ -25,9 +49,11 @@ const About = ({ handleOpen, handleClose, isOpen }) => {
             det risk att problem uppstår.
           </p>
           <p>
-            För att kunna generera utskrifter använder sig Intygbeställning av <a href="https://itextpdf.com">iText7</a>. För mer information under vilka villkor iText7
-            får användas läs mer om AGPL 3.0 på <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">gnu.org</a>. För Intygsbeställnings källkod besök <a href="https://github.com/sklintyg/intygsbestallning">Github</a>. För Intygsbeställnings
-            upphovsrättslicens besök <a href="https://github.com/sklintyg/intygsbestallning">Github</a>.
+            För att kunna generera utskrifter använder sig Intygbeställning av <a href="https://itextpdf.com">iText7</a>. För mer
+            information under vilka villkor iText7 får användas läs mer om AGPL 3.0 på{' '}
+            <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">gnu.org</a>. För Intygsbeställnings källkod besök{' '}
+            <a href="https://github.com/sklintyg/intygsbestallning">Github</a>. För Intygsbeställnings upphovsrättslicens besök{' '}
+            <a href="https://github.com/sklintyg/intygsbestallning">Github</a>.
           </p>
 
           <h5>Behandling av personuppgifter</h5>
@@ -36,7 +62,10 @@ const About = ({ handleOpen, handleClose, isOpen }) => {
             personuppgiftsbiträde för landsting, regioner och kommuner. Inera värnar om den personliga integriteten och eftersträvar alltid
             en hög nivå av dataskydd.
           </p>
-          <p>Läs mer om hur personuppgifter behandlas på <a href="https://www.inera.se/om-inera/behandling-av-personuppgifter/">Ineras webbplats</a>.</p>
+          <p>
+            Läs mer om hur personuppgifter behandlas på{' '}
+            <a href="https://www.inera.se/om-inera/behandling-av-personuppgifter/">Ineras webbplats</a>.
+          </p>
 
           <h5>Användandet av kakor (cookies)</h5>
           <p>
@@ -57,7 +86,10 @@ const About = ({ handleOpen, handleClose, isOpen }) => {
             Om du väljer att acceptera användningen av kakor kommer ditt samtyckte att lagras permanent i din webbläsare. För att ta
             tillbaka ditt samtycke behöver du rensa kakor och annan webbplatsdata för den här webbplatsen i din webbläsare.
           </p>
-          <p>Mer information om kakor (cookies) finns på <a href="https://pts.se/sv/privat/internet/integritet/kakor-cookies/">Post- och telestyrelsens webbplats</a>.</p>
+          <p>
+            Mer information om kakor (cookies) finns på{' '}
+            <a href="https://pts.se/sv/privat/internet/integritet/kakor-cookies/">Post- och telestyrelsens webbplats</a>.
+          </p>
 
           <h5>Kontakt och support</h5>
           <p>Vid frågor gällande inloggning, kontakta leverantören av din e-legitimation eller SITHS-kortsadministratör.</p>
@@ -65,7 +97,9 @@ const About = ({ handleOpen, handleClose, isOpen }) => {
             Tekniska frågor om Intygsbeställning hanteras i första hand av din lokala IT-avdelningen. Om din lokala IT-avdelning inte kan
             hitta felet ska de kontakta <a href="https://www.inera.se/kundservice">Ineras kundservice</a>.
           </p>
-          <p>Har du som användare synpunkter på tjänsten kan du kontakta <a href="https://www.inera.se/kundservice">Ineras kundservice</a>.</p>
+          <p>
+            Har du som användare synpunkter på tjänsten kan du kontakta <a href="https://www.inera.se/kundservice">Ineras kundservice</a>.
+          </p>
           <p>
             Inera AB
             <br />
