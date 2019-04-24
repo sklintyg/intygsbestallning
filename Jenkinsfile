@@ -21,7 +21,7 @@ node {
     }
 
     stage('tag') {
-	shgradle "tagRelease -DbuildVersion=${buildVersion}"
+        sh "${gradle} tagRelease ${versionFlags}"
     }
 
     stage('propagate') {
