@@ -7,7 +7,7 @@ node {
     def javaHome= "${java11tool}/jdk-11.0.2+9"
 
     def gradletool = tool name: 'gradle', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
-    def gradle = "${gradletool}/gradle-5.2.1/bin/gradle -Dorg.gradle.java.home=/${javaHome}"
+    def gradle = "${gradletool}/gradle-5.2.1/bin/gradle -Dorg.gradle.java.home=${javaHome}"
 
     def versionFlags = "-DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
 
@@ -22,7 +22,8 @@ node {
 
     stage('tag') {
         try {
-            sh "${gradle} tagRelease ${versionFlags}"
+            sh "pwd"
+            shgradle "tagRelease -Dorg.gradle.java.home=${javaHome} ${versionFlags}"
         } catch (e) {
             echo "FIXME: tagRelease task error ignored (works locally but not on Jenkins): ${e.message}"
         }
