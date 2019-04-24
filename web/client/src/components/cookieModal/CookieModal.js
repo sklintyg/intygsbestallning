@@ -1,9 +1,17 @@
 import React, { Fragment } from 'react'
 import modalContainer from '../modalContainer/modalContainer'
 import { compose } from 'recompose'
+import { connect } from 'react-redux'
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
+import { acceptCookieBanner } from '../../store/actions/cookieBanner'
+import { getCookieBannerAccepted } from '../../store/reducers/cookieBanner'
 
-const CookieModal = ({ handleClose, isOpen, accept }) => {
+const CookieModal = ({ handleClose, isOpen, acceptCookieBanner, cookieBannerAccepted }) => {
+  const accept = () => {
+    acceptCookieBanner('true')
+    handleClose()
+  }
+
   return (
     <Fragment>
       <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
@@ -32,18 +40,25 @@ const CookieModal = ({ handleClose, isOpen, accept }) => {
             hjälpsidor för mer information.
           </p>
           <p>Väljer du att inte acceptera kakor så kan du inte identifiera dig med e-legitimation i denna e-tjänst.</p>
-          <p>Mer information om kakor kan du finna på <a className="extern" href="https://pts.se/sv/privat/internet/integritet/kakor-cookies/">Kommunikationsmyndigheten PTS sida om kakor</a></p>
+          <p>
+            Mer information om kakor kan du finna på{' '}
+            <a className="extern" href="https://pts.se/sv/privat/internet/integritet/kakor-cookies/">
+              Kommunikationsmyndigheten PTS sida om kakor
+            </a>
+          </p>
         </ModalBody>
         <ModalFooter>
-          <Button color={'primary'} onClick={() => accept()}>
-            Jag godkänner
-          </Button>
+          {cookieBannerAccepted !== 'true' && (
+            <Button color={'primary'} onClick={accept}>
+              Jag godkänner
+            </Button>
+          )}
           <Button
             color={'default'}
             onClick={() => {
               handleClose()
             }}>
-            Avbryt
+            {cookieBannerAccepted === 'true' ? 'Stäng' : 'Avbryt'}
           </Button>
         </ModalFooter>
       </Modal>
@@ -51,5 +66,16 @@ const CookieModal = ({ handleClose, isOpen, accept }) => {
   )
 }
 
+const mapStateToProps = (state) => {
+  return {
+    cookieBannerAccepted: getCookieBannerAccepted(state),
+  }
+}
 export const CookieModalId = 'cookieModal'
-export default compose(modalContainer(CookieModalId))(CookieModal)
+export default compose(
+  connect(
+    mapStateToProps,
+    { acceptCookieBanner }
+  ),
+  modalContainer(CookieModalId)
+)(CookieModal)

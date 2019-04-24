@@ -4,6 +4,10 @@ import ibValues from '../styles/IbValues'
 import ibColors from '../styles/IbColors'
 import { IbTypo14, IbTypo07 } from '../styles/IbTypography'
 import { Button } from 'reactstrap'
+import { openModal } from '../../store/actions/modal'
+import { CookieModalId } from '../cookieModal/CookieModal'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
 
 const FooterOuterContainer = styled.div`
   background-color: ${ibColors.IB_COLOR_28};
@@ -35,10 +39,8 @@ const InternLank = styled(Button)`
   }
 `
 
-const AppFooter = () => {
-  const openCookieDialog = () => {
-    // öppna cookie dialog
-  }
+const AppFooter = ({openModal}) => {
+  const openCookieDialog = () => openModal(CookieModalId)
 
   return (
     <FooterOuterContainer>
@@ -83,4 +85,9 @@ const AppFooter = () => {
   )
 }
 
-export default AppFooter
+export default compose(
+  connect(
+    null,
+    { openModal }
+  )
+)(AppFooter)

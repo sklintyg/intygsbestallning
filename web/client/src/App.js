@@ -19,6 +19,7 @@ import ErrorModal from './components/errorModal'
 import TestLinks from './components/TestLinks/TestLinks'
 import SessionPoller from './components/sessionPoller'
 import CookieBanner from './components/cookieBanner/CookieBanner'
+import CookieModal from './components/cookieModal/CookieModal'
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
           <Header />
           <CookieBanner />
           <ErrorModal />
+          <CookieModal />
           <Switch>
             <UnsecuredRoute exact path="/" component={HomePage} />
             <UnsecuredRoute path="/loggedout/:method" component={HomePage} />

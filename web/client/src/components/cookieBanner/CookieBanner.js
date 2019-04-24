@@ -1,11 +1,13 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment } from 'react'
 import IbColors from '../styles/IbColors'
 import styled from 'styled-components'
 import { Button } from 'reactstrap'
-import CookieModal, {CookieModalId} from '../cookieModal/CookieModal'
+import { CookieModalId } from '../cookieModal/CookieModal'
 import * as modalActions from '../../store/actions/modal'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
+import { acceptCookieBanner } from '../../store/actions/cookieBanner'
+import { getCookieBannerAccepted } from '../../store/reducers/cookieBanner'
 
 const CookieBannerWrapper = styled.div`
   display: flex;
@@ -30,24 +32,14 @@ const CookieBannerWrapper = styled.div`
   }
 `
 
-const CookieBanner = ({openModal}) => {
-  let storedSetting = localStorage.getItem('COOKIE_BANNER_ACCEPTED')
-  if(storedSetting === null){
-    storedSetting = true
-  } else {
-    storedSetting = storedSetting === 'true'
-  }
-  const [showBanner, setShowBanner] = useState(storedSetting)
-
+const CookieBanner = ({ openModal, acceptCookieBanner, cookieBannerAccepted }) => {
   const onBannerButtonClick = () => {
-    setShowBanner(false)
+    acceptCookieBanner('true')
   }
 
   const openCookieModal = () => openModal(CookieModalId)
 
-  useEffect(() => {localStorage.setItem('COOKIE_BANNER_ACCEPTED', showBanner)}, [showBanner])
-
-  if (!showBanner) {
+  if (cookieBannerAccepted === 'true') {
     return null
   }
   return (
@@ -55,7 +47,8 @@ const CookieBanner = ({openModal}) => {
       <CookieBannerWrapper>
         <div>
           Vi använder kakor (cookies) för att den här webbplatsen ska fungera på ett bra sätt för dig. Genom att logga in accepterar du vår
-          användning av kakor. <Button color="link" onClick={openCookieModal}>
+          användning av kakor.{' '}
+          <Button color="link" onClick={openCookieModal}>
             Läs mer om kakor
           </Button>
         </div>
@@ -63,14 +56,19 @@ const CookieBanner = ({openModal}) => {
           <Button onClick={() => onBannerButtonClick()}>Jag godkänner</Button>
         </div>
       </CookieBannerWrapper>
-      <CookieModal accept={() => onBannerButtonClick()}></CookieModal>
     </Fragment>
   )
 }
 
+const mapStateToProps = (state) => {
+  return {
+    cookieBannerAccepted: getCookieBannerAccepted(state),
+  }
+}
+
 export default compose(
   connect(
-    null,
-    {...modalActions }
+    mapStateToProps,
+    { ...modalActions, acceptCookieBanner }
   )
 )(CookieBanner)
