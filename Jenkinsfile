@@ -1,4 +1,5 @@
 #!groovy
+
 node {
     def buildVersion = "0.0.1.${BUILD_NUMBER}"
     def infraVersion = "3.10.0.+"
@@ -6,14 +7,17 @@ node {
     def java11tool = tool name: 'jdk11', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
     def javaHome= "${java11tool}/jdk-11.0.2+9"
 
+    def gradletool = tool name: 'gradle', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
+    def gradle = "${gradletool}/gradle-5.2.1/bin/gradle -Dorg.gradle.java.home=${javaHome}"
+
     def versionFlags = "-DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
 
     stage('build') {
         try {
-            shgradle "--refresh-dependencies clean build -P client -Dorg.gradle.java.home=${javaHome} ${versionFlags}"
-          } finally {
+            sh "${gradle} --refresh-dependencies clean build -P client ${versionFlags}"
+        } finally {
             publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/allTests', \
-                reportFiles: 'index.html', reportName: 'JUnit results'
+                    reportFiles: 'index.html', reportName: 'JUnit results'
         }
     }
 
