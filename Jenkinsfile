@@ -24,7 +24,7 @@ node {
         try {
             sh "${gradle} tagRelease ${versionFlags}"
         } catch (e) {
-            log("FIXME: tagRelease task error ignored (works locally but not on Jenkins): " + e.message)
+            echo "FIXME: tagRelease task error ignored (works locally but not on Jenkins): ${e.message}"
         }
     }
 
