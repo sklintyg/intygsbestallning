@@ -39,7 +39,14 @@ allprojects {
 apply(plugin = "se.inera.intyg.plugin.common")
 
 tasks {
-  register<TagReleaseTask>("tagRelease")
+  val tagRelease by creating(DefaultTask::class) {
+    FileRepositoryBuilder().setGitDir(File(project.rootProject.projectDir, ".git")).readEnvironment().findGitDir().build().use {
+      val git = Git(it)
+      git.tag().setName("v" + project.version).setMessage("Release of ${project.version}").call()
+      git.push().setCredentialsProvider(UsernamePasswordCredentialsProvider(
+              System.getProperty("githubUser"), System.getProperty("githubPassword"))).setPushTags().call()
+    }
+  }
 }
 
 subprojects {
