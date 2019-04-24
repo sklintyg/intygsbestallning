@@ -143,6 +143,10 @@ $alert-padding-x: 0.5rem;
 
 .btn-link {
   padding: 0;
+  // For some unknown reason, using the value "transparent" doesn't work.
+  // Something in the scss processing replaces it with "initial" which in turn causes btn-link to have a gray background in IE11
+  // As a workaround, setting an corresponding tranaparant rgb value works..
+  background-color: rgba(0,0,0,0);
 }
 
 th .btn-link {
