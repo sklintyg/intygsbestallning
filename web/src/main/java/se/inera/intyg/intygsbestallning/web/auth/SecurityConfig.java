@@ -192,10 +192,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     @Bean
     public OrRequestMatcher samlRequestMatcher() {
         ArrayList<RequestMatcher> matchers = Lists.newArrayList(
-                new AntPathRequestMatcher("/"),
-                new AntPathRequestMatcher("/#/app"),
+                new AntPathRequestMatcher("/#/bestallning"),
                 new AntPathRequestMatcher("/saml/**"),
-                new AntPathRequestMatcher("/maillink/**"));
+                new AntPathRequestMatcher("/api/maillink/**"),
+                new AntPathRequestMatcher("/"));
         return new OrRequestMatcher(matchers);
     }
 
@@ -304,7 +304,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     @Profile({"prod", "ib-security-test", "ib-security-prod"})
     public static HttpSessionRequestCache requestCache() {
         HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
-        requestCache.setRequestMatcher(new RegexRequestMatcher("\\/maillink\\/.*", null));
+        requestCache.setRequestMatcher(new RegexRequestMatcher("\\/api\\/maillink\\/.*", null));
         return requestCache;
     }
 
@@ -516,8 +516,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
             .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/welcome-assets/**").permitAll()
+                .antMatchers("/version.html").permitAll()
+                .antMatchers("/metrics/version").permitAll()
                 .antMatchers("/version-assets/**").permitAll()
-                .antMatchers("/favicon.ico").permitAll()
+                .antMatchers("/favicon*").permitAll()
                 .antMatchers("/index.html").permitAll()
                 .antMatchers("/static/**").permitAll()
                 .antMatchers("/images/**").permitAll()
@@ -534,15 +536,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
             http
                     .authorizeRequests()
                     .antMatchers("/welcome.html").permitAll()
-                    .antMatchers("/version.html").permitAll()
                     .antMatchers("/api/stub/**").permitAll()
                     .antMatchers("/api/test/**").permitAll()
-                    .antMatchers("/api/version").permitAll()
                     .antMatchers("/h2-console/**").permitAll();
 
             // @formatter:off
             http
-                .authorizeRequests().antMatchers("/**").fullyAuthenticated()
+                .authorizeRequests()
+                    .antMatchers("/**").authenticated()
                 .and().httpBasic()
                     .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
                 .and()
@@ -567,7 +568,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
                 .requestMatcher(samlRequestMatcher())
                     .authorizeRequests()
                     .antMatchers("/fake").permitAll()
-                    .antMatchers("/**").fullyAuthenticated()
+                    .antMatchers("/**").authenticated()
                 .and()
                     .httpBasic()
                     .authenticationEntryPoint(samlEntryPoint())
@@ -575,7 +576,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
                     .csrf().disable()
                     .headers().frameOptions().disable()
                 .and()
-                    .authorizeRequests().antMatchers("/**").fullyAuthenticated()
+                    .addFilterAt(fakeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
+                    .addFilterAfter(samlFilter(), BasicAuthenticationFilter.class)
+                    .sessionManagement()
+                    .sessionAuthenticationStrategy(registerSessionAuthenticationStrategy())
+                .and()
+                    .requestCache()
+                    .requestCache(requestCache());
+
+            http
+                .regexMatcher("\\api\\/maillink\\/.*")
+                    .authorizeRequests()
+                    .antMatchers("/fake").permitAll()
+                    .antMatchers("/**").authenticated()
+                .and()
+                    .httpBasic()
+                    .authenticationEntryPoint(samlEntryPoint())
+                .and()
+                    .csrf().disable()
+                    .logout()
+                    .invalidateHttpSession(true)
+                    .logoutUrl(FAKE_LOGOUT_URL)
+                    .logoutSuccessUrl("/welcome.html")
                 .and()
                     .addFilterAt(fakeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
                     .addFilterAfter(samlFilter(), BasicAuthenticationFilter.class)
