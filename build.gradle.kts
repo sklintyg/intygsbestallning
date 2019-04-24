@@ -38,17 +38,6 @@ allprojects {
 
 apply(plugin = "se.inera.intyg.plugin.common")
 
-tasks {
-  val tagRelease by creating(DefaultTask::class) {
-    FileRepositoryBuilder().setGitDir(File(project.rootProject.projectDir, ".git")).readEnvironment().findGitDir().build().use {
-      val git = Git(it)
-      git.tag().setName("v" + project.version).setMessage("Release of ${project.version}").call()
-      git.push().setCredentialsProvider(UsernamePasswordCredentialsProvider(
-              System.getProperty("githubUser"), System.getProperty("githubPassword"))).setPushTags().call()
-    }
-  }
-}
-
 subprojects {
   apply(plugin = "org.gradle.maven")
   apply(plugin = "org.gradle.maven-publish")
@@ -109,6 +98,10 @@ subprojects {
       kotlinOptions.jvmTarget = Jvm.kotlinJvmTarget
     }
   }
+}
+
+tasks {
+  register<TagReleaseTask>("tagRelease")
 }
 
 publishing {
