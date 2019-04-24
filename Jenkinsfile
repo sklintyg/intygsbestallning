@@ -6,23 +6,19 @@ node {
     def java11tool = tool name: 'jdk11', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
     def javaHome= "${java11tool}/jdk-11.0.2+9"
 
-    def gradletool = tool name: 'gradle', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
-    def gradle = "${gradletool}/gradle-5.2.1/bin/gradle -Dorg.gradle.java.home=${javaHome}"
-
     def versionFlags = "-DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
 
     stage('build') {
-            try {
-                sh "${gradle} --refresh-dependencies clean build -P client ${versionFlags}"
-              } finally {
-                publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/allTests', \
-                    reportFiles: 'index.html', reportName: 'JUnit results'
-            }
+        try {
+            shgradle "--refresh-dependencies clean build -P client -Dorg.gradle.java.home=${javaHome} ${versionFlags}"
+          } finally {
+            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/allTests', \
+                reportFiles: 'index.html', reportName: 'JUnit results'
+        }
     }
 
     stage('tag') {
         try {
-            sh "pwd"
             shgradle "tagRelease -Dorg.gradle.java.home=${javaHome} ${versionFlags}"
         } catch (e) {
             echo "FIXME: tagRelease task error ignored (works locally but not on Jenkins): ${e.message}"
