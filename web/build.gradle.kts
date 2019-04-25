@@ -166,4 +166,8 @@ tasks {
       dependsOn(testReactApp)
     }
   }
+  
+  bootRun {
+      jvmArgs = listOf("-Dconfig.folder=${project.rootProject.projectDir}/devops/dev")
+  }
 }

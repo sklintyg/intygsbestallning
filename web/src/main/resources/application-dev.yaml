@@ -2,7 +2,7 @@ config:
   folder: dummy
 
 certificate:
-  folder: dummy
+  folder: ${config.folder}
 
 ntjp:
   base:
@@ -19,10 +19,15 @@ ib:
 putjanst:
   logicaladdress: PUDEV
 
-sakerhetstjanst:
+inera:
   saml:
+    metadata:
+      sp: ${config.folder}/sp-inera.xml
+      idp: ${config.folder}/idp-inera.xml
     keystore:
-      password: dummy
+      password: password
+      file: file:///${certificate.folder}/localhost.p12
+      alias: localhost
 
 activemq:
   broker:

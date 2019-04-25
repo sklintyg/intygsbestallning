@@ -27,7 +27,7 @@ spring:
   liquibase:
     change-log: classpath:/changelog/db-changelog-master.xml
   profiles:
-    active: default, myndighet-stub, dev, caching-enabled, wc-hsa-stub, dev-security
+    active: default, myndighet-stub, dev, caching-enabled, wc-hsa-stub, saml, fake
   main:
     allow-bean-definition-overriding: true
 
@@ -145,19 +145,15 @@ pdl:
 # Säkerhetstjänst SAML configuration
 #
 ################################################
-sakerhetstjanst:
+inera:
   saml:
-    responseSkew: 300
-    truststore:
-      file: file:${certificate.folder}/ntjp.truststore.jks
-    entityId: ${ib.host.url}
-    entityBaseUrl: ${ib.host.url}
-    idp:
-      metadata:
-        url: https://idp2.acctest.sakerhetstjanst.inera.se:443/idp/saml
+    metadata:
+        sp: ${config.folder}/sp-inera.xml
+        idp: ${config.folder}/idp-inera.xml
     keystore:
       file: file:${certificate.folder}/login.certificate.jks
       alias: verifiering.rehabstod.intygstjanster.sjunet.org
+      password: dummy
 
 # Bootstrap
 persistence:

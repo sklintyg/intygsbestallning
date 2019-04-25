@@ -18,25 +18,13 @@
  */
 package se.inera.intyg.intygsbestallning.web.auth;
 
-import static se.inera.intyg.intygsbestallning.web.controller.RequestErrorController.IB_SPRING_SEC_ERROR_CONTROLLER_PATH;
-import static se.inera.intyg.intygsbestallning.web.controller.SessionStatController.SESSION_STAT_REQUEST_MAPPING;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.collect.Lists;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.velocity.app.VelocityEngine;
 import org.jetbrains.annotations.NotNull;
 import org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
-import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.StaticBasicParserPool;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -57,22 +45,22 @@ import org.springframework.security.saml.SAMLBootstrap;
 import org.springframework.security.saml.SAMLLogoutFilter;
 import org.springframework.security.saml.SAMLLogoutProcessingFilter;
 import org.springframework.security.saml.SAMLProcessingFilter;
-import org.springframework.security.saml.context.SAMLContextProviderLB;
+import org.springframework.security.saml.context.SAMLContextProvider;
+import org.springframework.security.saml.context.SAMLContextProviderImpl;
 import org.springframework.security.saml.key.JKSKeyManager;
 import org.springframework.security.saml.log.SAMLDefaultLogger;
 import org.springframework.security.saml.metadata.CachingMetadataManager;
 import org.springframework.security.saml.metadata.ExtendedMetadata;
 import org.springframework.security.saml.metadata.ExtendedMetadataDelegate;
+import org.springframework.security.saml.metadata.MetadataDisplayFilter;
 import org.springframework.security.saml.parser.ParserPoolHolder;
-import org.springframework.security.saml.processor.HTTPArtifactBinding;
 import org.springframework.security.saml.processor.HTTPPostBinding;
 import org.springframework.security.saml.processor.HTTPRedirectDeflateBinding;
 import org.springframework.security.saml.processor.HTTPSOAP11Binding;
 import org.springframework.security.saml.processor.SAMLBinding;
 import org.springframework.security.saml.processor.SAMLProcessorImpl;
+import org.springframework.security.saml.storage.EmptyStorageFactory;
 import org.springframework.security.saml.util.VelocityFactory;
-import org.springframework.security.saml.websso.ArtifactResolutionProfile;
-import org.springframework.security.saml.websso.ArtifactResolutionProfileImpl;
 import org.springframework.security.saml.websso.SingleLogoutProfile;
 import org.springframework.security.saml.websso.SingleLogoutProfileImpl;
 import org.springframework.security.saml.websso.WebSSOProfile;
@@ -81,14 +69,15 @@ import org.springframework.security.saml.websso.WebSSOProfileConsumerHoKImpl;
 import org.springframework.security.saml.websso.WebSSOProfileConsumerImpl;
 import org.springframework.security.saml.websso.WebSSOProfileImpl;
 import org.springframework.security.saml.websso.WebSSOProfileOptions;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.ForwardAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
@@ -97,23 +86,35 @@ import org.springframework.security.web.authentication.session.RegisterSessionAu
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
-import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-
-import com.google.common.collect.Lists;
-
 import se.inera.intyg.intygsbestallning.web.auth.fake.FakeAuthenticationFilter;
 import se.inera.intyg.intygsbestallning.web.auth.fake.FakeAuthenticationProvider;
 import se.inera.intyg.intygsbestallning.web.auth.service.IntygsbestallningUserDetailsService;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static se.inera.intyg.intygsbestallning.web.controller.RequestErrorController.IB_SPRING_SEC_ERROR_CONTROLLER_PATH;
+import static se.inera.intyg.intygsbestallning.web.controller.SessionStatController.SESSION_STAT_REQUEST_MAPPING;
+
 @EnableWebSecurity
-@ComponentScan({"se.inera.intyg.infra.security.authorities", "org.springframework.security.saml"})
+@ComponentScan({ "se.inera.intyg.infra.security.authorities", "org.springframework.security.saml" })
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements InitializingBean, DisposableBean {
 
-    private static final String DEV_PROFILE = "dev-security";
-    private static final String TEST_PROFILE = "ib-security-test";
+    private static final String FAKE_PROFILE = "fake";
+    private static final String SAML_PROFILE = "saml";
     public static final String FAKE_LOGOUT_URL = "/logout";
+    public static final String FAKE_LOGIN_URL = "/welcome.html";
+    public static final String SAML_LOGOUT_URL = "/saml/logout";
+    public static final String SAML_LOGIN_URL = "/saml/login";
     public static final String SUCCESSFUL_LOGOUT_REDIRECT_URL = "/#/loggedout/m";
 
     private MultiThreadedHttpConnectionManager multiThreadedHttpConnectionManager;
@@ -123,6 +124,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
         this.userDetailsService = userDetailsService;
         this.context = context;
     }
+
     private final IntygsbestallningUserDetailsService userDetailsService;
 
     private final ApplicationContext context;
@@ -131,23 +133,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
 
     private void init() {
         this.multiThreadedHttpConnectionManager = new MultiThreadedHttpConnectionManager();
-        this.profiles =  Arrays.asList(context.getEnvironment().getActiveProfiles());
+        this.profiles = Arrays.asList(context.getEnvironment().getActiveProfiles());
     }
 
     private void shutdown() {
         this.multiThreadedHttpConnectionManager.shutdown();
     }
 
-    @Value("${config.folder}")
-    private String configFolder;
+    @Value("${inera.saml.metadata.sp}")
+    private String spMetadataLocation;
 
-    @Value("${sakerhetstjanst.saml.keystore.file}")
+    @Value("${inera.saml.metadata.idp}")
+    private String idpMetadataLocation;
+
+    @Value("${inera.saml.keystore.file}")
     private Resource keyStoreFile;
 
-    @Value("${sakerhetstjanst.saml.keystore.alias}")
+    @Value("${inera.saml.keystore.alias}")
     private String keystoreAlias;
 
-    @Value("${sakerhetstjanst.saml.keystore.password}")
+    @Value("${inera.saml.keystore.password}")
     private String keystorePassword;
 
     // Initialization of the velocity engine
@@ -185,29 +190,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
 
     @Bean
     public static AuthenticationFailureHandler failureHandler() {
-        //Let our custom RequestErrorController handle any authentication failures
+        // Let our custom RequestErrorController handle any authentication failures
         return new ForwardAuthenticationFailureHandler(IB_SPRING_SEC_ERROR_CONTROLLER_PATH);
     }
 
     @Bean
-    public OrRequestMatcher samlRequestMatcher() {
+    public static OrRequestMatcher loginRequestMatcher() {
         ArrayList<RequestMatcher> matchers = Lists.newArrayList(
-                new AntPathRequestMatcher("/#/bestallning"),
-                new AntPathRequestMatcher("/saml/**"),
-                new AntPathRequestMatcher("/api/maillink/**"),
-                new AntPathRequestMatcher("/"));
+                // new AntPathRequestMatcher("/saml/**"),
+                new AntPathRequestMatcher("/maillink/**", null));
         return new OrRequestMatcher(matchers);
     }
 
-    /* =====================================================
+    /*
+     * =====================================================
      *
-     * SAML-stuff (prod, ib-security-test, ib-security-prod)
+     * SAML-stuff
      *
-     ===================================================== */
+     * =====================================================
+     */
     // SAML 2.0 WebSSO Assertion Consumer
 
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public JKSKeyManager keyManager() {
         Map<String, String> map = new HashMap<>();
         map.put(keystoreAlias, keystorePassword);
@@ -215,84 +220,69 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public WebSSOProfileConsumer webSSOprofileConsumer() {
         return new WebSSOProfileConsumerImpl();
     }
 
     // SAML 2.0 Holder-of-Key WebSSO Assertion Consumer
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public WebSSOProfileConsumerHoKImpl hokWebSSOprofileConsumer() {
         return new WebSSOProfileConsumerHoKImpl();
     }
 
     // SAML 2.0 Web SSO profile
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public WebSSOProfile webSSOprofile() {
         return new WebSSOProfileImpl();
     }
 
     // SAML 2.0 Holder-of-Key Web SSO profile
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public WebSSOProfileConsumerHoKImpl hokWebSSOProfile() {
         return new WebSSOProfileConsumerHoKImpl();
     }
 
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public SingleLogoutProfile logoutprofile() {
         return new SingleLogoutProfileImpl();
     }
 
-    // Processor bindings
-    private ArtifactResolutionProfile artifactResolutionProfile() {
-        final ArtifactResolutionProfileImpl artifactResolutionProfile =
-                new ArtifactResolutionProfileImpl(httpClient());
-        artifactResolutionProfile.setProcessor(new SAMLProcessorImpl(soapBinding()));
-        return artifactResolutionProfile;
-    }
-
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
-    public HTTPArtifactBinding artifactBinding(ParserPool parserPool, VelocityEngine velocityEngine) {
-        return new HTTPArtifactBinding(parserPool, velocityEngine, artifactResolutionProfile());
-    }
-
-    @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public HTTPSOAP11Binding soapBinding() {
         return new HTTPSOAP11Binding(parserPool());
     }
 
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public HTTPRedirectDeflateBinding redirectDeflateBinding() {
         return new HTTPRedirectDeflateBinding(parserPool());
     }
 
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public SAMLBinding httpPostBinding() {
         return new HTTPPostBinding(parserPool(), velocityEngine());
     }
 
     // Processor
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public SAMLProcessorImpl processor() {
         Collection<SAMLBinding> bindings = new ArrayList<>();
         bindings.add(redirectDeflateBinding());
         bindings.add(httpPostBinding());
-        bindings.add(artifactBinding(parserPool(), velocityEngine()));
         return new SAMLProcessorImpl(bindings);
     }
 
     // Logger for SAML messages and events
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public SAMLDefaultLogger samlLogger() {
         SAMLDefaultLogger logger = new SAMLDefaultLogger();
         logger.setLogErrors(true);
@@ -301,60 +291,75 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE, FAKE_PROFILE })
     public static HttpSessionRequestCache requestCache() {
         HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
-        requestCache.setRequestMatcher(new RegexRequestMatcher("\\/api\\/maillink\\/.*", null));
+        requestCache.setRequestMatcher(loginRequestMatcher());
         return requestCache;
     }
 
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public IntygsbestallningSAMLEntryPoint samlEntryPoint() {
         IntygsbestallningSAMLEntryPoint entryPoint = new IntygsbestallningSAMLEntryPoint();
         WebSSOProfileOptions options = new WebSSOProfileOptions();
         options.setIncludeScoping(false);
-        options.setAuthnContexts(Lists.newArrayList("urn:oasis:names:tc:SAML:2.0:ac:classes:TLSClient"));
+        options.setAuthnContexts(Lists.newArrayList("http://id.sambi.se/loa/loa3"));
         entryPoint.setDefaultProfileOptions(options);
         return entryPoint;
     }
 
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
-    public SAMLContextProviderLB contextProvider() {
-        SAMLContextProviderLB contextProvider = new SAMLContextProviderLB();
-        contextProvider.setScheme("https");
-        contextProvider.setServerName("${ib.server}");
-        contextProvider.setServerPort(443);
-        contextProvider.setIncludeServerPortInRequestURL(false);
-        contextProvider.setContextPath("/");
-        contextProvider.setKeyManager(keyManager());
-        return contextProvider;
+    @Profile({ SAML_PROFILE })
+    public SAMLContextProvider contextProvider() {
+        SAMLContextProviderImpl contextProvier = new SAMLContextProviderImpl();
+        contextProvier.setKeyManager(keyManager());
+        contextProvier.setStorageFactory(new EmptyStorageFactory());
+        return contextProvier;
     }
 
+    /*
+     * Keeping this since we might need it in OpenShift.
+     * Should be removed or used before production.
+     */
+    // @Bean
+    // @Profile({ "prod", "ib-security-test", "ib-security-prod" })
+    // public SAMLContextProviderLB contextProvider() {
+    // SAMLContextProviderLB contextProvider = new SAMLContextProviderLB();
+    // contextProvider.setScheme("https");
+    // contextProvider.setServerName("${ib.server}");
+    // contextProvider.setServerPort(443);
+    // contextProvider.setIncludeServerPortInRequestURL(false);
+    // contextProvider.setContextPath("/");
+    // contextProvider.setKeyManager(keyManager());
+    // return contextProvider;
+    // }
+
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public FilterChainProxy samlFilter() throws Exception {
         List<SecurityFilterChain> chains = new ArrayList<>();
         chains.add(new DefaultSecurityFilterChain(
-                new AntPathRequestMatcher("/saml/login/**"), samlEntryPoint()));
+                new AntPathRequestMatcher(SAML_LOGIN_URL + "/**"), samlEntryPoint()));
         chains.add(new DefaultSecurityFilterChain(
-                new AntPathRequestMatcher("/saml/logout/**"), samlLogoutFilter()));
+                new AntPathRequestMatcher(SAML_LOGOUT_URL + "/**"), samlLogoutFilter()));
         chains.add(new DefaultSecurityFilterChain(
                 new AntPathRequestMatcher("/saml/SSO/**"), samlWebSSOProcessingFilter()));
         chains.add(new DefaultSecurityFilterChain(
                 new AntPathRequestMatcher("/saml/SingleLogout/**"), samlLogoutProcessingFilter()));
+        chains.add(new DefaultSecurityFilterChain(
+                new AntPathRequestMatcher("/saml/metadata/**"), samlMetadataDisplayFilter()));
         return new FilterChainProxy(chains);
     }
 
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public SecurityContextLogoutHandler logoutHandler() {
         return new SecurityContextLogoutHandler();
     }
 
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public SimpleUrlLogoutSuccessHandler successLogoutHandler() {
         SimpleUrlLogoutSuccessHandler successLogoutHandler = new SimpleUrlLogoutSuccessHandler();
         successLogoutHandler.setDefaultTargetUrl(SUCCESSFUL_LOGOUT_REDIRECT_URL);
@@ -363,30 +368,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
+    public MetadataDisplayFilter samlMetadataDisplayFilter() {
+        return new MetadataDisplayFilter();
+    }
+
+    @Bean
+    @Profile({ SAML_PROFILE })
     public SAMLLogoutProcessingFilter samlLogoutProcessingFilter() {
         return new SAMLLogoutProcessingFilter(successLogoutHandler(), logoutHandler());
     }
 
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public SAMLLogoutFilter samlLogoutFilter() {
         return new SAMLLogoutFilter(successLogoutHandler(), new LogoutHandler[] { logoutHandler() },
                 new LogoutHandler[] { logoutHandler() });
     }
 
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public static SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler() {
         SavedRequestAwareAuthenticationSuccessHandler handler = new SavedRequestAwareAuthenticationSuccessHandler();
         handler.setDefaultTargetUrl("/");
-        handler.setAlwaysUseDefaultTargetUrl(true);
+        handler.setAlwaysUseDefaultTargetUrl(false);
         handler.setRequestCache(requestCache());
         return handler;
     }
 
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public SAMLProcessingFilter samlWebSSOProcessingFilter() throws Exception {
         SAMLProcessingFilter samlWebSSOProcessingFilter = new SAMLProcessingFilter();
         samlWebSSOProcessingFilter.setAuthenticationManager(authenticationManager());
@@ -399,7 +410,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     // SAML Authentication Provider responsible for validating of received SAML
     // messages
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public SAMLAuthenticationProvider samlAuthenticationProvider() {
         SAMLAuthenticationProvider samlAuthenticationProvider = new SAMLAuthenticationProvider();
         samlAuthenticationProvider.setUserDetails(userDetailsService);
@@ -408,16 +419,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public CachingMetadataManager metadata() throws MetadataProviderException, IOException {
         return new CachingMetadataManager(Lists.newArrayList(
                 extendedMetadataDelegateSP(), extendedMetadataDelegateIdp()));
     }
 
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public ExtendedMetadataDelegate extendedMetadataDelegateSP() throws MetadataProviderException {
-        File spMetadataFile = new File(configFolder + "/sp-sakerhetstjanst.xml");
+        File spMetadataFile = new File(spMetadataLocation);
         FilesystemMetadataProvider spMetadataProvider = new FilesystemMetadataProvider(spMetadataFile);
         spMetadataProvider.setParserPool(parserPool());
         ExtendedMetadata extendedMetadata = generateExtendedMetadataSP();
@@ -429,7 +440,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @NotNull
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
     private ExtendedMetadata generateExtendedMetadataSP() {
         ExtendedMetadata extendedMetadata = new ExtendedMetadata();
         extendedMetadata.setAlias("defaultAlias");
@@ -439,21 +449,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
         extendedMetadata.setSignMetadata(true);
         extendedMetadata.setSigningKey(keystoreAlias);
         extendedMetadata.setEncryptionKey(keystoreAlias);
-        extendedMetadata.setRequireArtifactResolveSigned(true);
+        // extendedMetadata.setRequireArtifactResolveSigned(true);
         extendedMetadata.setRequireLogoutRequestSigned(false);
         extendedMetadata.setRequireLogoutResponseSigned(false);
         return extendedMetadata;
     }
 
     @Bean
-    @Profile({"prod", "ib-security-test", "ib-security-prod"})
+    @Profile({ SAML_PROFILE })
     public ExtendedMetadataDelegate extendedMetadataDelegateIdp() throws MetadataProviderException {
-        File spMetadataFile = new File(configFolder + "/idp-sakerhetstjanst.xml");
-        FilesystemMetadataProvider spMetadataProvider = new FilesystemMetadataProvider(spMetadataFile);
-        spMetadataProvider.setParserPool(parserPool());
+        File idpMetadataFile = new File(idpMetadataLocation);
+        FilesystemMetadataProvider idpMetadataProvider = new FilesystemMetadataProvider(idpMetadataFile);
+        idpMetadataProvider.setParserPool(parserPool());
         ExtendedMetadata extendedMetadata = generateExtendedMetadataIdp();
 
-        ExtendedMetadataDelegate delegate = new ExtendedMetadataDelegate(spMetadataProvider, extendedMetadata);
+        ExtendedMetadataDelegate delegate = new ExtendedMetadataDelegate(idpMetadataProvider, extendedMetadata);
         delegate.setMetadataTrustCheck(true);
 
         return delegate;
@@ -466,13 +476,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
         return extendedMetadata;
     }
 
-    /* ===================================================
-    *
-    * Dev-security & ib-security-test
-    *
-    =====================================================*/
     @Bean
-    @Profile({ "dev-security", "ib-security-test"})
+    @Profile({ FAKE_PROFILE })
     public FakeAuthenticationProvider fakeAuthenticationProvider() {
         FakeAuthenticationProvider fakeAuthenticationProvider = new FakeAuthenticationProvider();
         fakeAuthenticationProvider.setUserDetails(userDetailsService);
@@ -480,7 +485,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({ "dev-security", "ib-security-test"})
+    @Profile({ FAKE_PROFILE })
     public FakeAuthenticationFilter fakeAuthenticationFilter() throws Exception {
         FakeAuthenticationFilter fakeAuthenticationFilter = new FakeAuthenticationFilter();
         fakeAuthenticationFilter.setAuthenticationManager(authenticationManager());
@@ -491,11 +496,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({ "dev-security", "ib-security-test"})
-    public SimpleUrlAuthenticationSuccessHandler fakeSuccessHandler() {
-        SimpleUrlAuthenticationSuccessHandler handler = new SimpleUrlAuthenticationSuccessHandler();
+    @Profile({ FAKE_PROFILE })
+    public SavedRequestAwareAuthenticationSuccessHandler fakeSuccessHandler() {
+        SavedRequestAwareAuthenticationSuccessHandler handler = new SavedRequestAwareAuthenticationSuccessHandler();
         handler.setDefaultTargetUrl("/");
-        handler.setAlwaysUseDefaultTargetUrl(true);
+        handler.setAlwaysUseDefaultTargetUrl(false);
+        handler.setRequestCache(requestCache());
         return handler;
     }
 
@@ -513,7 +519,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     protected void configure(HttpSecurity http) throws Exception {
         // These should always be permitted
         http
-            .authorizeRequests()
+                .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/welcome-assets/**").permitAll()
                 .antMatchers("/version.html").permitAll()
@@ -526,122 +532,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
                 .antMatchers("/app/**").permitAll()
                 .antMatchers("/assets/**").permitAll()
                 .antMatchers("/components/**").permitAll()
-                .antMatchers("/saml/web/**").permitAll()
-                .antMatchers("/saml2/web/**").permitAll()
                 .antMatchers("/services/**").permitAll()
                 .antMatchers("/api/config/**").permitAll()
-                .antMatchers( SESSION_STAT_REQUEST_MAPPING + "/**").permitAll();
+                .antMatchers(SESSION_STAT_REQUEST_MAPPING + "/**").permitAll();
 
-        if (profiles.contains(DEV_PROFILE)) {
-            http
-                    .authorizeRequests()
-                    .antMatchers("/welcome.html").permitAll()
-                    .antMatchers("/api/stub/**").permitAll()
-                    .antMatchers("/api/test/**").permitAll()
-                    .antMatchers("/h2-console/**").permitAll();
-
-            // @formatter:off
-            http
-                .authorizeRequests()
-                    .antMatchers("/**").authenticated()
-                .and().httpBasic()
-                    .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
-                .and()
-                    .csrf().disable()
-                    .headers().frameOptions().disable()
-                .and()
-                    .logout()
-                    .invalidateHttpSession(true)
-                    .logoutUrl(FAKE_LOGOUT_URL)
-                    .logoutSuccessUrl("/welcome.html")
-                .and()
-                    .addFilterAt(fakeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
-                    .sessionManagement()
-                    .sessionAuthenticationStrategy(registerSessionAuthenticationStrategy());
-            // @formatter:on
-        }
-
-        if (profiles.contains(TEST_PROFILE)) {
-            // Unauthenticated requests matching samlRequestMatcher will be sent to saml login flow
-            // @formatter:off
-            http
-                .requestMatcher(samlRequestMatcher())
-                    .authorizeRequests()
-                    .antMatchers("/fake").permitAll()
-                    .antMatchers("/**").authenticated()
-                .and()
-                    .httpBasic()
-                    .authenticationEntryPoint(samlEntryPoint())
-                .and()
-                    .csrf().disable()
-                    .headers().frameOptions().disable()
-                .and()
-                    .addFilterAt(fakeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
-                    .addFilterAfter(samlFilter(), BasicAuthenticationFilter.class)
-                    .sessionManagement()
-                    .sessionAuthenticationStrategy(registerSessionAuthenticationStrategy())
-                .and()
-                    .requestCache()
-                    .requestCache(requestCache());
-
-            http
-                .regexMatcher("\\api\\/maillink\\/.*")
-                    .authorizeRequests()
-                    .antMatchers("/fake").permitAll()
-                    .antMatchers("/**").authenticated()
-                .and()
-                    .httpBasic()
-                    .authenticationEntryPoint(samlEntryPoint())
-                .and()
-                    .csrf().disable()
-                    .logout()
-                    .invalidateHttpSession(true)
-                    .logoutUrl(FAKE_LOGOUT_URL)
-                    .logoutSuccessUrl("/welcome.html")
-                .and()
-                    .addFilterAt(fakeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
-                    .addFilterAfter(samlFilter(), BasicAuthenticationFilter.class)
-                    .sessionManagement()
-                    .sessionAuthenticationStrategy(registerSessionAuthenticationStrategy())
-                .and()
-                    .requestCache()
-                    .requestCache(requestCache());
-
-            //Other unauthenticated requests will be returned as http status 403.
-            //This will allow frontend to act correctly on ajax requests
-            http
-                .httpBasic()
-                    .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
-                .and()
-                    .csrf().disable()
-                    .logout()
-                    .invalidateHttpSession(true)
-                    .logoutUrl(FAKE_LOGOUT_URL)
-                    .logoutSuccessUrl("/welcome.html")
-                .and()
-                    .authorizeRequests()
-                    .antMatchers("/fake").permitAll()
-                    .antMatchers("/**").fullyAuthenticated()
-                .and()
-                    .addFilterAt(fakeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
-                    .addFilterAfter(fakeAuthenticationFilter(), BasicAuthenticationFilter.class)
-                    .sessionManagement()
-                    .sessionAuthenticationStrategy(registerSessionAuthenticationStrategy());
-            // @formatter:on
+        if (profiles.contains(FAKE_PROFILE) && profiles.contains(SAML_PROFILE)) {
+            configureSamlWithFake(http);
+        } else if (profiles.contains(FAKE_PROFILE)) {
+            configureFake(http);
+        } else if (profiles.contains(SAML_PROFILE)) {
+            configureSaml(http);
+        } else {
+            configureNone(http);
         }
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
-        if (profiles.contains(DEV_PROFILE)) {
-            auth
-                    .authenticationProvider(fakeAuthenticationProvider());
+        if (profiles.contains(FAKE_PROFILE)) {
+            auth.authenticationProvider(fakeAuthenticationProvider());
         }
 
-        if (profiles.contains(TEST_PROFILE)) {
-            auth
-                    .authenticationProvider(samlAuthenticationProvider())
-                    .authenticationProvider(fakeAuthenticationProvider());
+        if (profiles.contains(SAML_PROFILE)) {
+            auth.authenticationProvider(samlAuthenticationProvider());
         }
     }
 
@@ -649,5 +562,86 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public AuthenticationEntryPoint loginUrlauthenticationEntryPoint() {
+        return new LoginUrlAuthenticationEntryPoint(FAKE_LOGIN_URL);
+    }
+
+    private void configureFake(HttpSecurity http) throws Exception {
+        configureFakePermitAllPaths(http);
+
+        // Unauthenticated requests matching loginRequestMatcher will be sent to fake login flow
+        http
+                .authorizeRequests().antMatchers("/**").fullyAuthenticated()
+
+                .and().exceptionHandling()
+                .defaultAuthenticationEntryPointFor(loginUrlauthenticationEntryPoint(), loginRequestMatcher())
+                .defaultAuthenticationEntryPointFor(new Http403ForbiddenEntryPoint(), AnyRequestMatcher.INSTANCE)
+
+                .and().csrf().disable().headers().frameOptions().disable()
+
+                .and().logout().invalidateHttpSession(true).logoutUrl(FAKE_LOGOUT_URL).logoutSuccessUrl(FAKE_LOGIN_URL)
+
+                .and().addFilterAt(fakeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
+
+                .sessionManagement().sessionAuthenticationStrategy(registerSessionAuthenticationStrategy());
+    }
+
+    private void configureSaml(HttpSecurity http) throws Exception {
+        // Unauthenticated requests matching loginRequestMatcher will be sent to saml login flow
+        http
+                .authorizeRequests().antMatchers("/**").fullyAuthenticated()
+
+                .and().exceptionHandling()
+                .defaultAuthenticationEntryPointFor(samlEntryPoint(), loginRequestMatcher())
+                .defaultAuthenticationEntryPointFor(new Http403ForbiddenEntryPoint(), AnyRequestMatcher.INSTANCE)
+
+                .and().csrf().disable().headers().frameOptions().disable()
+
+                .and().addFilterAfter(samlFilter(), BasicAuthenticationFilter.class)
+
+                .sessionManagement().sessionAuthenticationStrategy(registerSessionAuthenticationStrategy());
+
+        // Handled by SAML
+        http.logout().disable();
+    }
+
+    private void configureSamlWithFake(HttpSecurity http) throws Exception {
+        configureFakePermitAllPaths(http);
+
+        // Unauthenticated requests matching loginRequestMatcher will be sent to saml login flow
+        http
+                .authorizeRequests().antMatchers("/**").fullyAuthenticated()
+
+                .and().exceptionHandling()
+                .defaultAuthenticationEntryPointFor(samlEntryPoint(), loginRequestMatcher())
+                .defaultAuthenticationEntryPointFor(new Http403ForbiddenEntryPoint(), AnyRequestMatcher.INSTANCE)
+
+                .and().csrf().disable().headers().frameOptions().disable()
+
+                .and().logout().invalidateHttpSession(true).logoutUrl(FAKE_LOGOUT_URL).logoutSuccessUrl(FAKE_LOGIN_URL)
+
+                .and().addFilterAfter(samlFilter(), BasicAuthenticationFilter.class)
+                .addFilterAt(fakeAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class)
+
+                .sessionManagement().sessionAuthenticationStrategy(registerSessionAuthenticationStrategy());
+    }
+
+    private void configureNone(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests().antMatchers("/**").denyAll()
+
+                .and().httpBasic().authenticationEntryPoint(new Http403ForbiddenEntryPoint());
+    }
+
+    private void configureFakePermitAllPaths(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .antMatchers(FAKE_LOGIN_URL).permitAll()
+                .antMatchers("/api/stub/**").permitAll()
+                .antMatchers("/api/test/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll();
     }
 }
