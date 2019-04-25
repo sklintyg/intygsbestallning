@@ -94,6 +94,13 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
                         IbResponderValidationErrorCode.GTA_FEL05,
                         List.of(personnummerString)));
 
+        // Since createPersonnummer is lax by design, also check that input matches NORMALIZED personnummer.
+        if (!personnummerString.equals(personnummer.getPersonnummer())) {
+            throw new IbResponderValidationException(
+                    IbResponderValidationErrorCode.GTA_FEL05,
+                    List.of(personnummerString));
+        }
+
         if (!personnummerRoot.equals(PersonIdUtil.getPersonnummerRoot())
                 || (PersonIdUtil.isSamordningsNummer(personnummer) && !personnummerRoot.equals(PersonIdUtil.getSamordningsNummerRoot()))) {
             throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(personnummerRoot));

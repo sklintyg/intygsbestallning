@@ -49,7 +49,7 @@ const CookieModal = ({ handleClose, isOpen, acceptCookieBanner, cookieBannerAcce
         </ModalBody>
         <ModalFooter>
           {cookieBannerAccepted !== 'true' && (
-            <Button color={'primary'} onClick={accept}>
+            <Button color={'success'} onClick={accept}>
               Jag godkänner
             </Button>
           )}
