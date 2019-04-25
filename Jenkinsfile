@@ -27,13 +27,17 @@ node {
         shgradle "tagRelease ${versionFlags}"
     }
 
+    stage('notify') {
+        util.notifySuccess()
+    }
+
     stage('propagate') {
         gitRef = "v${buildVersion}"
         releaseFlag = "${GIT_BRANCH.startsWith("release")}"
         build job: "intygsbestallning-dintyg-build", wait: false, parameters: [
                 [$class: 'StringParameterValue', name: 'BUILD_VERSION', value: buildVersion],
                 [$class: 'StringParameterValue', name: 'INFRA_VERSION', value: infraVersion],
-                [$class: 'StringParameterValue', name: 'GIT_REF', value: 'develop'],
+                [$class: 'StringParameterValue', name: 'GIT_REF', value: gitRef],
                 [$class: 'StringParameterValue', name: 'RELEASE_FLAG', value: releaseFlag]
         ]
     }
