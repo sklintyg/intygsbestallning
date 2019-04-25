@@ -28,7 +28,8 @@ import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
 public class UserServiceImpl implements UserService {
     @Override
     public IntygsbestallningUser getUser() {
-        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (SecurityContextHolder.getContext().getAuthentication() == null ||
+            !(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof IntygsbestallningUser)) {
             return null;
         }
 

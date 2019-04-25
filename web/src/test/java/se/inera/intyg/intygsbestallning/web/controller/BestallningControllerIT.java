@@ -33,6 +33,8 @@ public class BestallningControllerIT extends BaseRestIntegrationTest {
 
         given().expect().statusCode(OK).when().get(BESTALLNINGAR_API_ENDPOINT + "/" + id).then()
                 .body(matchesJsonSchemaInClasspath("jsonschema/get-bestallning-response-schema.json"));
+
+        deleteBestallning(id);
     }
 
     @Test

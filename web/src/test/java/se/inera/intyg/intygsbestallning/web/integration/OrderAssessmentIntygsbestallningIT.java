@@ -2,17 +2,19 @@ package se.inera.intyg.intygsbestallning.web.integration;
 
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.builder.RequestSpecBuilder;
+import com.jayway.restassured.response.ResponseBodyExtractionOptions;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
+import se.inera.intyg.intygsbestallning.web.BaseRestIntegrationTest;
 
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.core.Is.is;
 
-public class OrderAssessmentIntygsbestallningIT {
+public class OrderAssessmentIntygsbestallningIT extends BaseRestIntegrationTest {
 
     private static final String ORDER_ASSESSMENT_ENDPOINT = "/services/order-assessment-responder";
     private static final String RESPONSE_BASE = "Envelope.Body.OrderAssessmentResponse.";
@@ -41,10 +43,16 @@ public class OrderAssessmentIntygsbestallningIT {
                         "191212121212", "Tolvan", "Tolvansson", "Rullator",
                         "Kommer från Tolvmåla"));
 
-        given().body(requestTemplate.render()).when().post(ORDER_ASSESSMENT_ENDPOINT).then()
+
+        ResponseBodyExtractionOptions body = given()
+                .body(requestTemplate.render()).when()
+                .post(ORDER_ASSESSMENT_ENDPOINT).then()
                 .statusCode(200).rootPath(RESPONSE_BASE)
                 .body("result.resultCode", is("OK"))
-                .body("assessmentId.extension", Matchers.notNullValue());
+                .body("assessmentId.extension", Matchers.notNullValue())
+                .extract();
+
+        deleteBestallning(body.xmlPath().setRoot(RESPONSE_BASE).getInt( "assessmentId.extension"));
     }
 
     @Test
