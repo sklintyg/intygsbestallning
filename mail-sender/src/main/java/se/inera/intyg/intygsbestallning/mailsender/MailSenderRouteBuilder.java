@@ -38,16 +38,16 @@ public class MailSenderRouteBuilder extends SpringRouteBuilder {
     private static final String JMS_QUEUE_PREFIX = "jms:queue:";
     private static final String MY_TX_POLICY = "myTxPolicy";
 
-    @Value("${mailsender.maximum-redeliveries}")
+    @Value("${mailsender.maximum_redeliveries}")
     private Integer maximumRedeliveries;
 
-    @Value("${mailsender.redelivery-delay}")
+    @Value("${mailsender.redelivery_delay}")
     private Integer redeliveryDelay;
 
-    @Value("${mailsender.back-off-multiplier}")
+    @Value("${mailsender.back_off_multiplier}")
     private Integer backOffMultiplier;
 
-    @Value("${mailsender.queue-name}")
+    @Value("${mailsender.queue_name}")
     private String mailSenderQueueName;
 
     private MailSender ibMailSender;
