@@ -15,8 +15,8 @@ const Label = styled(IbTypo07)`
   margin-bottom: 0;
   cursor: pointer;
 
-  &::before,
-  &::after {
+  .circle,
+  .dot {
     position: absolute;
     top: 0;
     left: -20px;
@@ -26,22 +26,22 @@ const Label = styled(IbTypo07)`
     border-radius: 50%;
   }
 
-  &::before {
+  .circle {
     content: '';
-
     border: 1px solid ${IbColors.IB_COLOR_23};
     box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.24);
     background-color: ${IbColors.IB_COLOR_00};
   }
 
-  &::after {
-    font-size: 16px;
-    text-align: center;
+  .dot {
+    display: none;
     border: none;
-    background-color: ${IbColors.IB_COLOR_21};
-    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-    color: ${IbColors.IB_COLOR_00};
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    background-color: ${IbColors.IB_COLOR_00};
+    height: 8px;
+    width: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    top: 6px;
+    left: -14px;
   }
 `
 
@@ -58,12 +58,17 @@ const Input = styled.input`
 
   cursor: pointer;
 
-  &:checked + ${Label}::after {
-    content: '\\25cf';
-    line-height: normal;
+  &:checked + ${Label} .dot {
+    display: block;
   }
 
-  &:focus + ${Label}::before {
+  &:checked + ${Label} .circle {
+    background-color: ${IbColors.IB_COLOR_21};
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    border: none;
+  }
+
+  &:focus + ${Label} .circle {
     outline: thin dotted;
     outline-offset: 0px;
   }
@@ -77,13 +82,13 @@ const Input = styled.input`
       color: ${IbColors.IB_COLOR_09};
     }
 
-    & + ${Label}::before {
+    & + ${Label} .circle {
       background-color: ${IbColors.IB_COLOR_20};
       color: ${IbColors.IB_COLOR_09};
       cursor: not-allowed;
     }
 
-    & + ${Label}::after {
+    & + ${Label} .dot {
       background-color: ${IbColors.IB_COLOR_09};
     }
   }
@@ -99,7 +104,9 @@ const RadioButton = ({ selected, onChange, label, value }) => {
         <RadioContainer>
           <Input type="radio" name={label} id={label} value={value} checked={selected === value} onChange={onChange} />
           <Label as="label" htmlFor={label}>
+            <div className="circle" />
             {label}
+            <div className="dot" />
           </Label>
         </RadioContainer>
       </RadioWrapper>
