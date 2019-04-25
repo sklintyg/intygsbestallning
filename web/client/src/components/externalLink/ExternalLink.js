@@ -9,6 +9,10 @@ const ExternalIcon = ({color}) => (
 const Wrapper = styled.span`
   color: ${colors.IB_COLOR_17};
   text-decoration: underline;
+
+  &:hover {
+    svg{fill: ${colors.IB_COLOR_17}}
+  }
 `
 
 export default ({href, children}) => (

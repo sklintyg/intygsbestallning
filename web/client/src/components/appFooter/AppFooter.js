@@ -66,7 +66,7 @@ const AppFooter = ({openModal}) => {
         <FooterSection>
           <IbTypo14>Läs mer om inloggningen</IbTypo14>
           <Text as="p">
-            <ExternalLink url="https://www.inera.se/intygsbestallning/inloggning">
+            <ExternalLink href="https://www.inera.se/intygsbestallning/inloggning">
               SITHS-kort
             </ExternalLink>
           </Text>
