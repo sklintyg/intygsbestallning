@@ -115,7 +115,7 @@ tasks {
 
   val restAssuredTest by creating(Test::class) {
     outputs.upToDateWhen { false }
-    systemProperty("integration.tests.baseUrl", project.findProperty("baseUrl") ?: "http://localhost:8080")
+    systemProperty("integration.tests.baseUrl", System.getProperty("baseUrl", "http://localhost:8080"))
     include("**/*IT*")
   }
 
