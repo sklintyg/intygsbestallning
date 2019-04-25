@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react'
 import BestallningActionBar from './bestallningActionBar'
 import ibValues from '../styles/IbValues'
-import { IbTypo09, IbTypo04, IbTypo01 } from '../styles/IbTypography'
+import { IbTypo04, IbTypo01 } from '../styles/IbTypography'
 import styled from 'styled-components'
 import IbColors from '../styles/IbColors'
 import { ArrowBack, EventAvailableIcon, Block, Check, Create, InfoIcon } from '../styles/IbSvgIcons'
 import IbAlert, { alertType } from '../alert/Alert.js'
+import { Link } from 'react-router-dom'
 
 const CenterContainer = styled.div`
   margin: auto;
@@ -14,8 +15,29 @@ const CenterContainer = styled.div`
   padding: 10px 30px 20px;
   > div {
     display: flex;
-    > span {
+    > span,
+    > a {
+      color: ${IbColors.IB_COLOR_07};
+      font-weight: 400;
+      font-size: 12px;
+      display: inline-block;
       margin-right: 50px;
+      position: relative;
+      svg {
+        position: absolute;
+        left: -17px;
+        width: 14px;
+        height: 16px;
+      }
+    }
+    > a {
+      text-decoration: underline;
+      &:hover {
+        color: ${IbColors.IB_COLOR_21};
+        svg {
+          fill: ${IbColors.IB_COLOR_21};
+        }
+      }
     }
   }
 `
@@ -39,22 +61,6 @@ const ButtonRow = styled.div`
   justify-content: space-between;
 `
 
-const IconSpan = styled(IbTypo09)`
-  position: relative;
-  svg {
-    position: absolute;
-    left: -17px;
-    width: 14px;
-    height: 16px;
-  }
-  &.hand {
-    text-decoration: underline;
-    cursor: pointer;
-    &:hover {
-      color: ${IbColors.IB_COLOR_21};
-  }
-`
-
 const BestallningHeader = ({ props }) => {
   const getStatusIcon = () => {
     switch (props.bestallning.status) {
@@ -71,27 +77,33 @@ const BestallningHeader = ({ props }) => {
         return null
     }
   }
+
+  let backPath = '/bestallningar/'
+  if (props.history.location.state.fromList) {
+    backPath += props.history.location.state.fromList
+  } else {
+    backPath += 'AKTUELLA'
+  }
+
   return (
     <HeaderContainer>
       <CenterContainer>
         <div>
-          <IconSpan onClick={props.history.goBack} className="hand" color={IbColors.IB_COLOR_07} as="span">
+          <Link to={backPath}>
             <ArrowBack />
             Tillbaka till lista
-          </IconSpan>
+          </Link>
           {!props.error && (
             <Fragment>
-              <IbTypo09 as="span" color={IbColors.IB_COLOR_07}>
-                Avser {props.bestallning.intygTyp}
-              </IbTypo09>
-              <IconSpan as="span" color={IbColors.IB_COLOR_07}>
+              <span>Avser {props.bestallning.intygTyp}</span>
+              <span>
                 {getStatusIcon()}
                 Status {props.bestallning.status}
-              </IconSpan>
-              <IconSpan as="span" color={IbColors.IB_COLOR_07}>
+              </span>
+              <span>
                 <EventAvailableIcon />
                 Inkom {props.bestallning.ankomstDatum}
-              </IconSpan>
+              </span>
             </Fragment>
           )}
         </div>

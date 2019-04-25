@@ -100,7 +100,12 @@ const BestallningarList = ({ bestallningList, onSort, errorMessage, categoryFilt
                 </td>
                 <td>{bestallning.ankomstDatum}</td>
                 <td>
-                  <Link to={`/bestallning/${bestallning.id}`}>
+                  <Link to={{
+                          pathname: "/bestallning/" + bestallning.id,
+                          search: "",
+                          hash: "",
+                          state: { fromList: categoryFilter }
+                        }}>
                     <Button color="primary">Visa</Button>
                   </Link>
                 </td>
