@@ -156,7 +156,7 @@ data class VisaBestallningDto(
 
       val textMap = bestallningTexter.texter.map { it.id to it.value }.toMap()
 
-      val invanareName = if (!invanareDto.sekretessMarkering) invanareDto.name.replace(" ", "\n") else "Namn Okänt"
+      val invanareName = if (!invanareDto.sekretessMarkering) invanareDto.name else "Namn Okänt"
 
       val isForfragan: (Fraga) -> Boolean = { scope == VisaBestallningScope.ALL || scope == VisaBestallningScope.FORFRAGAN }
       val isFaktureringsunderlag: (Fraga) -> Boolean = { scope == VisaBestallningScope.ALL || scope == VisaBestallningScope.FAKTURERINGSUNDERLAG }

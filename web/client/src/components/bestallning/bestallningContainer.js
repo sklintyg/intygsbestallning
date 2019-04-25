@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actions from '../../store/actions/bestallning'
 import * as modalActions from '../../store/actions/modal'
@@ -7,11 +7,12 @@ import { getBestallning, getErrorMessage, isFetching } from '../../store/reducer
 import BestallningFraga from './bestallningFraga'
 import BestallningHeader from './bestallningHeader'
 import { FlexColumnContainer, ScrollingContainer, WorkareaContainer } from '../styles/ibLayout'
-import AppFooter from '../appFooter/AppFooter'
 import styled from 'styled-components'
 import Colors from '../styles/IbColors'
 import { compose, lifecycle } from 'recompose'
 import LoadingSpinner from '../loadingSpinner'
+import {ErrorPageIcon} from "../styles/IbSvgIcons"
+import ErrorMessageFormatter from "../../messages/ErrorMessageFormatter"
 
 const CustomScrollingContainer = styled(ScrollingContainer)`
   background-color: ${Colors.IB_COLOR_27};
@@ -24,18 +25,39 @@ const SpinnerContainer = styled.div`
   width: 100%;
 `
 
+const ErrorContainer = styled.div`
+  margin: auto;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 290px);
+  padding-bottom: 60px;
+  justify-content: center;
+  align-items: center;
+`
+
 const BestallningContainer = ({ error, bestallning, history, fetching }) => {
   const bestallningIsEmpty = Object.entries(bestallning).length === 0 && bestallning.constructor === Object
-
-  if (error && bestallningIsEmpty) {
-    return <Redirect to={'/exit/' + error.error.errorCode} />
-  }
 
   if (fetching) {
     return (
       <SpinnerContainer>
         <LoadingSpinner loading={fetching} message={'Hämtar Beställning'} />
       </SpinnerContainer>
+    )
+  }
+
+  if (error && !error.modal) {
+    return (
+      <FlexColumnContainer>
+        <BestallningHeader props={{ error, bestallning, history }} />
+        <ErrorContainer>
+          <ErrorPageIcon />
+          <br />
+          <ErrorMessageFormatter error={error} />
+        </ErrorContainer>
+      </FlexColumnContainer>
     )
   }
 
@@ -48,7 +70,6 @@ const BestallningContainer = ({ error, bestallning, history, fetching }) => {
             <BestallningFraga key={i} props={b} />
           ))}
         </WorkareaContainer>
-        <AppFooter />
       </CustomScrollingContainer>
     </FlexColumnContainer>
   )

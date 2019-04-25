@@ -38,7 +38,8 @@ enum class IbErrorCodeEnum {
   NOT_FOUND,
   UNKNOWN_INTERNAL_PROBLEM,
   EXTERNAL_ERROR,
-  UNAUTHORIZED
+  UNAUTHORIZED,
+  PU_ERROR
 }
 
 data class IbResponderValidationException(

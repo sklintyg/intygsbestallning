@@ -43,12 +43,7 @@ const HomePage = ({ match }) => {
                   Intygsbeställning är en tjänst för att hantera förfrågningar och beställningar av medicinska utlåtanden och intyg till
                   vården.
                 </IbTypo07>
-
-
-                  {method === 't' && <Section><IbAlert type={alertType.OBSERVANDUM}>Du har blivit utloggad på grund av inaktivitet..</IbAlert></Section>}
-                  {method === 'm' && <Section><IbAlert type={alertType.INFO}>Du har nu loggat ut.</IbAlert></Section>}
-
-
+                {method === 't' && <Section><IbAlert type={alertType.OBSERVANDUM}>Du har blivit utloggad från Intygsbeställning på grund av inaktivitet. Om du vill fortsätta använda Intygsbeställning behöver du logga in igen.</IbAlert></Section>}
                 <Section>
                   <IbTypo07 as="p">
                     För att logga in behöver du ett giltigt e-tjänstekort (exempelvis SITHS-kort) samt behörighet att ta del av

@@ -3,7 +3,7 @@ import se.inera.intyg.intygsbestallning.build.Config.TestDependencies
 
 dependencies {
     // Project dependencies
-    implementation(project(":common"))
+    implementation(project(":${rootProject.name}-common"))
 
     // External dependencies
     implementation("org.springframework.boot:spring-boot-starter-mail")

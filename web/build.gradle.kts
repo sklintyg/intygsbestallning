@@ -1,10 +1,12 @@
 import com.moowork.gradle.node.npm.NpmTask
 import org.gradle.internal.os.OperatingSystem
-import org.springframework.boot.gradle.tasks.bundling.BootJar
 import se.inera.intyg.intygsbestallning.build.Config.Dependencies
+import se.inera.intyg.intygsbestallning.build.Config.TestDependencies
 
 // FIXME: Openshift build pipeline passes useMinifiedJavaScript to build (not client)
 val buildClient = project.hasProperty("client") || project.hasProperty("useMinifiedJavaScript")
+
+val infraBuildVersion = extra["intygInfraVersion"]
 
 plugins {
   id("org.springframework.boot")
@@ -14,10 +16,10 @@ plugins {
 dependencies {
 
   // Project dependencies
-  implementation(project(":common"))
-  implementation(project(":integration"))
-  implementation(project(":persistence"))
-  implementation(project(":mail-sender"))
+  implementation(project(":${rootProject.name}-common"))
+  implementation(project(":${rootProject.name}-integration"))
+  implementation(project(":${rootProject.name}-persistence"))
+  implementation(project(":${rootProject.name}-mail-sender"))
 
   implementation("${extra["infraGroupId"]}:hsa-integration:${extra["intygInfraVersion"]}")
   implementation("${extra["infraGroupId"]}:log-messages:${extra["intygInfraVersion"]}")
@@ -31,49 +33,44 @@ dependencies {
   // External dependencies
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-data-redis")
-  //implementation("org.springframework.boot:spring-boot-starter-actuator")
 
-  implementation("net.javacrumbs.shedlock:shedlock-spring:1.3.0")
+  implementation("net.javacrumbs.shedlock:shedlock-spring:${Dependencies.shedlockVersion}")
 
-  implementation("com.itextpdf:itext7-core:7.1.5")
+  implementation("com.itextpdf:itext7-core:${Dependencies.itext7Version}")
 
   //api documentation
-  implementation("io.springfox:springfox-swagger2:2.9.2")
-  implementation("io.springfox:springfox-swagger-ui:2.9.2")
+  implementation("io.springfox:springfox-swagger2:${Dependencies.swaggerVersion}")
+  implementation("io.springfox:springfox-swagger-ui:${Dependencies.swaggerVersion}")
 
 
-  implementation("jakarta.jws:jakarta.jws-api:1.1.1")
+  implementation("jakarta.jws:jakarta.jws-api:${Dependencies.jakartaJwsVersion}")
   implementation("javax.xml.ws:jaxws-api:${Dependencies.jaxVersion}")
   implementation("javax.servlet:javax.servlet-api:${Dependencies.jaxServletApiVersion}")
 
-  implementation("org.springframework.security.extensions:spring-security-saml2-core:1.0.3.RELEASE")
+  implementation("org.springframework.security.extensions:spring-security-saml2-core:${Dependencies.springSecuritySaml2Version}")
   implementation("com.querydsl:querydsl-core:${Dependencies.querydslVersion}")
 
   // FIXME: shall not be bundled with app!
   implementation("se.inera.intyg.refdata:refdata:${extra["refDataVersion"]}")
 
+  testImplementation("com.jayway.restassured:rest-assured:${TestDependencies.restAssuredVersion}")
+  testImplementation("com.jayway.restassured:json-schema-validator:${TestDependencies.restAssuredVersion}")
+  testImplementation("org.antlr:ST4:${TestDependencies.stAntlr4Version}")
+
 }
 
-tasks.getByName<BootJar>("bootJar") {
-  manifest {
-    attributes("Main-Class" to "org.springframework.boot.loader.PropertiesLauncher")
-    attributes("Start-Class" to  "se.inera.intyg.intygsbestallning.web.IntygsbestallningApplication")
-  }
+node {
+  version = Dependencies.nodeVersion
+  download = true
+  distBaseUrl = "https://build-inera.nordicmedtest.se/node/"
+  nodeModulesDir = file("${project.projectDir}/client")
 }
 
-
-tasks.clean {
-  delete("client/build")
+springBoot {
+  buildInfo()
 }
-
 
 tasks {
-  node {
-    version = "10.15.1"
-    download = true
-    distBaseUrl = "https://build-inera.nordicmedtest.se/node/"
-    nodeModulesDir = file("${project.projectDir}/client")
-  }
 
   val buildReactApp by creating(NpmTask::class) {
     dependsOn(npmInstall)
@@ -114,6 +111,27 @@ tasks {
         attributes["Main-Class"] = mainClass
       }
     }
+  }
+
+  val restAssuredTest by creating(Test::class) {
+    outputs.upToDateWhen { false }
+    systemProperty("integration.tests.baseUrl", project.findProperty("baseUrl") ?: "http://localhost:8080")
+    include("**/*IT*")
+  }
+
+  test {
+    exclude("**/*IT*")
+  }
+
+  bootJar {
+    manifest {
+      attributes("Main-Class" to "org.springframework.boot.loader.PropertiesLauncher")
+      attributes("Start-Class" to  "se.inera.intyg.intygsbestallning.web.IntygsbestallningApplication")
+    }
+  }
+
+  clean {
+    delete("client/build")
   }
 
   if (OperatingSystem.current().isWindows) {

@@ -1,0 +1,50 @@
+{
+  "type": "object",
+  "required": [
+    "sessionState",
+    "statResponse"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "sessionState": {
+      "type": "object",
+      "required": [
+        "secondsUntilExpire",
+        "hasSession",
+        "authenticated"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "secondsUntilExpire": {
+          "type": "integer"
+        },
+        "hasSession": {
+          "type": "boolean"
+        },
+        "authenticated": {
+          "type": "boolean"
+        }
+      }
+    },
+    "statResponse": {
+      "type": "object",
+      "required": [
+        "antalOlastaBestallningar",
+        "antalAktivaBestallningar",
+        "antalKlaraBestallningar"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "antalOlastaBestallningar": {
+          "type": "integer"
+        },
+        "antalAktivaBestallningar": {
+          "type": "integer"
+        },
+        "antalKlaraBestallningar": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

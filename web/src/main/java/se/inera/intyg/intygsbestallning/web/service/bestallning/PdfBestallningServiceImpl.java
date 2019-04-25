@@ -4,13 +4,13 @@ import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.Color;
 import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
@@ -21,10 +21,15 @@ import se.inera.intyg.intygsbestallning.common.dto.BestallningInvanareDto;
 import se.inera.intyg.intygsbestallning.common.dto.PdfBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningDto;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningScope;
+import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
+import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
 import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTextService;
 import se.inera.intyg.intygsbestallning.integration.pu.PatientService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
 import se.inera.intyg.intygsbestallning.web.pdl.LogEvent;
+import se.inera.intyg.intygsbestallning.web.service.bestallning.pdf.BestallningFooter;
+import se.inera.intyg.intygsbestallning.web.service.bestallning.pdf.BestallningHeader;
+import se.inera.intyg.intygsbestallning.web.service.bestallning.pdf.PageNumberEvent;
 import se.inera.intyg.intygsbestallning.web.service.pdl.LogService;
 import se.inera.intyg.intygsbestallning.web.service.util.BestallningUtil;
 
@@ -38,20 +43,25 @@ import static se.inera.intyg.intygsbestallning.web.service.util.PdfUtil.millimet
 public class PdfBestallningServiceImpl implements PdfBestallningService {
 
     private static final String AF_LOGOTYPE_CLASSPATH_URI = "static/images/af_logo.png";
+    private static final String IB_LOGOTYPE_CLASSPATH_URI = "static/images/ib_logo.png";
 
-    private static final Color IB_COLOR_07 = new DeviceRgb(0x21, 0x21, 0x21);
-    private static final Color IB_COLOR_09 = new DeviceRgb(0x6A, 0x6A, 0x6A);
+    public static final Color IB_COLOR_07 = new DeviceRgb(0x21, 0x21, 0x21);
+    public static final Color IB_COLOR_22 = new DeviceRgb(0x9A, 0x9A, 0x9A);
 
-    private static final float RUBRIK_SIZE = 12;
-    private static final float TEXT_SIZE = 10;
+    public static final float RUBRIK_SIZE = 13.5f;
+    public static final float ETIKETT_SIZE = 10.5f;
+    public static final float TEXT_SIZE = 8;
 
-    private static final float DEFAULT_BORDER_WIDTH = 0.5f;
-    private static final float FRAGA_MARGIN_BOTTOM = millimetersToPoints(5f);
-    private static final float FRAGA_PADDING_LEFT = millimetersToPoints(5f);
-    private static final float FRAGA_PADDING_RIGHT = millimetersToPoints(5f);
+    public static final float PAGE_MARGIN_LEFT = millimetersToPoints(20f);
+    public static final float PAGE_MARGIN_RIGHT = millimetersToPoints(20f);
+    public static final float PAGE_MARGIN_BOTTOM = millimetersToPoints(20f);
+    public static final float PAGE_MARGIN_TOP = millimetersToPoints(35f);
+    private static final float FRAGA_MARGIN_BOTTOM = millimetersToPoints(4f);
+    private static final float FRAGA_PADDING_LEFT = 0;//millimetersToPoints(5f);
+    private static final float FRAGA_PADDING_RIGHT = 0;//millimetersToPoints(5f);
     private static final float TEXT_PADDING_BOTTOM = millimetersToPoints(2f);
 
-    private PdfFont rubrikFont, normalFont;
+    private PdfFont normalFont, lightFont;
 
     private BestallningPersistenceService bestallningPersistenceService;
     private BestallningTextService bestallningTextService;
@@ -89,7 +99,7 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
         var personSvar = patientService.lookupPersonnummerFromPU(bestallning.get().getInvanare().getPersonId());
 
         if (personSvar.isEmpty()) {
-            throw new IllegalArgumentException("Person was not found in PU");
+            throw new IbServiceException(IbErrorCodeEnum.PU_ERROR, "Person was not found in PU");
         }
 
         var invanareDto = BestallningInvanareDto.Factory.toDto(
@@ -126,14 +136,19 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
 
         // Initialize document
         Document document = new Document(pdf, PageSize.A4);
+        document.setMargins(PAGE_MARGIN_TOP, PAGE_MARGIN_RIGHT, PAGE_MARGIN_BOTTOM, PAGE_MARGIN_LEFT);
 
-        rubrikFont = loadFont("Roboto-Medium.woff2");
         normalFont = loadFont("Roboto-Regular.woff2");
+        lightFont = loadFont("Roboto-Light.woff2");
+
+        pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new BestallningHeader(lightFont, loadImage(IB_LOGOTYPE_CLASSPATH_URI), bestallning.getId()));
+        pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new BestallningFooter(lightFont));
+        PageNumberEvent pageNumberEvent = new PageNumberEvent(lightFont);
+        pdf.addEventHandler(PdfDocumentEvent.END_PAGE, pageNumberEvent);
 
         for(var fraga : bestallning.getFragor()) {
 
             Div fragaDiv = new Div()
-                    .setBorder(new SolidBorder(IB_COLOR_07, DEFAULT_BORDER_WIDTH))
                     .setPaddingLeft(FRAGA_PADDING_LEFT)
                     .setPaddingRight(FRAGA_PADDING_RIGHT)
                     .setMarginBottom(FRAGA_MARGIN_BOTTOM);
@@ -151,12 +166,14 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
                     addSvar(fragaDiv, delfraga.getSvar());
                 }
                 if (delfraga.getBild() != null) {
-                    addBild(pdf, document, fragaDiv, delfraga.getBild());
+                    addBild(pdf, document, fragaDiv, delfraga.getBild(), 300);
                 }
             }
 
             document.add(fragaDiv);
         }
+
+        pageNumberEvent.writeTotal(pdf);
 
         document.close();
 
@@ -165,23 +182,24 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
 
     private void addRubrik(Div parent, String rubrik) {
         parent.add(new Paragraph(rubrik)
-                .setFont(rubrikFont)
+                .setFont(lightFont)
                 .setFontColor(IB_COLOR_07)
                 .setFontSize(RUBRIK_SIZE));
     }
 
     private void addEtikett(Div parent, String etikett) {
         parent.add(new Paragraph(etikett)
-                .setFont(rubrikFont)
-                .setFontColor(IB_COLOR_09)
-                .setFontSize(TEXT_SIZE)
+                .setFont(normalFont)
+                .setUnderline()
+                .setFontColor(IB_COLOR_07)
+                .setFontSize(ETIKETT_SIZE)
                 .setPadding(0)
                 .setMargin(0));
     }
 
     private void addText(Div parent, String text) {
         parent.add(new Paragraph(text)
-                .setFont(normalFont)
+                .setFont(lightFont)
                 .setFontColor(IB_COLOR_07)
                 .setFontSize(TEXT_SIZE)
                 .setMargin(0)
@@ -190,19 +208,18 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
 
     private void addSvar(Div parent, String svar) {
         parent.add(new Paragraph(svar)
-                .setItalic()
-                .setFont(normalFont)
+                .setFont(lightFont)
                 .setFontColor(IB_COLOR_07)
                 .setFontSize(TEXT_SIZE)
                 .setMargin(0)
                 .setPaddingBottom(TEXT_PADDING_BOTTOM));
     }
 
-    private void addBild(PdfDocument pdf, Document document, Div parent, String bild)  {
+    private void addBild(PdfDocument pdf, Document document, Div parent, String bild, float maxWidth)  {
 
         float floatErrorMargin = 0.1f;
-        float availableWidth = pdf.getDefaultPageSize().getWidth() - document.getLeftMargin() - document.getRightMargin() - FRAGA_PADDING_LEFT - FRAGA_PADDING_RIGHT - DEFAULT_BORDER_WIDTH * 2 - floatErrorMargin;
-        float availableHeight = pdf.getDefaultPageSize().getHeight() - document.getTopMargin() - document.getBottomMargin() - DEFAULT_BORDER_WIDTH * 2 - floatErrorMargin;
+        float availableWidth = Math.min(maxWidth, pdf.getDefaultPageSize().getWidth() - document.getLeftMargin() - document.getRightMargin() - FRAGA_PADDING_LEFT - FRAGA_PADDING_RIGHT * 2 - floatErrorMargin);
+        float availableHeight = pdf.getDefaultPageSize().getHeight() - document.getTopMargin() - document.getBottomMargin() * 2 - floatErrorMargin;
 
         Image image = new Image(loadImage(bild));
 

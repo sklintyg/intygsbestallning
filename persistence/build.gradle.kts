@@ -7,7 +7,7 @@ plugins {
 
 dependencies {
     // Project dependencies
-    implementation(project(":common"))
+    implementation(project(":${rootProject.name}-common"))
 
     // External dependencies
     implementation(kotlin("reflect"))

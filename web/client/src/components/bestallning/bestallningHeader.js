@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import BestallningActionBar from './bestallningActionBar'
 import ibValues from '../styles/IbValues'
 import { IbTypo09, IbTypo04, IbTypo01 } from '../styles/IbTypography'
@@ -79,30 +79,36 @@ const BestallningHeader = ({ props }) => {
             <ArrowBack />
             Tillbaka till lista
           </IconSpan>
-          <IbTypo09 as="span" color={IbColors.IB_COLOR_07}>
-            Avser {props.bestallning.intygTyp}
-          </IbTypo09>
-          <IconSpan as="span" color={IbColors.IB_COLOR_07}>
-            {getStatusIcon()}
-            Status {props.bestallning.status}
-          </IconSpan>
-          <IconSpan as="span" color={IbColors.IB_COLOR_07}>
-            <EventAvailableIcon />
-            Inkom {props.bestallning.ankomstDatum}
-          </IconSpan>
+          {!props.error && (
+            <Fragment>
+              <IbTypo09 as="span" color={IbColors.IB_COLOR_07}>
+                Avser {props.bestallning.intygTyp}
+              </IbTypo09>
+              <IconSpan as="span" color={IbColors.IB_COLOR_07}>
+                {getStatusIcon()}
+                Status {props.bestallning.status}
+              </IconSpan>
+              <IconSpan as="span" color={IbColors.IB_COLOR_07}>
+                <EventAvailableIcon />
+                Inkom {props.bestallning.ankomstDatum}
+              </IconSpan>
+            </Fragment>
+          )}
         </div>
-        <ButtonRow>
-          <div className="left">
-            <IbTypo04 color={IbColors.IB_COLOR_19}>{props.bestallning.id}</IbTypo04>
-            <IbTypo01 color={IbColors.IB_COLOR_19}>
-              {props.bestallning.invanare.personId} - {props.bestallning.invanare.name}
-            </IbTypo01>
-            {props.bestallning.invanare.sekretessMarkering ? (
-              <IbAlert type={alertType.SEKRETESS}>Patienten har sekretessmarkering</IbAlert>
-            ) : null}
-          </div>
-          <BestallningActionBar bestallning={props.bestallning} goBack={props.history.goBack} />
-        </ButtonRow>
+        {!props.error && (
+          <ButtonRow>
+            <div className="left">
+              <IbTypo04 color={IbColors.IB_COLOR_19}>{props.bestallning.id}</IbTypo04>
+              <IbTypo01 color={IbColors.IB_COLOR_19}>
+                {props.bestallning.invanare.personId} - {props.bestallning.invanare.name}
+              </IbTypo01>
+              {props.bestallning.invanare.sekretessMarkering ? (
+                <IbAlert type={alertType.SEKRETESS}>Patienten har sekretessmarkering</IbAlert>
+              ) : null}
+            </div>
+            <BestallningActionBar bestallning={props.bestallning} goBack={props.history.goBack} />
+          </ButtonRow>
+        )}
       </CenterContainer>
     </HeaderContainer>
   )

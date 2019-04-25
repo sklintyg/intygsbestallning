@@ -12,6 +12,8 @@ import se.inera.intyg.intygsbestallning.common.dto.BestallningInvanareDto;
 import se.inera.intyg.intygsbestallning.common.dto.BestallningMetaData;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningDto;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningScope;
+import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
+import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTextService;
 import se.inera.intyg.intygsbestallning.common.service.notifiering.NotifieringSendService;
@@ -67,7 +69,7 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
         var personSvar = patientService.lookupPersonnummerFromPU(bestallning.get().getInvanare().getPersonId());
 
         if (personSvar.isEmpty()) {
-            throw new IllegalArgumentException("Person was not found in PU");
+            throw new IbServiceException(IbErrorCodeEnum.PU_ERROR, "Person was not found in PU");
         }
 
         pdlLogService.log(bestallning.get(), LogEvent.BESTALLNING_OPPNAS_OCH_LASES);

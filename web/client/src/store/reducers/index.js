@@ -5,6 +5,8 @@ import {connectRouter} from 'connected-react-router'
 import bestallning from './bestallning'
 import modal from './modal'
 import sessionPoll from './sessionPoll'
+import cookieBanner from './cookieBanner'
+import versionInfo from './versionInfo'
 
 const appReducer = (history) =>
   combineReducers({
@@ -13,7 +15,9 @@ const appReducer = (history) =>
     router: connectRouter(history),
     bestallning,
     modal,
-    sessionPoll
+    sessionPoll,
+    cookieBanner,
+    versionInfo
   })
 
 const reducers = (history) => (state, action) => {

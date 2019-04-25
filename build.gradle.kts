@@ -1,5 +1,8 @@
 
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
+import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import se.inera.intyg.TagReleaseTask
 import se.inera.intyg.intygsbestallning.build.Config.Dependencies
@@ -17,7 +20,7 @@ plugins {
 
 allprojects {
   group = "se.inera.intyg.intygsbestallning"
-  version = System.getenv("buildVersion") ?: "0-SNAPSHOT"
+  version = System.getProperty("buildVersion", "0-SNAPSHOT")
 
   extra.apply {
     set("intygInfraVersion", System.getProperty("infraVersion", "0-SNAPSHOT"))
@@ -80,7 +83,6 @@ subprojects {
   }
 
   tasks {
-    register<TagReleaseTask>("tagRelease")
 
     withType<Test> {
       useJUnitPlatform()
@@ -96,6 +98,10 @@ subprojects {
       kotlinOptions.jvmTarget = Jvm.kotlinJvmTarget
     }
   }
+}
+
+tasks {
+  register<TagReleaseTask>("tagRelease")
 }
 
 publishing {

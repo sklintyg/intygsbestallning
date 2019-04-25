@@ -1,28 +1,29 @@
 import com.moowork.gradle.node.task.NodeTask
+import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 
 plugins {
-  id("com.moowork.node") version "1.2.0"
+  id("com.moowork.node")
 }
 
-tasks.clean {
-  delete("test-results")
+node {
+  version = Dependencies.nodeVersion
+  download = true
+  distBaseUrl = "https://build-inera.nordicmedtest.se/node/"
+  nodeModulesDir = file("${project.projectDir}")
 }
 
 tasks {
-  node {
-    version = "10.15.1"
-    download = true
-    distBaseUrl = "https://build-inera.nordicmedtest.se/node/"
-    nodeModulesDir = file("${project.projectDir}")
+  clean {
+    delete("test-results")
+  }
+  register<NodeTask>("cypressTest") {
+    dependsOn("npmInstall")
+
+    val baseUrl = project.findProperty("baseUrl") ?: "http://localhost:8080"
+
+    setScript(file("scripts/run.js"))
+
+    setArgs(listOf("baseUrl=${baseUrl}"))
   }
 }
 
-tasks.register<NodeTask>("cypressTest") {
-  dependsOn("npmInstall")
-
-  val baseUrl = project.findProperty("baseUrl") ?: "http://localhost:8080"
-
-  setScript(file( "scripts/run.js" ))
-
-  setArgs(listOf("baseUrl=${baseUrl}"))
-}

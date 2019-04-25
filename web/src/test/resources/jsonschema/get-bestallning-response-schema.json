@@ -1,0 +1,103 @@
+{
+  "type": "object",
+  "required": [
+    "id",
+    "status",
+    "ankomstDatum",
+    "intygTyp",
+    "invanare",
+    "metaData",
+    "fragor"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "status": {
+      "type": "string"
+    },
+    "ankomstDatum": {
+      "type": "string"
+    },
+    "intygTyp": {
+      "type": "string"
+    },
+    "invanare": {
+      "type": "object",
+      "required": [
+        "personId",
+        "sekretessMarkering",
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "personId": {
+          "type": "string"
+        },
+        "sekretessMarkering": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "metaData": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "typ",
+          "text"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "typ": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "fragor": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "rubrik",
+          "delfragor"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "rubrik": {
+            "type": "string"
+          },
+          "delfragor": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "etikett": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "svar": {
+                  "type": "string"
+                },
+                "bild": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

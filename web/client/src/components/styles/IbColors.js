@@ -35,6 +35,7 @@ const colors = {
 
   IB_COLOR_21: '#496CEC',
   IB_COLOR_25: '#8AA7F5',
-  IB_COLOR_03: '#B3E5FC'
+  IB_COLOR_03: '#B3E5FC',
+  IB_COLOR_31: '#00a9a7'
 };
 export default colors;

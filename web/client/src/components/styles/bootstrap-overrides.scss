@@ -56,6 +56,21 @@ $alert-padding-x: 0.5rem;
 // Bootstrap non-variable overrides for those things we cannot affect with just using variables.
 
 //1. Modal footer buttons should be left aligned
+.modal-title {
+  @extend %ib-typo-02;
+  color: $ib-color-07;
+}
+
+.modal-body {
+  @extend %ib-typo-07;
+  color: $ib-color-07;
+
+  h5 {
+    @extend %ib-typo-06;
+    color: $ib-color-07;
+  }
+}
+
 .modal-footer {
   justify-content: flex-start;
 }
@@ -128,6 +143,12 @@ $alert-padding-x: 0.5rem;
 
 .btn-link {
   padding: 0;
+  line-height: 1;
+  vertical-align: baseline;
+  // For some unknown reason, using the value "transparent" doesn't work.
+  // Something in the scss processing replaces it with "initial" which in turn causes btn-link to have a gray background in IE11
+  // As a workaround, setting an corresponding tranaparant rgb value works..
+  background-color: rgba(0,0,0,0);
 }
 
 th .btn-link {

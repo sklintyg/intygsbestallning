@@ -25,6 +25,16 @@ const VardgivarTitle = styled(IbTypo05)`
 const Vardenhet = styled(IbTypo06)`
   background: transparent;
   padding-left: 32px;
+  color: ${IbColors.IB_COLOR_08};
+`
+
+export const VeButton = styled(Button)`
+  background: transparent;
+  color: ${IbColors.IB_COLOR_07} !important;
+  text-decoration: underline !important;
+  &:hover {
+   color: ${IbColors.IB_COLOR_21} !important;
+  }
 `
 
 const Vardgivare = ({initiallyExpanded, vg, unitContext, handleSelect}) => {
@@ -47,12 +57,12 @@ const Vardgivare = ({initiallyExpanded, vg, unitContext, handleSelect}) => {
 
         return (
           <Vardenhet key={ve.id}>
-            <Button
+            <VeButton
               color="link"
               onClick={onSelect(ve.id)}
               disabled={activeEnhet}>
               {ve.name} {activeEnhet && <span>(nuvarande enhet)</span>}
-            </Button>
+            </VeButton>
           </Vardenhet>
         )
       })}

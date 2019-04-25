@@ -154,3 +154,9 @@ inera:
       file: file:${certificate.folder}/login.certificate.jks
       alias: verifiering.rehabstod.intygstjanster.sjunet.org
       password: dummy
+
+# Bootstrap
+persistence:
+  bootstrap:
+    vardenhet-directory: classpath*:bootstrap/vardenhet/
+    bestallning-directory: classpath*:bootstrap/bestallning/

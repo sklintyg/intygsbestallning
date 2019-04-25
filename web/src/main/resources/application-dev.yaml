@@ -19,11 +19,6 @@ ib:
 putjanst:
   logicaladdress: PUDEV
 
-persistence:
-  bootstrap:
-    vardenhet-directory: classpath*:bootstrap/vardenhet/
-    bestallning-directory: classpath*:bootstrap/bestallning/
-
 inera:
   saml:
     metadata:

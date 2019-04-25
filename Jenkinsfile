@@ -1,4 +1,5 @@
 #!groovy
+
 node {
     def buildVersion = "0.0.1.${BUILD_NUMBER}"
     def infraVersion = "3.10.0.+"
@@ -6,20 +7,28 @@ node {
     def java11tool = tool name: 'jdk11', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
     def javaHome= "${java11tool}/jdk-11.0.2+9"
 
-    def gradletool = tool name: 'gradle', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
-    def gradle = "${gradletool}/gradle-5.2.1/bin/gradle -Dorg.gradle.java.home=/${javaHome}"
+    def versionFlags = "-Dorg.gradle.java.home=${javaHome} -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
 
-    stage('build') {
-            try {
-                sh "${gradle} --refresh-dependencies clean build -P client"
-              } finally {
-                publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/allTests', \
-                    reportFiles: 'index.html', reportName: 'JUnit results'
-            }
+    stage('checkout') {
+        git url: "https://github.com/sklintyg/intygsbestallning.git", branch: GIT_BRANCH
+        util.run { checkout scm }
     }
 
-    stage('tag and upload') {
-        sh "${gradle} uploadArchives -DbuildVersion=${buildVersion}"
+    stage('build') {
+        try {
+            shgradle "--refresh-dependencies clean build -P client ${versionFlags}"
+        } finally {
+            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/allTests', \
+                    reportFiles: 'index.html', reportName: 'JUnit results'
+        }
+    }
+
+    stage('tag') {
+        shgradle "tagRelease ${versionFlags}"
+    }
+
+    stage('notify') {
+        util.notifySuccess()
     }
 
     stage('propagate') {
@@ -28,7 +37,7 @@ node {
         build job: "intygsbestallning-dintyg-build", wait: false, parameters: [
                 [$class: 'StringParameterValue', name: 'BUILD_VERSION', value: buildVersion],
                 [$class: 'StringParameterValue', name: 'INFRA_VERSION', value: infraVersion],
-                [$class: 'StringParameterValue', name: 'GIT_REF', value: 'develop'],
+                [$class: 'StringParameterValue', name: 'GIT_REF', value: gitRef],
                 [$class: 'StringParameterValue', name: 'RELEASE_FLAG', value: releaseFlag]
         ]
     }

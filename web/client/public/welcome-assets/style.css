@@ -10,6 +10,12 @@ body {
 .content {
   margin: auto;
   max-width: 1200px;
+  width:100%;
+}
+
+.helplinks {
+  position: absolute;
+  top: 550px;
 }
 
 .fake-users-container {

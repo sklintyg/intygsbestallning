@@ -23,7 +23,7 @@ import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersisten
 import se.inera.intyg.intygsbestallning.persistence.service.VardenhetPersistenceService;
 
 @Component
-@Profile({"dev"})
+@Profile({"dev", "init-bootstrap-data"})
 @Transactional
 public class TestDataBootstrapper {
 
