@@ -572,6 +572,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     private void configureFake(HttpSecurity http) throws Exception {
         configureFakePermitAllPaths(http);
 
+        // Unauthenticated requests matching loginRequestMatcher will be sent to fake login flow
         http
                 .authorizeRequests().antMatchers("/**").fullyAuthenticated()
 
@@ -610,6 +611,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     private void configureSamlWithFake(HttpSecurity http) throws Exception {
         configureFakePermitAllPaths(http);
 
+        // Unauthenticated requests matching loginRequestMatcher will be sent to saml login flow
         http
                 .authorizeRequests().antMatchers("/**").fullyAuthenticated()
 
