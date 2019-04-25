@@ -5,6 +5,8 @@ data:
   REDIS_PORT: "${redis.service.port}"
   REDIS_HOST: "${redis.service.host}"
   IB_HOST_URL: "https://intygsbestallning-demo-demointyg.app-test1.ind-ocp.sth.basefarm.net"
+  CONFIG_FOLDER: "/opt/intygsbestallning-demo/config"
+  CERTIFICATE_FOLDER: "/opt/intygsbestallning-demo/env"
 kind: ConfigMap
 metadata:
   name: intygsbestallning-demo-configmap-envvar

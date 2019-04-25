@@ -2,7 +2,7 @@ config:
   folder: dummy
 
 certificate:
-  folder: dummy
+  folder: ${config.folder}
 
 ntjp:
   base:
@@ -26,7 +26,7 @@ inera:
       idp: ${config.folder}/idp-inera.xml
     keystore:
       password: password
-      file: file:///${config.folder}/localhost.p12
+      file: file:///${certificate.folder}/localhost.p12
       alias: localhost
 
 activemq:
