@@ -31,10 +31,10 @@ activemq:
     username:
 
 mailsender:
-  maximum_redeliveries: 5
-  redelivery_delay: 100
-  back_off_multiplier: 1
-  queue_name: ib.mailsender.queue
+  maximum-redeliveries: 5
+  redelivery-delay: 100
+  back-off-multiplier: 1
+  queue-name: ib.mailsender.queue
 
 bestallning:
   paminnelse:
