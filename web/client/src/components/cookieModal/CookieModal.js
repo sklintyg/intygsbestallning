@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 import { acceptCookieBanner } from '../../store/actions/cookieBanner'
 import { getCookieBannerAccepted } from '../../store/reducers/cookieBanner'
+import ExternalLink from '../externalLink/ExternalLink'
 
 const CookieModal = ({ handleClose, isOpen, acceptCookieBanner, cookieBannerAccepted }) => {
   const accept = () => {
@@ -42,9 +43,9 @@ const CookieModal = ({ handleClose, isOpen, acceptCookieBanner, cookieBannerAcce
           <p>Väljer du att inte acceptera kakor så kan du inte identifiera dig med e-legitimation i denna e-tjänst.</p>
           <p>
             Mer information om kakor kan du finna på{' '}
-            <a className="extern" href="https://pts.se/sv/privat/internet/integritet/kakor-cookies/">
+            <ExternalLink href="https://pts.se/sv/privat/internet/integritet/kakor-cookies/">
               Kommunikationsmyndigheten PTS sida om kakor
-            </a>
+            </ExternalLink>
           </p>
         </ModalBody>
         <ModalFooter>

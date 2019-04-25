@@ -5,6 +5,7 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import { School, AboutIcon } from '../../styles/IbSvgIcons'
 import styled from 'styled-components'
 import colors from '../../styles/IbColors'
+import ExternalLink from '../../externalLink/ExternalLink'
 
 const Intygsskola = styled.div`
   background-color: ${colors.IB_COLOR_20};
@@ -38,9 +39,9 @@ const About = ({ handleOpen, handleClose, isOpen, versionInfo }) => {
         <ModalBody>
           <Intygsskola>
             <StyledSchool><School color={colors.IB_COLOR_31}/></StyledSchool>
-            <a className="extern" href="https://www.inera.se/aktuellt/utbildningar/intygsskolan/intygsbestallning/">
+            <ExternalLink href="https://www.inera.se/aktuellt/utbildningar/intygsskolan/intygsbestallning/">
               Hitta svar på dina frågor i Ineras Intygsskola
-            </a>
+            </ExternalLink>
           </Intygsskola>
           <p>Intygsbeställning är en tjänst som drivs av Inera AB.</p>
           <p>Nuvarande version är {versionInfo.versionInfo.buildVersion}</p>
@@ -49,11 +50,11 @@ const About = ({ handleOpen, handleClose, isOpen, versionInfo }) => {
             det risk att problem uppstår.
           </p>
           <p>
-            För att kunna generera utskrifter använder sig Intygbeställning av <a href="https://itextpdf.com">iText7</a>. För mer
+            För att kunna generera utskrifter använder sig Intygbeställning av <ExternalLink href="https://itextpdf.com">iText7</ExternalLink>. För mer
             information under vilka villkor iText7 får användas läs mer om AGPL 3.0 på{' '}
-            <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">gnu.org</a>. För Intygsbeställnings källkod besök{' '}
-            <a href="https://github.com/sklintyg/intygsbestallning">Github</a>. För Intygsbeställnings upphovsrättslicens besök{' '}
-            <a href="https://github.com/sklintyg/intygsbestallning">Github</a>.
+            <ExternalLink href="https://www.gnu.org/licenses/agpl-3.0.en.html">gnu.org</ExternalLink>. För Intygsbeställnings källkod besök{' '}
+            <ExternalLink href="https://github.com/sklintyg/intygsbestallning">Github</ExternalLink>. För Intygsbeställnings upphovsrättslicens besök{' '}
+            <ExternalLink href="https://github.com/sklintyg/intygsbestallning">Github</ExternalLink>.
           </p>
 
           <h5>Behandling av personuppgifter</h5>
@@ -64,7 +65,7 @@ const About = ({ handleOpen, handleClose, isOpen, versionInfo }) => {
           </p>
           <p>
             Läs mer om hur personuppgifter behandlas på{' '}
-            <a href="https://www.inera.se/om-inera/behandling-av-personuppgifter/">Ineras webbplats</a>.
+            <ExternalLink href="https://www.inera.se/om-inera/behandling-av-personuppgifter/">Ineras webbplats</ExternalLink>.
           </p>
 
           <h5>Användandet av kakor (cookies)</h5>
@@ -88,17 +89,17 @@ const About = ({ handleOpen, handleClose, isOpen, versionInfo }) => {
           </p>
           <p>
             Mer information om kakor (cookies) finns på{' '}
-            <a href="https://pts.se/sv/privat/internet/integritet/kakor-cookies/">Post- och telestyrelsens webbplats</a>.
+            <ExternalLink href="https://pts.se/sv/privat/internet/integritet/kakor-cookies/">Post- och telestyrelsens webbplats</ExternalLink>.
           </p>
 
           <h5>Kontakt och support</h5>
           <p>Vid frågor gällande inloggning, kontakta leverantören av din e-legitimation eller SITHS-kortsadministratör.</p>
           <p>
             Tekniska frågor om Intygsbeställning hanteras i första hand av din lokala IT-avdelningen. Om din lokala IT-avdelning inte kan
-            hitta felet ska de kontakta <a href="https://www.inera.se/kundservice">Ineras kundservice</a>.
+            hitta felet ska de kontakta <ExternalLink href="https://www.inera.se/kundservice">Ineras kundservice</ExternalLink>.
           </p>
           <p>
-            Har du som användare synpunkter på tjänsten kan du kontakta <a href="https://www.inera.se/kundservice">Ineras kundservice</a>.
+            Har du som användare synpunkter på tjänsten kan du kontakta <ExternalLink href="https://www.inera.se/kundservice">Ineras kundservice</ExternalLink>.
           </p>
           <p>
             Inera AB

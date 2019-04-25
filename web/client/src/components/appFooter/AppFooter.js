@@ -6,6 +6,7 @@ import { IbTypo14, IbTypo07 } from '../styles/IbTypography'
 import { Button } from 'reactstrap'
 import { openModal } from '../../store/actions/modal'
 import { CookieModalId } from '../cookieModal/CookieModal'
+import ExternalLink from '../externalLink/ExternalLink'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 
@@ -49,25 +50,25 @@ const AppFooter = ({openModal}) => {
           <IbTypo14 as="h3">Intygsbeställning är en tjänst som drivs av Inera AB</IbTypo14>
           <Text as="p">Box 11703, 118 93 Stockholm</Text>
           <Text as="p">
-            <a rel="noopener noreferrer" target="_blank" href="https://www.inera.se" className="extern">
+            <ExternalLink href="https://www.inera.se">
               www.inera.se
-            </a>
+            </ExternalLink>
           </Text>
         </FooterSection>
         <FooterSection>
           <IbTypo14>Kundtjänst</IbTypo14>
           <Text as="p">
-            <a rel="noopener noreferrer" target="_blank" href="https://www.inera.se/kundservice/kontakta-oss/" className="extern">
+            <ExternalLink href="https://www.inera.se/kundservice/kontakta-oss/">
               Kontakt och support
-            </a>
+            </ExternalLink>
           </Text>
         </FooterSection>
         <FooterSection>
           <IbTypo14>Läs mer om inloggningen</IbTypo14>
           <Text as="p">
-            <a rel="noopener noreferrer" target="_blank" href="https://www.inera.se/intygsbestallning/inloggning" className="extern">
+            <ExternalLink url="https://www.inera.se/intygsbestallning/inloggning">
               SITHS-kort
-            </a>
+            </ExternalLink>
           </Text>
         </FooterSection>
       </FooterContainer>
