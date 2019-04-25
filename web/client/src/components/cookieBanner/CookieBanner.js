@@ -23,7 +23,7 @@ const CookieBannerWrapper = styled.div`
   background: ${IbColors.IB_COLOR_03};
 
   div {
-    flex: 1 0 auto;
+    flex: 1 1 auto;
   }
 
   & .cookieButton {
@@ -53,7 +53,7 @@ const CookieBanner = ({ openModal, acceptCookieBanner, cookieBannerAccepted }) =
           </Button>
         </div>
         <div className="cookieButton">
-          <Button onClick={() => onBannerButtonClick()}>Jag godkänner</Button>
+          <Button color={'success'} onClick={() => onBannerButtonClick()}>Jag godkänner</Button>
         </div>
       </CookieBannerWrapper>
     </Fragment>
