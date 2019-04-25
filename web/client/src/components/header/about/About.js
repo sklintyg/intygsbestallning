@@ -5,10 +5,6 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import { School, AboutIcon } from '../../styles/IbSvgIcons'
 import styled from 'styled-components'
 import colors from '../../styles/IbColors'
-import { compose, lifecycle } from 'recompose'
-import { connect } from 'react-redux'
-import * as actions from '../../../store/actions/versionInfo'
-import { getVersionInfo, getErrorMessage, getIsFetching } from '../../../store/reducers/versionInfo'
 
 const Intygsskola = styled.div`
   background-color: ${colors.IB_COLOR_20};
@@ -30,7 +26,6 @@ const StyledSchool = styled.span`
 `
 
 const About = ({ handleOpen, handleClose, isOpen, versionInfo }) => {
-  console.log(versionInfo.versionInfo.buildVersion)
   return (
     <Fragment>
       <ActionButton onClick={handleOpen} id="changeUnitBtn">
@@ -130,24 +125,4 @@ About.propTypes = {
   isOpen: PropTypes.bool.isRequired,
 }
 
-const lifeCycleValues = {
-  componentDidMount() {
-    this.props.fetchVersionInfo()
-  },
-}
-
-const mapStateToProps = (state) => {
-  return {
-    versionInfo: getVersionInfo(state),
-    isFetching: getIsFetching(state),
-    errorMessage: getErrorMessage(state),
-  }
-}
-
-export default compose(
-  connect(
-    mapStateToProps,
-    actions
-  ),
-  lifecycle(lifeCycleValues)
-)(About)
+export default About
