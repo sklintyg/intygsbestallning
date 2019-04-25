@@ -41,8 +41,9 @@ För att starta applicationen och även bygga frontend-klienten med alla statisk
 
 för att starta applikationen lokalt.
 
-I nuläget kör applikationen med profilen **dev-security**, denna ger full access till allt.
-För att aktivera filter och SAML-auth etc finns just nu testprofilen **ib-security-test**
+Applikationen kan köras med profil **fake** för att ge åtkomst till allt via inloggningssida, eller profil **saml** för att aktivera SAML login.
+Profilerna kan kombineras, men då används SAML inloggning för */maillink/guid*. 
+
 
 ### H2
 Du hittar databasen lokalt på `http://localhost:8080/h2-console

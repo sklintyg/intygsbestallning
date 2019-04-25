@@ -68,7 +68,7 @@ public class IntygsbestallningSAMLEntryPoint extends SAMLEntryPoint {
 
     private Collection<String> buildTlsClientAuthContexts() {
         Set<String> set = new HashSet<>();
-        set.add(AuthConstants.URN_OASIS_NAMES_TC_SAML_2_0_AC_CLASSES_TLSCLIENT);
+        set.add("http://id.sambi.se/loa/loa3");
         return set;
     }
 }

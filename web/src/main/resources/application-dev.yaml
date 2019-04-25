@@ -24,10 +24,15 @@ persistence:
     vardenhet-directory: classpath*:bootstrap/vardenhet/
     bestallning-directory: classpath*:bootstrap/bestallning/
 
-sakerhetstjanst:
+inera:
   saml:
+    metadata:
+      sp: ${config.folder}/sp-inera.xml
+      idp: ${config.folder}/idp-inera.xml
     keystore:
-      password: dummy
+      password: password
+      file: file:///${config.folder}/localhost.p12
+      alias: localhost
 
 activemq:
   broker:

@@ -1,6 +1,6 @@
 apiVersion: v1
 data:
-  SPRING_PROFILES_ACTIVE: "default,dev,myndighet-stub,caching-enabled,wc-hsa-stub,dev-security"
+  SPRING_PROFILES_ACTIVE: "default,dev,myndighet-stub,caching-enabled,wc-hsa-stub, fake, saml"
   SPRING_DATASOURCE_URL: "jdbc:mysql://${mysql.service.host}:${mysql.service.port}/${database.name}?useSSL=false"
   REDIS_PORT: "${redis.service.port}"
   REDIS_HOST: "${redis.service.host}"
