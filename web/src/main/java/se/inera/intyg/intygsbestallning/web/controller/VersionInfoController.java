@@ -22,7 +22,7 @@ public class VersionInfoController {
         this.environment = environment;
     }
 
-    @GetMapping(path = "/metrics/version", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/public-api/version", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity getVersion() {
         var applicationName = buildProperties.getArtifact();
         var buildVersion = buildProperties.getVersion();

@@ -517,7 +517,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
                 .antMatchers("/").permitAll()
                 .antMatchers("/welcome-assets/**").permitAll()
                 .antMatchers("/version.html").permitAll()
-                .antMatchers("/metrics/version").permitAll()
+                .antMatchers("/public-api/version").permitAll()
                 .antMatchers("/version-assets/**").permitAll()
                 .antMatchers("/favicon*").permitAll()
                 .antMatchers("/index.html").permitAll()

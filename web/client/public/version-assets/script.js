@@ -8,7 +8,7 @@ $(document).ready(function () {
 function updateVersionInfo() {
     versionInfo.innerHtml = "";
 
-    $.getJSON("/metrics/version")
+    $.getJSON("/public-api/version")
         .then(
             function (data, status) {
                 versionInfo.append('<h3>' + data.applicationName + '</h3>')
