@@ -30,7 +30,7 @@ import se.inera.intyg.infra.integration.hsa.stub.HsaServiceStub;
 @ComponentScan("se.inera.intyg.infra.integration.hsa")
 @ComponentScan(basePackages = {"se.inera.intyg.infra.integration.hsa.services", "se.inera.intyg.infra.integration.hsa.stub"})
 @ImportResource("classpath:hsa-stub-context.xml")
-@Profile({ "dev", "hsa-stub" })
+@Profile({ "dev", "wc-hsa-stub" })
 public class HsaStubConfig {
 
     @Bean
