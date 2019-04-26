@@ -7,6 +7,7 @@ data:
   IB_HOST_URL: "https://intygsbestallning-demo-demointyg.app-test1.ind-ocp.sth.basefarm.net"
   CONFIG_FOLDER: "/opt/intygsbestallning-demo/config"
   CERTIFICATE_FOLDER: "/opt/intygsbestallning-demo/env"
+  MAIL_HOST: "${ib.host.url}"
 kind: ConfigMap
 metadata:
   name: intygsbestallning-demo-configmap-envvar
