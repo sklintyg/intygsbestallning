@@ -79,7 +79,7 @@ const BestallningHeader = ({ props }) => {
   }
 
   let backPath = '/bestallningar/'
-  if (props.history.location.state.fromList) {
+  if (props.history && props.history.location && props.history.location.state && props.history.location.state.fromList) {
     backPath += props.history.location.state.fromList
   } else {
     backPath += 'AKTUELLA'

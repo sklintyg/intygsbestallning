@@ -9,7 +9,7 @@ import {
 import { buildClientError } from "./util";
 
 const INITIAL_STATE = {
-  isLoading: false,
+  isLoading: true,
   isAuthenticated: false,
   activeError: null
 };
