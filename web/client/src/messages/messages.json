@@ -32,6 +32,12 @@
         "title": "Behörighet saknas",
         "message": "Du verkar sakna behörighet"
       }
+    },
+    "appconfig": {
+      "unknown_internal_problem": {
+        "title": "Tekniskt fel",
+        "message": "Kunde inte hämta konfiguration. Prova igen om en stund."
+      }
     }
   }
 }

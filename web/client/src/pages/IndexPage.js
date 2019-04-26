@@ -3,14 +3,12 @@ import landing from './landningssida-min.png'
 import styled from 'styled-components'
 import AppFooter from '../components/appFooter/AppFooter'
 import { IbTypo02, IbTypo07 } from '../components/styles/IbTypography'
-import { FlexColumnContainer, ScrollingContainer, WorkareaContainer, Section } from '../components/styles/ibLayout'
+import { FlexColumnContainer, ScrollingContainer, Section, WorkareaContainer } from '../components/styles/ibLayout'
 import ibValues from '../components/styles/IbValues'
 import { Col, Container, Row } from 'reactstrap'
 import IbAlert, { alertType } from '../components/alert/Alert'
 import LoginOptions from '../components/loginOptions'
-import colors from '../components/styles/IbColors'
-import {School} from '../components/styles/IbSvgIcons'
-import ExternalLink from '../components/externalLink/ExternalLink'
+import IntygsskolaLink from '../components/styles/IntygsskolaLink'
 
 const CustomScrollingContainer = styled(ScrollingContainer)`
   max-width: none;
@@ -46,23 +44,31 @@ const HomePage = ({ match }) => {
                   Intygsbeställning är en tjänst för att hantera förfrågningar och beställningar av medicinska utlåtanden och intyg till
                   vården.
                 </IbTypo07>
-                {method === 't' && <Section><IbAlert type={alertType.OBSERVANDUM}>Du har blivit utloggad från Intygsbeställning på grund av inaktivitet. Om du vill fortsätta använda Intygsbeställning behöver du logga in igen.</IbAlert></Section>}
-
+                {method === 't' && (
+                  <Section>
+                    <IbAlert type={alertType.OBSERVANDUM}>
+                      Du har blivit utloggad från Intygsbeställning på grund av inaktivitet. Om du vill fortsätta använda Intygsbeställning
+                      behöver du logga in igen.
+                    </IbAlert>
+                  </Section>
+                )}
 
                 <Section>
                   <IbTypo07 as="p">
                     För att logga in behöver du ett giltigt e-tjänstekort (exempelvis SITHS-kort) samt behörighet att ta del av
                     förfrågningar och beställningar för din vårdenhet.
                   </IbTypo07>
-                  <School color={colors.IB_COLOR_31}/><ExternalLink href="https://www.inera.se/aktuellt/utbildningar/intygsskolan/intygsbestallning/">
-                  Hitta svar på dina frågor i Ineras Intygsskola
-                </ExternalLink>
+                  <Section>
+                    <IntygsskolaLink />
+                  </Section>
                   <IbAlert type={alertType.INFO}>
                     De förfrågningar och beställningar som hanteras i Intygsbeställning är journalhandlingar och all aktivitet i tjänsten
                     loggas i enlighet med Patientdatalagen.
                   </IbAlert>
                 </Section>
+                <Section/>
                 <LoginOptions />
+
               </Col>
             </Row>
           </Container>

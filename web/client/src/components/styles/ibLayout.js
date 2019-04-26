@@ -34,5 +34,5 @@ export const WorkareaContainer = styled.div`
 `
 
 export const Section = styled.div`
-  padding-bottom: 10px;
+  padding-bottom: 16px;
 `

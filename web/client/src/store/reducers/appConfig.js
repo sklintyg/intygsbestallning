@@ -32,7 +32,7 @@ const isFetching = (state = false, action) => {
 const errorMessage = (state = null, action) => {
   switch (action.type) {
     case ActionConstants.FETCH_APPCONFIG_FAILURE:
-      return buildClientError(action.payload, 'error.versionInfo').message
+      return buildClientError(action.payload, 'error.appconfig')
     case ActionConstants.FETCH_APPCONFIG_REQUEST:
     case ActionConstants.FETCH_APPCONFIG_SUCCESS:
       return null
