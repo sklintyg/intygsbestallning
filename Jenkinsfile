@@ -27,10 +27,6 @@ node {
         shgradle "tagRelease ${versionFlags}"
     }
 
-    stage('notify') {
-        util.notifySuccess()
-    }
-
     stage('propagate') {
         gitRef = "v${buildVersion}"
         releaseFlag = "${GIT_BRANCH.startsWith("release")}"
@@ -42,4 +38,7 @@ node {
         ]
     }
 
+    stage('notify') {
+        util.notifySuccess()
+    }
 }
