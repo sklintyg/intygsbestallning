@@ -39,7 +39,10 @@ enum class IbErrorCodeEnum {
   UNKNOWN_INTERNAL_PROBLEM,
   EXTERNAL_ERROR,
   UNAUTHORIZED,
-  PU_ERROR
+  PU_ERROR,
+  LOGIN_FEL001,
+  LOGIN_FEL002,
+  LOGIN_FEL004
 }
 
 data class IbResponderValidationException(
