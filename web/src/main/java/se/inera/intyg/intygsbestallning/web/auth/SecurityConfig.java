@@ -102,6 +102,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static se.inera.intyg.intygsbestallning.web.controller.AppConfigController.APPCONFIG_REQUEST_MAPPING;
 import static se.inera.intyg.intygsbestallning.web.controller.RequestErrorController.IB_SPRING_SEC_ERROR_CONTROLLER_PATH;
 import static se.inera.intyg.intygsbestallning.web.controller.SessionStatController.SESSION_STAT_REQUEST_MAPPING;
 
@@ -533,7 +534,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
                 .antMatchers("/assets/**").permitAll()
                 .antMatchers("/components/**").permitAll()
                 .antMatchers("/services/**").permitAll()
-                .antMatchers("/api/config/**").permitAll()
+                .antMatchers(APPCONFIG_REQUEST_MAPPING).permitAll()
                 .antMatchers(SESSION_STAT_REQUEST_MAPPING + "/**").permitAll();
 
         if (profiles.contains(FAKE_PROFILE) && profiles.contains(SAML_PROFILE)) {

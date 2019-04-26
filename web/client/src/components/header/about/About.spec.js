@@ -9,7 +9,7 @@ describe('<About />', () => {
   let handleOpen;
   let handleClose;
 
-  const versionInfo = {
+  const settings = {
     versionInfo: {
       buildVersion: 'VERSION'
     }
@@ -21,26 +21,26 @@ describe('<About />', () => {
   })
 
   it('default closed', () => {
-    const wrapper = mount(<About handleOpen={handleOpen} handleClose={handleClose} isOpen={false} versionInfo={versionInfo} />);
+    const wrapper = mount(<About handleOpen={handleOpen} handleClose={handleClose} isOpen={false} settings={settings} />);
     expect(wrapper.find(ActionButton)).toHaveLength(1);
     expect(wrapper.find(ModalBody)).toHaveLength(0);
   });
 
   it('default open', () => {
-    const wrapper = mount(<About handleOpen={handleOpen} handleClose={handleClose} isOpen={true} versionInfo={versionInfo} />);
+    const wrapper = mount(<About handleOpen={handleOpen} handleClose={handleClose} isOpen={true} settings={settings} />);
     expect(wrapper.find(ActionButton)).toHaveLength(1);
     expect(wrapper.find(ModalBody)).toHaveLength(1);
   });
 
   it('onClick', () => {
-    const wrapper = shallow(<About handleOpen={handleOpen} handleClose={handleClose} isOpen={false} versionInfo={versionInfo} />);
+    const wrapper = shallow(<About handleOpen={handleOpen} handleClose={handleClose} isOpen={false} settings={settings} />);
     wrapper.find(ActionButton).simulate('click');
 
     expect(handleOpen).toHaveProperty('callCount', 1);
   });
 
   it('onClose', () => {
-    const wrapper = shallow(<About handleOpen={handleOpen} handleClose={handleClose} isOpen={true} versionInfo={versionInfo} />);
+    const wrapper = shallow(<About handleOpen={handleOpen} handleClose={handleClose} isOpen={true} settings={settings} />);
     wrapper.find(Button).simulate('click');
 
     expect(handleClose).toHaveProperty('callCount', 1);

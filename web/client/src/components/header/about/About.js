@@ -26,7 +26,7 @@ const StyledSchool = styled.span`
   padding-right: 10px;
 `
 
-const About = ({ handleOpen, handleClose, isOpen, versionInfo }) => {
+const About = ({ handleOpen, handleClose, isOpen, settings }) => {
   return (
     <Fragment>
       <ActionButton onClick={handleOpen} id="changeUnitBtn">
@@ -44,7 +44,7 @@ const About = ({ handleOpen, handleClose, isOpen, versionInfo }) => {
             </ExternalLink>
           </Intygsskola>
           <p>Intygsbeställning är en tjänst som drivs av Inera AB.</p>
-          <p>Nuvarande version är {versionInfo.versionInfo.buildVersion}</p>
+          <p>Nuvarande version är {settings.versionInfo.buildVersion}</p>
           <p>
             Intygsbeställning är utvecklat för Inernet Explorer 11 och efterföljande versioner. Andra webbläsare kan användas, men då finns
             det risk att problem uppstår.

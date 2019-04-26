@@ -6,8 +6,11 @@ import { IbTypo02, IbTypo07 } from '../components/styles/IbTypography'
 import { FlexColumnContainer, ScrollingContainer, WorkareaContainer, Section } from '../components/styles/ibLayout'
 import ibValues from '../components/styles/IbValues'
 import { Col, Container, Row } from 'reactstrap'
-import LoginOptions from '../components/loginOptions/LoginOptionsContainer'
 import IbAlert, { alertType } from '../components/alert/Alert'
+import LoginOptions from '../components/loginOptions'
+import colors from '../components/styles/IbColors'
+import {School} from '../components/styles/IbSvgIcons'
+import ExternalLink from '../components/externalLink/ExternalLink'
 
 const CustomScrollingContainer = styled(ScrollingContainer)`
   max-width: none;
@@ -44,12 +47,16 @@ const HomePage = ({ match }) => {
                   vården.
                 </IbTypo07>
                 {method === 't' && <Section><IbAlert type={alertType.OBSERVANDUM}>Du har blivit utloggad från Intygsbeställning på grund av inaktivitet. Om du vill fortsätta använda Intygsbeställning behöver du logga in igen.</IbAlert></Section>}
+
+
                 <Section>
                   <IbTypo07 as="p">
                     För att logga in behöver du ett giltigt e-tjänstekort (exempelvis SITHS-kort) samt behörighet att ta del av
                     förfrågningar och beställningar för din vårdenhet.
                   </IbTypo07>
-
+                  <School color={colors.IB_COLOR_31}/><ExternalLink href="https://www.inera.se/aktuellt/utbildningar/intygsskolan/intygsbestallning/">
+                  Hitta svar på dina frågor i Ineras Intygsskola
+                </ExternalLink>
                   <IbAlert type={alertType.INFO}>
                     De förfrågningar och beställningar som hanteras i Intygsbeställning är journalhandlingar och all aktivitet i tjänsten
                     loggas i enlighet med Patientdatalagen.

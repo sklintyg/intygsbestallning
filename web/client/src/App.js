@@ -1,32 +1,33 @@
-import React, {Fragment} from 'react'
-import {HashRouter, Switch} from 'react-router-dom'
+import React, { Fragment } from 'react'
+import { HashRouter, Switch } from 'react-router-dom'
 import HomePage from './pages/IndexPage'
 import SelectEnhetPage from './pages/SelectEnhetPage'
 import BestallningarIndexPage from './pages/BestallningarIndexPage'
 import BestallningarPage from './pages/BestallningarPage'
 import BestallningPage from './pages/BestallningPage'
 import Header from './components/header'
-import {getUser} from './store/actions/user'
-import {connect} from 'react-redux'
-import {compose, lifecycle} from 'recompose'
+import { getUser } from './store/actions/user'
+import { connect } from 'react-redux'
+import { compose, lifecycle } from 'recompose'
 import SecuredRoute from './components/auth/SecuredRoute'
 import UnsecuredRoute from './components/auth/UnsecuredRoute'
-import {history} from './store/configureStore'
-import {ConnectedRouter} from 'connected-react-router'
-import {closeAllModals} from './store/actions/modal'
+import { history } from './store/configureStore'
+import { ConnectedRouter } from 'connected-react-router'
+import { closeAllModals } from './store/actions/modal'
 import ErrorPage from './pages/ErrorPage'
 import ErrorModal from './components/errorModal'
 import TestLinks from './components/TestLinks/TestLinks'
 import SessionPoller from './components/sessionPoller'
 import CookieBanner from './components/cookieBanner/CookieBanner'
 import CookieModal from './components/cookieModal/CookieModal'
+import { fetchAppConfig } from './store/actions/appConfig'
 
 const App = () => {
   return (
     <ConnectedRouter history={history}>
       <HashRouter>
         <Fragment>
-          <SessionPoller/>
+          <SessionPoller />
           {process.env.NODE_ENV !== 'production' && <TestLinks />}
           <Header />
           <CookieBanner />
@@ -49,6 +50,7 @@ const App = () => {
 
 const lifeCycleValues = {
   componentWillMount() {
+    this.props.fetchAppConfig()
     this.props.getUser()
   },
   componentDidMount() {
@@ -65,6 +67,7 @@ const lifeCycleValues = {
 // expose selected dispachable methods to App props
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
+    fetchAppConfig: () => dispatch(fetchAppConfig()),
     getUser: () => dispatch(getUser()),
     closeAllModals: () => dispatch(closeAllModals()),
   }

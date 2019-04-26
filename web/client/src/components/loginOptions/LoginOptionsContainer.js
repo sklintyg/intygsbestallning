@@ -1,19 +1,19 @@
-import {compose} from "recompose";
-import {connect} from "react-redux";
-import LoginOptions from "./LoginOptions";
+import { compose } from 'recompose'
+import { connect } from 'react-redux'
+import LoginOptions from './LoginOptions'
+import { getErrorMessage, getIsFetching, getSettings} from '../../store/reducers/appConfig'
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    user: state.user
+    settings: getSettings(state),
+    isFetching: getIsFetching(state),
+    errorMessage: getErrorMessage(state),
   }
-};
-// expose selected dispatchable methods to App props
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    selectLoginType: (loginType) => console.log(loginType)
-  }
-};
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps)
-)(LoginOptions);
+}
 
+export default compose(
+  connect(
+    mapStateToProps,
+    null
+  )
+)(LoginOptions)
