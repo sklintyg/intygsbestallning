@@ -141,10 +141,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
         this.multiThreadedHttpConnectionManager.shutdown();
     }
 
-    @Value("${inera.saml.metadata.sp}")
+    @Value("${inera.saml.sp.metadata}")
     private String spMetadataLocation;
 
-    @Value("${inera.saml.metadata.idp}")
+    @Value("${inera.saml.idp.metadata}")
     private String idpMetadataLocation;
 
     @Value("${inera.saml.keystore.file}")

@@ -3,6 +3,8 @@ resources:
 
 # Disable spring boot default error handling
 server:
+  port: 8080
+  use-forward-headers: true
   error:
     whitelabel:
       enabled: false
@@ -27,7 +29,7 @@ spring:
   liquibase:
     change-log: classpath:/changelog/db-changelog-master.xml
   profiles:
-    active: default, myndighet-stub, dev, caching-enabled, wc-hsa-stub, saml, fake
+    active: default, myndighet-stub, dev, caching-enabled, wc-hsa-stub, fake, saml
   main:
     allow-bean-definition-overriding: true
 
@@ -147,9 +149,10 @@ pdl:
 ################################################
 inera:
   saml:
-    metadata:
-        sp: ${config.folder}/sp-inera.xml
-        idp: ${config.folder}/idp-inera.xml
+    sp:
+      metadata: ${config.folder}/sp-inera.xml
+    idp:
+      metadata: ${config.folder}/idp-inera.xml
     keystore:
       file: file:${certificate.folder}/login.certificate.jks
       alias: verifiering.rehabstod.intygstjanster.sjunet.org

@@ -21,9 +21,10 @@ putjanst:
 
 inera:
   saml:
-    metadata:
-      sp: ${config.folder}/sp-inera.xml
-      idp: ${config.folder}/idp-inera.xml
+    sp:
+      metadata: ${config.folder}/sp-inera.xml
+    idp:
+      metadata: ${config.folder}/idp-inera.xml
     keystore:
       password: password
       file: file:///${certificate.folder}/localhost.p12
