@@ -93,8 +93,16 @@ public class RequestErrorController implements ErrorController {
     @RequestMapping(path = IB_ERROR_CONTROLLER_PATH, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView handleErrorAsRedirect(WebRequest webRequest, HttpServletRequest request) {
         final String errorContext = getErrorContext(webRequest);
+        final HttpStatus httpStatus = getDispatcherErrorStatusCode(request);
+        final Throwable error = this.errorAttributes.getError(webRequest);
+        ApiErrorResponse apiErrorResponse;
 
-        ApiErrorResponse apiErrorResponse = fromHttpStatus(getDispatcherErrorStatusCode(request));
+        //ApiErrorResponse apiErrorResponse = fromHttpStatus(getDispatcherErrorStatusCode(request));
+        if (error != null) {
+            apiErrorResponse = fromException(error);
+        } else {
+            apiErrorResponse = fromHttpStatus(httpStatus);
+        }
         String redirectView = "redirect:" + IB_CLIENT_EXIT_BOOT_PATH + apiErrorResponse.getErrorCode() + "/" + apiErrorResponse.getLogId();
 
         LOG.error(String.format("(Page) Request error intercepted: %s - responding with: %s", errorContext, redirectView));
@@ -163,14 +171,14 @@ public class RequestErrorController implements ErrorController {
      */
     private String getErrorCodeFromAuthException(AuthenticationException e) {
         if (e instanceof MissingMedarbetaruppdragException) {
-            return "LOGIN.FEL002";
+            return IbErrorCodeEnum.LOGIN_FEL002.name();
         } else if (e instanceof HsaServiceException) {
-            return "LOGIN.FEL004";
+            return IbErrorCodeEnum.LOGIN_FEL004.name();
         } else if (e instanceof AuthoritiesException) {
             return IbErrorCodeEnum.UNAUTHORIZED.name();
         } else {
             //Generic tech error during login
-            return "LOGIN.FEL001";
+            return IbErrorCodeEnum.LOGIN_FEL001.name();
         }
     }
 
