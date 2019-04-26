@@ -210,3 +210,9 @@ export const School = ({ color }) => (
     <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z" />
   </svg>
 )
+
+export const ExternalIcon = ({ color }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill={color} width="16px" height="16px" viewBox="0 0 24 24">
+    <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z" />
+  </svg>
+)

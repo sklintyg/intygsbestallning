@@ -25,7 +25,7 @@ const FooterContainer = styled.div`
   max-width: ${ibValues.maxContentWidth};
 `
 const FooterSection = styled.section`
-  padding: 10px 50px 10px 10px;
+  padding: 10px 90px 10px 10px;
 `
 
 const Text = styled(IbTypo07)`

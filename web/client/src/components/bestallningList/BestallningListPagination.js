@@ -7,6 +7,7 @@ const Wrapper = styled.div`
   padding: 20px 0 10px 0;
 
   & .page-item .page-link {
+    text-decoration: none;
     color: ${ibColors.IB_COLOR_07}
   }
 

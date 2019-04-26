@@ -13,12 +13,7 @@ import { IbTypo07 } from './IbTypography'
 const Wrapper = styled(IbTypo07)`
   & a {
     padding: 0 4px;
-    text-decoration: underline;
-    color: ${colors.IB_COLOR_31} !important;
-  }
-
-  & a:hover {
-    color: ${colors.IB_COLOR_21};
+    color: ${colors.IB_COLOR_31};
   }
 `
 

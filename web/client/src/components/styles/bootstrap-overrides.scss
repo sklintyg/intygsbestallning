@@ -366,3 +366,11 @@ th .btn-link {
 .badge {
   border-radius: 9px;
 }
+
+a {
+  text-decoration: underline;
+  color: $ib-color-17;
+  &:hover {
+    color: $ib-color-21;
+  }
+}
