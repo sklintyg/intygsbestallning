@@ -93,7 +93,7 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
     }
 
     private String getMailLinkRedirect(Long bestallningId) {
-        return mailProperties.getHost() + "/maillink/bestallning/" + bestallningId;
+        return mailProperties.getHost() + "/maillink/" + bestallningId;
     }
 
     private String getEmailAddress(Bestallning bestallning) {
