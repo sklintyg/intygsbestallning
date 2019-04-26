@@ -45,3 +45,7 @@ mailsender:
 bestallning:
   paminnelse:
     cron: 0 1/5 * * * MON-FRI
+
+# Mail notifications
+mail:
+  host: http://localhost:8080
