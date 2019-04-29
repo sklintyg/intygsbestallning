@@ -14,7 +14,7 @@ object Config {
     //Project dependencies
     const val intygPluginVersion = "2.0.3"
     const val intygsbestallningCertificateOrderSchemasVersion = "1.0-RC7"
-    const val schemasContractVersion = "2.1.7"
+    const val schemasContractVersion = "2.1.8"
 
     //External dependencies
     const val nodePluginVersion = "1.2.0"
