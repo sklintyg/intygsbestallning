@@ -85,11 +85,11 @@ const About = ({ handleOpen, handleClose, isOpen, settings }) => {
           <p>Vid frågor gällande inloggning, kontakta leverantören av din e-legitimation eller SITHS-kortsadministratör.</p>
           <p>
             Tekniska frågor om Intygsbeställning hanteras i första hand av din lokala IT-avdelningen. Om din lokala IT-avdelning inte kan
-            hitta felet ska de kontakta <ExternalLink href="https://www.inera.se/kundservice">Ineras kundservice</ExternalLink>.
+            hitta felet ska de kontakta <ExternalLink href="https://www.inera.se/felanmalan">Ineras kundservice</ExternalLink>.
           </p>
           <p>
             Har du som användare synpunkter på tjänsten kan du kontakta{' '}
-            <ExternalLink href="https://www.inera.se/kundservice">Ineras kundservice</ExternalLink>.
+            <ExternalLink href="https://www.inera.se/felanmalan">Ineras kundservice</ExternalLink>.
           </p>
           <p>
             Inera AB
@@ -101,7 +101,7 @@ const About = ({ handleOpen, handleClose, isOpen, settings }) => {
           <p>Organisationsnummer: 556559-4230</p>
         </ModalBody>
         <ModalFooter>
-          <Button color={'secondary'} outline={true} onClick={handleClose}>
+          <Button color={'primary'} outline={true} onClick={handleClose}>
             Stäng
           </Button>
         </ModalFooter>
