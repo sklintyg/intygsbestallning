@@ -4,10 +4,14 @@ import styled from 'styled-components'
 import { ExternalIcon } from '../styles/IbSvgIcons'
 
 const Link = styled.a`
+  color: ${colors.IB_COLOR_17};
+
   svg {
     margin-left: 4px;
   }
   &:hover {
+    color: ${colors.IB_COLOR_21};
+
     svg {
       fill: ${colors.IB_COLOR_21};
     }

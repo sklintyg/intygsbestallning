@@ -40,7 +40,7 @@ const About = ({ handleOpen, handleClose, isOpen, settings }) => {
             mer om AGPL 3.0 på <ExternalLink href="https://www.gnu.org/licenses/agpl-3.0.en.html">gnu.org</ExternalLink>. För
             Intygsbeställnings källkod besök <ExternalLink href="https://github.com/sklintyg/intygsbestallning">Github</ExternalLink>. För
             Intygsbeställnings upphovsrättslicens besök{' '}
-            <ExternalLink href="https://github.com/sklintyg/intygsbestallning">Github</ExternalLink>.
+            <ExternalLink href="https://github.com/sklintyg/intygsbestallning/LICENSE.md">Github</ExternalLink>.
           </p>
 
           <h5>Behandling av personuppgifter</h5>
