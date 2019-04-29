@@ -2,6 +2,7 @@ package se.inera.intyg.intygsbestallning.persistence.service;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -24,6 +25,8 @@ import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDto;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningSortColumn;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
+import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
+import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.persistence.TestContext;
 import se.inera.intyg.intygsbestallning.persistence.TestSupport;
@@ -160,10 +163,30 @@ public class BestallningPersistenceServiceTest extends TestSupport {
         domain = bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(-1L,
                 null, null);
         assertTrue(domain.isEmpty());
+    }
 
-        domain = bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(entity.getId(),
-                null, null);
-        assertTrue(domain.isPresent());
+    @Test
+    void getBestallningByIdAndHsaIdAndOrgIdTestVardenheterHsaIdMismatch() {
+        var list = bestallningRepository.findAll();
+
+        var entity = list.get(0);
+
+        assertThatThrownBy(() -> bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(entity.getId(),
+                "other-vardenhet", entity.getVardenhet().getOrganisationId()))
+                .isExactlyInstanceOf(IbServiceException.class)
+                .hasFieldOrPropertyWithValue("errorCode", IbErrorCodeEnum.UNAUTHORIZED);
+    }
+
+    @Test
+    void getBestallningByIdAndHsaIdAndOrgIdTestChangedOrgId() {
+        var list = bestallningRepository.findAll();
+
+        var entity = list.get(0);
+
+        assertThatThrownBy(() -> bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(entity.getId(),
+                entity.getVardenhet().getHsaId(), "other-org-nr"))
+                .isExactlyInstanceOf(IbServiceException.class)
+                .hasFieldOrPropertyWithValue("errorCode", IbErrorCodeEnum.VARDGIVARE_ORGNR_MISMATCH);
     }
 
     @Test

@@ -20,6 +20,8 @@ import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarBasedOnStatusQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarResult;
+import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
+import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
 import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
 import se.inera.intyg.intygsbestallning.persistence.entity.InvanareEntity;
 import se.inera.intyg.intygsbestallning.persistence.entity.QBestallningEntity;
@@ -117,21 +119,36 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
     }
 
     @Override
+    public Optional<Bestallning> getBestallningById(Long id) {
+        var pb = new BooleanBuilder();
+        var qe = QBestallningEntity.bestallningEntity;
+
+        pb.and(qe.id.eq(id));
+
+        return bestallningRepository.findOne(pb.getValue())
+                .map(BestallningEntity.Factory::toDomain);
+    }
+
+    @Override
     public Optional<Bestallning> getBestallningByIdAndHsaIdAndOrgId(Long id, String hsaId, String orgNrVardgivare) {
         var pb = new BooleanBuilder();
         var qe = QBestallningEntity.bestallningEntity;
 
         pb.and(qe.id.eq(id));
 
-        if (Objects.nonNull(hsaId)) {
-            pb.and(qe.vardenhet.hsaId.eq(hsaId));
-        }
-        if (Objects.nonNull(orgNrVardgivare)) {
-            pb.and(qe.vardenhet.organisationId.eq(orgNrVardgivare));
+        var bestallning = bestallningRepository.findOne(pb.getValue())
+                .map(BestallningEntity.Factory::toDomain);
+
+        if (bestallning.isPresent()) {
+            if (!bestallning.get().getVardenhet().getOrganisationId().equals(orgNrVardgivare)) {
+                throw new IbServiceException(IbErrorCodeEnum.VARDGIVARE_ORGNR_MISMATCH, "Bestallning vardgivare organisationId doesn't match user orgNrVardgivare");
+            }
+            if (!bestallning.get().getVardenhet().getHsaId().equals(hsaId)) {
+                throw new IbServiceException(IbErrorCodeEnum.UNAUTHORIZED, "Bestallning vardenhet hsaid doesn't match user hsaid");
+            }
         }
 
-        return bestallningRepository.findOne(pb.getValue())
-                .map(BestallningEntity.Factory::toDomain);
+        return bestallning;
     }
 
     @Override

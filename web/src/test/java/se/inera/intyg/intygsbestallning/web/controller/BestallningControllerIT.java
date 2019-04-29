@@ -11,6 +11,7 @@ import se.inera.intyg.intygsbestallning.web.bestallning.RaderaBestallning;
 import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static org.hamcrest.core.Is.is;
 
 public class BestallningControllerIT extends BaseRestIntegrationTest {
 
@@ -41,7 +42,20 @@ public class BestallningControllerIT extends BaseRestIntegrationTest {
     public void testGetBestallningNotFound()
     {
         RestAssured.sessionId = getAuthSession(DEFAULT_USER);
-        given().expect().statusCode(NOT_FOUND).when().get(BESTALLNINGAR_API_ENDPOINT + "/0");
+        given().expect().statusCode(SERVER_ERROR).when().get(BESTALLNINGAR_API_ENDPOINT + "/0").then()
+            .body("errorCode", is("NOT_FOUND"));
+    }
+
+    @Test
+    public void testGetBestallningOrgIdMmismatch()
+    {
+        Integer id = createBestallning(loadJson("integrationtests/bestallning_other_orgid.json"));
+
+        RestAssured.sessionId = getAuthSession(DEFAULT_USER);
+        given().expect().statusCode(SERVER_ERROR).when().get(BESTALLNINGAR_API_ENDPOINT + "/" + id).then()
+                .body("errorCode", is("VARDGIVARE_ORGNR_MISMATCH"));
+
+        deleteBestallning(id);
     }
 
     @Test

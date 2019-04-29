@@ -4,6 +4,8 @@ import static se.inera.intyg.intygsbestallning.common.dto.BestallningMetadataTyp
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
@@ -50,12 +52,12 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
     }
 
     @Override
-    public Optional<VisaBestallningDto> getBestallningByIdAndHsaIdAndOrgId(Long id, String hsaId, String orgNrVardgivare) {
+    public VisaBestallningDto getBestallningByIdAndHsaIdAndOrgId(Long id, String hsaId, String orgNrVardgivare) {
 
         var bestallning = bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(id, hsaId, orgNrVardgivare);
 
         if (bestallning.isEmpty()) {
-            return Optional.empty();
+            throw new IbServiceException(IbErrorCodeEnum.NOT_FOUND, MessageFormat.format("Bestallning with id '{0}' was not found", id));
         }
 
         if (bestallning.get().getStatus() == BestallningStatus.OLAST) {
@@ -85,13 +87,13 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
                 new BestallningMetaData(MAIL_VIDAREBEFORDRA, notifieringSendService.vidarebefordrad(bestallning.get()))
         );
 
-        return Optional.of(VisaBestallningDto.Factory.toDto(
+        return VisaBestallningDto.Factory.toDto(
                 bestallning.get(),
                 invanareDto,
                 getBildUrl(bestallningTexter),
                 metaDataList,
                 bestallningTexter,
-                VisaBestallningScope.ALL));
+                VisaBestallningScope.ALL);
     }
 
     private String getBildUrl(BestallningTexter bestallningTexter) {

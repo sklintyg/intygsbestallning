@@ -4,5 +4,5 @@ import java.util.Optional;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningDto;
 
 public interface VisaBestallningService {
-    Optional<VisaBestallningDto> getBestallningByIdAndHsaIdAndOrgId(Long id, String hsaId, String orgNrVardgivare);
+    VisaBestallningDto getBestallningByIdAndHsaIdAndOrgId(Long id, String hsaId, String orgNrVardgivare);
 }

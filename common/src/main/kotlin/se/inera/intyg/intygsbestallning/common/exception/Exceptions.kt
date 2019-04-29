@@ -42,7 +42,8 @@ enum class IbErrorCodeEnum {
   PU_ERROR,
   LOGIN_FEL001,
   LOGIN_FEL002,
-  LOGIN_FEL004
+  LOGIN_FEL004,
+  VARDGIVARE_ORGNR_MISMATCH
 }
 
 data class IbResponderValidationException(

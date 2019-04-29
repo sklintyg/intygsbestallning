@@ -19,6 +19,8 @@ public interface BestallningPersistenceService {
 
     ListBestallningarResult listBestallningar(ListBestallningarQuery query);
 
+    Optional<Bestallning> getBestallningById(Long id);
+
     Optional<Bestallning> getBestallningByIdAndHsaIdAndOrgId(Long id, String hsaId, String orgNrVardgivare);
 
     List<Bestallning> listBestallningarBasedOnStatus(ListBestallningarBasedOnStatusQuery query);

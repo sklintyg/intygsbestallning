@@ -22,9 +22,21 @@
         "title": "Ett tekniskt fel uppstod",
         "message": "Ett tekniskt fel uppstod i kontakten med avsändaren av förfrågan eller beställningen."
       },
+      "not_found": {
+        "title": "Sidan du söker finns inte",
+        "message": "Kontrollera att den länk du använder är korrekt."
+      },
       "pu_error": {
         "title": "Ett fel uppstod när personuppgifter skulle hämtas",
         "message": "Åtgärden kan inte genomföras eftersom den kräver att personuppgifter kan hämtas från personuppgiftsregistret. Prova igen om en stund."
+      },
+      "unauthorized": {
+        "title": "Behörighet saknas",
+        "message": "Du saknar behörighet för att ta del av den aktuella förfrågan eller beställningen.\nFör att ta del av en förfrågan eller beställning krävs ett medarbetaruppdrag med ändamål vård och behandling på den vårdenhet dit beställningen inkommit."
+      },
+      "vardgivare_orgnr_mismatch": {
+        "title": "Åtkomst nekas",
+        "message": "Förfrågan eller beställningen tillhör en annan vårdgivare. Det beror troligen på att vårdenheten har bytt vårdgivare efter det att förfrågan eller beställningen togs emot."
       }
     },
     "user": {

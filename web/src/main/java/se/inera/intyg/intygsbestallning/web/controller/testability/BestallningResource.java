@@ -37,7 +37,7 @@ public class BestallningResource {
     @DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Response deleteBestallning(@PathVariable("id") Long id) {
         return entityTxMapper.jsonResponse(() -> {
-            var bestallning = bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(id, null, null).orElseThrow(
+            var bestallning = bestallningPersistenceService.getBestallningById(id).orElseThrow(
                     () -> new IllegalArgumentException("Bestallning with id '" + id + "' does not exist."));
             bestallningPersistenceService.deleteBestallning(bestallning);
             return EntityTxMapper.OK;
