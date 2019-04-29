@@ -20,7 +20,6 @@ import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
 import se.inera.intyg.intygsbestallning.common.property.PersistenceProperties;
 import se.inera.intyg.intygsbestallning.common.service.notifiering.NotifieringSendService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
-import se.inera.intyg.intygsbestallning.persistence.service.VardenhetPersistenceService;
 
 @Component
 @Profile({"dev", "init-bootstrap-data"})
@@ -32,20 +31,16 @@ public class TestDataBootstrapper {
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private PersistenceProperties persistenceProperties;
-    private VardenhetPersistenceService vardenhetPersistenceService;
     private BestallningPersistenceService bestallningPersistenceService;
     private NotifieringSendService notifieringSendService;
-
 
     private ObjectMapper objectMapper;
 
     public TestDataBootstrapper(
             PersistenceProperties persistenceProperties,
-            VardenhetPersistenceService vardenhetPersistenceService,
             BestallningPersistenceService bestallningPersistenceService,
             NotifieringSendService notifieringSendService, @Qualifier("customObjectMapper") ObjectMapper objectMapper) {
         this.persistenceProperties = persistenceProperties;
-        this.vardenhetPersistenceService = vardenhetPersistenceService;
         this.bestallningPersistenceService = bestallningPersistenceService;
         this.notifieringSendService = notifieringSendService;
         this.objectMapper = objectMapper;
@@ -53,25 +48,7 @@ public class TestDataBootstrapper {
 
     @PostConstruct
     void init() {
-        bootstrapVardenheter();
         bootstrapBestallningar();
-    }
-
-    private void bootstrapVardenheter() {
-        LOG.info("Starting: " + MESSAGE_VARDENHETER);
-
-        var bootstrapResult = Try.run(() -> {
-            var vardenhetBootstrapDirectory = persistenceProperties.getVardenhetDirectory();
-            var mappadeVardeneheter = loadResources(vardenhetBootstrapDirectory, Vardenhet.class);
-
-            mappadeVardeneheter.forEach(vardenhetPersistenceService::saveNewVardenhet);
-        });
-
-        if (bootstrapResult.isFailure()) {
-            LOG.error("Failed: " + MESSAGE_VARDENHETER);
-            bootstrapResult.getCause().printStackTrace();
-        }
-        LOG.info("Finished:" + MESSAGE_VARDENHETER);
     }
 
     private void bootstrapBestallningar() {

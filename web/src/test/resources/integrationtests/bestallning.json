@@ -23,13 +23,11 @@
     "stad": "Kostnadsstaden"
   },
   "vardenhet": {
-    "id": 1,
     "hsaId": "IFV1239877878-1042",
     "vardgivareHsaId": "IFV1239877878-1041",
     "organisationId" : "2-orgnr-1041",
     "namn": "Intygsbeställning-Enhet1",
-    "epost": "e@po.st",
-    "standardSvar": null
+    "epost": "e@po.st"
   },
   "handelser": [
     {

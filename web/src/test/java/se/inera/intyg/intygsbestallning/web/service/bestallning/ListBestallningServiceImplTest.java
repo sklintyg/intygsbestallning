@@ -135,7 +135,7 @@ class ListBestallningServiceImplTest {
 
     private Vardenhet buildVardenhet() {
         return Vardenhet.Factory.newVardenhet(
-                "hsa", "vgHsa", "orgId", "namn", "epost@mail.se", "svar");
+                "hsa", "vgHsa", "orgId", "namn", "epost@mail.se");
     }
 
     private Handlaggare buildHandlaggare() {

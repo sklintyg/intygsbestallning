@@ -40,49 +40,28 @@
       <column name="STATUS_STRING" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
-      <column name="INVANARE_ID" type="bigint">
+      <column name="INVANARE_PERSON_ID" type="varchar(64)">
         <constraints nullable="false"/>
+      </column>
+      <column name="INVANARE_BAKGRUND_NULAGE" type="varchar(64)">
+        <constraints nullable="true"/>
       </column>
       <column name="HANDLAGGARE_ID" type="bigint">
         <constraints nullable="false"/>
       </column>
-      <column name="VARDENHET_ID" type="bigint">
+      <column name="VARDENHET_HSA_ID" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
-    </createTable>
-
-    <createTable tableName="VARDENHET">
-      <column name="ID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
-        <constraints primaryKey="true" nullable="false"/>
-      </column>
-      <column name="HSA_ID" type="varchar(64)">
+      <column name="VARDENHET_VARDGIVARE_HSA_ID" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
-      <column name="VARDGIVARE_HSA_ID" type="varchar(64)">
+      <column name="VARDENHET_ORGANISATION_ID" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
-      <column name="ORGANISATION_ID" type="varchar(64)">
+      <column name="VARDENHET_NAMN" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
-      <column name="NAMN" type="varchar(64)">
-        <constraints nullable="false"/>
-      </column>
-      <column name="EPOST" type="varchar(64)">
-        <constraints nullable="true"/>
-      </column>
-      <column name="STANDARD_SVAR" type="varchar(64)">
-        <constraints nullable="true"/>
-      </column>
-    </createTable>
-
-    <createTable tableName="INVANARE">
-      <column name="ID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
-        <constraints primaryKey="true" nullable="false"/>
-      </column>
-      <column name="PERSON_ID" type="varchar(64)">
-        <constraints nullable="false"/>
-      </column>
-      <column name="BAKGRUND_NULAGE" type="varchar(64)">
+      <column name="VARDENHET_EPOST" type="varchar(64)">
         <constraints nullable="true"/>
       </column>
     </createTable>
@@ -119,20 +98,6 @@
         <constraints nullable="true"/>
       </column>
     </createTable>
-
-    <addForeignKeyConstraint
-          baseTableName="BESTALLNING"
-          baseColumnNames="INVANARE_ID"
-          constraintName="BESTALLNING_INVANARE_FK"
-          referencedTableName="INVANARE"
-          referencedColumnNames="ID"/>
-
-    <addForeignKeyConstraint
-          baseTableName="BESTALLNING"
-          baseColumnNames="VARDENHET_ID"
-          constraintName="BESTALLNING_VARDENHET_FK"
-          referencedTableName="VARDENHET"
-          referencedColumnNames="ID"/>
 
     <addForeignKeyConstraint
           baseTableName="BESTALLNING"

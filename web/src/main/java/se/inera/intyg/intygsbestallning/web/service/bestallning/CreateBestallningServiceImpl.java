@@ -20,8 +20,6 @@ import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolve
 import se.inera.intyg.intygsbestallning.common.service.notifiering.NotifieringSendService;
 import se.inera.intyg.intygsbestallning.integration.pu.PatientService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
-import se.inera.intyg.intygsbestallning.persistence.service.InvanarePersistenceService;
-import se.inera.intyg.intygsbestallning.persistence.service.VardenhetPersistenceService;
 
 @Service
 @Transactional
@@ -30,25 +28,19 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().getClass());
 
     private BestallningPersistenceService bestallningPersistenceService;
-    private InvanarePersistenceService invanarePersistenceService;
     private BestallningStatusResolver bestallningStatusResolver;
-    private VardenhetPersistenceService vardenhetPersistenceService;
     private NotifieringSendService notifieringSendService;
     private PatientService patientService;
     private HsaOrganizationsService hsaOrganizationsService;
 
     public CreateBestallningServiceImpl(
             BestallningPersistenceService bestallningPersistenceService,
-            InvanarePersistenceService invanarePersistenceService,
             BestallningStatusResolver bestallningStatusResolver,
-            VardenhetPersistenceService vardenhetPersistenceService,
             NotifieringSendService notifieringSendService,
             PatientService patientService,
             HsaOrganizationsService hsaOrganizationsService) {
         this.bestallningPersistenceService = bestallningPersistenceService;
-        this.invanarePersistenceService = invanarePersistenceService;
         this.bestallningStatusResolver = bestallningStatusResolver;
-        this.vardenhetPersistenceService = vardenhetPersistenceService;
         this.notifieringSendService = notifieringSendService;
         this.patientService = patientService;
         this.hsaOrganizationsService = hsaOrganizationsService;
@@ -59,26 +51,17 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
 
         LOG.debug("Creating new bestallning");
 
-        var existing = invanarePersistenceService.getInvanareByPersonnummer(createBestallningRequest.getInvanare().getPersonnummer());
+        var person = patientService.lookupPersonnummerFromPU(createBestallningRequest.getInvanare().getPersonnummer());
 
-        Invanare invanare;
-        if (existing.isEmpty()) {
-            var person = patientService.lookupPersonnummerFromPU(createBestallningRequest.getInvanare().getPersonnummer());
-
-            if (person.isEmpty()) {
-                throw new IllegalArgumentException("invanare with personnummer: " +
-                        createBestallningRequest.getInvanare().getPersonnummer().getPersonnummerWithDash() + " was not found");
-            }
-
-            var foundPerson = person.get();
-
-            invanare = Invanare.Factory.newInvanare(
-                    foundPerson.getPersonnummer(), createBestallningRequest.getInvanare().getBakgrundNulage());
-
-        } else {
-            invanare = existing.get();
-            invanare.setBakgrundNulage(createBestallningRequest.getInvanare().getBakgrundNulage());
+        if (person.isEmpty()) {
+            throw new IllegalArgumentException("invanare with personnummer: " +
+                    createBestallningRequest.getInvanare().getPersonnummer().getPersonnummerWithDash() + " was not found");
         }
+
+        var foundPerson = person.get();
+
+        var invanare = Invanare.Factory.newInvanare(
+                foundPerson.getPersonnummer(), createBestallningRequest.getInvanare().getBakgrundNulage());
 
         var vardenhetRespons = Try.of(() -> hsaOrganizationsService.getVardenhet(createBestallningRequest.getVardenhet()));
 
@@ -106,29 +89,12 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
             throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL06, List.of());
         }
 
-        var existingVardenhet = vardenhetPersistenceService.getVardenhetByHsaId(vardenhetRespons.get().getId());
-
-
-        Vardenhet vardenhet;
-        if (existingVardenhet.isPresent()) {
-            vardenhet = existingVardenhet.get();
-            vardenhet.setHsaId(vardenhetRespons.get().getId());
-            vardenhet.setVardgivareHsaId(vardGivareRespons.getId());
-            vardenhet.setNamn(vardenhetRespons.get().getNamn());
-            vardenhet.setEpost(vardenhetRespons.get().getEpost());
-        } else {
-            vardenhet = Vardenhet.Factory.newVardenhet(
+        Vardenhet vardenhet = Vardenhet.Factory.newVardenhet(
                     vardenhetRespons.get().getId(),
                     vardGivareRespons.getId(),
                     vardGivareRespons.getOrgId(),
                     vardenhetRespons.get().getNamn(),
-                    vardenhetRespons.get().getEpost(),
-                    null);
-        }
-
-        if (vardenhet.getEpost() == null) {
-            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL09, List.of());
-        }
+                    vardenhetRespons.get().getEpost());
 
         var handlaggare = Handlaggare.Factory.newHandlaggare(
                 createBestallningRequest.getHandlaggare().getNamn(),

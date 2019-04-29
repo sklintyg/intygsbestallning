@@ -25,38 +25,24 @@ import se.inera.intyg.intygsbestallning.persistence.entity.InvanareEntity;
 import se.inera.intyg.intygsbestallning.persistence.entity.QBestallningEntity;
 import se.inera.intyg.intygsbestallning.persistence.entity.VardenhetEntity;
 import se.inera.intyg.intygsbestallning.persistence.repository.BestallningRepository;
-import se.inera.intyg.intygsbestallning.persistence.repository.InvanareRepository;
-import se.inera.intyg.intygsbestallning.persistence.repository.VardenhetRepository;
 
 @Service
 @Transactional
 public class BestallningPersistenceServiceImpl implements BestallningPersistenceService {
 
     private BestallningRepository bestallningRepository;
-    private InvanareRepository invanareRepository;
-    private VardenhetRepository vardenhetRepository;
 
     public BestallningPersistenceServiceImpl(
-            BestallningRepository bestallningRepository,
-            InvanareRepository invanareRepository,
-            VardenhetRepository vardenhetRepository) {
+            BestallningRepository bestallningRepository) {
         this.bestallningRepository = bestallningRepository;
-        this.invanareRepository = invanareRepository;
-        this.vardenhetRepository = vardenhetRepository;
     }
 
     @Override
     public Bestallning saveNewBestallning(Bestallning bestallning) {
 
         var invanareEntity = InvanareEntity.Factory.toEntity(bestallning.getInvanare());
-        if (Objects.isNull(invanareEntity.getId())) {
-            invanareEntity = invanareRepository.save(invanareEntity);
-        }
 
         var vardenhetEntity = VardenhetEntity.Factory.toEntity(bestallning.getVardenhet());
-        if (Objects.isNull(vardenhetEntity.getId())) {
-            vardenhetEntity = vardenhetRepository.save(vardenhetEntity);
-        }
 
         var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning, invanareEntity, vardenhetEntity);
 

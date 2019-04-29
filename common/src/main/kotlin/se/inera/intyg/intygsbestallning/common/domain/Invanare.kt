@@ -3,7 +3,6 @@ package se.inera.intyg.intygsbestallning.common.domain
 import se.inera.intyg.schemas.contract.Personnummer
 
 data class Invanare(
-   val id: Long? = null,
    var personId: Personnummer,
    var bakgrundNulage: String? = null) {
 

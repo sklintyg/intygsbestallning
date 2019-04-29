@@ -161,5 +161,4 @@ inera:
 # Bootstrap
 persistence:
   bootstrap:
-    vardenhet-directory: classpath*:bootstrap/vardenhet/
     bestallning-directory: classpath*:bootstrap/bestallning/

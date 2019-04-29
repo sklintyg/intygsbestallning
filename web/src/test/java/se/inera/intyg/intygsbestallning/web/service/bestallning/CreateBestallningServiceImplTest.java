@@ -37,8 +37,6 @@ import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolve
 import se.inera.intyg.intygsbestallning.common.service.notifiering.NotifieringSendService;
 import se.inera.intyg.intygsbestallning.integration.pu.PatientService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
-import se.inera.intyg.intygsbestallning.persistence.service.InvanarePersistenceService;
-import se.inera.intyg.intygsbestallning.persistence.service.VardenhetPersistenceService;
 import se.inera.intyg.schemas.contract.Personnummer;
 
 @ExtendWith(MockitoExtension.class)
@@ -54,13 +52,7 @@ class CreateBestallningServiceImplTest {
     private BestallningPersistenceService bestallningPersistenceService;
 
     @Mock
-    private InvanarePersistenceService invanarePersistenceService;
-
-    @Mock
     private BestallningStatusResolver bestallningStatusResolver;
-
-    @Mock
-    private VardenhetPersistenceService vardenhetPersistenceService;
 
     @Mock
     private NotifieringSendService notifieringSendService;
@@ -84,7 +76,6 @@ class CreateBestallningServiceImplTest {
         when(patientService.lookupPersonnummerFromPU(any(Personnummer.class))).thenReturn(buildPerson());
         when(hsaOrganizationsService.getVardenhet(any(String.class))).thenReturn(buildVardenhetFromHsa());
         when(hsaOrganizationsService.getVardgivareOfVardenhet(any(String.class))).thenReturn(vardgivare);
-        when(vardenhetPersistenceService.getVardenhetByHsaId(any(String.class))).thenReturn(buildVardenhet());
         when(bestallningPersistenceService.saveNewBestallning(any(Bestallning.class))).thenReturn(buildBestallning());
 
         createBestallningService.create(buildBestallningRequest());
@@ -158,13 +149,13 @@ class CreateBestallningServiceImplTest {
 
 
     private Optional<Vardenhet> buildVardenhet() {
-        Vardenhet vardenhet = new Vardenhet(1L, HSA_ID, "vardgivare-hsaId", ORGNUMMER, "namn", "e@post.com", "standard");
+        Vardenhet vardenhet = new Vardenhet(HSA_ID, "vardgivare-hsaId", ORGNUMMER, "namn", "e@post.com");
         return Optional.of(vardenhet);
     }
 
     private Invanare buildInvanare() {
         Personnummer personnummer = createPersonnummer("191212121212").get();
-        return new Invanare(1L, personnummer, "");
+        return new Invanare(personnummer, "");
     }
 
     private Handlaggare buildHandlaggare() {

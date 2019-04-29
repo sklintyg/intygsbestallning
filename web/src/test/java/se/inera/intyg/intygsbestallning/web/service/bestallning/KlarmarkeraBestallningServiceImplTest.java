@@ -70,7 +70,7 @@ class KlarmarkeraBestallningServiceImplTest {
 
     private Invanare buildInvanare() {
         Personnummer personnummer = createPersonnummer("191212121212").get();
-        return new Invanare(1L, personnummer, "");
+        return new Invanare(personnummer, "");
     }
 
     private Optional<Bestallning> buildBestallning() {
@@ -92,7 +92,7 @@ class KlarmarkeraBestallningServiceImplTest {
     }
 
     private Vardenhet buildVardenhet() {
-        return new Vardenhet(1L, "hsa-id", "", "", "","", "");
+        return new Vardenhet("hsa-id", "", "", "","");
     }
 
     private Handlaggare buildHandlaggare() {
