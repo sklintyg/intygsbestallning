@@ -4,8 +4,8 @@ import SelectEnhet from '../components/selectEnhet'
 import AppFooter from '../components/appFooter/AppFooter'
 import styled from 'styled-components'
 import ibValues from '../components/styles/IbValues'
-import { IbTypo06 } from '../components/styles/IbTypography'
 import IbColors from '../components/styles/IbColors'
+import {IbTypo02} from '../components/styles/IbTypography'
 
 const CustomScrollingContainer = styled(ScrollingContainer)`
   max-width: none;
@@ -29,7 +29,9 @@ const SelectEnhetPage = () => {
     <FlexColumnContainer>
       <CustomScrollingContainer>
         <PageContainer>
-          <IbTypo06 as="h1" color={IbColors.IB_COLOR_07}>Välj enhet</IbTypo06>
+          <IbTypo02 as="h1" color={IbColors.IB_COLOR_07}>
+            Välj enhet
+          </IbTypo02>
           <p>Du har behörighet för flera vårdenheter. Välj den du vill logga in på nu. Du kan byta enhet även efter inloggning.</p>
           <SelectEnhet />
         </PageContainer>
