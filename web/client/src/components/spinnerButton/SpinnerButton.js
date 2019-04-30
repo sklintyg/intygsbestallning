@@ -18,7 +18,7 @@ const StyledSpinner = styled(Spinner)`
   visibility: ${(props) => props.show};
 `
 
-const SpinnerButton = ({ accept, color, children, disabled }) => {
+const SpinnerButton = ({ accept, color, children, disabled, id }) => {
   const [showSpinner, setShowSpinner] = useState(false)
 
   const onClickHandler = () => {
@@ -34,7 +34,8 @@ const SpinnerButton = ({ accept, color, children, disabled }) => {
       disabled={disabled || showSpinner}
       onClick={() => {
         onClickHandler()
-      }}>
+      }}
+      id={id}>
       <StyledSpinner size="sm" show={showSpinner ? 'visible' : 'hidden'} />
       <StyledSpan hide={showSpinner ? 'hidden' : 'visible'}>{children}</StyledSpan>
     </StyledButton>
@@ -46,6 +47,7 @@ SpinnerButton.propTypes = {
   color: PropTypes.string.isRequired,
   children: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   disabled: PropTypes.bool,
+  id: PropTypes.string,
 }
 
 export default SpinnerButton

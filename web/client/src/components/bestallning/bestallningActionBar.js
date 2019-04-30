@@ -39,19 +39,23 @@ const BestallningActionBar = ({
     if (avvisa === 'true') {
       return rejectBestallning(bestallning.id, { fritextForklaring })
     } else {
-      return deleteBestallning(bestallning.id, { fritextForklaring }).then(openBorttagenDialog).catch(()=>{})
+      return deleteBestallning(bestallning.id, { fritextForklaring })
+        .then(openBorttagenDialog)
+        .catch(() => {})
     }
   }
 
   const complete = () => completeBestallning(bestallning.id, 'COMPLETED')
 
   const vidarebefodra = () => {
-    window.location.href = `mailto:?subject=${encodeURIComponent('Vidarebefordrad beställning')}&body=${encodeURIComponent(bestallning.metaData.filter(metaData => metaData.typ === 'MAIL_VIDAREBEFORDRA')[0].text)}`;
+    window.location.href = `mailto:?subject=${encodeURIComponent('Vidarebefordrad beställning')}&body=${encodeURIComponent(
+      bestallning.metaData.filter((metaData) => metaData.typ === 'MAIL_VIDAREBEFORDRA')[0].text
+    )}`
   }
 
   const printBestallning = (type) => {
     window.open('/api/bestallningar/' + bestallning.id + '/pdf/' + type, '_blank')
-    return Promise.resolve();
+    return Promise.resolve()
   }
 
   const toggleDropdown = () => {
@@ -67,7 +71,7 @@ const BestallningActionBar = ({
     <Fragment>
       {bestallning.status === 'Läst' && (
         <Fragment>
-          <StyledButton onClick={openAcceptDialog} color={'primary'}>
+          <StyledButton onClick={openAcceptDialog} color={'primary'} id={'BestallningAcceptActionButton'}>
             <Check color={IbColors.IB_COLOR_00} /> Acceptera
           </StyledButton>
           <StyledButton onClick={openAvvisaDialog} color={'primary'}>
@@ -76,7 +80,7 @@ const BestallningActionBar = ({
         </Fragment>
       )}
       {bestallning.status === 'Accepterad' && (
-        <StyledButton onClick={complete} color={'primary'}>
+        <StyledButton onClick={complete} color={'primary'} id={'BestallningKlarActionButton'}>
           <Check color={IbColors.IB_COLOR_00} /> Klarmarkera
         </StyledButton>
       )}

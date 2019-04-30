@@ -33,7 +33,7 @@ const AccepteraBestallning = ({ handleClose, isOpen, accept }) => {
           <Textarea rows={5} onChange={handleChange} />
         </ModalBody>
         <ModalFooter>
-          <SpinnerButton color={'primary'} accept={() => accept(fritextForklaring).then(handleClose)}>
+          <SpinnerButton color={'primary'} accept={() => accept(fritextForklaring).then(handleClose)} id={'AcceptDialogConfirmButton'}>
             Bekräfta
           </SpinnerButton>
           <Button

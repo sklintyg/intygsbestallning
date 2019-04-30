@@ -89,7 +89,7 @@ const BestallningHeader = ({ props }) => {
     <HeaderContainer>
       <CenterContainer>
         <div>
-          <Link to={backPath}>
+          <Link to={backPath} id={'BestallningBackToList'}>
             <ArrowBack />
             Tillbaka till lista
           </Link>

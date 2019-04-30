@@ -6,6 +6,6 @@ context('Login', () => {
   });
 
   it('verify current user shown', () => {
-    cy.get('#currentUser').should('be.visible');
+    cy.get('#currentUserTitle').should('be.visible');
   });
 });

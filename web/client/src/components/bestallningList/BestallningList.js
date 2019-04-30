@@ -80,7 +80,7 @@ const BestallningarList = ({ bestallningList, onSort, errorMessage, categoryFilt
             <th />
           </tr>
         </thead>
-        <tbody>
+        <tbody id={'BestallningListTable'}>
           {errorMessage && (
             <tr>
               <td colSpan={5}>
@@ -100,12 +100,14 @@ const BestallningarList = ({ bestallningList, onSort, errorMessage, categoryFilt
                 </td>
                 <td>{bestallning.ankomstDatum}</td>
                 <td>
-                  <Link to={{
-                          pathname: "/bestallning/" + bestallning.id,
-                          search: "",
-                          hash: "",
-                          state: { fromList: categoryFilter }
-                        }}>
+                  <Link
+                    to={{
+                      pathname: '/bestallning/' + bestallning.id,
+                      search: '',
+                      hash: '',
+                      state: { fromList: categoryFilter },
+                    }}
+                    id={'BestallningListButton-' + bestallning.id}>
                     <Button color="primary">Visa</Button>
                   </Link>
                 </td>

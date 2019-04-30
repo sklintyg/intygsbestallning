@@ -24,8 +24,15 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add("login", (loginId) => {
-  cy.visit('/welcome.html');
-  cy.get('#jsonSelect').select(loginId);
-  cy.get('#loginBtn').click();
+Cypress.Commands.add("login", loginId => {
+  cy.visit("/welcome.html");
+  cy.get("#jsonSelect").select(loginId);
+  cy.get("#loginBtn").click();
+});
+
+Cypress.Commands.add("addBestallning", () => {
+  cy.fixture("bestallning.json").then(bestallning => {
+    bestallning.ankomstDatum = new Date().toISOString();
+    cy.request("POST", "/api/test/bestallningar", bestallning);
+  });
 });

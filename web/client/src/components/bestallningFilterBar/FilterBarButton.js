@@ -47,15 +47,14 @@ const FilterBarButton = ({ menuItem }) => {
   return (
     <Wrapper>
       <NavItem key={menuItem.text}>
-        <NavLink to={menuItem.to}>
+        <NavLink to={menuItem.to} id={'BestallningFilterBar-' + menuItem.text}>
           {menuItem.text}
 
-          {
-            (menuItem.stat !== 0) &&
+          {menuItem.stat !== 0 && (
             <Badge color="primary" className="badge__stat">
               {menuItem.stat}
             </Badge>
-          }
+          )}
         </NavLink>
       </NavItem>
     </Wrapper>
