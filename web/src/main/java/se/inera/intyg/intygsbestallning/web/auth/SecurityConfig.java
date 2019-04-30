@@ -465,7 +465,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
         ExtendedMetadata extendedMetadata = generateExtendedMetadataIdp();
 
         ExtendedMetadataDelegate delegate = new ExtendedMetadataDelegate(idpMetadataProvider, extendedMetadata);
-        delegate.setMetadataTrustCheck(true);
+        delegate.setMetadataTrustCheck(false);
 
         return delegate;
     }
