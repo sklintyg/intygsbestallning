@@ -38,6 +38,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.saml.SAMLAuthenticationProvider;
@@ -517,6 +518,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Override
+    public void configure(WebSecurity web) throws Exception {
+        // All static client resources could be completely ignored by Spring Security.
+        // This is also needed for a IE11 font loading bug where Springs Security default no-cache headers
+        // will stop IE from loading fonts properly.
+        web.ignoring().antMatchers("/static/**");
+    }
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         // These should always be permitted
         http
@@ -528,7 +536,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
                 .antMatchers("/version-assets/**").permitAll()
                 .antMatchers("/favicon*").permitAll()
                 .antMatchers("/index.html").permitAll()
-                .antMatchers("/static/**").permitAll()
                 .antMatchers("/images/**").permitAll()
                 .antMatchers("/app/**").permitAll()
                 .antMatchers("/assets/**").permitAll()
