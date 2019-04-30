@@ -16,15 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.persistence.repository;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import java.util.Optional;
 import se.inera.intyg.intygsbestallning.persistence.entity.VardenhetEntity;
 
 @Repository
 public interface VardenhetRepository extends JpaRepository<VardenhetEntity, Long> {
     boolean existsByHsaId(String hsaId);
+
     Optional<VardenhetEntity> findByHsaId(String hsaId);
 }

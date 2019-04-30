@@ -16,7 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.service.bestallning.pdf;
+
+import static se.inera.intyg.intygsbestallning.web.service.bestallning.PdfBestallningServiceImpl.TEXT_SIZE;
+import static se.inera.intyg.intygsbestallning.web.service.util.PdfUtil.millimetersToPoints;
 
 import com.itextpdf.kernel.events.Event;
 import com.itextpdf.kernel.events.IEventHandler;
@@ -28,12 +32,7 @@ import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 import com.itextpdf.layout.Canvas;
-import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.TextAlignment;
-
-import static se.inera.intyg.intygsbestallning.web.service.bestallning.PdfBestallningServiceImpl.PAGE_MARGIN_LEFT;
-import static se.inera.intyg.intygsbestallning.web.service.bestallning.PdfBestallningServiceImpl.TEXT_SIZE;
-import static se.inera.intyg.intygsbestallning.web.service.util.PdfUtil.millimetersToPoints;
 
 /**
  * Renders the page number. Note that quirky placeholder stuff going on since we don't know the total number of pages

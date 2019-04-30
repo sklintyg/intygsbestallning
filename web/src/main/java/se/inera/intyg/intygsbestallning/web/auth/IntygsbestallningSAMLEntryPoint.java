@@ -16,8 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.auth;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,17 +31,12 @@ import org.springframework.security.saml.context.SAMLMessageContext;
 import org.springframework.security.saml.websso.WebSSOProfileOptions;
 import se.inera.intyg.infra.security.common.model.AuthConstants;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Customized SAMLEntryPoint for IB that provides two customizations:
+ * <p>1. Tries to parse the "targetApplication" query parameter of the SAML login request. Allowed values are FMU or BP.
+ * If null or empty string, defaults to FMU. If an unknown value, throws exception.</p>
  *
- * 1. Tries to parse the "targetApplication" query parameter of the SAML login request. Allowed values are FMU or BP.
- * If null or empty string, defaults to FMU. If an unknown value, throws exception.
- *
- * 2. Specifies the {@link AuthConstants#URN_OASIS_NAMES_TC_SAML_2_0_AC_CLASSES_TLSCLIENT} authContext for SITHS.
+ * <p>2. Specifies the {@link AuthConstants#URN_OASIS_NAMES_TC_SAML_2_0_AC_CLASSES_TLSCLIENT} authContext for SITHS.</p>
  *
  * @author eriklupander
  */
@@ -49,13 +48,10 @@ public class IntygsbestallningSAMLEntryPoint extends SAMLEntryPoint {
     /**
      * Override from superclass, see class comment for details.
      *
-     * @param context
-     *            containing local entity
-     * @param exception
-     *            exception causing invocation of this entry point (can be null)
+     * @param context   containing local entity
+     * @param exception exception causing invocation of this entry point (can be null)
      * @return populated webSSOprofile
-     * @throws MetadataProviderException
-     *             in case metadata loading fails
+     * @throws MetadataProviderException in case metadata loading fails
      */
     @Override
     protected WebSSOProfileOptions getProfileOptions(SAMLMessageContext context, AuthenticationException exception)

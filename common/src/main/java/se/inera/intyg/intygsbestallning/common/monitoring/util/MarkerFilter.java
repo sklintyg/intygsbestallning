@@ -16,17 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.common.monitoring.util;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.filter.AbstractMatcherFilter;
 import ch.qos.logback.core.spi.FilterReply;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 
 public class MarkerFilter extends AbstractMatcherFilter<ILoggingEvent> {
     private List<Marker> markersToMatch = new ArrayList<>();

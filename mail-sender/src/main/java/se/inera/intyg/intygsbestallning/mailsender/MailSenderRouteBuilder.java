@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.mailsender;
 
 import org.apache.camel.LoggingLevel;
@@ -88,7 +89,7 @@ public class MailSenderRouteBuilder extends SpringRouteBuilder {
                 .log(LoggingLevel.ERROR, LOG,
                         simple("Permanent exception, with message: "
                                 + "${exception.message}\n ${exception.stacktrace}")
-                                        .getText())
+                                .getText())
                 .stop();
 
         from("direct:temporaryErrorHandlerEndpoint").routeId("temporaryErrorLogging")
@@ -97,7 +98,7 @@ public class MailSenderRouteBuilder extends SpringRouteBuilder {
                 .log(LoggingLevel.ERROR, LOG,
                         simple("Temporary exception, with message: "
                                 + "${exception.message}\n ${exception.stacktrace}")
-                                        .getText())
+                                .getText())
                 .otherwise()
                 .log(LoggingLevel.WARN, LOG,
                         simple("Temporary exception"

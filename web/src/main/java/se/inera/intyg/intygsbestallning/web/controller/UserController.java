@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.controller;
 
 import org.slf4j.Logger;
@@ -27,7 +28,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import se.inera.intyg.infra.security.authorities.AuthoritiesException;
 import se.inera.intyg.intygsbestallning.web.auth.GetUserResponse;
 import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
@@ -68,8 +68,9 @@ public class UserController {
         boolean changeSuccess = user.changeValdVardenhet(hsaId);
 
         if (!changeSuccess) {
-            throw new AuthoritiesException(String.format("Could not change active unit context: Unit '%s' is not present in the MIUs for user '%s'",
-                    hsaId, user.getHsaId()));
+            throw new AuthoritiesException(
+                    String.format("Could not change active unit context: Unit '%s' is not present in the MIUs for user '%s'",
+                            hsaId, user.getHsaId()));
         }
 
         LOG.debug("Selected unit is now '{}'", user.getUnitContext().getId());

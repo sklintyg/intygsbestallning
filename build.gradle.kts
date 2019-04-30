@@ -47,8 +47,8 @@ subprojects {
 
   configure<IntygPluginCheckstyleExtension> {
     javaVersion = JavaVersion.JAVA11
-    showViolations = false
-    ignoreFailures = true
+    showViolations = true
+    ignoreFailures = false
   }
 
   dependencyManagement {

@@ -16,13 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.controller;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import java.io.IOException;
-import java.time.LocalDateTime;
 
 public class LocalDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
 

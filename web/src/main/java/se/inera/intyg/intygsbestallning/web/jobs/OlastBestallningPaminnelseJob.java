@@ -16,17 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.jobs;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import com.google.common.collect.Lists;
+import com.querydsl.core.BooleanBuilder;
 import net.javacrumbs.shedlock.core.SchedulerLock;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -35,9 +35,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.querydsl.core.BooleanBuilder;
-
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.Notifiering;
@@ -116,11 +113,11 @@ public class OlastBestallningPaminnelseJob {
 
     @NotNull
     private Predicate<Bestallning> paminnelse2Filter() {
-        return it -> it.getNotifieringar() != null &&
-                it.getNotifieringar().stream()
-                        .anyMatch(n -> n.getTyp().equals(NotifieringTyp.NY_BESTALLNING_PAMINNELSE_1)) &&
-                it.getNotifieringar().stream()
-                        .noneMatch(n -> n.getTyp().equals(NotifieringTyp.NY_BESTALLNING_PAMINNELSE_2));
+        return it -> it.getNotifieringar() != null
+                && it.getNotifieringar().stream()
+                .anyMatch(n -> n.getTyp().equals(NotifieringTyp.NY_BESTALLNING_PAMINNELSE_1))
+                && it.getNotifieringar().stream()
+                .noneMatch(n -> n.getTyp().equals(NotifieringTyp.NY_BESTALLNING_PAMINNELSE_2));
     }
 
     private int getFirstReminderTime(Bestallning bestallning) {

@@ -16,10 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.persistence.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 import se.inera.intyg.intygsbestallning.persistence.entity.InvanareEntity;
 
 public interface InvanareRepository extends JpaRepository<InvanareEntity, Long> {

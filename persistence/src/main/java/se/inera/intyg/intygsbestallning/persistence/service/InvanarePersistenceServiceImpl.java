@@ -16,11 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.persistence.service;
 
-import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
 import java.util.Optional;
+import javax.transaction.Transactional;
+import org.springframework.stereotype.Service;
 import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.intygsbestallning.persistence.entity.InvanareEntity;
 import se.inera.intyg.intygsbestallning.persistence.repository.InvanareRepository;

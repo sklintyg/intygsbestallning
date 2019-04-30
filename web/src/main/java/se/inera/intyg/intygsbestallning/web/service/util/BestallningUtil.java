@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.service.util;
 
 import io.vavr.control.Try;
 import org.jetbrains.annotations.NotNull;
-import se.inera.intyg.intygsbestallning.common.dto.SimpleBestallningRequest;
 
 public final class BestallningUtil {
     @NotNull

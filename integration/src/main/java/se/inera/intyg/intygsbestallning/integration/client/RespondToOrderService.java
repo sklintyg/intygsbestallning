@@ -16,10 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.integration.client;
 
-import se.inera.intyg.intygsbestallning.common.dto.AccepteraBestallningRequest;
-import se.inera.intyg.intygsbestallning.common.dto.AvvisaBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.dto.SimpleBestallningRequest;
 
 public interface RespondToOrderService {

@@ -16,10 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.persistence.repository;
 
-import com.querydsl.core.types.Predicate;
 import java.util.Optional;
+import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,7 +35,7 @@ public interface BestallningRepository extends JpaRepository<BestallningEntity, 
      * Finds all bestallning matching predicate.
      *
      * @param predicate the predicate.
-     * @param pageable pageable info.
+     * @param pageable  pageable info.
      * @return a page with entities.
      */
     Page<BestallningEntity> findAll(Predicate predicate, Pageable pageable);

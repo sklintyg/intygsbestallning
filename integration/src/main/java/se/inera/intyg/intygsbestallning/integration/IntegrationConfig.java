@@ -16,17 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.integration;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportResource;
-import se.inera.intyg.intygsbestallning.common.property.IntegrationProperties;
 import se.inera.intyg.intygsbestallning.integration.client.ClientIntegrationConfig;
 import se.inera.intyg.intygsbestallning.integration.hsa.HsaConfig;
-import se.inera.intyg.intygsbestallning.integration.hsa.HsaStubConfig;
 import se.inera.intyg.intygsbestallning.integration.pu.PuConfig;
 
 @Configuration

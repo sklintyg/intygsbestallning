@@ -16,8 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.mailsender.config;
 
+import javax.jms.ConnectionFactory;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.camel.spring.javaconfig.CamelConfiguration;
 import org.apache.camel.spring.spi.SpringTransactionPolicy;
@@ -27,7 +29,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.jms.core.JmsTemplate;
-import javax.jms.ConnectionFactory;
 import se.inera.intyg.intygsbestallning.common.property.ActiveMqProperties;
 import se.inera.intyg.intygsbestallning.common.property.MailSenderProperties;
 

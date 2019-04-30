@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.integration.pu;
 
 import java.util.Optional;
 import se.inera.intyg.infra.integration.pu.model.Person;
-import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.schemas.contract.Personnummer;
 
 

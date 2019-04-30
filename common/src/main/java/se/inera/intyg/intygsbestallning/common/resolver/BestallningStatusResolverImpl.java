@@ -16,15 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.common.resolver;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import java.lang.invoke.MethodHandles;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.Handelse;
@@ -63,13 +64,15 @@ public class BestallningStatusResolverImpl implements BestallningStatusResolver 
                 break;
             case ACCEPTERA:
                 if (nuvarandeStatus != BestallningStatus.LAST) {
-                    throw new IllegalStateException("Can not update state from LAST to ACCEPTERA unless latest handelse is of typ ACCEPTERAD");
+                    throw new IllegalStateException(
+                            "Can not update state from LAST to ACCEPTERA unless latest handelse is of typ ACCEPTERAD");
                 }
                 bestallning.setStatus(BestallningStatus.ACCEPTERAD);
                 break;
             case KLARMARKERA:
                 if (nuvarandeStatus != BestallningStatus.ACCEPTERAD) {
-                    throw new IllegalStateException("Can not update state from ACCEPTEDAD to KLAR unless latest handelse is of typ KLARMARKERA");
+                    throw new IllegalStateException(
+                            "Can not update state from ACCEPTEDAD to KLAR unless latest handelse is of typ KLARMARKERA");
                 }
                 bestallning.setStatus(BestallningStatus.KLAR);
                 break;

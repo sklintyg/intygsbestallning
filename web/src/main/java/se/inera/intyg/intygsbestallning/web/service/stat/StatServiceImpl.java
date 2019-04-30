@@ -16,15 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.service.stat;
 
+import java.util.List;
 import org.springframework.stereotype.Service;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.dto.CountBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.StatResponse;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
-
-import java.util.List;
 
 @Service
 public class StatServiceImpl implements StatService {

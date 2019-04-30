@@ -16,17 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import se.inera.intyg.infra.security.filter.SessionTimeoutFilter;
 import se.inera.intyg.intygsbestallning.common.dto.StatResponse;
 import se.inera.intyg.intygsbestallning.web.auth.GetSessionStatResponse;
@@ -46,7 +45,7 @@ import se.inera.intyg.intygsbestallning.web.service.user.UserService;
  * @see SessionTimeoutFilter
  * @see org.springframework.security.web.context.SecurityContextRepository SecurityContextRepository
  * @see HttpSessionSecurityContextRepository
- *      HttpSessionSecurityContextRepository
+ * HttpSessionSecurityContextRepository
  */
 
 @RestController
@@ -65,6 +64,7 @@ public class SessionStatController {
         this.statService = statService;
         this.userService = userService;
     }
+
     @RequestMapping(value = SessionStatController.SESSION_STATUS_PING, method = RequestMethod.GET)
     public GetSessionStatResponse getSessionStatus(HttpServletRequest request) {
         return createStatusResponse(request);
@@ -81,7 +81,7 @@ public class SessionStatController {
 
     private StatResponse getStats() {
         var user = userService.getUser();
-        if (user!=null &&  user.getUnitContext() !=null) {
+        if (user != null && user.getUnitContext() != null) {
             var hsaId = user.getUnitContext().getId();
             var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
 

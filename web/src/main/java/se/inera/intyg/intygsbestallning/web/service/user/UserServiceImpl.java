@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.service.user;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,8 +29,8 @@ import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
 public class UserServiceImpl implements UserService {
     @Override
     public IntygsbestallningUser getUser() {
-        if (SecurityContextHolder.getContext().getAuthentication() == null ||
-            !(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof IntygsbestallningUser)) {
+        if (SecurityContextHolder.getContext().getAuthentication() == null
+                || !(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof IntygsbestallningUser)) {
             return null;
         }
 
@@ -39,10 +40,8 @@ public class UserServiceImpl implements UserService {
     /**
      * Note - this is just a proxy for accessing {@link CareUnitAccessHelper#userIsLoggedInOnEnhetOrUnderenhet(IntygUser, String)}.
      *
-     * @param enhetsId
-     *      HSA-id of a vardenhet or mottagning.
-     * @return
-     *      True if the current IntygUser has access to the specified enhetsId including mottagningsnivå.
+     * @param enhetsId HSA-id of a vardenhet or mottagning.
+     * @return True if the current IntygUser has access to the specified enhetsId including mottagningsnivå.
      */
     @Override
     public boolean isUserLoggedInOnEnhetOrUnderenhet(String enhetsId) {

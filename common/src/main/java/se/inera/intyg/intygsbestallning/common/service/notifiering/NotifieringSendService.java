@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.common.service.notifiering;
 
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
@@ -23,14 +24,16 @@ import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
 
 /**
  * Used for sending notifications by email to vardenhet users. Notifications will include a deep link to the related
- * se.inera.intyg.intygsbestallning.common.domain.Bestallning so that the user can quickly enter the application at the screen for the se.inera.intyg.intygsbestallning.common.domain.Bestallning of interest.
+ * se.inera.intyg.intygsbestallning.common.domain.Bestallning so that the user can quickly enter the application at the screen for the
+ * se.inera.intyg.intygsbestallning.common.domain.Bestallning of interest.
  */
 public interface NotifieringSendService {
 
     /**
-     * Send deep link to specific se.inera.intyg.intygsbestallning.common.domain.Bestallning to user at vardenhet when new intygsbestallning arrives.
+     * Send deep link to specific se.inera.intyg.intygsbestallning.common.domain.Bestallning
+     * to user at vardenhet when new intygsbestallning arrives.
      *
-     * @param bestallning
+     * @param bestallning - the current bestallning
      */
     void nyBestallning(Bestallning bestallning);
 
@@ -38,8 +41,8 @@ public interface NotifieringSendService {
      * Send deep link to specific Bestallning to user at vardenhet when intygsbestallning is forwarded (vidarebefodrad).
      * Note: notification is sent to the vardenhet receiving the forwarded intygsbestallning.
      *
-     * @param bestallning
-     * @return
+     * @param bestallning - the current bestallning
+     * @return String containing the mail-text
      */
     String vidarebefordrad(Bestallning bestallning);
 

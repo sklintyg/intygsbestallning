@@ -16,23 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.auth;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import se.inera.intyg.infra.integration.hsa.model.SelectableVardenhet;
-import se.inera.intyg.infra.security.common.model.IntygUser;
-import se.inera.intyg.infra.security.common.model.Privilege;
-import se.inera.intyg.infra.security.common.model.Role;
-import se.inera.intyg.intygsbestallning.web.pdl.PdlActivityEntry;
+import static se.inera.intyg.infra.security.authorities.AuthoritiesResolverUtil.toMap;
+import static se.inera.intyg.intygsbestallning.web.auth.authorities.AuthoritiesConstants.ROLE_VARDADMIN;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static se.inera.intyg.infra.security.authorities.AuthoritiesResolverUtil.toMap;
-import static se.inera.intyg.intygsbestallning.web.auth.authorities.AuthoritiesConstants.ROLE_VARDADMIN;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import se.inera.intyg.infra.integration.hsa.model.SelectableVardenhet;
+import se.inera.intyg.infra.security.common.model.IntygUser;
+import se.inera.intyg.infra.security.common.model.Privilege;
+import se.inera.intyg.infra.security.common.model.Role;
+import se.inera.intyg.intygsbestallning.web.pdl.PdlActivityEntry;
 
 /**
  * The IB user overrides a lot of the default behaviour. Since users can be logged in on both Vårdgivare and on Vårdenhet
@@ -77,10 +77,9 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
     /**
      * Copy-constructor that takes a populated {@link IntygUser}.
      *
-     * @param intygUser
-     *            User principal, typically constructed in the
-     *            {@link org.springframework.security.saml.userdetails.SAMLUserDetailsService}
-     *            implementor.
+     * @param intygUser User principal, typically constructed in the
+     *                  {@link org.springframework.security.saml.userdetails.SAMLUserDetailsService}
+     *                  implementor.
      */
     public IntygsbestallningUser(IntygUser intygUser) {
         super(intygUser.getHsaId());
@@ -191,6 +190,7 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
 
     /**
      * In IB we only handle VG/VE level
+     *
      * @return
      */
     @Override
@@ -199,12 +199,12 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
     }
 
     /**
-     * For IB, we select from the systemAuthorities tree rather than the traditional VG -> VE -> E tree.
+     * <p>For IB, we select from the systemAuthorities tree rather than the traditional VG -> VE -> E tree.</p>
      *
-     * We also sets the currentRole based on the selection.
+     * <p>We also sets the currentRole based on the selection.</p>
      *
-     * @param vgOrVeHsaId
-     * @return
+     * @param vgOrVeHsaId hsaId of the vardenhet
+     * @return boolean - if vardenehet is changed
      */
     @Override
     public boolean changeValdVardenhet(String vgOrVeHsaId) {

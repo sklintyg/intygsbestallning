@@ -16,8 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.service.bestallning.pdf;
 
+import static se.inera.intyg.intygsbestallning.web.service.bestallning.PdfBestallningServiceImpl.IB_COLOR_07;
+import static se.inera.intyg.intygsbestallning.web.service.bestallning.PdfBestallningServiceImpl.PAGE_MARGIN_LEFT;
+import static se.inera.intyg.intygsbestallning.web.service.util.PdfUtil.millimetersToPoints;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.kernel.events.Event;
 import com.itextpdf.kernel.events.IEventHandler;
@@ -29,13 +36,6 @@ import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.property.TextAlignment;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
-import static se.inera.intyg.intygsbestallning.web.service.bestallning.PdfBestallningServiceImpl.IB_COLOR_07;
-import static se.inera.intyg.intygsbestallning.web.service.bestallning.PdfBestallningServiceImpl.PAGE_MARGIN_LEFT;
-import static se.inera.intyg.intygsbestallning.web.service.util.PdfUtil.millimetersToPoints;
 
 public class BestallningHeader implements IEventHandler {
 
