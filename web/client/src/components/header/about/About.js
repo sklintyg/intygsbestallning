@@ -101,7 +101,7 @@ const About = ({ handleOpen, handleClose, isOpen, settings }) => {
           <p>Organisationsnummer: 556559-4230</p>
         </ModalBody>
         <ModalFooter>
-          <Button color={'primary'} outline={true} onClick={handleClose}>
+          <Button color={'default'} onClick={handleClose}>
             Stäng
           </Button>
         </ModalFooter>
