@@ -65,4 +65,6 @@ enum class IbResponderValidationErrorCode(val errorMsgTemplate: String, val erro
   GTA_FEL07("Unexpected use of assessmentId", ErrorIdType.VALIDATION_ERROR),
   GTA_FEL08("Angiven intygstyp går inte att beställa", ErrorIdType.APPLICATION_ERROR),
   GTA_FEL09("Vårdenheten saknar e-postadress", ErrorIdType.EMAIL_ERROR),
+  GTA_FEL10("Received technical error from PU", ErrorIdType.TECHNICAL_ERROR),
+  GTA_FEL11("Angivet personnummer eller samordningsnummer finns inte i personuppgiftsregistret", ErrorIdType.APPLICATION_ERROR)
 }

@@ -63,14 +63,17 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
 
         Invanare invanare;
         if (existing.isEmpty()) {
-            var person = patientService.lookupPersonnummerFromPU(createBestallningRequest.getInvanare().getPersonnummer());
+            var person = Try.of(() -> patientService.lookupPersonnummerFromPU(createBestallningRequest.getInvanare().getPersonnummer()));
 
-            if (person.isEmpty()) {
-                throw new IllegalArgumentException("invanare with personnummer: " +
-                        createBestallningRequest.getInvanare().getPersonnummer().getPersonnummerWithDash() + " was not found");
+            if (person.isFailure()) {
+                throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL10, List.of());
             }
 
-            var foundPerson = person.get();
+            if (person.get().isEmpty()) {
+                throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL11, List.of());
+            }
+
+            var foundPerson = person.get().get();
 
             invanare = Invanare.Factory.newInvanare(
                     foundPerson.getPersonnummer(), createBestallningRequest.getInvanare().getBakgrundNulage());
