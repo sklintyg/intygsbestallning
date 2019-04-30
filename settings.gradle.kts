@@ -4,6 +4,7 @@ pluginManagement {
 	repositories {
 		maven("https://build-inera.nordicmedtest.se/nexus/repository/releases/")
 		gradlePluginPortal()
+		mavenLocal()
 	}
 	resolutionStrategy {
 		eachPlugin {

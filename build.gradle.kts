@@ -1,9 +1,8 @@
 
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
-import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.storage.file.FileRepositoryBuilder
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import se.inera.intyg.IntygPluginCheckstyleExtension
+import se.inera.intyg.JavaVersion
 import se.inera.intyg.TagReleaseTask
 import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 import se.inera.intyg.intygsbestallning.build.Config.Jvm
@@ -45,6 +44,12 @@ subprojects {
   apply(plugin = "kotlin")
 
   apply<DependencyManagementPlugin>()
+
+  configure<IntygPluginCheckstyleExtension> {
+    javaVersion = JavaVersion.JAVA11
+    showViolations = false
+    ignoreFailures = true
+  }
 
   dependencyManagement {
     imports {
