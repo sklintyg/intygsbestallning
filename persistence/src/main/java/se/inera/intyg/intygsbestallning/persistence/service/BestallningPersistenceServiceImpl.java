@@ -119,17 +119,6 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
     }
 
     @Override
-    public Optional<Bestallning> getBestallningById(Long id) {
-        var pb = new BooleanBuilder();
-        var qe = QBestallningEntity.bestallningEntity;
-
-        pb.and(qe.id.eq(id));
-
-        return bestallningRepository.findOne(pb.getValue())
-                .map(BestallningEntity.Factory::toDomain);
-    }
-
-    @Override
     public Optional<Bestallning> getBestallningByIdAndHsaIdAndOrgId(Long id, String hsaId, String orgNrVardgivare) {
         var pb = new BooleanBuilder();
         var qe = QBestallningEntity.bestallningEntity;
