@@ -1,7 +1,8 @@
 /// <reference types="Cypress" />
 
-context("Login", () => {
+context("Bestallning", () => {
   let bestallningId;
+
   beforeEach(() => {
     cy.login("0");
     cy.addBestallning().then(response => {
@@ -11,10 +12,10 @@ context("Login", () => {
   });
 
   afterEach(() => {
-    cy.request("DELETE", "/api/test/bestallningar/" + bestallningId);
+    cy.removeBestallning(bestallningId);
   });
 
-  it("Accept first bestallning", () => {
+  it("Should return to correct list after accept", () => {
     cy.get("#BestallningFilterBar-Aktiva").click();
     cy.get("#BestallningListTable").should("be.visible");
     cy.get("#BestallningListButton-" + bestallningId).click();
@@ -29,4 +30,34 @@ context("Login", () => {
     cy.get("#BestallningBackToList").click();
     cy.url().should("include", "/bestallningar/KLARA");
   });
+
+  it("Should have rejected bestallning in avvisad", () => {
+    cy.get("#BestallningFilterBar-Aktiva").click();
+    cy.get("#BestallningListTable").should("be.visible");
+    cy.get("#BestallningListButton-" + bestallningId).click();
+
+    cy.get("#BestallningAvvisaActionButton").click();
+    cy.get("#AvvisaDialogRadioAvvisa").click();
+    cy.get("#AvvisaDialogConfirmButton").should("be.visible");
+    cy.get("#AvvisaDialogConfirmButton").click();
+
+    cy.get("#BestallningBackToList").click();
+    cy.get("#BestallningFilterBar-Avvisade").click();
+    cy.get("#BestallningListButton-" + bestallningId).should("be.visible");
+  })
+
+  it("Should remove bestallning from list when deleting", () => {
+    cy.get("#BestallningFilterBar-Aktiva").click();
+    cy.get("#BestallningListTable").should("be.visible");
+    cy.get("#BestallningListButton-" + bestallningId).click();
+
+    cy.get("#BestallningAvvisaActionButton").click();
+    cy.get("#AvvisaDialogRadioDelete").click();
+    cy.get("#AvvisaDialogConfirmButton").should("be.visible");
+    cy.get("#AvvisaDialogConfirmButton").click();
+
+    cy.get("#BorttagenDialogConfirmButton").click();
+    cy.get("#BestallningFilterBar-Avvisade").click();
+    cy.get("#BestallningListButton-" + bestallningId).should("not.be.visible");
+  })
 });

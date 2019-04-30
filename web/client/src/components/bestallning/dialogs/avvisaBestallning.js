@@ -33,8 +33,8 @@ const AvvisaBestallning = ({ handleClose, isOpen, accept }) => {
             Radering får endast ske om beställningen har skickats till fel vårdenhet och någon journalanteckning med anledning av
             beställningen inte har upprättats.
           </p>
-          <RadioButton onChange={handleRadioChange} label={'Avvisa'} selected={avvisa} value={'true'} />
-          <RadioButton onChange={handleRadioChange} label={'Avvisa och radera'} selected={avvisa} value={'false'} />
+          <RadioButton onChange={handleRadioChange} label={'Avvisa'} selected={avvisa} value={'true'} id={'AvvisaDialogRadioAvvisa'} />
+          <RadioButton onChange={handleRadioChange} label={'Avvisa och radera'} selected={avvisa} value={'false'} id={'AvvisaDialogRadioDelete'} />
           <p>Vänligen förtydliga skälet till varför beställningen avvisas eller raderas.</p>
           <p>
             Observera att patientrelaterad information inte får lämnas ut utan stöd i patientdatalagen (2008:355), patientsäkerhetslagen
@@ -46,7 +46,8 @@ const AvvisaBestallning = ({ handleClose, isOpen, accept }) => {
           <SpinnerButton
             color={'primary'}
             disabled={avvisa === undefined}
-            accept={() => accept(fritextForklaring, avvisa).then(handleClose)}>
+            accept={() => accept(fritextForklaring, avvisa).then(handleClose)}
+            id={'AvvisaDialogConfirmButton'}>
             Bekräfta
           </SpinnerButton>
           <Button

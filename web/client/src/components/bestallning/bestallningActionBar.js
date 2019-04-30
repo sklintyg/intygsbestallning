@@ -74,7 +74,7 @@ const BestallningActionBar = ({
           <StyledButton onClick={openAcceptDialog} color={'primary'} id={'BestallningAcceptActionButton'}>
             <Check color={IbColors.IB_COLOR_00} /> Acceptera
           </StyledButton>
-          <StyledButton onClick={openAvvisaDialog} color={'primary'}>
+          <StyledButton onClick={openAvvisaDialog} color={'primary'} id={'BestallningAvvisaActionButton'}>
             <Block color={IbColors.IB_COLOR_00} /> Avvisa
           </StyledButton>
         </Fragment>

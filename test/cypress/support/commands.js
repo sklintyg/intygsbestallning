@@ -36,3 +36,11 @@ Cypress.Commands.add("addBestallning", () => {
     cy.request("POST", "/api/test/bestallningar", bestallning);
   });
 });
+
+Cypress.Commands.add("removeBestallning", id => {
+  cy.request({
+    method: "DELETE",
+    url: "/api/test/bestallningar/" + id,
+    failOnStatusCode: false
+  });
+});
