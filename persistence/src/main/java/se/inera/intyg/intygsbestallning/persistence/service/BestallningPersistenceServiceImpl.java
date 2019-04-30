@@ -121,8 +121,10 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
         if (Objects.nonNull(query.getOrgNrVardgivare())) {
             pb.and(qe.vardenhet.organisationId.eq(query.getOrgNrVardgivare()));
         }
-        if (Objects.nonNull(query.getTextSearch())) {
-            pb.and(textPredicate(query.getTextSearch()));
+
+        var textSearch = query.getTextSearch();
+        if (Objects.nonNull(textSearch)) {
+            pb.and(textPredicate(textSearch));
         }
 
         Sort sortRequest;

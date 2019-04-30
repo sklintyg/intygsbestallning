@@ -25,6 +25,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Optional;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import com.google.common.collect.Lists;
@@ -38,10 +41,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.util.ReflectionUtils;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.Optional;
 import se.inera.intyg.infra.integration.pu.model.Person;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
@@ -109,7 +108,6 @@ class VisaBestallningServiceImplTest {
         var person = new Person(Personnummer.createPersonnummer("19121212-1212").get(),
                 false, false, "Tolvan", "Tolvenius", "Tolvansson", "postaddress", "postnummer", "postOrt");
 
-        ReflectionUtils.setField(BestallningProperties.class.getField("host"), bestallningProperties, "host-url");
         when(bestallningTextService.getBestallningTexter(any(Bestallning.class))).thenReturn(bestallningTexter);
         when(patientService.lookupPersonnummerFromPU(any(Personnummer.class))).thenReturn(Optional.of(person));
         when(notifieringSendService.vidarebefordrad(any(Bestallning.class))).thenReturn("bra mail-text");

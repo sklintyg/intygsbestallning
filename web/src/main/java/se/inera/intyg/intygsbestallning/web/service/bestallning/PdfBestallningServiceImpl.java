@@ -176,9 +176,9 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
             addRubrik(fragaDiv, fraga.getRubrik());
 
             for (var delfraga : fraga.getDelfragor()) {
-                if (delfraga.getEtikett() != null) {
-                    addEtikett(fragaDiv, delfraga.getEtikett());
-                }
+
+                addEtikett(fragaDiv, delfraga.getEtikett());
+
                 if (delfraga.getText() != null) {
                     addText(fragaDiv, delfraga.getText());
                 }

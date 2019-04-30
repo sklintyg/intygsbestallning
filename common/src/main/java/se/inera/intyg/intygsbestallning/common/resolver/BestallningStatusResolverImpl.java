@@ -23,6 +23,7 @@ import java.lang.invoke.MethodHandles;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Objects;
+import javax.annotation.Nonnull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -38,10 +39,23 @@ public class BestallningStatusResolverImpl implements BestallningStatusResolver 
     @Override
     public void setStatus(Bestallning bestallning) {
 
+        if (bestallning == null) {
+            throw new IllegalArgumentException("bestallning may not be null");
+        }
+
+        if (bestallning.getStatus() == null) {
+            throw new IllegalArgumentException("status may not be null");
+        }
+
         var nuvarandeStatus = bestallning.getStatus();
 
-        var senasteHandelse = Collections.max(
-                Objects.requireNonNull(bestallning.getHandelser()), Comparator.comparing(Handelse::getSkapad));
+        var handelser = bestallning.getHandelser();
+
+        if (handelser == null || handelser.isEmpty()) {
+            throw new IllegalArgumentException("handelseList may not be null or empty");
+        }
+
+        var senasteHandelse = Collections.max(handelser, Comparator.comparing(Handelse::getSkapad));
 
         switch (senasteHandelse.getEvent()) {
             case SKAPA:

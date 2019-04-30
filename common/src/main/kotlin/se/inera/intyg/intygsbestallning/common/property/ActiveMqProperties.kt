@@ -25,6 +25,6 @@ import org.springframework.context.annotation.Configuration
 @ConfigurationProperties(prefix = "activemq.broker")
 open class ActiveMqProperties {
   lateinit var url: String
-  var password: String? = null
-  var username: String? = null
+  lateinit var password: String
+  lateinit var username: String
 }

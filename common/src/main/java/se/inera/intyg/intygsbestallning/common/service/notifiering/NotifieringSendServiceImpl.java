@@ -108,7 +108,13 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
     }
 
     private void setSkickadTimestamp(Bestallning bestallning) {
-        Collections.max(Objects.requireNonNull(bestallning.getNotifieringar()), Comparator.comparing(Notifiering::getId))
-                .setSkickad(LocalDateTime.now());
+
+        var notifieringar = bestallning.getNotifieringar();
+
+        if (notifieringar == null || notifieringar.isEmpty()) {
+            throw new IllegalArgumentException("notifieringList may not be null or empty");
+        }
+
+        Collections.max(notifieringar, Comparator.comparing(Notifiering::getId)).setSkickad(LocalDateTime.now());
     }
 }
