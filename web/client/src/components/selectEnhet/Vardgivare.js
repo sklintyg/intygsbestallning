@@ -13,7 +13,7 @@ const ComponentWrapper = styled.div`
 const VardgivarTitle = styled(IbTypo05)`
   color: ${IbColors.IB_COLOR_09}
   background: ${IbColors.IB_COLOR_20}
-  padding-left: 16px;
+  padding: 4px 4px 4px 16px;
   display: flex;
   align-items: center;
   span {

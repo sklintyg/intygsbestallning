@@ -1,23 +1,30 @@
-import React, { Fragment, useState } from 'react'
+import React, {Fragment, useState} from 'react'
 import * as actions from '../../store/actions/bestallning'
-import { connect } from 'react-redux'
-import { Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
-import { compose } from 'recompose'
+import {connect} from 'react-redux'
+import {Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
+import {compose} from 'recompose'
 import styled from 'styled-components'
 import {
   AccepteraBestallning,
   AccepteraBestallningId,
   AvvisaBestallning,
   AvvisaBestallningId,
-  SkrivUtBestallning,
-  SkrivUtBestallningId,
   BorttagenBestallning,
   BorttagenBestallningId,
+  SkrivUtBestallning,
+  SkrivUtBestallningId,
 } from './dialogs'
-import { Check, Reply, Print, Block } from '../styles/IbSvgIcons'
+import {Block, Check, Print, Reply} from '../styles/IbSvgIcons'
 import IbColors from '../styles/IbColors'
 import * as modalActions from '../../store/actions/modal'
+import Toggler from '../toggler/Toggler'
 
+
+const StyledToggler = styled(Toggler)`
+  button {
+  padding: 0;
+  }
+`
 const StyledButton = styled(Button)`
   margin-right: 16px;
 `
@@ -88,8 +95,8 @@ const BestallningActionBar = ({
         <Reply color={IbColors.IB_COLOR_00} /> Vidarebefodra
       </StyledButton>
       <ButtonDropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
-        <DropdownToggle color={'primary'} className={dropdownOpen ? 'dropdown-toggle up-icon' : 'dropdown-toggle down-icon'}>
-          <Print color={IbColors.IB_COLOR_00} /> Skriv ut
+        <DropdownToggle color={'primary'}>
+          <Print color={IbColors.IB_COLOR_00} /> Skriv ut <StyledToggler color={IbColors.IB_COLOR_00} expanded={dropdownOpen} />
         </DropdownToggle>
         <DropdownMenu right={true}>
           <DropdownItem onClick={bestallning.invanare.sekretessMarkering ? openSkrivUtDialog : () => printBestallning('forfragan')}>
