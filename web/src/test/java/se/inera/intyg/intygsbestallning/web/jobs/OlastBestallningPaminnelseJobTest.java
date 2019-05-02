@@ -177,7 +177,7 @@ class OlastBestallningPaminnelseJobTest {
                 "syfte", "planeradeAktiviteter", BestallningStatus.OLAST,
                 Invanare.Factory.newInvanare(Personnummer.createPersonnummer("191212121212").get(), ""),
                 Handlaggare.Factory.newHandlaggare("", "", "", "", "", "", "", "", ""),
-                Vardenhet.Factory.newVardenhet("hsaId", "vardgivareHsaId", "orgNr", "vardenhet", "a@b.c", "Hej"),
+                Vardenhet.Factory.newVardenhet("hsaId", "vardgivareHsaId", "orgNr", "vardenhet", "a@b.c"),
                 "ärendeReferens",
                 null,
                 notifieringar));

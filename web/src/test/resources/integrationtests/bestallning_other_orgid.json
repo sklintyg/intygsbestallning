@@ -5,10 +5,10 @@
   "avslutDatum": null,
   "syfte": "ett syfte",
   "planeradeAktiviteter": "planerade aktiviteter",
-  "status": "OLAST",
+  "status": "LAST",
   "arendeReferens": "referens",
   "invanare": {
-    "personId": "19870410-2386",
+    "personId": "19121212-1212",
     "bakgrundNulage": null
   },
   "handlaggare": {
@@ -25,8 +25,8 @@
   "vardenhet": {
     "hsaId": "IFV1239877878-1042",
     "vardgivareHsaId": "IFV1239877878-1041",
-    "organisationId" : "2-orgnr-1041",
-    "namn": "Intygsbeställning-Enhet2",
+    "organisationId" : "other-orgid",
+    "namn": "Intygsbeställning-Enhet1",
     "epost": "e@po.st"
   },
   "handelser": [

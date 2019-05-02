@@ -144,13 +144,7 @@ public class BestallningController {
         var hsaId = user.getUnitContext().getId();
         var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
 
-        var aktuellBestallning = visaBestallningService.getBestallningByIdAndHsaIdAndOrgId(idLong, hsaId, orgNrVardgivare);
-
-        if (aktuellBestallning.isPresent()) {
-            return ResponseEntity.ok(aktuellBestallning);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(visaBestallningService.getBestallningByIdAndHsaIdAndOrgId(idLong, hsaId, orgNrVardgivare));
     }
 
     @PostMapping("/{id}/acceptera")

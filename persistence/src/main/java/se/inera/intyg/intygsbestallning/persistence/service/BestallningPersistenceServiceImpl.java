@@ -39,43 +39,31 @@ import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarBasedOnStatusQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarResult;
+import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
+import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
 import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
 import se.inera.intyg.intygsbestallning.persistence.entity.InvanareEntity;
 import se.inera.intyg.intygsbestallning.persistence.entity.QBestallningEntity;
 import se.inera.intyg.intygsbestallning.persistence.entity.VardenhetEntity;
 import se.inera.intyg.intygsbestallning.persistence.repository.BestallningRepository;
-import se.inera.intyg.intygsbestallning.persistence.repository.InvanareRepository;
-import se.inera.intyg.intygsbestallning.persistence.repository.VardenhetRepository;
 
 @Service
 @Transactional
 public class BestallningPersistenceServiceImpl implements BestallningPersistenceService {
 
     private BestallningRepository bestallningRepository;
-    private InvanareRepository invanareRepository;
-    private VardenhetRepository vardenhetRepository;
 
     public BestallningPersistenceServiceImpl(
-            BestallningRepository bestallningRepository,
-            InvanareRepository invanareRepository,
-            VardenhetRepository vardenhetRepository) {
+            BestallningRepository bestallningRepository) {
         this.bestallningRepository = bestallningRepository;
-        this.invanareRepository = invanareRepository;
-        this.vardenhetRepository = vardenhetRepository;
     }
 
     @Override
     public Bestallning saveNewBestallning(Bestallning bestallning) {
 
         var invanareEntity = InvanareEntity.Factory.toEntity(bestallning.getInvanare());
-        if (Objects.isNull(invanareEntity.getId())) {
-            invanareEntity = invanareRepository.save(invanareEntity);
-        }
 
         var vardenhetEntity = VardenhetEntity.Factory.toEntity(bestallning.getVardenhet());
-        if (Objects.isNull(vardenhetEntity.getId())) {
-            vardenhetEntity = vardenhetRepository.save(vardenhetEntity);
-        }
 
         var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning, invanareEntity, vardenhetEntity);
 
@@ -158,15 +146,20 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
 
         pb.and(qe.id.eq(id));
 
-        if (Objects.nonNull(hsaId)) {
-            pb.and(qe.vardenhet.hsaId.eq(hsaId));
-        }
-        if (Objects.nonNull(orgNrVardgivare)) {
-            pb.and(qe.vardenhet.organisationId.eq(orgNrVardgivare));
+        var bestallning = bestallningRepository.findOne(pb.getValue())
+                .map(BestallningEntity.Factory::toDomain);
+
+        if (bestallning.isPresent()) {
+            if (!bestallning.get().getVardenhet().getOrganisationId().equals(orgNrVardgivare)) {
+                throw new IbServiceException(IbErrorCodeEnum.VARDGIVARE_ORGNR_MISMATCH,
+                        "Bestallning vardgivare organisationId doesn't match user orgNrVardgivare");
+            }
+            if (!bestallning.get().getVardenhet().getHsaId().equals(hsaId)) {
+                throw new IbServiceException(IbErrorCodeEnum.UNAUTHORIZED, "Bestallning vardenhet hsaid doesn't match user hsaid");
+            }
         }
 
-        return bestallningRepository.findOne(pb.getValue())
-                .map(BestallningEntity.Factory::toDomain);
+        return bestallning;
     }
 
     @Override

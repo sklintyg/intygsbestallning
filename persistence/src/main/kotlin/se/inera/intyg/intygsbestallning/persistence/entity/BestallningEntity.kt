@@ -66,16 +66,23 @@ class BestallningEntity private constructor(builder: Builder) {
   @Column(name = "STATUS_STRING", nullable = false)
   val statusString: String
 
-  @ManyToOne(cascade = [CascadeType.MERGE])
-  @JoinColumn(name = "INVANARE_ID", nullable = false)
+  @Embedded
+  @AttributeOverrides(
+          AttributeOverride(name = "personId", column = Column(name = "INVANARE_PERSON_ID")),
+          AttributeOverride(name = "bakgrundNulage", column = Column(name = "INVANARE_BAKGRUND_NULAGE")))
   val invanare: InvanareEntity
 
   @OneToOne(cascade = [CascadeType.PERSIST])
   @JoinColumn(name = "HANDLAGGARE_ID", nullable = false)
   val handlaggare: HandlaggareEntity
 
-  @ManyToOne(cascade = [CascadeType.MERGE])
-  @JoinColumn(name = "VARDENHET_ID", nullable = false)
+  @Embedded
+  @AttributeOverrides(
+          AttributeOverride(name = "hsaId", column = Column(name = "VARDENHET_HSA_ID")),
+          AttributeOverride(name = "vardgivareHsaId", column = Column(name = "VARDENHET_VARDGIVARE_HSA_ID")),
+          AttributeOverride(name = "organisationId", column = Column(name = "VARDENHET_ORGANISATION_ID")),
+          AttributeOverride(name = "namn", column = Column(name = "VARDENHET_NAMN")),
+          AttributeOverride(name = "epost", column = Column(name = "VARDENHET_EPOST")))
   var vardenhet: VardenhetEntity
 
   @OneToMany(cascade = [CascadeType.ALL])

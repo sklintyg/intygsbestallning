@@ -21,6 +21,7 @@ package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
 import static se.inera.intyg.intygsbestallning.common.dto.BestallningMetadataTyp.MAIL_VIDAREBEFORDRA;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -74,7 +75,7 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
         var bestallning = bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(id, hsaId, orgNrVardgivare);
 
         if (bestallning.isEmpty()) {
-            return Optional.empty();
+            throw new IbServiceException(IbErrorCodeEnum.NOT_FOUND, MessageFormat.format("Bestallning with id '{0}' was not found", id));
         }
 
         if (bestallning.get().getStatus() == BestallningStatus.OLAST) {

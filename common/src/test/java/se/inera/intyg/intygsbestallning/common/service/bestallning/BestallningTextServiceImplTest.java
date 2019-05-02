@@ -106,8 +106,7 @@ class BestallningTextServiceImplTest {
                         "vardGivareHsa",
                         "orgId",
                         "namn",
-                        "e@mail.se",
-                        "svar"
+                        "e@mail.se"
                 ),
                 "referens"
         );

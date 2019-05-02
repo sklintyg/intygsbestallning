@@ -165,8 +165,7 @@ class VisaBestallningServiceImplTest {
                 "vardGivareHsa",
                 "orgId",
                 "namn",
-                "e@mail.se",
-                "svar"
+                "e@mail.se"
         );
     }
 
