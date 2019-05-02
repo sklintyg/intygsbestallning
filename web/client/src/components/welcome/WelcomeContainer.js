@@ -21,11 +21,13 @@ const Wrapper = styled.div`
   padding: 50px;
 `
 const WelcomeTextCol = styled.div`
-  flex: 1 0 20%;
-  padding-right: 10%;
+  flex: 1 0 30%;
 `
 const WelcomeChartCol = styled.div`
   flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 
 const SpinnerContainer = styled.div`

@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.service.pdl;
 
 import java.util.List;
@@ -24,5 +25,6 @@ import se.inera.intyg.intygsbestallning.web.pdl.LogEvent;
 
 public interface LogService {
     void log(Bestallning bestallning, LogEvent logEvent);
+
     void logList(List<? extends Bestallning> bestallningListItems, LogEvent logEvent);
 }

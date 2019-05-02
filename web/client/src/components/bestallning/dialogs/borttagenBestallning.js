@@ -17,7 +17,8 @@ const BorttagenBestallning = ({ handleOpen, handleClose, isOpen, onClose }) => {
             onClick={() => {
               handleClose()
               onClose()
-            }}>
+            }}
+            id={'BorttagenDialogConfirmButton'}>
             Stäng
           </Button>
         </ModalFooter>

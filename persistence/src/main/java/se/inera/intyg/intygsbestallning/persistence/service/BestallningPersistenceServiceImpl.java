@@ -1,18 +1,37 @@
+/*
+ * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ *
+ * This file is part of sklintyg (https://github.com/sklintyg).
+ *
+ * sklintyg is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * sklintyg is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package se.inera.intyg.intygsbestallning.persistence.service;
 
-import com.google.common.primitives.Longs;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import javax.transaction.Transactional;
+import com.google.common.primitives.Longs;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.dto.CountBestallningarQuery;
@@ -90,8 +109,10 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
         if (Objects.nonNull(query.getOrgNrVardgivare())) {
             pb.and(qe.vardenhet.organisationId.eq(query.getOrgNrVardgivare()));
         }
-        if (Objects.nonNull(query.getTextSearch())) {
-            pb.and(textPredicate(query.getTextSearch()));
+
+        var textSearch = query.getTextSearch();
+        if (Objects.nonNull(textSearch)) {
+            pb.and(textPredicate(textSearch));
         }
 
         Sort sortRequest;

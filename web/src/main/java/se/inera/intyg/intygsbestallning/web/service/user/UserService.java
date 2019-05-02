@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Inera AB (http://www.inera.se)
+ * Copyright (C) 2019 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.service.user;
 
 import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
@@ -28,15 +29,13 @@ public interface UserService {
      * Method determine if the supplied enhetsId is a Vardenhet or Mottagning identifier.
      *
      * <ul>
-     *     <li>If the selectedVardenhet is a Vardenhet: The supplied enhetsId is for the Vardenhet or one of its Mottagningar.</li>
-     *     <li>If the selcetedVardenhet is a Mottagning: The supplied enhetsId is the Mottagning,
-     *     its parent Vardenhet or one of the sibling Mottagningar.</li>
+     * <li>If the selectedVardenhet is a Vardenhet: The supplied enhetsId is for the Vardenhet or one of its Mottagningar.</li>
+     * <li>If the selcetedVardenhet is a Mottagning: The supplied enhetsId is the Mottagning,
+     * its parent Vardenhet or one of the sibling Mottagningar.</li>
      * </ul>
      *
-     * @param enhetsId
-     *      HSA-id of a vardenhet or mottagning.
-     * @return
-     *      true if match is found.
+     * @param enhetsId HSA-id of a vardenhet or mottagning.
+     * @return true if match is found.
      */
     boolean isUserLoggedInOnEnhetOrUnderenhet(String enhetsId);
 }

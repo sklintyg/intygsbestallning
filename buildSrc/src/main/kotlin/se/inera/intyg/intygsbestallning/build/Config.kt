@@ -12,7 +12,7 @@ object Config {
   object Dependencies {
 
     //Project dependencies
-    const val intygPluginVersion = "2.0.3"
+    const val intygPluginVersion = "3.0.3"
     const val intygsbestallningCertificateOrderSchemasVersion = "1.0-RC7"
     const val schemasContractVersion = "2.1.8"
 

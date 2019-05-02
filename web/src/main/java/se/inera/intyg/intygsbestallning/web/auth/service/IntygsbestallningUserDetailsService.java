@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Inera AB (http://www.inera.se)
+ * Copyright (C) 2019 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.auth.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.opensaml.saml2.core.Assertion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.stereotype.Service;
-
+import se.riv.infrastructure.directory.v1.PersonInformationType;
 import se.inera.intyg.infra.integration.hsa.model.UserCredentials;
 import se.inera.intyg.infra.integration.hsa.model.Vardenhet;
 import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
@@ -45,7 +45,6 @@ import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardgivare;
 import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
 import se.inera.intyg.intygsbestallning.web.auth.authorities.AuthoritiesConstants;
-import se.riv.infrastructure.directory.v1.PersonInformationType;
 
 @Service
 public class IntygsbestallningUserDetailsService extends BaseUserDetailsService implements UserDetailsService {
@@ -86,7 +85,8 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
         for (Vardgivare vg : user.getVardgivare()) {
             IbVardgivare ibVardgivare = new IbVardgivare(vg.getId(), vg.getNamn());
             for (Vardenhet ve : vg.getVardenheter()) {
-                ibVardgivare.getVardenheter().add(new IbVardenhet(ve.getId(), ve.getNamn(), ibVardgivare.getId(), ibVardgivare.getName(), ve.getVardgivareOrgnr()));
+                ibVardgivare.getVardenheter().add(
+                        new IbVardenhet(ve.getId(), ve.getNamn(), ibVardgivare.getId(), ibVardgivare.getName(), ve.getVardgivareOrgnr()));
             }
             authSystemTree.add(ibVardgivare);
         }
@@ -102,9 +102,9 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
     /**
      * Overridden for IB. Application has only one role.
      *
-     * @param intygUser
-     * @param personInfo
-     * @param userCredentials
+     * @param intygUser       - user in session
+     * @param personInfo      - personInfo
+     * @param userCredentials - userCredentials
      */
     @Override
     protected void decorateIntygUserWithRoleAndAuthorities(IntygUser intygUser,
@@ -129,8 +129,8 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
     /**
      * Overridden for IB. Application do not utilize system roles.
      *
-     * @param intygUser
-     * @param userCredentials
+     * @param intygUser       - user in session
+     * @param userCredentials - userCredentials
      */
     @Override
     protected void decorateIntygUserWithSystemRoles(IntygUser intygUser, UserCredentials userCredentials) {

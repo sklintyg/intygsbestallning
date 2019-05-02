@@ -1,8 +1,27 @@
+/*
+ * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ *
+ * This file is part of sklintyg (https://github.com/sklintyg).
+ *
+ * sklintyg is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * sklintyg is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
@@ -31,8 +50,10 @@ import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequestHandlaggare;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequestInvanare;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequestKontor;
+import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
 import se.inera.intyg.intygsbestallning.common.exception.IbResponderValidationErrorCode;
 import se.inera.intyg.intygsbestallning.common.exception.IbResponderValidationException;
+import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.common.service.notifiering.NotifieringSendService;
 import se.inera.intyg.intygsbestallning.integration.pu.PatientService;
@@ -130,6 +151,27 @@ class CreateBestallningServiceImplTest {
 
         when(patientService.lookupPersonnummerFromPU(any(Personnummer.class))).thenReturn(buildPerson());
         when(hsaOrganizationsService.getVardenhet(anyString())).thenReturn(vardenhet);
+        assertThatThrownBy(() -> createBestallningService.create(request)).isEqualTo(expextedException);
+    }
+
+    @Test
+    void test_GTA_FEL10_PuLookupFailsWithException() {
+        var expextedException = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL10, List.of());
+        var request = buildBestallningRequest();
+
+        when(patientService.lookupPersonnummerFromPU(eq(request.getInvanare().getPersonnummer())))
+                .thenThrow(new IbServiceException(IbErrorCodeEnum.PU_ERROR, "Could not get uppslag from PU"));
+
+        assertThatThrownBy(() -> createBestallningService.create(request)).isEqualTo(expextedException);
+    }
+
+    @Test
+    void test_GTA_FEL10_PuLookupFailsWithNotFound() {
+        var expextedException = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL11, List.of());
+        var request = buildBestallningRequest();
+
+        when(patientService.lookupPersonnummerFromPU(eq(request.getInvanare().getPersonnummer()))).thenReturn(Optional.empty());
+
         assertThatThrownBy(() -> createBestallningService.create(request)).isEqualTo(expextedException);
     }
 

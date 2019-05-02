@@ -16,8 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.controller;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.UUID;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
@@ -40,12 +46,6 @@ import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
 import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
 import se.inera.intyg.intygsbestallning.web.auth.ApiErrorResponse;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.UUID;
-
 /**
  * Custom ErrorController that overrides Spring boots default "whitepage" error handling.
  */
@@ -63,8 +63,8 @@ public class RequestErrorController implements ErrorController {
     /**
      * Intercept errors forwarded by a spring security AuthenticationFailureHandler.
      *
-     * @param request
-     * @return
+     * @param request - request
+     * @return modelAndView - modelAndView
      */
     @RequestMapping(path = IB_SPRING_SEC_ERROR_CONTROLLER_PATH, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView handleSpringSecurityErrorAsRedirect(WebRequest webRequest, HttpServletRequest request) {
@@ -79,7 +79,8 @@ public class RequestErrorController implements ErrorController {
         }
         String redirectView = "redirect:" + IB_CLIENT_EXIT_BOOT_PATH + apiErrorResponse.getErrorCode() + "/" + apiErrorResponse.getLogId();
 
-        LOG.error(String.format("(Page) Spring Security error intercepted: %s, %s - responding with: %s", errorContext, apiErrorResponse.toString(), redirectView), error);
+        LOG.error(String.format("(Page) Spring Security error intercepted: %s, %s - responding with: %s",
+                errorContext, apiErrorResponse.toString(), redirectView), error);
         return new ModelAndView(redirectView);
     }
 
@@ -87,8 +88,8 @@ public class RequestErrorController implements ErrorController {
      * For normal "browser navigation" initiated requests, we handle all error with a redirect to a specific
      * startup view to present an error.
      *
-     * @param request
-     * @return
+     * @param request - request
+     * @return modelAndView - modelAndView
      */
     @RequestMapping(path = IB_ERROR_CONTROLLER_PATH, produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView handleErrorAsRedirect(WebRequest webRequest, HttpServletRequest request) {
@@ -112,8 +113,8 @@ public class RequestErrorController implements ErrorController {
     /**
      * For xhr-requests, we handle all errors by responding with a specific error code json struct that client can act on.
      *
-     * @param request
-     * @return
+     * @param request - request
+     * @return responsEntity
      */
     @RequestMapping(path = IB_ERROR_CONTROLLER_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -127,7 +128,8 @@ public class RequestErrorController implements ErrorController {
         } else {
             apiErrorResponse = fromHttpStatus(httpStatus);
         }
-        LOG.error(String.format("(REST) Request error intercepted: %s - responding with: %s", errorContext, apiErrorResponse.toString()), error);
+        LOG.error(String.format(
+                "(REST) Request error intercepted: %s - responding with: %s", errorContext, apiErrorResponse.toString()), error);
         return new ResponseEntity<>(apiErrorResponse, httpStatus);
     }
 
@@ -157,7 +159,8 @@ public class RequestErrorController implements ErrorController {
             return new ApiErrorResponse(error.getMessage(), ibException.getErrorCode().name(), ibException.getLogId());
         } else if (error instanceof AuthenticationException) {
             //Thrown by Spring security during authentication (login), also thrown by IB during various auth checks
-            return new ApiErrorResponse(error.getMessage(), getErrorCodeFromAuthException((AuthenticationException) error), UUID.randomUUID().toString());
+            return new ApiErrorResponse(
+                    error.getMessage(), getErrorCodeFromAuthException((AuthenticationException) error), UUID.randomUUID().toString());
         } else {
             return new ApiErrorResponse(error.getMessage(), IbErrorCodeEnum.UNKNOWN_INTERNAL_PROBLEM.name(), UUID.randomUUID().toString());
         }
@@ -166,8 +169,8 @@ public class RequestErrorController implements ErrorController {
     /**
      * Map type of auth exception to error codes
      *
-     * @param e
-     * @return
+     * @param e exception
+     * @return description
      */
     private String getErrorCodeFromAuthException(AuthenticationException e) {
         if (e instanceof MissingMedarbetaruppdragException) {

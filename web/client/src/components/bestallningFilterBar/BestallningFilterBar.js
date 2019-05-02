@@ -6,7 +6,7 @@ import { Navbar, Nav } from 'reactstrap'
 import FilterBarButton from './FilterBarButton'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import {getStat} from '../../store/reducers/sessionPoll'
+import { getStat } from '../../store/reducers/sessionPoll'
 
 const Wrapper = styled.div`
   background-color: ${ibColors.IB_COLOR_26};
@@ -24,7 +24,7 @@ const Wrapper = styled.div`
   }
 `
 
-const BestallningFilterBar = ({stat}) => {
+const BestallningFilterBar = ({ stat }) => {
   const menu = [
     {
       to: '/bestallningar/AKTUELLA',
@@ -58,7 +58,7 @@ const BestallningFilterBar = ({stat}) => {
 
 const mapStateToProps = (state) => {
   return {
-    stat: getStat(state)
+    stat: getStat(state),
   }
 }
 

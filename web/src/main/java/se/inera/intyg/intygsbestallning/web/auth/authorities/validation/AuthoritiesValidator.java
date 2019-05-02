@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Inera AB (http://www.inera.se)
+ * Copyright (C) 2019 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,13 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.auth.authorities.validation;
 
+import java.util.Optional;
 import se.inera.intyg.infra.security.authorities.validation.AuthExpectationSpecImpl;
 import se.inera.intyg.infra.security.authorities.validation.AuthExpectationSpecification;
 import se.inera.intyg.infra.security.common.model.IntygUser;
-
-import java.util.Optional;
 
 /**
  * Utility class that makes it easy to express and enforce authority constraint rules in backend code.
@@ -32,8 +32,8 @@ public final class AuthoritiesValidator {
     /**
      * Create a expectation context with just a user.
      *
-     * @param user
-     * @return
+     * @param user - user in session
+     * @return specification
      */
     public AuthExpectationSpecification given(IntygUser user) {
         return new AuthExpectationSpecImpl(user, Optional.empty());

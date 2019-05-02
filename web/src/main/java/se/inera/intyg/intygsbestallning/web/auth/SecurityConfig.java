@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Inera AB (http://www.inera.se)
+ * Copyright (C) 2019 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,8 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.auth;
 
+import static se.inera.intyg.intygsbestallning.web.controller.AppConfigController.APPCONFIG_REQUEST_MAPPING;
+import static se.inera.intyg.intygsbestallning.web.controller.RequestErrorController.IB_SPRING_SEC_ERROR_CONTROLLER_PATH;
+import static se.inera.intyg.intygsbestallning.web.controller.SessionStatController.SESSION_STAT_REQUEST_MAPPING;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import com.google.common.collect.Lists;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
@@ -38,6 +51,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.saml.SAMLAuthenticationProvider;
@@ -93,21 +107,8 @@ import se.inera.intyg.intygsbestallning.web.auth.fake.FakeAuthenticationFilter;
 import se.inera.intyg.intygsbestallning.web.auth.fake.FakeAuthenticationProvider;
 import se.inera.intyg.intygsbestallning.web.auth.service.IntygsbestallningUserDetailsService;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static se.inera.intyg.intygsbestallning.web.controller.AppConfigController.APPCONFIG_REQUEST_MAPPING;
-import static se.inera.intyg.intygsbestallning.web.controller.RequestErrorController.IB_SPRING_SEC_ERROR_CONTROLLER_PATH;
-import static se.inera.intyg.intygsbestallning.web.controller.SessionStatController.SESSION_STAT_REQUEST_MAPPING;
-
 @EnableWebSecurity
-@ComponentScan({ "se.inera.intyg.infra.security.authorities", "org.springframework.security.saml" })
+@ComponentScan({"se.inera.intyg.infra.security.authorities", "org.springframework.security.saml"})
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements InitializingBean, DisposableBean {
 
     private static final String FAKE_PROFILE = "fake";
@@ -213,7 +214,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     // SAML 2.0 WebSSO Assertion Consumer
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public JKSKeyManager keyManager() {
         Map<String, String> map = new HashMap<>();
         map.put(keystoreAlias, keystorePassword);
@@ -221,59 +222,59 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public WebSSOProfileConsumer webSSOprofileConsumer() {
         return new WebSSOProfileConsumerImpl();
     }
 
     // SAML 2.0 Holder-of-Key WebSSO Assertion Consumer
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public WebSSOProfileConsumerHoKImpl hokWebSSOprofileConsumer() {
         return new WebSSOProfileConsumerHoKImpl();
     }
 
     // SAML 2.0 Web SSO profile
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public WebSSOProfile webSSOprofile() {
         return new WebSSOProfileImpl();
     }
 
     // SAML 2.0 Holder-of-Key Web SSO profile
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public WebSSOProfileConsumerHoKImpl hokWebSSOProfile() {
         return new WebSSOProfileConsumerHoKImpl();
     }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public SingleLogoutProfile logoutprofile() {
         return new SingleLogoutProfileImpl();
     }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public HTTPSOAP11Binding soapBinding() {
         return new HTTPSOAP11Binding(parserPool());
     }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public HTTPRedirectDeflateBinding redirectDeflateBinding() {
         return new HTTPRedirectDeflateBinding(parserPool());
     }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public SAMLBinding httpPostBinding() {
         return new HTTPPostBinding(parserPool(), velocityEngine());
     }
 
     // Processor
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public SAMLProcessorImpl processor() {
         Collection<SAMLBinding> bindings = new ArrayList<>();
         bindings.add(redirectDeflateBinding());
@@ -283,7 +284,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
 
     // Logger for SAML messages and events
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public SAMLDefaultLogger samlLogger() {
         SAMLDefaultLogger logger = new SAMLDefaultLogger();
         logger.setLogErrors(true);
@@ -292,7 +293,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({ SAML_PROFILE, FAKE_PROFILE })
+    @Profile({SAML_PROFILE, FAKE_PROFILE})
     public static HttpSessionRequestCache requestCache() {
         HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
         requestCache.setRequestMatcher(loginRequestMatcher());
@@ -300,7 +301,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public IntygsbestallningSAMLEntryPoint samlEntryPoint() {
         IntygsbestallningSAMLEntryPoint entryPoint = new IntygsbestallningSAMLEntryPoint();
         WebSSOProfileOptions options = new WebSSOProfileOptions();
@@ -311,7 +312,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public SAMLContextProvider contextProvider() {
         SAMLContextProviderImpl contextProvier = new SAMLContextProviderImpl();
         contextProvier.setKeyManager(keyManager());
@@ -337,7 +338,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     // }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public FilterChainProxy samlFilter() throws Exception {
         List<SecurityFilterChain> chains = new ArrayList<>();
         chains.add(new DefaultSecurityFilterChain(
@@ -354,13 +355,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public SecurityContextLogoutHandler logoutHandler() {
         return new SecurityContextLogoutHandler();
     }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public SimpleUrlLogoutSuccessHandler successLogoutHandler() {
         SimpleUrlLogoutSuccessHandler successLogoutHandler = new SimpleUrlLogoutSuccessHandler();
         successLogoutHandler.setDefaultTargetUrl(SUCCESSFUL_LOGOUT_REDIRECT_URL);
@@ -369,26 +370,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public MetadataDisplayFilter samlMetadataDisplayFilter() {
         return new MetadataDisplayFilter();
     }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public SAMLLogoutProcessingFilter samlLogoutProcessingFilter() {
         return new SAMLLogoutProcessingFilter(successLogoutHandler(), logoutHandler());
     }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public SAMLLogoutFilter samlLogoutFilter() {
-        return new SAMLLogoutFilter(successLogoutHandler(), new LogoutHandler[] { logoutHandler() },
-                new LogoutHandler[] { logoutHandler() });
+        return new SAMLLogoutFilter(successLogoutHandler(), new LogoutHandler[]{logoutHandler()},
+                new LogoutHandler[]{logoutHandler()});
     }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public static SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler() {
         SavedRequestAwareAuthenticationSuccessHandler handler = new SavedRequestAwareAuthenticationSuccessHandler();
         handler.setDefaultTargetUrl("/");
@@ -398,7 +399,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public SAMLProcessingFilter samlWebSSOProcessingFilter() throws Exception {
         SAMLProcessingFilter samlWebSSOProcessingFilter = new SAMLProcessingFilter();
         samlWebSSOProcessingFilter.setAuthenticationManager(authenticationManager());
@@ -411,7 +412,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     // SAML Authentication Provider responsible for validating of received SAML
     // messages
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public SAMLAuthenticationProvider samlAuthenticationProvider() {
         SAMLAuthenticationProvider samlAuthenticationProvider = new SAMLAuthenticationProvider();
         samlAuthenticationProvider.setUserDetails(userDetailsService);
@@ -420,14 +421,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public CachingMetadataManager metadata() throws MetadataProviderException, IOException {
         return new CachingMetadataManager(Lists.newArrayList(
                 extendedMetadataDelegateSP(), extendedMetadataDelegateIdp()));
     }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public ExtendedMetadataDelegate extendedMetadataDelegateSP() throws MetadataProviderException {
         File spMetadataFile = new File(spMetadataLocation);
         FilesystemMetadataProvider spMetadataProvider = new FilesystemMetadataProvider(spMetadataFile);
@@ -457,7 +458,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({ SAML_PROFILE })
+    @Profile({SAML_PROFILE})
     public ExtendedMetadataDelegate extendedMetadataDelegateIdp() throws MetadataProviderException {
         File idpMetadataFile = new File(idpMetadataLocation);
         FilesystemMetadataProvider idpMetadataProvider = new FilesystemMetadataProvider(idpMetadataFile);
@@ -465,7 +466,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
         ExtendedMetadata extendedMetadata = generateExtendedMetadataIdp();
 
         ExtendedMetadataDelegate delegate = new ExtendedMetadataDelegate(idpMetadataProvider, extendedMetadata);
-        delegate.setMetadataTrustCheck(true);
+        delegate.setMetadataTrustCheck(false);
 
         return delegate;
     }
@@ -478,7 +479,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({ FAKE_PROFILE })
+    @Profile({FAKE_PROFILE})
     public FakeAuthenticationProvider fakeAuthenticationProvider() {
         FakeAuthenticationProvider fakeAuthenticationProvider = new FakeAuthenticationProvider();
         fakeAuthenticationProvider.setUserDetails(userDetailsService);
@@ -486,7 +487,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({ FAKE_PROFILE })
+    @Profile({FAKE_PROFILE})
     public FakeAuthenticationFilter fakeAuthenticationFilter() throws Exception {
         FakeAuthenticationFilter fakeAuthenticationFilter = new FakeAuthenticationFilter();
         fakeAuthenticationFilter.setAuthenticationManager(authenticationManager());
@@ -497,7 +498,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Bean
-    @Profile({ FAKE_PROFILE })
+    @Profile({FAKE_PROFILE})
     public SavedRequestAwareAuthenticationSuccessHandler fakeSuccessHandler() {
         SavedRequestAwareAuthenticationSuccessHandler handler = new SavedRequestAwareAuthenticationSuccessHandler();
         handler.setDefaultTargetUrl("/");
@@ -517,6 +518,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Override
+    public void configure(WebSecurity web) throws Exception {
+        // All static client resources could be completely ignored by Spring Security.
+        // This is also needed for a IE11 font loading bug where Springs Security default no-cache headers
+        // will stop IE from loading fonts properly.
+        web.ignoring().antMatchers("/static/**");
+    }
+
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         // These should always be permitted
         http
@@ -528,7 +537,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
                 .antMatchers("/version-assets/**").permitAll()
                 .antMatchers("/favicon*").permitAll()
                 .antMatchers("/index.html").permitAll()
-                .antMatchers("/static/**").permitAll()
                 .antMatchers("/images/**").permitAll()
                 .antMatchers("/app/**").permitAll()
                 .antMatchers("/assets/**").permitAll()

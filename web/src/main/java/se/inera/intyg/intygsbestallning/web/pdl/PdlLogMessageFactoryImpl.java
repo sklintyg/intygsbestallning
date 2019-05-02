@@ -16,8 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.pdl;
 
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import se.inera.intyg.infra.logmessages.Enhet;
 import se.inera.intyg.infra.logmessages.Patient;
@@ -28,8 +30,6 @@ import se.inera.intyg.intygsbestallning.web.auth.IbSelectableHsaEntity;
 import se.inera.intyg.intygsbestallning.web.auth.IbSelectableHsaEntityType;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
 import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
-
-import java.util.stream.Collectors;
 
 @Service
 public class PdlLogMessageFactoryImpl implements PdlLogMessageFactory {

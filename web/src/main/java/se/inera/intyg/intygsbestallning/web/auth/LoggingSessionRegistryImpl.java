@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Inera AB (http://www.inera.se)
+ * Copyright (C) 2019 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,10 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.auth;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistryImpl;
 
 /**
@@ -29,32 +28,32 @@ public class LoggingSessionRegistryImpl extends SessionRegistryImpl {
 
     @Override
     public void registerNewSession(String sessionId, Object principal) {
-        if (principal != null && principal instanceof IntygsbestallningUser) {
-            IntygsbestallningUser user = (IntygsbestallningUser) principal;
-
-            // Use the actual monitoringService once it's present
-            //monitoringService.logUserLogin(user.getHsaId(), user.getAuthenticationScheme(), user.getOrigin());
-        }
+        //        if (principal != null && principal instanceof IntygsbestallningUser) {
+        //            IntygsbestallningUser user = (IntygsbestallningUser) principal;
+        //
+        //            // Use the actual monitoringService once it's present
+        //            //monitoringService.logUserLogin(user.getHsaId(), user.getAuthenticationScheme(), user.getOrigin());
+        //        }
         super.registerNewSession(sessionId, principal);
     }
 
     @Override
     public void removeSessionInformation(String sessionId) {
-        SessionInformation sessionInformation = getSessionInformation(sessionId);
-        if (sessionInformation != null) {
-            Object principal = sessionInformation.getPrincipal();
-
-            if (principal instanceof IntygsbestallningUser) {
-                IntygsbestallningUser user = (IntygsbestallningUser) principal;
-                if (sessionInformation.isExpired()) {
-                    // Use the actual monitoringService once it's present
-                    //monitoringService.logUserSessionExpired(user.getHsaId(), user.getAuthenticationScheme());
-                } else {
-                    // Use the actual monitoringService once it's present
-                    //monitoringService.logUserLogout(user.getHsaId(), user.getAuthenticationScheme());
-                }
-            }
-        }
+        //SessionInformation sessionInformation = getSessionInformation(sessionId);
+        //        if (sessionInformation != null) {
+        //            Object principal = sessionInformation.getPrincipal();
+        //
+        //            if (principal instanceof IntygsbestallningUser) {
+        //                IntygsbestallningUser user = (IntygsbestallningUser) principal;
+        //                if (sessionInformation.isExpired()) {
+        //                    // Use the actual monitoringService once it's present
+        //                    //monitoringService.logUserSessionExpired(user.getHsaId(), user.getAuthenticationScheme());
+        //                } else {
+        //                    // Use the actual monitoringService once it's present
+        //                    //monitoringService.logUserLogout(user.getHsaId(), user.getAuthenticationScheme());
+        //                }
+        //            }
+        //        }
         super.removeSessionInformation(sessionId);
     }
 }

@@ -97,13 +97,13 @@ const Input = styled.input`
 const RadioContainer = styled.div`
   position: relative;
 `
-const RadioButton = ({ selected, onChange, label, value }) => {
+const RadioButton = ({ selected, onChange, label, value, id }) => {
   return (
     <Fragment>
       <RadioWrapper>
         <RadioContainer>
-          <Input type="radio" name={label} id={label} value={value} checked={selected === value} onChange={onChange} />
-          <Label as="label" htmlFor={label}>
+          <Input type="radio" name={label} id={id ? id : label} value={value} checked={selected === value} onChange={onChange} />
+          <Label as="label" htmlFor={id ? id : label}>
             <div className="circle" />
             {label}
             <div className="dot" />

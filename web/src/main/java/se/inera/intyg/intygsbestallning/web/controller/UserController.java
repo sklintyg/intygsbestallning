@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ *
+ * This file is part of sklintyg (https://github.com/sklintyg).
+ *
+ * sklintyg is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * sklintyg is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package se.inera.intyg.intygsbestallning.web.controller;
 
 import org.slf4j.Logger;
@@ -9,7 +28,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import se.inera.intyg.infra.security.authorities.AuthoritiesException;
 import se.inera.intyg.intygsbestallning.web.auth.GetUserResponse;
 import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
@@ -50,8 +68,9 @@ public class UserController {
         boolean changeSuccess = user.changeValdVardenhet(hsaId);
 
         if (!changeSuccess) {
-            throw new AuthoritiesException(String.format("Could not change active unit context: Unit '%s' is not present in the MIUs for user '%s'",
-                    hsaId, user.getHsaId()));
+            throw new AuthoritiesException(
+                    String.format("Could not change active unit context: Unit '%s' is not present in the MIUs for user '%s'",
+                            hsaId, user.getHsaId()));
         }
 
         LOG.debug("Selected unit is now '{}'", user.getUnitContext().getId());

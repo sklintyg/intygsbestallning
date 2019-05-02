@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.controller;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.core.env.Environment;
@@ -28,7 +28,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import se.inera.intyg.intygsbestallning.web.auth.GetAppConfigResponse;
 import se.inera.intyg.intygsbestallning.web.auth.SecurityConfig;
 import se.inera.intyg.intygsbestallning.web.version.VersionInfo;

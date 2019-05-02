@@ -1,5 +1,29 @@
+/*
+ * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ *
+ * This file is part of sklintyg (https://github.com/sklintyg).
+ *
+ * sklintyg is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * sklintyg is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
+import static se.inera.intyg.intygsbestallning.web.service.util.PdfUtil.millimetersToPoints;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Collections;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.Color;
@@ -33,12 +57,6 @@ import se.inera.intyg.intygsbestallning.web.service.bestallning.pdf.PageNumberEv
 import se.inera.intyg.intygsbestallning.web.service.pdl.LogService;
 import se.inera.intyg.intygsbestallning.web.service.util.BestallningUtil;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Collections;
-
-import static se.inera.intyg.intygsbestallning.web.service.util.PdfUtil.millimetersToPoints;
-
 @Service
 public class PdfBestallningServiceImpl implements PdfBestallningService {
 
@@ -61,7 +79,8 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
     private static final float FRAGA_PADDING_RIGHT = 0;//millimetersToPoints(5f);
     private static final float TEXT_PADDING_BOTTOM = millimetersToPoints(2f);
 
-    private PdfFont normalFont, lightFont;
+    private PdfFont normalFont;
+    private PdfFont lightFont;
 
     private BestallningPersistenceService bestallningPersistenceService;
     private BestallningTextService bestallningTextService;
@@ -109,7 +128,7 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
                 personSvar.get().getEfternamn(),
                 personSvar.get().isSekretessmarkering());
 
-        byte[] data =  generatePdf(VisaBestallningDto.Factory.toDto(
+        byte[] data = generatePdf(VisaBestallningDto.Factory.toDto(
                 bestallning.get(),
                 invanareDto,
                 AF_LOGOTYPE_CLASSPATH_URI,
@@ -124,8 +143,7 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
         return data;
     }
 
-    private byte[] generatePdf(VisaBestallningDto bestallning)
-    {
+    private byte[] generatePdf(VisaBestallningDto bestallning) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         // Initialize PDF writer
@@ -141,12 +159,14 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
         normalFont = loadFont("Roboto-Regular.woff2");
         lightFont = loadFont("Roboto-Light.woff2");
 
-        pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new BestallningHeader(lightFont, loadImage(IB_LOGOTYPE_CLASSPATH_URI), bestallning.getId()));
+        pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new BestallningHeader(lightFont, loadImage(IB_LOGOTYPE_CLASSPATH_URI),
+                bestallning.getId()));
+
         pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new BestallningFooter(lightFont));
         PageNumberEvent pageNumberEvent = new PageNumberEvent(lightFont);
         pdf.addEventHandler(PdfDocumentEvent.END_PAGE, pageNumberEvent);
 
-        for(var fraga : bestallning.getFragor()) {
+        for (var fraga : bestallning.getFragor()) {
 
             Div fragaDiv = new Div()
                     .setPaddingLeft(FRAGA_PADDING_LEFT)
@@ -155,10 +175,10 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
 
             addRubrik(fragaDiv, fraga.getRubrik());
 
-            for(var delfraga :  fraga.getDelfragor()) {
-                if (delfraga.getEtikett() != null) {
-                    addEtikett(fragaDiv, delfraga.getEtikett());
-                }
+            for (var delfraga : fraga.getDelfragor()) {
+
+                addEtikett(fragaDiv, delfraga.getEtikett());
+
                 if (delfraga.getText() != null) {
                     addText(fragaDiv, delfraga.getText());
                 }
@@ -215,11 +235,14 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
                 .setPaddingBottom(TEXT_PADDING_BOTTOM));
     }
 
-    private void addBild(PdfDocument pdf, Document document, Div parent, String bild, float maxWidth)  {
+    private void addBild(PdfDocument pdf, Document document, Div parent, String bild, float maxWidth) {
 
         float floatErrorMargin = 0.1f;
-        float availableWidth = Math.min(maxWidth, pdf.getDefaultPageSize().getWidth() - document.getLeftMargin() - document.getRightMargin() - FRAGA_PADDING_LEFT - FRAGA_PADDING_RIGHT * 2 - floatErrorMargin);
-        float availableHeight = pdf.getDefaultPageSize().getHeight() - document.getTopMargin() - document.getBottomMargin() * 2 - floatErrorMargin;
+        float availableWidth = Math.min(maxWidth, pdf.getDefaultPageSize().getWidth() - document.getLeftMargin() - document.getRightMargin()
+                - FRAGA_PADDING_LEFT - FRAGA_PADDING_RIGHT * 2 - floatErrorMargin);
+
+        float availableHeight = pdf.getDefaultPageSize().getHeight() - document.getTopMargin()
+                - document.getBottomMargin() * 2 - floatErrorMargin;
 
         Image image = new Image(loadImage(bild));
 

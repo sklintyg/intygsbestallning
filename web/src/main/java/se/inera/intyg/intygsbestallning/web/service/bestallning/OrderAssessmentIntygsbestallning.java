@@ -1,5 +1,27 @@
+/*
+ * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ *
+ * This file is part of sklintyg (https://github.com/sklintyg).
+ *
+ * sklintyg is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * sklintyg is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
+import java.lang.invoke.MethodHandles;
+import java.util.List;
+import java.util.Optional;
 import io.vavr.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +33,6 @@ import se.riv.intygsbestallning.certificate.order.orderassessment.v1.rivtabp21.O
 import se.riv.intygsbestallning.certificate.order.v1.CVType;
 import se.riv.intygsbestallning.certificate.order.v1.CitizenType;
 import se.riv.intygsbestallning.certificate.order.v1.IIType;
-import java.lang.invoke.MethodHandles;
-import java.util.List;
-import java.util.Optional;
 import se.inera.intyg.infra.integration.pu.util.PersonIdUtil;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequestHandlaggare;
@@ -59,8 +78,8 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
             var createBestallningRequest = fromType(orderAssessmentType);
             var id = createBestallningService.create(createBestallningRequest);
             OrderAssessmentResponseType response = new OrderAssessmentResponseType();
-            response.setAssessmentId(RivtaUtil.anII(integrationProperties.getSourceSystemHsaId(), id.toString()));
-            response.setResult(RivtaUtil.aResultTypeOK());
+            response.setAssessmentId(RivtaUtil.createIIType(integrationProperties.getSourceSystemHsaId(), id.toString()));
+            response.setResult(RivtaUtil.createResultTypeOk());
             return response;
         });
 
@@ -69,8 +88,8 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
         } else {
             LOG.error("Error in orderAssessment", result.getCause());
             OrderAssessmentResponseType response = new OrderAssessmentResponseType();
-            response.setAssessmentId(RivtaUtil.anII(integrationProperties.getSourceSystemHsaId(), ""));
-            response.setResult(RivtaUtil.aResultTypeError(result.getCause()));
+            response.setAssessmentId(RivtaUtil.createIIType(integrationProperties.getSourceSystemHsaId(), ""));
+            response.setResult(RivtaUtil.createResultTypeError(result.getCause()));
             return response;
         }
     }
@@ -106,7 +125,7 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
             throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(personnummerRoot));
         }
 
-        var vardenhet = Optional.of(request.getCareUnitId()).map(IIType::getExtension).get();
+        final var vardenhet = Optional.of(request.getCareUnitId()).map(IIType::getExtension).get();
         var vardenhetRoot = Optional.of(request.getCareUnitId()).map(IIType::getRoot).get();
         if (!vardenhetRoot.equals(HSA_ID_ROOT)) {
             throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(vardenhetRoot));
@@ -125,7 +144,7 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
         }
 
 
-        var invanare = new CreateBestallningRequestInvanare(personnummer, request.getCitizen().getSituationBackground());
+        final var invanare = new CreateBestallningRequestInvanare(personnummer, request.getCitizen().getSituationBackground());
 
         CreateBestallningRequestKontor kontor;
         if (request.getAuthorityAdministrativeOfficial().getOfficeAddress() != null) {
@@ -184,6 +203,7 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
 
         public String getDescription() {
             return description;
+
         }
     }
 }
