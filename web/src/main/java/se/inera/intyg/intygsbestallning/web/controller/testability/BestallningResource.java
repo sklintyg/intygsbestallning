@@ -72,7 +72,7 @@ public class BestallningResource {
             pb.and(qe.id.eq(id));
 
             var bestallning = bestallningRepository.findOne(pb).orElseThrow(
-                    () -> new IllegalArgumentException("Bestallning with id '" + id + "' does not exist."));
+                () -> new IllegalArgumentException("Bestallning with id '" + id + "' does not exist."));
 
             bestallningRepository.delete(bestallning);
 

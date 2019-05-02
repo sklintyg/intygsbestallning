@@ -151,7 +151,8 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
 
         if (bestallning.isPresent()) {
             if (!bestallning.get().getVardenhet().getOrganisationId().equals(orgNrVardgivare)) {
-                throw new IbServiceException(IbErrorCodeEnum.VARDGIVARE_ORGNR_MISMATCH, "Bestallning vardgivare organisationId doesn't match user orgNrVardgivare");
+                throw new IbServiceException(IbErrorCodeEnum.VARDGIVARE_ORGNR_MISMATCH,
+                        "Bestallning vardgivare organisationId doesn't match user orgNrVardgivare");
             }
             if (!bestallning.get().getVardenhet().getHsaId().equals(hsaId)) {
                 throw new IbServiceException(IbErrorCodeEnum.UNAUTHORIZED, "Bestallning vardenhet hsaid doesn't match user hsaid");

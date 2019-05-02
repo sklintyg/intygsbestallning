@@ -22,6 +22,7 @@ package se.inera.intyg.intygsbestallning.web.service.bestallning;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import io.vavr.control.Try;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -70,21 +71,38 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
 
         LOG.debug("Creating new bestallning");
 
-        var person = Try.of(() -> patientService.lookupPersonnummerFromPU(createBestallningRequest.getInvanare().getPersonnummer()));
+        var handlaggare = Handlaggare.Factory.newHandlaggare(
+                createBestallningRequest.getHandlaggare().getNamn(),
+                createBestallningRequest.getHandlaggare().getTelefonNummer(),
+                createBestallningRequest.getHandlaggare().getEmail(),
+                createBestallningRequest.getHandlaggare().getMyndighet(),
+                createBestallningRequest.getHandlaggare().getKontor().getNamn(),
+                createBestallningRequest.getHandlaggare().getKontor().getKostnadsStalle(),
+                createBestallningRequest.getHandlaggare().getKontor().getPostAdress(),
+                createBestallningRequest.getHandlaggare().getKontor().getPostKod(),
+                createBestallningRequest.getHandlaggare().getKontor().getPostOrt());
 
-        if (person.isFailure()) {
-            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL10, List.of());
-        }
+        var bestallning = Bestallning.Factory.newBestallning(
+                getInvanare(createBestallningRequest),
+                createBestallningRequest.getSyfte(),
+                createBestallningRequest.getPlaneradeInsatser(),
+                handlaggare,
+                createBestallningRequest.getIntygTyp(),
+                createBestallningRequest.getIntygVersion(),
+                getVardenhet(createBestallningRequest),
+                createBestallningRequest.getArendeReferens());
 
-        if (person.get().isEmpty()) {
-            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL11, List.of());
-        }
+        bestallningStatusResolver.setStatus(bestallning);
 
-        var foundPerson = person.get().get();
+        final Bestallning savedBestallning = bestallningPersistenceService.saveNewBestallning(bestallning);
+        notifieringSendService.nyBestallning(savedBestallning);
+        bestallningPersistenceService.updateBestallning(savedBestallning);
 
-        var invanare = Invanare.Factory.newInvanare(
-                foundPerson.getPersonnummer(), createBestallningRequest.getInvanare().getBakgrundNulage());
+        return savedBestallning.getId();
+    }
 
+    @NotNull
+    private Vardenhet getVardenhet(CreateBestallningRequest createBestallningRequest) {
         var vardenhetRespons = Try.of(() -> hsaOrganizationsService.getVardenhet(createBestallningRequest.getVardenhet()));
 
         if (vardenhetRespons.isFailure() && vardenhetRespons.getCause() instanceof HsaServiceCallException) {
@@ -111,40 +129,29 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
             throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL06, List.of());
         }
 
-        Vardenhet vardenhet = Vardenhet.Factory.newVardenhet(
+        return Vardenhet.Factory.newVardenhet(
                     vardenhetRespons.get().getId(),
                     vardGivareRespons.getId(),
                     vardGivareRespons.getOrgId(),
                     vardenhetRespons.get().getNamn(),
                     vardenhetRespons.get().getEpost());
+    }
 
-        var handlaggare = Handlaggare.Factory.newHandlaggare(
-                createBestallningRequest.getHandlaggare().getNamn(),
-                createBestallningRequest.getHandlaggare().getTelefonNummer(),
-                createBestallningRequest.getHandlaggare().getEmail(),
-                createBestallningRequest.getHandlaggare().getMyndighet(),
-                createBestallningRequest.getHandlaggare().getKontor().getNamn(),
-                createBestallningRequest.getHandlaggare().getKontor().getKostnadsStalle(),
-                createBestallningRequest.getHandlaggare().getKontor().getPostAdress(),
-                createBestallningRequest.getHandlaggare().getKontor().getPostKod(),
-                createBestallningRequest.getHandlaggare().getKontor().getPostOrt());
+    @NotNull
+    private Invanare getInvanare(CreateBestallningRequest createBestallningRequest) {
+        var person = Try.of(() -> patientService.lookupPersonnummerFromPU(createBestallningRequest.getInvanare().getPersonnummer()));
 
-        var bestallning = Bestallning.Factory.newBestallning(
-                invanare,
-                createBestallningRequest.getSyfte(),
-                createBestallningRequest.getPlaneradeInsatser(),
-                handlaggare,
-                createBestallningRequest.getIntygTyp(),
-                createBestallningRequest.getIntygVersion(),
-                vardenhet,
-                createBestallningRequest.getArendeReferens());
+        if (person.isFailure()) {
+            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL10, List.of());
+        }
 
-        bestallningStatusResolver.setStatus(bestallning);
+        if (person.get().isEmpty()) {
+            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL11, List.of());
+        }
 
-        final Bestallning savedBestallning = bestallningPersistenceService.saveNewBestallning(bestallning);
-        notifieringSendService.nyBestallning(savedBestallning);
-        bestallningPersistenceService.updateBestallning(savedBestallning);
+        var foundPerson = person.get().get();
 
-        return savedBestallning.getId();
+        return Invanare.Factory.newInvanare(
+                foundPerson.getPersonnummer(), createBestallningRequest.getInvanare().getBakgrundNulage());
     }
 }
