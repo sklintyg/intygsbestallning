@@ -16,12 +16,12 @@ const ChangeEnhet = ({handleOpen, handleClose, isOpen}) => {
         Byt enhet
       </ActionButton>
       <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
-        <ModalHeader toggle={handleClose}>Välj enhet</ModalHeader>
+        <ModalHeader toggle={handleClose}>Byta vårdenhet</ModalHeader>
         <ModalBody>
           <SelectEnhet />
         </ModalBody>
         <ModalFooter>
-          <Button color={'secondary'} outline={true} onClick={handleClose}>Avbryt</Button>
+          <Button color={'default'} onClick={handleClose}>Avbryt</Button>
         </ModalFooter>
       </Modal>
     </Fragment>
