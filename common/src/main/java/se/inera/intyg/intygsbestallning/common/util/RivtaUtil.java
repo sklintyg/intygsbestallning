@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ *
+ * This file is part of sklintyg (https://github.com/sklintyg).
+ *
+ * sklintyg is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * sklintyg is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package se.inera.intyg.intygsbestallning.common.util;
 
 import se.riv.intygsbestallning.certificate.order.v1.CVType;
@@ -12,32 +31,29 @@ public final class RivtaUtil {
     private RivtaUtil() {
     }
 
-    public static IIType anII(String root, String extension) {
+    public static IIType createIIType(String root, String extension) {
         IIType ii = new IIType();
         ii.setExtension(extension);
         ii.setRoot(root);
         return ii;
     }
 
-    public static CVType aCv(final String code) {
-        return aCv(code, null, null);
-    }
-
-    public static CVType aCv(String code, String codeSystem, String displayName) {
+    public static CVType createCVType(String code, String codeSystem, String codeSystemName, String displayName) {
         CVType cv = new CVType();
         cv.setCode(code);
         cv.setCodeSystem(codeSystem);
+        cv.setCodeSystemName(codeSystemName);
         cv.setDisplayName(displayName);
         return cv;
     }
 
-    public static ResultType aResultTypeOK() {
+    public static ResultType createResultTypeOk() {
         ResultType result = new ResultType();
         result.setResultCode(ResultCodeType.OK);
         return result;
     }
 
-    public static ResultType aResultTypeError(final Throwable throwable) {
+    public static ResultType createResultTypeError(final Throwable throwable) {
 
         String resultText;
         ErrorIdType errorIdType;
@@ -45,7 +61,7 @@ public final class RivtaUtil {
         if (throwable instanceof IbResponderValidationException) {
             resultText = throwable.getMessage();
             errorIdType = ((IbResponderValidationException) throwable).getErrorCode().getErrorIdType();
-        } else{
+        } else {
             resultText = throwable.getMessage();
             errorIdType = ErrorIdType.APPLICATION_ERROR;
         }

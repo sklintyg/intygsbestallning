@@ -16,7 +16,7 @@ node {
 
     stage('build') {
         try {
-            shgradle "--refresh-dependencies clean build -P client ${versionFlags}"
+            shgradle "--refresh-dependencies clean build -P client -P codeQuality ${versionFlags}"
         } finally {
             publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/allTests', \
                     reportFiles: 'index.html', reportName: 'JUnit results'

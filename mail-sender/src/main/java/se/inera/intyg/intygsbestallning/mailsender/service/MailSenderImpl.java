@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Inera AB (http://www.inera.se)
+ * Copyright (C) 2019 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,8 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.mailsender.service;
 
+import javax.mail.Message;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.camel.Body;
 import org.slf4j.Logger;
@@ -31,10 +35,6 @@ import se.inera.intyg.intygsbestallning.common.json.CustomObjectMapper;
 import se.inera.intyg.intygsbestallning.common.mail.NotificationEmail;
 import se.inera.intyg.intygsbestallning.mailsender.exception.PermanentException;
 import se.inera.intyg.intygsbestallning.mailsender.exception.TemporaryException;
-
-import javax.mail.Message;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 @Component
 @Profile(value = {"demo", "qa", "prod"})

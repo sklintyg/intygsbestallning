@@ -16,19 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web;
 
+import java.io.IOException;
+import java.util.List;
+import javax.servlet.FilterChain;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
 import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
 import se.inera.intyg.intygsbestallning.web.service.user.UserService;
-
-import javax.servlet.FilterChain;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Filter that terminates the filter chain and responds with a server error if a request is made to a url not included
@@ -52,7 +52,8 @@ public class UnitContextSelectedAssuranceFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
-        LOG.error("User accessed api endpoint " + request.getRequestURI() + " - but has not selected a unit context yet - aborting filter chain!");
+        LOG.error("User accessed api endpoint " + request.getRequestURI()
+                + " - but has not selected a unit context yet - aborting filter chain!");
         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
 

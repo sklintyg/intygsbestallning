@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Inera AB (http://www.inera.se)
+ * Copyright (C) 2019 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -19,6 +19,11 @@
 
 package se.inera.intyg.intygsbestallning.web.service.util;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
+import java.util.function.Supplier;
+import javax.ws.rs.core.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -27,12 +32,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
-import java.util.function.Supplier;
 
 @Service
 @Transactional

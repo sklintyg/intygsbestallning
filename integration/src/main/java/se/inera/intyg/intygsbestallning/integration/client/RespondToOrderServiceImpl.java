@@ -1,23 +1,41 @@
+/*
+ * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ *
+ * This file is part of sklintyg (https://github.com/sklintyg).
+ *
+ * sklintyg is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * sklintyg is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package se.inera.intyg.intygsbestallning.integration.client;
 
+import static java.util.Objects.isNull;
+
+import java.text.MessageFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import se.riv.intygsbestallning.certificate.order.respondtoorder.v1.rivtabp21.RespondToOrderResponderInterface;
+import se.riv.intygsbestallning.certificate.order.respondtoorderresponder.v1.RespondToOrderResponseType;
+import se.riv.intygsbestallning.certificate.order.respondtoorderresponder.v1.RespondToOrderType;
+import se.riv.intygsbestallning.certificate.order.v1.CVType;
+import se.riv.intygsbestallning.certificate.order.v1.ResultCodeType;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningSvar;
 import se.inera.intyg.intygsbestallning.common.dto.SimpleBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
 import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
-import se.riv.intygsbestallning.certificate.order.respondtoorder.v1.rivtabp21.RespondToOrderResponderInterface;
-import se.riv.intygsbestallning.certificate.order.respondtoorderresponder.v1.RespondToOrderResponseType;
-import se.riv.intygsbestallning.certificate.order.respondtoorderresponder.v1.RespondToOrderType;
-import se.inera.intyg.intygsbestallning.common.util.RivtaUtil;
 import se.inera.intyg.intygsbestallning.common.property.IntegrationProperties;
-import se.riv.intygsbestallning.certificate.order.v1.CVType;
-import se.riv.intygsbestallning.certificate.order.v1.ResultCodeType;
-
-import java.text.MessageFormat;
-
-import static java.util.Objects.isNull;
+import se.inera.intyg.intygsbestallning.common.util.RivtaUtil;
 
 @Service
 public class RespondToOrderServiceImpl implements RespondToOrderService {
@@ -35,8 +53,8 @@ public class RespondToOrderServiceImpl implements RespondToOrderService {
     }
 
     @Override
-    public void sendRespondToOrder(SimpleBestallningRequest rRequest) {
-        var respondToOrderType = createResponderType(rRequest);
+    public void sendRespondToOrder(SimpleBestallningRequest request) {
+        var respondToOrderType = createResponderType(request);
         var response = respondToOrderResponderInterface.respondToOrder(integrationProperties.getSourceSystemHsaId(), respondToOrderType);
         handleResponse(response);
     }
@@ -61,7 +79,7 @@ public class RespondToOrderServiceImpl implements RespondToOrderService {
 
     private RespondToOrderType createResponderType(SimpleBestallningRequest request) {
 
-        var assessmentId = RivtaUtil.anII(integrationProperties.getSourceSystemHsaId(), request.getBestallningId());
+        var assessmentId = RivtaUtil.createIIType(integrationProperties.getSourceSystemHsaId(), request.getBestallningId());
 
         var respondToOrderType = new RespondToOrderType();
         respondToOrderType.setAssessmentId(assessmentId);
@@ -72,11 +90,10 @@ public class RespondToOrderServiceImpl implements RespondToOrderService {
     }
 
     private CVType buildCVType(BestallningSvar bestallningSvar) {
-        CVType cvType = new CVType();
-        cvType.setCode(bestallningSvar.getCode());
-        cvType.setCodeSystem(bestallningSvar.getCodeSystem());
-        cvType.setCodeSystemName(bestallningSvar.getCodeSystemName());
-        cvType.setDisplayName(bestallningSvar.getKlartext());
-        return cvType;
+        return RivtaUtil.createCVType(
+                bestallningSvar.getCode(),
+                bestallningSvar.getCodeSystem(),
+                bestallningSvar.getCodeSystemName(),
+                bestallningSvar.getKlartext());
     }
 }

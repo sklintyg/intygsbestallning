@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.common.service.notifiering;
 
 import java.lang.invoke.MethodHandles;
@@ -24,13 +25,10 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Objects;
-
 import javax.mail.MessagingException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.Notifiering;
 import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
@@ -110,7 +108,13 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
     }
 
     private void setSkickadTimestamp(Bestallning bestallning) {
-        Collections.max(Objects.requireNonNull(bestallning.getNotifieringar()), Comparator.comparing(Notifiering::getId))
-                .setSkickad(LocalDateTime.now());
+
+        var notifieringar = bestallning.getNotifieringar();
+
+        if (notifieringar == null || notifieringar.isEmpty()) {
+            throw new IllegalArgumentException("notifieringList may not be null or empty");
+        }
+
+        Collections.max(notifieringar, Comparator.comparing(Notifiering::getId)).setSkickad(LocalDateTime.now());
     }
 }

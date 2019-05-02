@@ -16,17 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.pdl;
-
-import se.inera.intyg.infra.logmessages.ActivityType;
-import se.inera.intyg.infra.logmessages.ResourceType;
-
-import se.inera.intyg.intygsbestallning.web.pdl.LogActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import se.inera.intyg.infra.logmessages.ActivityType;
+import se.inera.intyg.infra.logmessages.ResourceType;
 
 /**
  * A simple Map based store to cache combinations of vardenhet/patient/ActivityType
@@ -76,10 +74,10 @@ public final class PdlActivityStore {
     /**
      * Should store the specified sjukfall for the vardenhet and activityType.
      *
-     * @param enhetsId
-     * @param activitiesToAdd
-     * @param activityType
-     * @param storedActivities
+     * @param enhetsId         - enhetsId
+     * @param activitiesToAdd  - activitiesToAdd
+     * @param activityType     - activityType
+     * @param storedActivities - storedActivities
      */
     public static void addActivitiesToStore(
             String patientId,
@@ -107,7 +105,7 @@ public final class PdlActivityStore {
     }
 
     private static boolean isStoredEvent(PdlActivityEntry storedEvent, String patientId,
-            ActivityType activityType, ResourceType resourceType) {
+                                         ActivityType activityType, ResourceType resourceType) {
 
         return storedEvent.getPatientId().equals(patientId)
                 && storedEvent.getActivityType().equals(activityType)

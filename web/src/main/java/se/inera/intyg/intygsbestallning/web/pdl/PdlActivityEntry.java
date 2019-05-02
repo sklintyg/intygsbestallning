@@ -16,13 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.intygsbestallning.web.pdl;
 
-import se.inera.intyg.infra.logmessages.ActivityType;
-import se.inera.intyg.infra.logmessages.ResourceType;
+package se.inera.intyg.intygsbestallning.web.pdl;
 
 import java.io.Serializable;
 import java.util.Objects;
+import se.inera.intyg.infra.logmessages.ActivityType;
+import se.inera.intyg.infra.logmessages.ResourceType;
 
 /**
  * @author marced on 22/02/16.
@@ -81,7 +81,7 @@ public class PdlActivityEntry implements Serializable {
 
     @Override
     public int hashCode() {
-      return Objects.hash(patientId, activityType, resourceType);
+        return Objects.hash(patientId, activityType, resourceType);
     }
 
 }

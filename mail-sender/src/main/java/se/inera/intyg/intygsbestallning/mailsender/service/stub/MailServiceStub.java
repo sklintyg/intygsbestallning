@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Inera AB (http://www.inera.se)
+ * Copyright (C) 2019 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,8 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.mailsender.service.stub;
 
+import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
+import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,12 +32,8 @@ import se.inera.intyg.intygsbestallning.mailsender.exception.PermanentException;
 import se.inera.intyg.intygsbestallning.mailsender.exception.TemporaryException;
 import se.inera.intyg.intygsbestallning.mailsender.service.MailSender;
 
-import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
-@Profile(value = { "dev", "test", "mail-stub", "ib-all-stubs" })
+@Profile(value = {"dev", "test", "mail-stub", "ib-all-stubs"})
 public class MailServiceStub implements MailSender {
 
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
