@@ -19,7 +19,10 @@
 
 package se.inera.intyg.intygsbestallning.web.controller;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
+import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
 import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
@@ -52,7 +56,7 @@ public class MailLinkController {
         LOG.debug("Maillink-controller received request with bestallning-id {}", id);
 
         Optional<Bestallning> bestallningOptional =
-                bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(Long.parseLong(id), null, null);
+                bestallningPersistenceService.getBestallningById(Long.parseLong(id));
 
         if (!bestallningOptional.isPresent()) {
             LOG.error("Bestallning with id {} not found", id);
@@ -64,8 +68,11 @@ public class MailLinkController {
         String redirectString;
         IntygsbestallningUser user = userService.getUser();
 
+        List<String> orgNummer = user.getVardgivare().stream().map(Vardgivare::getOrgId).collect(Collectors.toList());
+
         Vardenhet vardenhetFromBestallning = bestallningOptional.get().getVardenhet();
-        if (!user.changeValdVardenhet(vardenhetFromBestallning.getHsaId())) {
+        if (!user.changeValdVardenhet(vardenhetFromBestallning.getHsaId())
+                && !orgNummer.contains(vardenhetFromBestallning.getOrganisationId())) {
             LOG.error("User lacks MIU on the care unit on which the Bestallning was issued");
             redirectString = "/#/exit/" + IbErrorCodeEnum.LOGIN_FEL002.name();
             // Maybe throw exception and let RequestErrorController handle this?

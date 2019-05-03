@@ -71,9 +71,7 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
 
     @Override
     public void paminnelse(Bestallning bestallning, NotifieringTyp typ) {
-        LOG.info("Sending Paminnelse");
         doEmail(bestallning, typ);
-
     }
 
     private void doEmail(Bestallning bestallning, NotifieringTyp notifieringTyp) {

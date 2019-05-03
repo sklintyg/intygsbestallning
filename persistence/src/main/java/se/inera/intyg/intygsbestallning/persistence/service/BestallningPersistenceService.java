@@ -40,5 +40,7 @@ public interface BestallningPersistenceService {
 
     Optional<Bestallning> getBestallningByIdAndHsaIdAndOrgId(Long id, String hsaId, String orgNrVardgivare);
 
+    Optional<Bestallning> getBestallningById(Long id);
+
     List<Bestallning> listBestallningarBasedOnStatus(ListBestallningarBasedOnStatusQuery query);
 }

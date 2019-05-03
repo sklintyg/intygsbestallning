@@ -23,12 +23,9 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import com.google.common.collect.Lists;
-import com.querydsl.core.BooleanBuilder;
-import net.javacrumbs.shedlock.core.SchedulerLock;
+
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +33,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
+import com.querydsl.core.BooleanBuilder;
+
+import net.javacrumbs.shedlock.core.SchedulerLock;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.Notifiering;

@@ -1,0 +1,48 @@
+{
+  "intygTyp": "AF00213",
+  "intygVersion": 1.0,
+  "ankomstDatum": "2019-03-19T19:37:50.411229",
+  "avslutDatum": null,
+  "syfte": "ett syfte",
+  "planeradeAktiviteter": "planerade aktiviteter",
+  "status": "LAST",
+  "arendeReferens": "referens",
+  "invanare": {
+    "personId": "19121212-1212",
+    "bakgrundNulage": null
+  },
+  "handlaggare": {
+    "fullstandigtNamn": "Fullt Handlaggarnamn",
+    "telefonnummer": "0733-12345",
+    "email": "mail@adress.se",
+    "myndighet": "HSVARD",
+    "kontor": "Kontoret",
+    "kostnadsstalle": "Kostnads Ställe",
+    "adress": "Kostnadsvägen 11",
+    "postnummer": "12345",
+    "stad": "Kostnadsstaden"
+  },
+  "vardenhet": {
+    "hsaId": "TSTNMT2321000156-1077",
+    "vardgivareHsaId": "TSTNMT2321000156-102Q",
+    "organisationId" : "5-orgnr-102Q",
+    "namn": "Intygsbeställning-Enhet1",
+    "epost": "e@po.st"
+  },
+  "handelser": [
+    {
+      "event": "SKAPA",
+      "skapad": "2019-03-19T19:37:50.413032",
+      "anvandare": null,
+      "beskrivning": "Beställning mottagen",
+      "kommentar": null
+    }
+  ],
+  "notifieringar": [
+    {
+      "typ": "NY_BESTALLNING",
+      "mottagareHsaId": "hsaId",
+      "skickad": null
+    }
+  ]
+}

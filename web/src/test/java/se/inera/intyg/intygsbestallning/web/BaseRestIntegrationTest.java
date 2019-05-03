@@ -58,6 +58,7 @@ public abstract class BaseRestIntegrationTest {
     public static final int NOT_FOUND = HttpStatus.NOT_FOUND.value();
     public static final int SERVER_ERROR = HttpStatus.INTERNAL_SERVER_ERROR.value();
     public static final int FORBIDDEN = HttpStatus.FORBIDDEN.value();
+    public static final int FOUND = HttpStatus.FOUND.value();
 
 
     /**
