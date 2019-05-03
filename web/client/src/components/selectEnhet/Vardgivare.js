@@ -30,6 +30,7 @@ const Vardenhet = styled(IbTypo06)`
 
 export const VeButton = styled(Button)`
   background: transparent;
+  font-weight: inherit !important;
   color: ${IbColors.IB_COLOR_07} !important;
   text-decoration: underline !important;
   &:hover {
