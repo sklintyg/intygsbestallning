@@ -34,7 +34,8 @@ import se.inera.intyg.intygsbestallning.common.property.MailSenderProperties;
 
 @EnableJms
 @Configuration
-@ComponentScan(basePackages = {"se.inera.intyg.intygsbestallning.mailsender", "se.inera.intyg.intygsbestallning.common.property"})
+@ComponentScan(basePackages = {"org.springframework.mail.javamail",
+        "se.inera.intyg.intygsbestallning.mailsender", "se.inera.intyg.intygsbestallning.common.property"})
 public class MailSenderConfig extends CamelConfiguration {
 
     private final MailSenderProperties mailSenderProperties;
