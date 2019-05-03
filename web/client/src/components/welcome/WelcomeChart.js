@@ -32,6 +32,7 @@ const customLabel = (tooltipItem, data) => {
 
 ReactChartkick.addAdapter(Chart)
 let options = {
+  responsive: false,
   legend: {
     display: false,
   },
@@ -50,8 +51,8 @@ const WelcomeChart = (props) => (
   <Fragment>
     <IbTypo02 as="h1">Beställningar just nu</IbTypo02>
     <PieChart
-      width="200px"
-      height="220px"
+      width="300px"
+      height="160px"
       data={[
         ['Olästa', props.stats.antalOlastaBestallningar],
         ['Aktuella', props.stats.antalAktivaBestallningar],
