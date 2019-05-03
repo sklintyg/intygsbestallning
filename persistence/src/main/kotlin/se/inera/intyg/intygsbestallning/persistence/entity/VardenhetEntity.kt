@@ -19,7 +19,8 @@
 package se.inera.intyg.intygsbestallning.persistence.entity
 
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Embeddable
 
 @Embeddable
 class VardenhetEntity(builder: Builder) {

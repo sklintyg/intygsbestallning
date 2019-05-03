@@ -18,7 +18,13 @@
  */
 package se.inera.intyg.intygsbestallning.persistence.testdata
 
-import se.inera.intyg.intygsbestallning.common.domain.*
+import se.inera.intyg.intygsbestallning.common.domain.Bestallning
+import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus
+import se.inera.intyg.intygsbestallning.common.domain.Handelse
+import se.inera.intyg.intygsbestallning.common.domain.Handlaggare
+import se.inera.intyg.intygsbestallning.common.domain.Invanare
+import se.inera.intyg.intygsbestallning.common.domain.Notifiering
+import se.inera.intyg.intygsbestallning.common.domain.Vardenhet
 import java.time.LocalDateTime
 
 data class BootstrapBestallning(

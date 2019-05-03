@@ -41,9 +41,11 @@ data class MailContent(
       """.trimIndent().trim()
     }
 
+    @Suppress("LongMethod")
     fun toHtml(data: MailContent): String {
       return """
-        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html>
          <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -95,7 +97,10 @@ data class MailContent(
                                 <tr>
                                     <td align="left" valign="top" id="templateFooter">
                                         <br>
-                                          <img alt="Intygsbeställning logo" src="${data.hostUrl}/images/${data.texter.logo}" height="30" width="221">
+                                          <img alt="Intygsbeställning logo"
+                                               src="${data.hostUrl}/images/${data.texter.logo}"
+                                               height="30"
+                                               width="221">
                                         <br>
                                         <p>${data.texter.footer.text}</p>
                                     </td>

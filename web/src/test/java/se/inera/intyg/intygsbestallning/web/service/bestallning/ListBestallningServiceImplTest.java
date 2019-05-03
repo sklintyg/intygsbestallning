@@ -16,12 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,10 +36,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.util.ReflectionUtils;
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicLong;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
@@ -44,6 +45,7 @@ import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningSortColumn;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarResult;
+import se.inera.intyg.intygsbestallning.common.dto.PageDto;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
 import se.inera.intyg.schemas.contract.Personnummer;
 
@@ -141,12 +143,13 @@ class ListBestallningServiceImplTest {
         return ListBestallningarResult.Factory.toDto(
                 false,
                 bestallningList,
-                0,
-                0,
-                50,
-                1,
-                bestallningList.size(),
-                bestallningList.size(),
+                new PageDto(
+                        0,
+                        0,
+                        50,
+                        1,
+                        bestallningList.size(),
+                        bestallningList.size()),
                 ListBestallningSortColumn.ID,
                 ListBestallningDirection.ASC);
     }
@@ -163,6 +166,6 @@ class ListBestallningServiceImplTest {
 
     private Invanare buildInvanare(String personnummer) {
         return Invanare.Factory.newInvanare(
-                Personnummer.createPersonnummer(personnummer).get(),"Läge");
+                Personnummer.createPersonnummer(personnummer).get(), "Läge");
     }
 }

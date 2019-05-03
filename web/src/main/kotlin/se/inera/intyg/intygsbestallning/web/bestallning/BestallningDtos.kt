@@ -19,7 +19,12 @@
 package se.inera.intyg.intygsbestallning.web.bestallning
 
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus
-import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus.*
+import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus.ACCEPTERAD
+import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus.AVVISAD
+import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus.KLAR
+import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus.LAST
+import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus.OLAST
+import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus.RADERAD
 
 data class AccepteraBestallning(val fritextForklaring: String? = null)
 

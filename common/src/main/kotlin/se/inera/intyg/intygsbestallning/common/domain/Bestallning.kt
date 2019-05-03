@@ -37,6 +37,8 @@ data class Bestallning(
    var notifieringar: List<Notifiering>? = mutableListOf()) {
 
   companion object Factory {
+
+    @Suppress("LongParameterList")
     fun newBestallning(
        invanare: Invanare,
        syfte: String?,

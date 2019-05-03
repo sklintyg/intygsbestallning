@@ -44,6 +44,7 @@ import org.springframework.stereotype.Service;
 import se.inera.intyg.intygsbestallning.common.dto.BestallningInvanareDto;
 import se.inera.intyg.intygsbestallning.common.dto.PdfBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningDto;
+import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningMetadata;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningScope;
 import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
 import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
@@ -131,10 +132,13 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
         byte[] data = generatePdf(VisaBestallningDto.Factory.toDto(
                 bestallning.get(),
                 invanareDto,
-                AF_LOGOTYPE_CLASSPATH_URI,
-                Collections.emptyList(),
                 bestallningTexter,
-                request.getScope()));
+                new VisaBestallningMetadata(
+                        AF_LOGOTYPE_CLASSPATH_URI,
+                        Collections.emptyList(),
+                        request.getScope()
+                )
+        ));
 
         if (request.getScope() == VisaBestallningScope.ALL || request.getScope() == VisaBestallningScope.FORFRAGAN) {
             pdlLogService.log(bestallning.get(), LogEvent.BESTALLNING_SKRIV_UT);

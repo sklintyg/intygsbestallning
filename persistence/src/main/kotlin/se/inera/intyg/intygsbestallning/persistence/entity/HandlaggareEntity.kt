@@ -19,7 +19,12 @@
 package se.inera.intyg.intygsbestallning.persistence.entity
 
 import se.inera.intyg.intygsbestallning.common.domain.Handlaggare
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.Table
 
 @Entity
 @Table(name = "HANDLAGGARE")
@@ -70,6 +75,7 @@ class HandlaggareEntity private constructor(builder: Builder) {
     this.stad = builder.stad
   }
 
+  @Suppress("TooManyFunctions")
   class Builder {
     var id: Long? = null
     var fullstandigtNamn: String? = null

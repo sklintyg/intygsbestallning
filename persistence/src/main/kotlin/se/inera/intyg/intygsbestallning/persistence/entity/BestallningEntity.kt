@@ -24,7 +24,22 @@ import se.inera.intyg.intygsbestallning.common.domain.Bestallning
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import javax.persistence.*
+import javax.persistence.AttributeOverride
+import javax.persistence.AttributeOverrides
+import javax.persistence.CascadeType
+import javax.persistence.Column
+import javax.persistence.Embedded
+import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.OneToMany
+import javax.persistence.OneToOne
+import javax.persistence.Table
+import javax.persistence.Transient
 
 @Entity
 @Table(name = "BESTALLNING")
@@ -119,6 +134,7 @@ class BestallningEntity private constructor(builder: Builder) {
     this.notifieringar = builder.notifieringar
   }
 
+  @Suppress("TooManyFunctions")
   class Builder {
     var id: Long? = null
     var intygTyp: String? = null

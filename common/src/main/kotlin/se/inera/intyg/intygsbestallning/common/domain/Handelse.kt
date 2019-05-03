@@ -30,23 +30,28 @@ data class Handelse(
 ) {
   companion object Factory {
     fun skapa(): Handelse {
-      return Handelse(event = BestallningEvent.SKAPA, skapad = LocalDateTime.now(), beskrivning = "Beställning mottagen")
+      return Handelse(
+         event = BestallningEvent.SKAPA, skapad = LocalDateTime.now(), beskrivning = "Beställning mottagen")
     }
 
     fun las(): Handelse {
-      return Handelse(event = BestallningEvent.LAS, skapad = LocalDateTime.now(), beskrivning = "Beställning läst")
+      return Handelse(
+         event = BestallningEvent.LAS, skapad = LocalDateTime.now(), beskrivning = "Beställning läst")
     }
 
     fun acceptera(): Handelse {
-      return Handelse(event = BestallningEvent.ACCEPTERA, skapad = LocalDateTime.now(), beskrivning = "Beställning accepterad")
+      return Handelse(
+         event = BestallningEvent.ACCEPTERA, skapad = LocalDateTime.now(), beskrivning = "Beställning accepterad")
     }
 
     fun avvisa(): Handelse {
-      return Handelse(event = BestallningEvent.AVVISA, skapad = LocalDateTime.now(), beskrivning = "Beställning avvisad")
+      return Handelse(
+         event = BestallningEvent.AVVISA, skapad = LocalDateTime.now(), beskrivning = "Beställning avvisad")
     }
 
     fun klarmarkera(): Handelse {
-      return Handelse(event = BestallningEvent.KLARMARKERA, skapad = LocalDateTime.now(), beskrivning = "Beställning klarmarkerad")
+      return Handelse(
+       event = BestallningEvent.KLARMARKERA, skapad = LocalDateTime.now(), beskrivning = "Beställning klarmarkerad")
     }
   }
 }

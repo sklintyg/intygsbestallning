@@ -31,6 +31,7 @@ import se.inera.intyg.intygsbestallning.common.domain.Handelse;
 import se.inera.intyg.intygsbestallning.common.dto.BestallningInvanareDto;
 import se.inera.intyg.intygsbestallning.common.dto.BestallningMetaData;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningDto;
+import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningMetadata;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningScope;
 import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
 import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
@@ -108,10 +109,12 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
         return Optional.of(VisaBestallningDto.Factory.toDto(
                 bestallning.get(),
                 invanareDto,
-                getBildUrl(bestallningTexter),
-                metaDataList,
                 bestallningTexter,
-                VisaBestallningScope.ALL));
+                new VisaBestallningMetadata(
+                        getBildUrl(bestallningTexter),
+                        metaDataList,
+                        VisaBestallningScope.ALL)
+        ));
     }
 
     private String getBildUrl(BestallningTexter bestallningTexter) {

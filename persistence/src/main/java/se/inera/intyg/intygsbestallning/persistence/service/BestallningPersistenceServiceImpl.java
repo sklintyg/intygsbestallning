@@ -39,6 +39,7 @@ import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarBasedOnStatusQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarResult;
+import se.inera.intyg.intygsbestallning.common.dto.PageDto;
 import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
 import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
 import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
@@ -129,12 +130,12 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
         return ListBestallningarResult.Factory.toDto(
                 query.getTextSearch() != null,
                 bestallningar,
-                pageResult.getNumber(),
+                new PageDto(pageResult.getNumber(),
                 pageResult.getNumber() * pageResult.getSize() + 1,
                 pageResult.getNumber() * pageResult.getSize() + pageResult.getNumberOfElements(),
                 pageResult.getTotalPages(),
                 pageResult.getNumberOfElements(),
-                pageResult.getTotalElements(),
+                pageResult.getTotalElements()),
                 query.getSortColumn(),
                 query.getSortDirection());
     }

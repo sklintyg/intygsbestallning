@@ -40,10 +40,7 @@ open class IbServiceException : RuntimeException {
   }
 }
 
-class IbJMSException : IbServiceException {
-  constructor(errorCode: IbErrorCodeEnum, message: String) : super(errorCode, message)
-  constructor(errorCode: IbErrorCodeEnum, message: String, errorEntityId: Long?) : super(errorCode, message, errorEntityId)
-}
+class IbJMSException(errorCode: IbErrorCodeEnum, message: String) : IbServiceException(errorCode, message)
 
 enum class NotFoundType(val errorText: String) {
   BESTALLNING("Felaktig bestallningsid: %s. Bestallningen existerar inte.")
@@ -74,6 +71,7 @@ data class IbResponderValidationException(
     }
 }
 
+@Suppress("MaxLineLength")
 enum class IbResponderValidationErrorCode(val errorMsgTemplate: String, val errorIdType: ErrorIdType) {
   GTA_FEL01("Unexpected codeSystem: {0}", ErrorIdType.VALIDATION_ERROR),
   GTA_FEL02("Unknown code: {0} for codeSystem: {1}", ErrorIdType.VALIDATION_ERROR),

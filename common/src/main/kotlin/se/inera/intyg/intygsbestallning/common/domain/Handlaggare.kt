@@ -31,6 +31,8 @@ data class Handlaggare(
    val stad: String? = null
 ) {
   companion object Factory {
+
+    @Suppress("LongParameterList")
     fun newHandlaggare(
        fullstandigtNam: String?,
        telefonnummer: String?,
