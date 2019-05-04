@@ -27,7 +27,6 @@ data class CreateBestallningRequest(
    val syfte: String? = null,
    val planeradeInsatser: String? = null,
    val intygTyp: String,
-   val intygVersion: Double,
    val vardenhet: String,
    val arendeReferens: String? = null
 )

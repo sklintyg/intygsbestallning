@@ -41,26 +41,22 @@ import se.inera.intyg.schemas.contract.Personnummer;
 class BestallningTextServiceImplTest {
 
     private static final String SUPPORTED_BESTALLNING_TYP = "TEST";
-    private static final Double SUPPORTED_BESTALLNING_TYP_VERSION = 1.0;
 
     private static final String UNSUPPORTED_BESTALLNING_TYP = "TEST_UNSUPPORTED";
-    private static final Double UNSUPPORTED_BESTALLNING_TYP_VERSION = 1.1;
 
     @Autowired
     private BestallningTextServiceImpl textService;
 
     @Test
     void getBestallningTextWithSupportedTyp() {
-        var bestallning = buildBestallning(SUPPORTED_BESTALLNING_TYP, SUPPORTED_BESTALLNING_TYP_VERSION);
+        var bestallning = buildBestallning(SUPPORTED_BESTALLNING_TYP);
         var texter = textService.getBestallningTexter(bestallning);
 
         assertThat(texter).isNotNull();
 
         assertThat(texter.getTyp()).isEqualTo(SUPPORTED_BESTALLNING_TYP);
-        assertThat(Double.valueOf(texter.getVersion())).isEqualTo(SUPPORTED_BESTALLNING_TYP_VERSION);
 
         assertThat(texter.getTyp()).isNotNull();
-        assertThat(texter.getVersion()).isNotNull();
         assertThat(texter.getGiltigFrom()).isNotNull();
         assertThat(texter.getBild()).isNotNull();
 
@@ -75,15 +71,14 @@ class BestallningTextServiceImplTest {
 
     @Test
     void getBestallningTextWithUnsupportedTypOrVersion() {
-        var bestallning = buildBestallning(UNSUPPORTED_BESTALLNING_TYP, UNSUPPORTED_BESTALLNING_TYP_VERSION);
+        var bestallning = buildBestallning(UNSUPPORTED_BESTALLNING_TYP);
         assertThatThrownBy(() -> textService.getBestallningTexter(bestallning))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage(
-                        "Bestallning text resources for bestallning is not supported for Type: " + UNSUPPORTED_BESTALLNING_TYP +
-                                " and Version: " + UNSUPPORTED_BESTALLNING_TYP_VERSION);
+                        "Bestallning text resources for bestallning is not supported for Type: " + UNSUPPORTED_BESTALLNING_TYP);
     }
 
-    private Bestallning buildBestallning(String typ, Double version) {
+    private Bestallning buildBestallning(String typ) {
         return Bestallning.Factory.newBestallning(
                 Invanare.Factory.newInvanare(Personnummer.createPersonnummer("19121212-1212").get(), null),
                 "syfte",
@@ -100,7 +95,6 @@ class BestallningTextServiceImplTest {
                         "stad"
                 ),
                 typ,
-                version,
                 Vardenhet.Factory.newVardenhet(
                         "hsa",
                         "vardGivareHsa",

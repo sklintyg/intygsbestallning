@@ -138,11 +138,10 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
             throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(intygTypCodeSystem));
         }
 
-        var intygVersion = Try.of(() -> bestallningTextService.getLatestVersionForBestallningsbartIntyg(intygTyp));
-        if (intygVersion.isFailure()) {
+        var isValidType = bestallningTextService.isIntygTypValid(intygTyp);
+        if (!isValidType) {
             throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL08, List.of());
         }
-
 
         final var invanare = new CreateBestallningRequestInvanare(personnummer, request.getCitizen().getSituationBackground());
 
@@ -182,7 +181,6 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
                 request.getPurpose(),
                 request.getPlannedActions(),
                 intygTyp,
-                intygVersion.get(),
                 vardenhet,
                 request.getCaseReference());
     }

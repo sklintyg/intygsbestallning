@@ -95,7 +95,6 @@ class KlarmarkeraBestallningServiceImplTest {
         return Optional.of(new Bestallning(
                 BESTALLNING_ID,
                 "typ",
-                1.0,
                 ANKOMST_DATUM,
                 AVSLUT_DATUM,
                 "",

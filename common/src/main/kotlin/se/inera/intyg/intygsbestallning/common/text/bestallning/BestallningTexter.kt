@@ -28,9 +28,6 @@ class BestallningTexter {
   @JacksonXmlProperty(localName = "typ", isAttribute = true)
   val typ: String = ""
 
-  @JacksonXmlProperty(localName = "version", isAttribute = true)
-  val version: String = ""
-
   @JacksonXmlProperty(localName = "giltigFrom", isAttribute = true)
   val giltigFrom: String = ""
 

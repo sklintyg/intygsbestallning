@@ -13,9 +13,6 @@
       <column name="INTYG_TYP" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
-      <column name="INTYG_VERSION" type="double">
-        <constraints nullable="false"/>
-      </column>
       <column name="ANKOMST_DATUM" type="datetime">
         <constraints nullable="false"/>
       </column>

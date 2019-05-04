@@ -30,7 +30,6 @@ import java.time.LocalDateTime
 data class BootstrapBestallning(
    val id: Long? = null,
    val intygTyp: String,
-   val intygVersion: Double,
    var ankomstDatum: LocalDateTime,
    val avslutDatum: LocalDateTime? = null,
    val syfte: String? = null,
@@ -48,7 +47,6 @@ data class BootstrapBestallning(
       return Bestallning(
          id = bootstrapBestallning.id,
          intygTyp = bootstrapBestallning.intygTyp,
-         intygVersion = bootstrapBestallning.intygVersion,
          ankomstDatum = bootstrapBestallning.ankomstDatum,
          avslutDatum = bootstrapBestallning.avslutDatum,
          syfte = bootstrapBestallning.syfte,

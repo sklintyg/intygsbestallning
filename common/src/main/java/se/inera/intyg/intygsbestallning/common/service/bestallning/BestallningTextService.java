@@ -25,5 +25,5 @@ import se.inera.intyg.intygsbestallning.common.text.bestallning.BestallningTexte
 public interface BestallningTextService {
     BestallningTexter getBestallningTexter(Bestallning bestallning);
 
-    Double getLatestVersionForBestallningsbartIntyg(String intygTyp);
+    boolean isIntygTypValid(String intygTyp);
 }

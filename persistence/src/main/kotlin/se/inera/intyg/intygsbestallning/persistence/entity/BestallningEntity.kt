@@ -53,9 +53,6 @@ class BestallningEntity private constructor(builder: Builder) {
   @Column(name = "INTYG_TYP", nullable = false)
   val intygTyp: String
 
-  @Column(name = "INTYG_VERSION", nullable = false)
-  val intygVersion: Double
-
   @Column(name = "ANKOMST_DATUM", nullable = false)
   val ankomstDatum: LocalDateTime
 
@@ -118,7 +115,6 @@ class BestallningEntity private constructor(builder: Builder) {
 
     this.id = builder.id
     this.intygTyp = builder.intygTyp ?: throw IllegalArgumentException("intygTyp may not be null")
-    this.intygVersion = builder.intygVersion ?: throw IllegalArgumentException("intygVersion may not be null")
     this.ankomstDatum = builder.ankomstDatum ?: throw IllegalArgumentException("ankomstDatum may not be null")
     this.ankomstDatumString = formatter.format(builder.ankomstDatum)
     this.avslutDatum = builder.avslutDatum
@@ -138,7 +134,6 @@ class BestallningEntity private constructor(builder: Builder) {
   class Builder {
     var id: Long? = null
     var intygTyp: String? = null
-    var intygVersion: Double? = null
     var ankomstDatum: LocalDateTime? = null
     var avslutDatum: LocalDateTime? = null
     var syfte: String? = null
@@ -153,7 +148,6 @@ class BestallningEntity private constructor(builder: Builder) {
 
     fun id(id: Long?) = apply { this.id = id }
     fun intygTyp(intygTyp: String) = apply { this.intygTyp = intygTyp }
-    fun intygVersion(intygVersion: Double) = apply { this.intygVersion = intygVersion }
     fun ankomstDatum(ankomstDatum: LocalDateTime) = apply { this.ankomstDatum = ankomstDatum }
     fun avslutDatum(avslutDatum: LocalDateTime?) = apply { this.avslutDatum = avslutDatum }
     fun syfte(syfte: String?) = apply { this.syfte = syfte }
@@ -173,7 +167,6 @@ class BestallningEntity private constructor(builder: Builder) {
       return Bestallning(
          id = bestallningEntity.id!!,
          intygTyp = bestallningEntity.intygTyp,
-         intygVersion = bestallningEntity.intygVersion,
          ankomstDatum = bestallningEntity.ankomstDatum,
          avslutDatum = bestallningEntity.avslutDatum,
          syfte = bestallningEntity.syfte,
@@ -191,7 +184,6 @@ class BestallningEntity private constructor(builder: Builder) {
       return BestallningEntity.Builder()
          .id(bestallning.id)
          .intygTyp(bestallning.intygTyp)
-         .intygVersion(bestallning.intygVersion)
          .ankomstDatum(bestallning.ankomstDatum)
          .syfte(bestallning.syfte)
          .avslutDatum(bestallning.avslutDatum)
@@ -214,7 +206,6 @@ class BestallningEntity private constructor(builder: Builder) {
       return BestallningEntity.Builder()
          .id(bestallning.id)
          .intygTyp(bestallning.intygTyp)
-         .intygVersion(bestallning.intygVersion)
          .ankomstDatum(bestallning.ankomstDatum)
          .avslutDatum(bestallning.avslutDatum)
          .syfte(bestallning.syfte)

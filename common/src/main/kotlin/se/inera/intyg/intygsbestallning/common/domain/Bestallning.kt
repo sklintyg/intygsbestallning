@@ -23,7 +23,6 @@ import java.time.LocalDateTime
 data class Bestallning(
    val id: Long? = null,
    val intygTyp: String,
-   val intygVersion: Double,
    val ankomstDatum: LocalDateTime,
    val avslutDatum: LocalDateTime? = null,
    val syfte: String? = null,
@@ -45,12 +44,10 @@ data class Bestallning(
        planeradeAktiviteter: String?,
        handlaggare: Handlaggare,
        intygTyp: String,
-       intygVersion: Double,
        vardenhet: Vardenhet,
        arendeReferens: String?): Bestallning {
       return Bestallning(
          intygTyp = intygTyp,
-         intygVersion = intygVersion,
          ankomstDatum = LocalDateTime.now(),
          invanare = invanare,
          syfte = syfte,

@@ -23,7 +23,7 @@ allprojects {
 
   extra.apply {
     set("intygInfraVersion", System.getProperty("infraVersion", "0-SNAPSHOT"))
-    set("refDataVersion", System.getProperty("refDataVersion", "1.0-SNAPSHOT"))
+    set("refDataVersion", "1.0-SNAPSHOT")
     set("infraGroupId", "se.inera.intyg.infra-spring5")
     set("errorproneExclude", "true") //FIXME: Errorprone does not support Kotlin and KAPT. Until it does this will exclude the errorprone task for this project
     set("detekt", "true") // If '-P codeQuality' is set as a project property, this property activates the kotlin code analysis plugin Detekt

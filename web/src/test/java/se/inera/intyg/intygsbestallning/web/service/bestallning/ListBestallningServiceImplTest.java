@@ -121,13 +121,13 @@ class ListBestallningServiceImplTest {
 
     private ListBestallningarResult createBestallningarList(List<BestallningStatus> statusar) {
         var bestallningList = List.of(
-                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", 1.0, buildVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(buildInvanare("20121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", 1.0, buildVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", 1.0, buildVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(buildInvanare("20121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", 1.0, buildVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", 1.0, buildVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", 1.0, buildVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", 1.0, buildVardenhet(), "ref")
+                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("20121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("20121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", buildVardenhet(), "ref")
         );
 
         var randomIndex = new Random().nextInt(statusar.size());
