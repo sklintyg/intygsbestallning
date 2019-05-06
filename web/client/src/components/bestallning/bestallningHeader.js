@@ -120,7 +120,7 @@ const BestallningHeader = ({ props }) => {
                     </IbTypo01>)
                   : (
                     <IbTypo01 color={IbColors.IB_COLOR_19}>
-                      {props.bestallning.invanare.personId} - {props.bestallning.invanare.headerName}
+                      {props.bestallning.invanare.personId} {props.bestallning.invanare.headerName}
                     </IbTypo01>)
               }
 
