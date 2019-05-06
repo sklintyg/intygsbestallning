@@ -95,7 +95,7 @@ const BestallningHeader = ({ props }) => {
           </Link>
           {!props.error && (
             <Fragment>
-              <span>Avser {props.bestallning.intygTyp}</span>
+              <span>Avser {props.bestallning.intygTypBeskrivning}</span>
               <span>
                 {getStatusIcon()}
                 Status {props.bestallning.status}

@@ -20,10 +20,12 @@ object Config {
     const val nodePluginVersion = "1.2.0"
     const val nodeVersion = "10.15.1"
 
-    const val kotlinVersion = "1.3.30"
+    const val kotlinVersion = "1.3.31"
+
     const val springVersion = "5.1.6.RELEASE"
     const val springBootVersion = "2.1.4.RELEASE"
     const val springDependencyManagementVersion = "1.0.7.RELEASE"
+    const val springSecuritySaml2Version = "1.0.3.RELEASE"
 
     const val camelVersion = "2.23.1"
     const val camelBootStarterVersion = "2.23.1"
@@ -39,14 +41,13 @@ object Config {
     const val itext7Version = "7.1.5"
     const val swaggerVersion = "2.9.2"
     const val jakartaJwsVersion = "1.1.1"
-    const val springSecuritySaml2Version = "1.0.3.RELEASE"
   }
 
   object TestDependencies {
-    const val mockitoCoreVersion = "2.24.5"
+    const val mockitoCoreVersion = "2.27.0"
     const val junit4Version = "4.12"
-    const val junit5Version = "5.4.1"
-    const val awaitilityVersion = "1.4.0"
+    const val junit5Version = "5.4.2"
+    const val awaitilityVersion = "3.1.6"
     const val randomBeansVersion = "3.9.0"
     const val restAssuredVersion = "2.9.0"
     const val stAntlr4Version = "4.0.8"

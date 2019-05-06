@@ -95,6 +95,8 @@ class BestallningTextServiceImplTest {
                         "stad"
                 ),
                 typ,
+                "AF00213",
+                "detta är beskrivningen",
                 Vardenhet.Factory.newVardenhet(
                         "hsa",
                         "vardGivareHsa",

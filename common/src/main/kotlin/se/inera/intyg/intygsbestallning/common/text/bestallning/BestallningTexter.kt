@@ -28,6 +28,12 @@ class BestallningTexter {
   @JacksonXmlProperty(localName = "typ", isAttribute = true)
   val typ: String = ""
 
+  @JacksonXmlProperty(localName = "intygTyp", isAttribute = true)
+  val intygTyp: String = ""
+
+  @JacksonXmlProperty(localName = "intygTypBeskrivning", isAttribute = true)
+  val intygTypBeskrivning: String = ""
+
   @JacksonXmlProperty(localName = "giltigFrom", isAttribute = true)
   val giltigFrom: String = ""
 

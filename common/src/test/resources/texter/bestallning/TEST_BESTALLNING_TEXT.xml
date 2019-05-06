@@ -1,4 +1,11 @@
-<bestallning giltigFrom="2019-01-01" typ="TEST" bild="TEST_LOGO.png">
+<bestallning
+      giltigFrom="2019-01-01"
+      typ="TEST"
+      intygTyp="AF00213"
+      intygTypBeskrivning="Arbetsförmedlingens medicinska utlåtande"
+      bild="TEST_LOGO.png"
+      paminnelse1="7"
+      paminnelse2="14">
   <texter>
     <text id="TEST_1">Text tillhörande id TEST_1</text>
     <text id="TEST_2">Text tillhörande id TEST_2</text>

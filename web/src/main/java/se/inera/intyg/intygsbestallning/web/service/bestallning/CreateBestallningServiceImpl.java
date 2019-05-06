@@ -87,7 +87,9 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
                 createBestallningRequest.getSyfte(),
                 createBestallningRequest.getPlaneradeInsatser(),
                 handlaggare,
+                createBestallningRequest.getTyp(),
                 createBestallningRequest.getIntygTyp(),
+                createBestallningRequest.getIntygTypBeskrivning(),
                 getVardenhet(createBestallningRequest),
                 createBestallningRequest.getArendeReferens());
 

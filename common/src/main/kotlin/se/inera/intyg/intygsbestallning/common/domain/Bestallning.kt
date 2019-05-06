@@ -22,7 +22,9 @@ import java.time.LocalDateTime
 
 data class Bestallning(
    val id: Long? = null,
+   val typ: String,
    val intygTyp: String,
+   val intygTypBeskrivning: String,
    val ankomstDatum: LocalDateTime,
    val avslutDatum: LocalDateTime? = null,
    val syfte: String? = null,
@@ -43,11 +45,15 @@ data class Bestallning(
        syfte: String?,
        planeradeAktiviteter: String?,
        handlaggare: Handlaggare,
+       typ: String,
        intygTyp: String,
+       intygTypBeskrivning: String,
        vardenhet: Vardenhet,
        arendeReferens: String?): Bestallning {
       return Bestallning(
+         typ = typ,
          intygTyp = intygTyp,
+         intygTypBeskrivning = intygTypBeskrivning,
          ankomstDatum = LocalDateTime.now(),
          invanare = invanare,
          syfte = syfte,

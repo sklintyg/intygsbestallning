@@ -19,11 +19,12 @@
 
 package se.inera.intyg.intygsbestallning.common.service.bestallning;
 
+import java.util.Optional;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.text.bestallning.BestallningTexter;
 
 public interface BestallningTextService {
     BestallningTexter getBestallningTexter(Bestallning bestallning);
 
-    boolean isIntygTypValid(String intygTyp);
+    Optional<BestallningTexter> getBestallningTexter(String intygTyp);
 }

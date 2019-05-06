@@ -95,6 +95,8 @@ class KlarmarkeraBestallningServiceImplTest {
         return Optional.of(new Bestallning(
                 BESTALLNING_ID,
                 "typ",
+                "AF00213",
+                "detta är beskrivningen",
                 ANKOMST_DATUM,
                 AVSLUT_DATUM,
                 "",

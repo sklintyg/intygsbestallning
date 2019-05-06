@@ -76,15 +76,15 @@ public class BestallningTextServiceImpl implements BestallningTextService {
 
     @Override
     public BestallningTexter getBestallningTexter(Bestallning bestallning) {
-        return getTexter(bestallning.getIntygTyp())
+        return getTexter(bestallning.getTyp())
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Bestallning text resources for bestallning is not supported for Type: "
-                                + bestallning.getIntygTyp()));
+                                + bestallning.getTyp()));
     }
 
     @Override
-    public boolean isIntygTypValid(String intygTyp) {
-        return getTexter(intygTyp).isPresent();
+    public Optional<BestallningTexter> getBestallningTexter(String typ) {
+        return getTexter(typ);
     }
 
     private Optional<BestallningTexter> getTexter(String intygTyp) {
