@@ -25,6 +25,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Optional;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
@@ -41,10 +44,6 @@ import org.springframework.util.ReflectionUtils;
 import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentType;
 import se.riv.intygsbestallning.certificate.order.v1.ErrorIdType;
 import se.riv.intygsbestallning.certificate.order.v1.ResultCodeType;
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Optional;
-import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.exception.IbResponderValidationErrorCode;
 import se.inera.intyg.intygsbestallning.common.exception.IbResponderValidationException;
@@ -85,13 +84,13 @@ class OrderAssessmentIntygsbestallningTest {
         var type = getXmlRequestAndMapToObject("valid");
         var bestallningTexter = buildBestallningTexter(type);
 
-        when(bestallningTextService.getBestallningTexter(eq(type.getCertificateType().getCode()))).thenReturn(Optional.of(bestallningTexter));
+        when(bestallningTextService.getBestallningTexter(eq(type.getOrderFormType().getCode()))).thenReturn(Optional.of(bestallningTexter));
 
         when(createBestallningService.create(any(CreateBestallningRequest.class))).thenReturn(1L);
 
         var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
 
-        verify(bestallningTextService, times(1)).getBestallningTexter(type.getCertificateType().getCode());
+        verify(bestallningTextService, times(1)).getBestallningTexter(type.getOrderFormType().getCode());
         verify(createBestallningService, times(1)).create(any(CreateBestallningRequest.class));
 
         assertThat(response).isNotNull();
@@ -107,7 +106,7 @@ class OrderAssessmentIntygsbestallningTest {
         var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(type.getCitizen().getPersonalIdentity().getRoot()));
         var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
 
-        verify(bestallningTextService, times(0)).getBestallningTexter(type.getCertificateType().getCode());
+        verify(bestallningTextService, times(0)).getBestallningTexter(type.getOrderFormType().getCode());
         verify(createBestallningService, times(0)).create(any(CreateBestallningRequest.class));
 
         assertThat(response).isNotNull();
@@ -123,7 +122,7 @@ class OrderAssessmentIntygsbestallningTest {
         var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(type.getCareUnitId().getRoot()));
         var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
 
-        verify(bestallningTextService, times(0)).getBestallningTexter(type.getCertificateType().getCode());
+        verify(bestallningTextService, times(0)).getBestallningTexter(type.getOrderFormType().getCode());
         verify(createBestallningService, times(0)).create(any(CreateBestallningRequest.class));
 
         assertThat(response).isNotNull();
@@ -136,10 +135,10 @@ class OrderAssessmentIntygsbestallningTest {
     @Test
     void test_GTA_FEL01_IncorrectOrderFormTypeCodeSystem() {
         var type = getXmlRequestAndMapToObject("gta_fel01_intygtyp");
-        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(type.getCertificateType().getCodeSystem()));
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(type.getOrderFormType().getCodeSystem()));
         var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
 
-        verify(bestallningTextService, times(0)).getBestallningTexter(type.getCertificateType().getCode());
+        verify(bestallningTextService, times(0)).getBestallningTexter(type.getOrderFormType().getCode());
         verify(createBestallningService, times(0)).create(any(CreateBestallningRequest.class));
 
         assertThat(response).isNotNull();
@@ -153,7 +152,7 @@ class OrderAssessmentIntygsbestallningTest {
     void test_GTA_FEL01_IncorrectAuthorityCodeSystem() {
         var type = getXmlRequestAndMapToObject("gta_fel01_myndighet");
         var bestallningTexter = buildBestallningTexter(type);
-        when(bestallningTextService.getBestallningTexter(eq(type.getCertificateType().getCode())))
+        when(bestallningTextService.getBestallningTexter(eq(type.getOrderFormType().getCode())))
                 .thenReturn(Optional.of(bestallningTexter));
 
         var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01,
@@ -161,7 +160,7 @@ class OrderAssessmentIntygsbestallningTest {
 
         var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
 
-        verify(bestallningTextService, times(1)).getBestallningTexter(type.getCertificateType().getCode());
+        verify(bestallningTextService, times(1)).getBestallningTexter(type.getOrderFormType().getCode());
         verify(createBestallningService, times(0)).create(any(CreateBestallningRequest.class));
 
         assertThat(response).isNotNull();
@@ -175,7 +174,7 @@ class OrderAssessmentIntygsbestallningTest {
     void test_GTA_FEL02_IncorrectAuthority() {
         var type = getXmlRequestAndMapToObject("gta_fel02_myndighet");
         var bestallningTexter = buildBestallningTexter(type);
-        when(bestallningTextService.getBestallningTexter(eq(type.getCertificateType().getCode())))
+        when(bestallningTextService.getBestallningTexter(eq(type.getOrderFormType().getCode())))
                 .thenReturn(Optional.of(bestallningTexter));
 
         var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL02,
@@ -183,7 +182,7 @@ class OrderAssessmentIntygsbestallningTest {
 
         var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
 
-        verify(bestallningTextService, times(1)).getBestallningTexter(type.getCertificateType().getCode());
+        verify(bestallningTextService, times(1)).getBestallningTexter(type.getOrderFormType().getCode());
         verify(createBestallningService, times(0)).create(any(CreateBestallningRequest.class));
 
         assertThat(response).isNotNull();
@@ -199,7 +198,7 @@ class OrderAssessmentIntygsbestallningTest {
         var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL05, List.of(type.getCitizen().getPersonalIdentity().getExtension()));
         var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
 
-        verify(bestallningTextService, times(0)).getBestallningTexter(type.getCertificateType().getCode());
+        verify(bestallningTextService, times(0)).getBestallningTexter(type.getOrderFormType().getCode());
         verify(createBestallningService, times(0)).create(any(CreateBestallningRequest.class));
 
         assertThat(response).isNotNull();
@@ -227,13 +226,13 @@ class OrderAssessmentIntygsbestallningTest {
     void test_GTA_FEL08_IncorrectOrderFormType() {
         var type = getXmlRequestAndMapToObject("gta_fel08_intygtyp");
 
-        when(bestallningTextService.getBestallningTexter(eq(type.getCertificateType().getCode()))).thenReturn(Optional.empty());
+        when(bestallningTextService.getBestallningTexter(eq(type.getOrderFormType().getCode()))).thenReturn(Optional.empty());
 
         var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL08, List.of());
 
         var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
 
-        verify(bestallningTextService, times(1)).getBestallningTexter(type.getCertificateType().getCode());
+        verify(bestallningTextService, times(1)).getBestallningTexter(type.getOrderFormType().getCode());
         verify(createBestallningService, times(0)).create(any(CreateBestallningRequest.class));
 
         assertThat(response).isNotNull();

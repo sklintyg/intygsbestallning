@@ -299,7 +299,7 @@ public class BestallningPersistenceServiceTest extends TestSupport {
     private List<Bestallning> createBestallningar() {
 
         var b1 = Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insats", buildHandlaggare(), "F1.0_AF00213", "AF00213", "detta är beskrivningen", buildVardenhet(), "ref");
-        var b2 = Bestallning.Factory.newBestallning(buildInvanare("20121212-1212"), "syfte", "insats", buildHandlaggare(), "TESTTYP", "AF00213", "detta är beskrivningen", buildVardenhet(), "ref");
+        var b2 = Bestallning.Factory.newBestallning(buildInvanare("20121212-1212"), "syfte", "insats", buildHandlaggare(), "TESTTYP", "TESTINTYGTYP", "detta är beskrivningen", buildVardenhet(), "ref");
 
         bestallningStatusResolver.setStatus(b1);
         bestallningStatusResolver.setStatus(b2);
