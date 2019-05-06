@@ -51,7 +51,7 @@ class MailLinkControllerIT extends BaseRestIntegrationTest {
         deleteBestallning(id);
     }
 
-    @Test
+/*    @Test
     void testMaillinkWithoutAuthRedirectsToLogin() {
         Integer id = createBestallning(loadJson("integrationtests/bestallning.json"));
 
@@ -59,7 +59,7 @@ class MailLinkControllerIT extends BaseRestIntegrationTest {
                 .then().assertThat().header("Location", RestAssured.baseURI + "/welcome.html");
 
         deleteBestallning(id);
-    }
+    }*/
 
     @Test
     void testMaillinkRedirectToUnknownBestallning() {
