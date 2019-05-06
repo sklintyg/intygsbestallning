@@ -21,6 +21,7 @@ package se.inera.intyg.intygsbestallning.web.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import se.inera.intyg.infra.security.authorities.AuthoritiesException;
+import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
+import se.inera.intyg.intygsbestallning.web.auth.ApiErrorResponse;
 import se.inera.intyg.intygsbestallning.web.auth.GetUserResponse;
 import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
 import se.inera.intyg.intygsbestallning.web.service.user.UserService;
@@ -49,16 +53,32 @@ public class UserController {
         this.userService = userService;
     }
 
-
+    /**
+     * This method is called every time the client app boots up to determine if user is authenticated or not.
+     * To avoid having {@link RequestErrorController} cluttering up the serverlog with unwanted exceptions when visiting the
+     * startup page / after logging out, we allow ALL requests to enter this method (permitAll in spring security).
+     * We then manually determine a suitable response based on whether we actually have a user context or not.
+     * 
+     * @return
+     */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getUser() {
-        IntygsbestallningUser user = getIbUser();
-        return ResponseEntity.ok(new GetUserResponse(user));
+        IntygsbestallningUser user = userService.getUser();
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ApiErrorResponse("No user in session", IbErrorCodeEnum.UNAUTHORIZED.name(), ""));
+        } else {
+            return ResponseEntity.ok(new GetUserResponse(user));
+        }
     }
 
     @PostMapping(path = UNIT_CONTEXT + "{hsaId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity changeUnitContext(@PathVariable String hsaId) {
-        IntygsbestallningUser user = getIbUser();
+        IntygsbestallningUser user = userService.getUser();
+        if (user == null) {
+            throw new AuthoritiesException("No user in session");
+        }
 
         LOG.debug("Attempting to change selected unit to {} for user '{}', currently selected unit is '{}'",
                 user.getHsaId(),
@@ -76,15 +96,5 @@ public class UserController {
         LOG.debug("Selected unit is now '{}'", user.getUnitContext().getId());
 
         return ResponseEntity.ok(new GetUserResponse(user));
-    }
-
-    private IntygsbestallningUser getIbUser() {
-        IntygsbestallningUser user = userService.getUser();
-
-        if (user == null) {
-            throw new AuthoritiesException("No user in session");
-        }
-
-        return user;
     }
 }

@@ -22,6 +22,7 @@ package se.inera.intyg.intygsbestallning.web.auth;
 import static se.inera.intyg.intygsbestallning.web.controller.AppConfigController.APPCONFIG_REQUEST_MAPPING;
 import static se.inera.intyg.intygsbestallning.web.controller.RequestErrorController.IB_SPRING_SEC_ERROR_CONTROLLER_PATH;
 import static se.inera.intyg.intygsbestallning.web.controller.SessionStatController.SESSION_STAT_REQUEST_MAPPING;
+import static se.inera.intyg.intygsbestallning.web.controller.UserController.API_ANVANDARE;
 
 import java.io.File;
 import java.io.IOException;
@@ -542,6 +543,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
                 .antMatchers("/assets/**").permitAll()
                 .antMatchers("/components/**").permitAll()
                 .antMatchers("/services/**").permitAll()
+                .antMatchers(API_ANVANDARE).permitAll()
                 .antMatchers(APPCONFIG_REQUEST_MAPPING).permitAll()
                 .antMatchers(SESSION_STAT_REQUEST_MAPPING + "/**").permitAll();
 
