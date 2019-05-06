@@ -131,7 +131,8 @@ data class ListBestallningInvanareDto(
 data class BestallningInvanareDto(
    val personId: String,
    val sekretessMarkering: Boolean,
-   val name: String
+   val name: String,
+   val headerName: String?
 ) {
   companion object Factory {
     fun toDto(
@@ -149,7 +150,13 @@ data class BestallningInvanareDto(
               fornamn,
               mellannamn,
               efternamn).joinToString(separator = " ")
-         else "Namn Okänt"
+         else "Sekretessmarkerad uppgift",
+         headerName =
+         if (!sekretessMarkering)
+           listOfNotNull(
+              fornamn,
+              efternamn).joinToString(separator = " ")
+         else null
       )
     }
   }
@@ -181,10 +188,10 @@ data class VisaBestallningDto(
        invanareDto: BestallningInvanareDto,
        bestallningTexter: BestallningTexter,
        metaData: VisaBestallningMetadata
-      ): VisaBestallningDto {
+    ): VisaBestallningDto {
 
       val textMap = bestallningTexter.texter.map { it.id to it.value }.toMap()
-      val invanareName = if (!invanareDto.sekretessMarkering) invanareDto.name else "Namn Okänt"
+      val invanareName = if (!invanareDto.sekretessMarkering) invanareDto.name else "Sekretessmarkerad uppgift"
       val isForfragan: (Fraga) -> Boolean = {
         metaData.scope == VisaBestallningScope.ALL || metaData.scope == VisaBestallningScope.FORFRAGAN
       }
