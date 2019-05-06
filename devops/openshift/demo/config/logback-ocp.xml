@@ -24,6 +24,10 @@
 
     <include resource="logback-ocp-base.xml"/>
 
+    <logger name="se.inera.intyg.intygsbestallning.web.service.monitoring.MonitoringLogService" level="info" additivity="false">
+        <appender-ref ref="MONITORING" />
+    </logger>
+
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>

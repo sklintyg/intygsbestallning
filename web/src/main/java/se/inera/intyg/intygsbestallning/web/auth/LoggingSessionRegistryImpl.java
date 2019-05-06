@@ -19,41 +19,46 @@
 
 package se.inera.intyg.intygsbestallning.web.auth;
 
+import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistryImpl;
+
+import se.inera.intyg.intygsbestallning.web.service.monitoring.MonitoringLogService;
 
 /**
  * Implementation of SessionRegistry that performs audit logging of login and logout.
  */
 public class LoggingSessionRegistryImpl extends SessionRegistryImpl {
 
+    private MonitoringLogService monitoringService;
+
+    LoggingSessionRegistryImpl(MonitoringLogService monitoringService) {
+        this.monitoringService = monitoringService;
+    }
+
     @Override
     public void registerNewSession(String sessionId, Object principal) {
-        //        if (principal != null && principal instanceof IntygsbestallningUser) {
-        //            IntygsbestallningUser user = (IntygsbestallningUser) principal;
-        //
-        //            // Use the actual monitoringService once it's present
-        //            //monitoringService.logUserLogin(user.getHsaId(), user.getAuthenticationScheme(), user.getOrigin());
-        //        }
+        if (principal instanceof IntygsbestallningUser) {
+            IntygsbestallningUser user = (IntygsbestallningUser) principal;
+            monitoringService.logUserLogin(user.getHsaId(), user.getAuthenticationScheme(), user.getOrigin());
+        }
         super.registerNewSession(sessionId, principal);
     }
 
     @Override
     public void removeSessionInformation(String sessionId) {
-        //SessionInformation sessionInformation = getSessionInformation(sessionId);
-        //        if (sessionInformation != null) {
-        //            Object principal = sessionInformation.getPrincipal();
-        //
-        //            if (principal instanceof IntygsbestallningUser) {
-        //                IntygsbestallningUser user = (IntygsbestallningUser) principal;
-        //                if (sessionInformation.isExpired()) {
-        //                    // Use the actual monitoringService once it's present
-        //                    //monitoringService.logUserSessionExpired(user.getHsaId(), user.getAuthenticationScheme());
-        //                } else {
-        //                    // Use the actual monitoringService once it's present
-        //                    //monitoringService.logUserLogout(user.getHsaId(), user.getAuthenticationScheme());
-        //                }
-        //            }
-        //        }
+        SessionInformation sessionInformation = getSessionInformation(sessionId);
+        if (sessionInformation != null) {
+            Object principal = sessionInformation.getPrincipal();
+
+            if (principal instanceof IntygsbestallningUser) {
+                IntygsbestallningUser user = (IntygsbestallningUser) principal;
+                if (sessionInformation.isExpired()) {
+                    monitoringService.logUserSessionExpired(user.getHsaId(), user.getAuthenticationScheme());
+                } else {
+                    monitoringService.logUserLogout(user.getHsaId(), user.getAuthenticationScheme());
+                }
+            }
+        }
         super.removeSessionInformation(sessionId);
     }
 }

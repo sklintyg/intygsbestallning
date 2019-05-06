@@ -107,6 +107,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import se.inera.intyg.intygsbestallning.web.auth.fake.FakeAuthenticationFilter;
 import se.inera.intyg.intygsbestallning.web.auth.fake.FakeAuthenticationProvider;
 import se.inera.intyg.intygsbestallning.web.auth.service.IntygsbestallningUserDetailsService;
+import se.inera.intyg.intygsbestallning.web.service.monitoring.MonitoringLogServiceImpl;
 
 @EnableWebSecurity
 @ComponentScan({"se.inera.intyg.infra.security.authorities", "org.springframework.security.saml"})
@@ -188,7 +189,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
 
     @Bean
     public static RegisterSessionAuthenticationStrategy registerSessionAuthenticationStrategy() {
-        return new RegisterSessionAuthenticationStrategy(new LoggingSessionRegistryImpl());
+        return new RegisterSessionAuthenticationStrategy(new LoggingSessionRegistryImpl(new MonitoringLogServiceImpl()));
     }
 
     @Bean

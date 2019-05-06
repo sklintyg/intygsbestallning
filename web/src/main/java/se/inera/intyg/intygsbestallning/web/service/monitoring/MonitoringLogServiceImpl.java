@@ -17,48 +17,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.inera.intyg.intygsbestallning.web.monitoring;
+package se.inera.intyg.intygsbestallning.web.service.monitoring;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.intyg.intygsbestallning.common.monitoring.util.LogMarkers;
 
 @Service("webMonitoringLogService")
 public class MonitoringLogServiceImpl implements MonitoringLogService {
-
     private static final Object SPACE = " ";
     private static final Logger LOG = LoggerFactory.getLogger(MonitoringLogService.class);
 
     @Override
+    @PrometheusTimeMethod
     public void logUserLogin(String userHsaId, String authenticationScheme, String origin) {
-        // Origin is not interesting for Rehabstod so we ignore it
         logEvent(MonitoringEvent.USER_LOGIN, userHsaId, authenticationScheme);
     }
 
     @Override
+    @PrometheusTimeMethod
     public void logUserLogout(String userHsaId, String authenticationScheme) {
         logEvent(MonitoringEvent.USER_LOGOUT, userHsaId, authenticationScheme);
     }
 
     @Override
+    @PrometheusTimeMethod
     public void logUserSessionExpired(String userHsaId, String authScheme) {
         logEvent(MonitoringEvent.USER_SESSION_EXPIRY, userHsaId, authScheme);
     }
 
     @Override
+    @PrometheusTimeMethod
     public void logMissingMedarbetarUppdrag(String userHsaId) {
         logEvent(MonitoringEvent.USER_MISSING_MIU, userHsaId);
     }
 
     @Override
+    @PrometheusTimeMethod
     public void logMissingMedarbetarUppdrag(String userHsaId, String enhetsId) {
         logEvent(MonitoringEvent.USER_MISSING_MIU_ON_ENHET, userHsaId, enhetsId);
-    }
-
-    @Override
-    public void logUserViewedSjukfall(String userHsaId, int numberOfSjukfall, String vardEnhet) {
-        logEvent(MonitoringEvent.USER_VIEWED_SJUKFALL, userHsaId, numberOfSjukfall, vardEnhet);
     }
 
     private void logEvent(MonitoringEvent logEvent, Object... logMsgArgs) {
@@ -74,7 +73,6 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
     private enum MonitoringEvent {
         USER_LOGIN("Login user '{}' using scheme '{}'"),
         USER_LOGOUT("Logout user '{}' using scheme '{}'"),
-        USER_VIEWED_SJUKFALL("User '{}' viewed {} sjukfall on enhet '{}'"),
         USER_SESSION_EXPIRY("Session expired for user '{}' using scheme '{}'"),
         USER_MISSING_MIU("No valid MIU was found for user '{}'"),
         USER_MISSING_MIU_ON_ENHET("No valid MIU was found for user '{}' on unit '{}'");
