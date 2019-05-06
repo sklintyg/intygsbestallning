@@ -246,7 +246,6 @@ data class VisaBestallningDto(
             delfragor = listOf(
                Delfraga(etikett = textMap.getValue(ETK_4_1), svar = listOfNotNull(
                   bestallning.handlaggare.fullstandigtNamn,
-                  bestallning.handlaggare.email,
                   bestallning.handlaggare.telefonnummer).joinToString(separator = "\n")),
                Delfraga(etikett = textMap.getValue(ETK_4_2), svar = listOfNotNull(
                   bestallning.handlaggare.kontor,
