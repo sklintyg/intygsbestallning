@@ -135,7 +135,7 @@ cxf:
 integration:
   myndighet-integration-url: https://tjp.nordicmedtest.se/intyg_ib/
   respond-to-order-url: intygsbestallning/certificate/order/RespondToOrder/1/rivtabp21
-  certificate-type-code-system: b64ea353-e8f6-4832-b563-fc7d46f29548
+  certificate-type-code-system: fe11ea2d-9c5f-4786-b98f-bd5e6c93ea72
   source-system-hsa-id: dev-hsaid
 
 pdl:

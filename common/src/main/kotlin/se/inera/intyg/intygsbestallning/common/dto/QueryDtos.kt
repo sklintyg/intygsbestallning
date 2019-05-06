@@ -170,6 +170,7 @@ data class VisaBestallningDto(
    val status: String,
    val ankomstDatum: LocalDate,
    val intygTyp: String,
+   val intygTypBeskrivning: String,
    val invanare: BestallningInvanareDto,
    val metaData: List<BestallningMetaData>,
    val fragor: List<Fraga>
@@ -205,6 +206,7 @@ data class VisaBestallningDto(
          status = bestallning.status!!.beskrivning,
          ankomstDatum = bestallning.ankomstDatum.toLocalDate(),
          intygTyp = bestallning.intygTyp,
+         intygTypBeskrivning = bestallning.intygTypBeskrivning,
          invanare = invanareDto,
          metaData = metaData.metaData,
          fragor = fragorList

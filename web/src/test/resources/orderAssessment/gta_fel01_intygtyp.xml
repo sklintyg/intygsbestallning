@@ -3,10 +3,10 @@
     <root>1.2.752.129.2.1.4.1</root>
     <extension>IFV1239877878-1042</extension>
   </careUnitId>
-  <certificateType>
-    <code>AF00213</code>
+  <orderFormType>
+    <code>F1.0_AF00213</code>
     <codeSystem>FELAKTIG</codeSystem>
-  </certificateType>
+  </orderFormType>
   <purpose>Detta är viktigt</purpose>
   <plannedActions>Rehabiliteringar</plannedActions>
   <caseReference>referens</caseReference>

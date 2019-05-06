@@ -50,11 +50,14 @@ class BestallningEntity private constructor(builder: Builder) {
   @Column(name = "ID", nullable = false)
   val id: Long?
 
+  @Column(name = "TYP", nullable = false)
+  val typ: String
+
   @Column(name = "INTYG_TYP", nullable = false)
   val intygTyp: String
 
-  @Column(name = "INTYG_VERSION", nullable = false)
-  val intygVersion: Double
+  @Column(name = "INTYG_TYP_BESKRIVNING", nullable = false)
+  val intygTypBeskrivning: String
 
   @Column(name = "ANKOMST_DATUM", nullable = false)
   val ankomstDatum: LocalDateTime
@@ -117,8 +120,9 @@ class BestallningEntity private constructor(builder: Builder) {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
     this.id = builder.id
+    this.typ = builder.typ ?: throw IllegalArgumentException("typ may not be null")
     this.intygTyp = builder.intygTyp ?: throw IllegalArgumentException("intygTyp may not be null")
-    this.intygVersion = builder.intygVersion ?: throw IllegalArgumentException("intygVersion may not be null")
+    this.intygTypBeskrivning = builder.intygTypBeskrivning ?: throw IllegalArgumentException("intygTypBeskrivning may not be null")
     this.ankomstDatum = builder.ankomstDatum ?: throw IllegalArgumentException("ankomstDatum may not be null")
     this.ankomstDatumString = formatter.format(builder.ankomstDatum)
     this.avslutDatum = builder.avslutDatum
@@ -137,8 +141,9 @@ class BestallningEntity private constructor(builder: Builder) {
   @Suppress("TooManyFunctions")
   class Builder {
     var id: Long? = null
+    var typ: String? = null
     var intygTyp: String? = null
-    var intygVersion: Double? = null
+    var intygTypBeskrivning: String? = null
     var ankomstDatum: LocalDateTime? = null
     var avslutDatum: LocalDateTime? = null
     var syfte: String? = null
@@ -152,8 +157,9 @@ class BestallningEntity private constructor(builder: Builder) {
     var notifieringar: List<NotifieringEntity> = mutableListOf()
 
     fun id(id: Long?) = apply { this.id = id }
+    fun typ(typ: String) = apply { this.typ = typ }
     fun intygTyp(intygTyp: String) = apply { this.intygTyp = intygTyp }
-    fun intygVersion(intygVersion: Double) = apply { this.intygVersion = intygVersion }
+    fun intygTypBeskrivning(intygTypBeskrivning: String) = apply { this.intygTypBeskrivning = intygTypBeskrivning}
     fun ankomstDatum(ankomstDatum: LocalDateTime) = apply { this.ankomstDatum = ankomstDatum }
     fun avslutDatum(avslutDatum: LocalDateTime?) = apply { this.avslutDatum = avslutDatum }
     fun syfte(syfte: String?) = apply { this.syfte = syfte }
@@ -172,8 +178,9 @@ class BestallningEntity private constructor(builder: Builder) {
     fun toDomain(bestallningEntity: BestallningEntity): Bestallning {
       return Bestallning(
          id = bestallningEntity.id!!,
+         typ = bestallningEntity.typ,
          intygTyp = bestallningEntity.intygTyp,
-         intygVersion = bestallningEntity.intygVersion,
+         intygTypBeskrivning = bestallningEntity.intygTypBeskrivning,
          ankomstDatum = bestallningEntity.ankomstDatum,
          avslutDatum = bestallningEntity.avslutDatum,
          syfte = bestallningEntity.syfte,
@@ -190,8 +197,9 @@ class BestallningEntity private constructor(builder: Builder) {
     fun toEntity(bestallning: Bestallning): BestallningEntity {
       return BestallningEntity.Builder()
          .id(bestallning.id)
+         .typ(bestallning.typ)
          .intygTyp(bestallning.intygTyp)
-         .intygVersion(bestallning.intygVersion)
+         .intygTypBeskrivning(bestallning.intygTypBeskrivning)
          .ankomstDatum(bestallning.ankomstDatum)
          .syfte(bestallning.syfte)
          .avslutDatum(bestallning.avslutDatum)
@@ -213,8 +221,9 @@ class BestallningEntity private constructor(builder: Builder) {
        vardenhetEntity: VardenhetEntity): BestallningEntity {
       return BestallningEntity.Builder()
          .id(bestallning.id)
+         .typ(bestallning.typ)
          .intygTyp(bestallning.intygTyp)
-         .intygVersion(bestallning.intygVersion)
+         .intygTypBeskrivning(bestallning.intygTypBeskrivning)
          .ankomstDatum(bestallning.ankomstDatum)
          .avslutDatum(bestallning.avslutDatum)
          .syfte(bestallning.syfte)

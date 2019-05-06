@@ -6,8 +6,6 @@ import se.inera.intyg.intygsbestallning.build.Config.TestDependencies
 // FIXME: Openshift build pipeline passes useMinifiedJavaScript to build (not client)
 val buildClient = project.hasProperty("client") || project.hasProperty("useMinifiedJavaScript")
 
-val infraBuildVersion = extra["intygInfraVersion"]
-
 plugins {
   id("org.springframework.boot")
   id("com.moowork.node")

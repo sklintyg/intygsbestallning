@@ -55,7 +55,7 @@ public class OrderAssessmentIntygsbestallningIT extends BaseRestIntegrationTest 
         requestTemplate.add("data",
                 new OrderAssessmentIntygsbestallningIT.RequestOrderAssessment(
                         "IFV1239877878-1042",
-                        "AF00213", "Detta är en kommentar",
+                        "F1.0_AF00213", "Detta är en kommentar",
                         "Bli frisk", "Bowla",
                         "Hanna Handläggare", "123-123123", "handlaggare@ineratestar.se",
                         "191212121212", "Tolvan", "Tolvansson", "Rullator",

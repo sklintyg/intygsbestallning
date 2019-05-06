@@ -1,6 +1,7 @@
 {
+  "typ": "F1.0_AF00213",
   "intygTyp": "AF00213",
-  "intygVersion": 1.0,
+  "intygTypBeskrivning": "Arbetsförmedlingens medicinska utlåtande",
   "ankomstDatum": "2019-03-19T19:37:50.411229",
   "avslutDatum": null,
   "syfte": "ett syfte",

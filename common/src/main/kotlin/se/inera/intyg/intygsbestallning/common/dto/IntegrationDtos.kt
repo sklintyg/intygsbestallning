@@ -26,8 +26,9 @@ data class CreateBestallningRequest(
    val handlaggare: CreateBestallningRequestHandlaggare,
    val syfte: String? = null,
    val planeradeInsatser: String? = null,
+   val typ: String,
    val intygTyp: String,
-   val intygVersion: Double,
+   val intygTypBeskrivning: String,
    val vardenhet: String,
    val arendeReferens: String? = null
 )

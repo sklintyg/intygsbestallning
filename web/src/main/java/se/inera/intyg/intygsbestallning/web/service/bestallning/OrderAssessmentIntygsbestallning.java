@@ -49,10 +49,9 @@ import se.inera.intyg.schemas.contract.Personnummer;
 @Transactional
 public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponderInterface {
 
-    private static final String KV_INTYGSTYP = "b64ea353-e8f6-4832-b563-fc7d46f29548";
+    private static final String KV_FORMULAR = "fe11ea2d-9c5f-4786-b98f-bd5e6c93ea72";
     private static final String KV_MYNDIGHET = "769bb12b-bd9f-4203-a5cd-fd14f2eb3b80";
     private static final String HSA_ID_ROOT = "1.2.752.129.2.1.4.1";
-
 
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -131,18 +130,17 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
             throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(vardenhetRoot));
         }
 
-        var intygTyp = Optional.ofNullable(request.getCertificateType()).map(CVType::getCode).get();
-        var intygTypCodeSystem = Optional.ofNullable(request.getCertificateType()).map(CVType::getCodeSystem).get();
+        var typ = Optional.ofNullable(request.getOrderFormType()).map(CVType::getCode).get();
+        var typCodeSystem = Optional.ofNullable(request.getOrderFormType()).map(CVType::getCodeSystem).get();
 
-        if (!intygTypCodeSystem.equals(KV_INTYGSTYP)) {
-            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(intygTypCodeSystem));
+        if (!typCodeSystem.equals(KV_FORMULAR)) {
+            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(typCodeSystem));
         }
 
-        var intygVersion = Try.of(() -> bestallningTextService.getLatestVersionForBestallningsbartIntyg(intygTyp));
-        if (intygVersion.isFailure()) {
+        var texter = bestallningTextService.getBestallningTexter(typ);
+        if (texter.isEmpty()) {
             throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL08, List.of());
         }
-
 
         final var invanare = new CreateBestallningRequestInvanare(personnummer, request.getCitizen().getSituationBackground());
 
@@ -181,8 +179,9 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
                 auktoritet,
                 request.getPurpose(),
                 request.getPlannedActions(),
-                intygTyp,
-                intygVersion.get(),
+                texter.get().getTyp(),
+                texter.get().getIntygTyp(),
+                texter.get().getIntygTypBeskrivning(),
                 vardenhet,
                 request.getCaseReference());
     }
