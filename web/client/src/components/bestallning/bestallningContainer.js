@@ -43,7 +43,7 @@ const BestallningContainer = ({ error, bestallning, history, fetching }) => {
   if (fetching) {
     return (
       <SpinnerContainer>
-        <LoadingSpinner loading={fetching} message={'Hämtar Beställning'} />
+        <LoadingSpinner loading={fetching} message={'Laddar beställning'} />
       </SpinnerContainer>
     )
   }
