@@ -86,7 +86,7 @@ tasks {
 
     setEnvironment(mapOf("CI" to true))
 
-    setArgs(listOf("run", "test"))
+    setArgs(listOf("run", "test", "--", "--coverage"))
   }
 
   val copyReactbuild by creating(Copy::class) {
