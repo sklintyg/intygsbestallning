@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from "styled-components";
-import {HeaderSectionContainer, SingleTextRowContainer, VerticalContainer} from "../styles";
-import IbColors from "../../styles/IbColors";
-import {UnitIcon} from "../../styles/IbSvgIcons";
+import React from 'react'
+import styled from 'styled-components'
+import { HeaderSectionContainer, SingleTextRowContainer, VerticalContainer } from '../styles'
+import IbColors from '../../styles/IbColors'
+import { UnitIcon } from '../../styles/IbSvgIcons'
 
 const UnitComponentWrapper = styled(HeaderSectionContainer)`
   flex: 1 1 auto;
@@ -20,21 +20,20 @@ const VardgivarTitle = styled.div`
 
 const VardenhetTitle = styled.div`
   white-space: nowrap;
- 
 `
 
-const Unit = ({vg, ve}) => {
+const Unit = ({ vg, ve }) => {
   return (
     <UnitComponentWrapper>
       <UnitIcon />
       <VerticalContainer>
         <SingleTextRowContainer>
           <VardgivarTitle id="currentVardgivarTitle">{vg}</VardgivarTitle>
-          <VardenhetTitle id="currentVardenhetTitle">&nbsp;-{ve}</VardenhetTitle>
+          <VardenhetTitle id="currentVardenhetTitle">&nbsp;-&nbsp;{ve}</VardenhetTitle>
         </SingleTextRowContainer>
       </VerticalContainer>
     </UnitComponentWrapper>
   )
-};
+}
 
-export default Unit;
+export default Unit
