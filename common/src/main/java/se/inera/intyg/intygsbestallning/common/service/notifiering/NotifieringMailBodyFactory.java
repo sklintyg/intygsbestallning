@@ -28,7 +28,7 @@ import se.inera.intyg.intygsbestallning.common.property.MailProperties;
 import se.inera.intyg.intygsbestallning.common.text.mail.MailTexter;
 
 @Component
-public class NotifieringMailBodyFactory {
+public class NotifieringMailBodyFactory implements MailBodyFactory {
 
     private MailProperties mailProperties;
 

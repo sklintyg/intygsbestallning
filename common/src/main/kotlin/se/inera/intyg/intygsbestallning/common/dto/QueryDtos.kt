@@ -131,7 +131,8 @@ data class ListBestallningInvanareDto(
 data class BestallningInvanareDto(
    val personId: String,
    val sekretessMarkering: Boolean,
-   val name: String
+   val name: String,
+   val headerName: String?
 ) {
   companion object Factory {
     fun toDto(
@@ -149,7 +150,13 @@ data class BestallningInvanareDto(
               fornamn,
               mellannamn,
               efternamn).joinToString(separator = " ")
-         else "Namn Okänt"
+         else "Sekretessmarkerad uppgift",
+         headerName =
+         if (!sekretessMarkering)
+           listOfNotNull(
+              fornamn,
+              efternamn).joinToString(separator = " ")
+         else null
       )
     }
   }
@@ -170,6 +177,7 @@ data class VisaBestallningDto(
    val status: String,
    val ankomstDatum: LocalDate,
    val intygTyp: String,
+   val intygTypBeskrivning: String,
    val invanare: BestallningInvanareDto,
    val metaData: List<BestallningMetaData>,
    val fragor: List<Fraga>
@@ -180,10 +188,10 @@ data class VisaBestallningDto(
        invanareDto: BestallningInvanareDto,
        bestallningTexter: BestallningTexter,
        metaData: VisaBestallningMetadata
-      ): VisaBestallningDto {
+    ): VisaBestallningDto {
 
       val textMap = bestallningTexter.texter.map { it.id to it.value }.toMap()
-      val invanareName = if (!invanareDto.sekretessMarkering) invanareDto.name else "Namn Okänt"
+      val invanareName = if (!invanareDto.sekretessMarkering) invanareDto.name else "Sekretessmarkerad uppgift"
       val isForfragan: (Fraga) -> Boolean = {
         metaData.scope == VisaBestallningScope.ALL || metaData.scope == VisaBestallningScope.FORFRAGAN
       }
@@ -205,6 +213,7 @@ data class VisaBestallningDto(
          status = bestallning.status!!.beskrivning,
          ankomstDatum = bestallning.ankomstDatum.toLocalDate(),
          intygTyp = bestallning.intygTyp,
+         intygTypBeskrivning = bestallning.intygTypBeskrivning,
          invanare = invanareDto,
          metaData = metaData.metaData,
          fragor = fragorList
@@ -244,7 +253,6 @@ data class VisaBestallningDto(
             delfragor = listOf(
                Delfraga(etikett = textMap.getValue(ETK_4_1), svar = listOfNotNull(
                   bestallning.handlaggare.fullstandigtNamn,
-                  bestallning.handlaggare.email,
                   bestallning.handlaggare.telefonnummer).joinToString(separator = "\n")),
                Delfraga(etikett = textMap.getValue(ETK_4_2), svar = listOfNotNull(
                   bestallning.handlaggare.kontor,

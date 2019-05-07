@@ -19,6 +19,11 @@
 
 package se.inera.intyg.intygsbestallning.common.service.notifiering;
 
-public interface MailBodyFactory {
+import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
+import se.inera.intyg.intygsbestallning.common.text.mail.MailTexter;
 
+public interface MailBodyFactory {
+    String buildBody(Bestallning bestallning, MailTexter texter, String url);
+
+    String buildBodyRawText(Bestallning bestallning, MailTexter texter, String url);
 }

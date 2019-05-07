@@ -173,7 +173,8 @@ class OlastBestallningPaminnelseJobTest {
             notifieringar.add(Notifiering.Factory.paminnelse("hsaId", NotifieringTyp.NY_BESTALLNING_PAMINNELSE_1));
         }
 
-        return Lists.newArrayList(new Bestallning(1L, "intygTyp", 1.0, LocalDate.now().atStartOfDay().minusDays(daysAgo), LocalDateTime.now().plusDays(1L),
+        return Lists.newArrayList(new Bestallning(1L, "typ", "AF00213",
+                "detta är beskrivningen", LocalDate.now().atStartOfDay().minusDays(daysAgo), LocalDateTime.now().plusDays(1L),
                 "syfte", "planeradeAktiviteter", BestallningStatus.OLAST,
                 Invanare.Factory.newInvanare(Personnummer.createPersonnummer("191212121212").get(), ""),
                 Handlaggare.Factory.newHandlaggare("", "", "", "", "", "", "", "", ""),

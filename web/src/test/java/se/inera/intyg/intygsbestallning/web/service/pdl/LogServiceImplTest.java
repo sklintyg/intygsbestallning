@@ -95,7 +95,7 @@ class LogServiceImplTest {
 
     @BeforeEach
     void setup() {
-        when(userService.getUser()).thenReturn(createIbUser());
+        when(userService.getUser()).thenReturn(buildIbUser());
     }
 
     @Test
@@ -145,8 +145,8 @@ class LogServiceImplTest {
         return p;
     }
 
-    private IntygUser createDefaultUser() {
-        return createUser(AuthoritiesConstants.ROLE_VARDADMIN,
+    private IntygUser buildDefaultUser() {
+        return buildUser(AuthoritiesConstants.ROLE_VARDADMIN,
                 createPrivilege(AuthoritiesConstants.PRIVILEGE_LISTA_BESTALLNINGAR,
                         Collections.EMPTY_LIST,
                         Collections.EMPTY_LIST),
@@ -154,7 +154,7 @@ class LogServiceImplTest {
                 UserOriginType.NORMAL.name());
     }
 
-    private IntygUser createUser(String roleName, Privilege p, Map<String, Feature> features, String origin) {
+    private IntygUser buildUser(String roleName, Privilege p, Map<String, Feature> features, String origin) {
         IntygUser user = new IntygUser(USER_ID);
         user.setTitel(USER_TITLE);
 
@@ -174,46 +174,46 @@ class LogServiceImplTest {
         return user;
     }
 
-    private IntygsbestallningUser createIbUser() {
-        var ibUser = new IntygsbestallningUser(createDefaultUser());
+    private IntygsbestallningUser buildIbUser() {
+        var ibUser = new IntygsbestallningUser(buildDefaultUser());
         ibUser.setHsaId(USER_ID);
         ibUser.setNamn(USER_NAME);
-        ibUser.setUnitContext(createIbVardenhet());
+        ibUser.setUnitContext(buildIbVardenhet());
         return ibUser;
     }
 
-    private IbVardgivare createIbVardgivare() {
+    private IbVardgivare buildIbVardgivare() {
         return new IbVardgivare(VG_ID, VG_NAME);
     }
 
-    private IbVardenhet createIbVardenhet() {
-        final IbVardgivare ibVardgivare = createIbVardgivare();
+    private IbVardenhet buildIbVardenhet() {
+        final IbVardgivare ibVardgivare = buildIbVardgivare();
         return new IbVardenhet(VE_ID, VE_NAME, ibVardgivare.getId(), ibVardgivare.getName(), VG_ORGNR);
     }
 
-    private Vardenhet createVardenhet() {
+    private Vardenhet buildVardenhet() {
         return Vardenhet.Factory.newVardenhet(VE_ID, VG_ID, VG_ORGNR, VG_NAME, "epost@mail.se");
     }
 
-    private Handlaggare createHandlaggare() {
+    private Handlaggare buildHandlaggare() {
         return Handlaggare.Factory.newHandlaggare(
                 "Handlaggaren", "073-123", "e@mail.com", "myndigheten", "kontor", "kostnadsställe", "adress", "12345", "Staden");
     }
 
-    private Invanare createInvanare(String personnummer) {
+    private Invanare buildInvanare(String personnummer) {
         return Invanare.Factory.newInvanare(
                 Personnummer.createPersonnummer(personnummer).get(), "Läge");
     }
 
     private List<Bestallning> createBestallningar(List<BestallningStatus> statusar) {
         var bestallningar = List.of(
-                Bestallning.Factory.newBestallning(createInvanare("19121212-1212"), "syfte", "insatser", createHandlaggare(), "AF00213", 1.0, createVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(createInvanare("20121212-1212"), "syfte", "insatser", createHandlaggare(), "AF00213", 1.0, createVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(createInvanare("19121212-1212"), "syfte", "insatser", createHandlaggare(), "AF00213", 1.0, createVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(createInvanare("20121212-1212"), "syfte", "insatser", createHandlaggare(), "AF00213", 1.0, createVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(createInvanare("19121212-1212"), "syfte", "insatser", createHandlaggare(), "AF00213", 1.0, createVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(createInvanare("19121212-1212"), "syfte", "insatser", createHandlaggare(), "AF00213", 1.0, createVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(createInvanare("19121212-1212"), "syfte", "insatser", createHandlaggare(), "AF00213", 1.0, createVardenhet(), "ref")
+                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "F1.0_AF00213", "AF00213", "detta är beskrivningen", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("20121212-1212"), "syfte", "insatser", buildHandlaggare(), "F1.0_AF00213", "AF00213", "detta är beskrivningen", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "F1.0_AF00213", "AF00213", "detta är beskrivningen", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("20121212-1212"), "syfte", "insatser", buildHandlaggare(), "F1.0_AF00213", "AF00213", "detta är beskrivningen", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "F1.0_AF00213", "AF00213", "detta är beskrivningen", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "F1.0_AF00213", "AF00213", "detta är beskrivningen", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "F1.0_AF00213", "AF00213", "detta är beskrivningen", buildVardenhet(), "ref")
         );
 
         var randomIndex = new Random().nextInt(statusar.size());

@@ -140,7 +140,8 @@ class VisaBestallningServiceImplTest {
         return Optional.of(new Bestallning(
                 id,
                 "typ",
-                1.0,
+                "AF00213",
+                "detta är beskrivningen",
                 ANKOMST_DATUM,
                 AVSLUT_DATUM,
                 "",

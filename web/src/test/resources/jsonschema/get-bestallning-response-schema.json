@@ -5,6 +5,7 @@
     "status",
     "ankomstDatum",
     "intygTyp",
+    "intygTypBeskrivning",
     "invanare",
     "metaData",
     "fragor"
@@ -23,12 +24,16 @@
     "intygTyp": {
       "type": "string"
     },
+    "intygTypBeskrivning": {
+      "type": "string"
+    },
     "invanare": {
       "type": "object",
       "required": [
         "personId",
         "sekretessMarkering",
-        "name"
+        "name",
+        "headerName"
       ],
       "additionalProperties": false,
       "properties": {
@@ -39,6 +44,9 @@
           "type": "boolean"
         },
         "name": {
+          "type": "string"
+        },
+        "headerName": {
           "type": "string"
         }
       }

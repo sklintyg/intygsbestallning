@@ -42,17 +42,17 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
 
     private MailService mailService;
     private MailTextService mailTextService;
-    private NotifieringMailBodyFactory notifieringMailBodyFactory;
+    private MailBodyFactory mailBodyFactory;
     private MailProperties mailProperties;
 
     public NotifieringSendServiceImpl(
             MailService mailService,
             MailTextService mailTextService,
-            NotifieringMailBodyFactory notifieringMailBodyFactory,
+            MailBodyFactory mailBodyFactory,
             MailProperties mailProperties) {
         this.mailService = mailService;
         this.mailTextService = mailTextService;
-        this.notifieringMailBodyFactory = notifieringMailBodyFactory;
+        this.mailBodyFactory = mailBodyFactory;
         this.mailProperties = mailProperties;
     }
 
@@ -64,9 +64,9 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
     @Override
     public String vidarebefordrad(Bestallning bestallning) {
         var notifieringTyp = NotifieringTyp.NY_BESTALLNING;
-        var mailTexter = mailTextService.getMailContent(notifieringTyp, bestallning.getIntygTyp());
+        var mailTexter = mailTextService.getMailContent(notifieringTyp, bestallning.getTyp());
         var mailLink = getMailLinkRedirect(bestallning.getId());
-        return notifieringMailBodyFactory.buildBodyRawText(bestallning, mailTexter, mailLink);
+        return mailBodyFactory.buildBodyRawText(bestallning, mailTexter, mailLink);
     }
 
     @Override
@@ -75,7 +75,12 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
     }
 
     private void doEmail(Bestallning bestallning, NotifieringTyp notifieringTyp) {
-        var mailTexter = mailTextService.getMailContent(notifieringTyp, bestallning.getIntygTyp());
+
+        if (bestallning.getNotifieringar() == null || bestallning.getNotifieringar().isEmpty()) {
+            throw new IllegalArgumentException("notifieringList may not be null or empty");
+        }
+
+        var mailTexter = mailTextService.getMailContent(notifieringTyp, bestallning.getTyp());
         var mailBody = buildMailBody(bestallning, mailTexter);
         var subject = mailTexter.getArendeRad().getArende();
         var emailAddress = getEmailAddress(bestallning);
@@ -85,7 +90,7 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
 
     private String buildMailBody(Bestallning bestallning, MailTexter mailTexter) {
         var mailLink = getMailLinkRedirect(bestallning.getId());
-        return notifieringMailBodyFactory.buildBody(bestallning, mailTexter, mailLink);
+        return mailBodyFactory.buildBody(bestallning, mailTexter, mailLink);
     }
 
     private String getMailLinkRedirect(Long bestallningId) {
@@ -106,12 +111,7 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
     }
 
     private void setSkickadTimestamp(Bestallning bestallning) {
-
         var notifieringar = bestallning.getNotifieringar();
-
-        if (notifieringar == null || notifieringar.isEmpty()) {
-            throw new IllegalArgumentException("notifieringList may not be null or empty");
-        }
 
         Collections.max(notifieringar, Comparator.comparing(Notifiering::getId)).setSkickad(LocalDateTime.now());
     }

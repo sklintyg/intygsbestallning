@@ -102,7 +102,8 @@ class AvvisaBestallningServiceImplTest {
         return Optional.of(new Bestallning(
                 BESTALLNING_ID,
                 "typ",
-                1.0,
+                "AF00213",
+                "detta är beskrivningen",
                 ANKOMST_DATUM,
                 AVSLUT_DATUM,
                 "",

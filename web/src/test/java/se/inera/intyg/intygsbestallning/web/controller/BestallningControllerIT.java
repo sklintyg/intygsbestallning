@@ -16,7 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.intyg.intygsbestallning.web.controller;
+
+import static com.jayway.restassured.RestAssured.given;
+import static com.jayway.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static org.hamcrest.core.Is.is;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jayway.restassured.RestAssured;
@@ -26,26 +32,19 @@ import se.inera.intyg.intygsbestallning.web.bestallning.AccepteraBestallning;
 import se.inera.intyg.intygsbestallning.web.bestallning.AvvisaBestallning;
 import se.inera.intyg.intygsbestallning.web.bestallning.RaderaBestallning;
 
-import static com.jayway.restassured.RestAssured.given;
-import static com.jayway.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.hamcrest.core.Is.is;
-
 public class BestallningControllerIT extends BaseRestIntegrationTest {
 
     private static final String BESTALLNINGAR_API_ENDPOINT = "/api/bestallningar";
 
     @Test
-    public void testGetBestallningar()
-    {
+    public void testGetBestallningar() {
         RestAssured.sessionId = getAuthSession(DEFAULT_USER);
         given().expect().statusCode(OK).when().get(BESTALLNINGAR_API_ENDPOINT).then()
                 .body(matchesJsonSchemaInClasspath("jsonschema/get-bestallningar-response-schema.json"));
     }
 
     @Test
-    public void testGetBestallning()
-    {
+    public void testGetBestallning() {
         RestAssured.sessionId = getAuthSession(DEFAULT_USER);
 
         Integer id = createBestallning(loadJson("integrationtests/bestallning.json"));
@@ -57,16 +56,14 @@ public class BestallningControllerIT extends BaseRestIntegrationTest {
     }
 
     @Test
-    public void testGetBestallningNotFound()
-    {
+    public void testGetBestallningNotFound() {
         RestAssured.sessionId = getAuthSession(DEFAULT_USER);
         given().expect().statusCode(SERVER_ERROR).when().get(BESTALLNINGAR_API_ENDPOINT + "/0").then()
-            .body("errorCode", is("NOT_FOUND"));
+                .body("errorCode", is("NOT_FOUND"));
     }
 
     @Test
-    public void testGetBestallningOrgIdMmismatch()
-    {
+    public void testGetBestallningOrgIdMmismatch() {
         Integer id = createBestallning(loadJson("integrationtests/bestallning_other_orgid.json"));
 
         RestAssured.sessionId = getAuthSession(DEFAULT_USER);
@@ -77,8 +74,7 @@ public class BestallningControllerIT extends BaseRestIntegrationTest {
     }
 
     @Test
-    public void testAccepteraBestallning() throws JsonProcessingException
-    {
+    public void testAccepteraBestallning() throws JsonProcessingException {
         RestAssured.sessionId = getAuthSession(DEFAULT_USER);
 
         Integer id = createBestallning(loadJson("integrationtests/bestallning.json"));
@@ -91,8 +87,7 @@ public class BestallningControllerIT extends BaseRestIntegrationTest {
     }
 
     @Test
-    public void testAvvisaBestallning() throws JsonProcessingException
-    {
+    public void testAvvisaBestallning() throws JsonProcessingException {
         RestAssured.sessionId = getAuthSession(DEFAULT_USER);
 
         Integer id = createBestallning(loadJson("integrationtests/bestallning.json"));
@@ -105,8 +100,7 @@ public class BestallningControllerIT extends BaseRestIntegrationTest {
     }
 
     @Test
-    public void testRaderaBestallning() throws JsonProcessingException
-    {
+    public void testRaderaBestallning() throws JsonProcessingException {
         RestAssured.sessionId = getAuthSession(DEFAULT_USER);
 
         Integer id = createBestallning(loadJson("integrationtests/bestallning.json"));
@@ -117,8 +111,7 @@ public class BestallningControllerIT extends BaseRestIntegrationTest {
     }
 
     @Test
-    public void testKlarmarkeraBestallning()
-    {
+    public void testKlarmarkeraBestallning() {
         RestAssured.sessionId = getAuthSession(DEFAULT_USER);
 
         Integer id = createBestallning(loadJson("integrationtests/bestallning_accepterad.json"));
@@ -130,8 +123,7 @@ public class BestallningControllerIT extends BaseRestIntegrationTest {
     }
 
     @Test
-    public void testPdfForfragan()
-    {
+    public void testPdfForfragan() {
         RestAssured.sessionId = getAuthSession(DEFAULT_USER);
 
         Integer id = createBestallning(loadJson("integrationtests/bestallning.json"));
@@ -142,8 +134,7 @@ public class BestallningControllerIT extends BaseRestIntegrationTest {
     }
 
     @Test
-    public void testPdfFaktureringsunderlag()
-    {
+    public void testPdfFaktureringsunderlag() {
         RestAssured.sessionId = getAuthSession(DEFAULT_USER);
 
         Integer id = createBestallning(loadJson("integrationtests/bestallning.json"));

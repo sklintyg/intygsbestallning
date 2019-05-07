@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.inera.intyg.intygsbestallning.web.monitoring;
+package se.inera.intyg.intygsbestallning.web.service.monitoring;
 
 import se.inera.intyg.infra.security.common.service.AuthenticationLogger;
 
@@ -25,12 +25,9 @@ import se.inera.intyg.infra.security.common.service.AuthenticationLogger;
  * Interface used when logging to monitoring file. Used to ensure that the log entries are uniform and easy to parse.
  */
 public interface MonitoringLogService extends AuthenticationLogger {
-
     @Override
     void logUserLogin(String id, String authenticationScheme, String origin);
 
     @Override
     void logUserLogout(String id, String authenticationScheme);
-
-    void logUserViewedSjukfall(String userId, int numberOfSjukfall, String vardEnhet);
 }

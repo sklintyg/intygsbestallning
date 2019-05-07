@@ -22,8 +22,6 @@ package se.inera.intyg.intygsbestallning.common.service.bestallning;
 import static java.lang.invoke.MethodHandles.lookup;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,7 +33,6 @@ import com.google.common.collect.MoreCollectors;
 import io.vavr.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
@@ -50,18 +47,17 @@ public class BestallningTextServiceImpl implements BestallningTextService {
     private static final Logger LOG = LoggerFactory.getLogger(lookup().lookupClass());
     private static final String ACTION = "Initiate Intygsbestallning Bestallning Text Resources";
 
-    private List<BestallningTexter> bestallningTexterList = Collections.EMPTY_LIST;
-
+    private List<BestallningTexter> bestallningTexterList = List.of();
     private BestallningProperties bestallningProperties;
+    private ResourceLoader resourceLoader;
+    private XmlMapper xmlMapper;
 
-    public BestallningTextServiceImpl(BestallningProperties bestallningProperties) {
+    public BestallningTextServiceImpl(BestallningProperties bestallningProperties, ResourceLoader resourceLoader) {
         this.bestallningProperties = bestallningProperties;
+        this.resourceLoader = resourceLoader;
     }
 
-    @Autowired
-    ResourceLoader resourceLoader;
 
-    XmlMapper xmlMapper;
 
     @PostConstruct
     public void initTexter() {
@@ -80,35 +76,21 @@ public class BestallningTextServiceImpl implements BestallningTextService {
 
     @Override
     public BestallningTexter getBestallningTexter(Bestallning bestallning) {
-        return getTexter(bestallning.getIntygTyp(), bestallning.getIntygVersion())
+        return getTexter(bestallning.getTyp())
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Bestallning text resources for bestallning is not supported for Type: "
-                                + bestallning.getIntygTyp() + " and Version: " + bestallning.getIntygVersion()));
+                                + bestallning.getTyp()));
     }
 
     @Override
-    public Double getLatestVersionForBestallningsbartIntyg(String intygTyp) {
-        return getLatestVersionForTyp(intygTyp);
+    public Optional<BestallningTexter> getBestallningTexter(String typ) {
+        return getTexter(typ);
     }
 
-    private Optional<BestallningTexter> getTexter(String intygTyp, Double version) {
+    private Optional<BestallningTexter> getTexter(String intygTyp) {
         return bestallningTexterList.stream()
                 .filter(texter -> texter.getTyp().equals(intygTyp))
-                .filter(texter -> texter.getVersion().equals(version.toString()))
                 .collect(MoreCollectors.toOptional());
-    }
-
-    private Double getLatestVersionForTyp(String intygTyp) {
-        return bestallningTexterList.stream()
-                .filter(texter -> texter.getTyp().equals(intygTyp))
-
-                .filter(bestallningTexter -> {
-                    var date = Try.of(() -> LocalDate.parse(bestallningTexter.getGiltigFrom()));
-                    return date.isSuccess() && !date.get().isAfter(LocalDate.now());
-                })
-                .mapToDouble(texter -> Double.parseDouble(texter.getVersion()))
-                .max()
-                .orElseThrow(() -> new IllegalArgumentException("Intyg of Type: " + intygTyp + " is not supported"));
     }
 
     private List<BestallningTexter> loadResources(String location) throws IOException {

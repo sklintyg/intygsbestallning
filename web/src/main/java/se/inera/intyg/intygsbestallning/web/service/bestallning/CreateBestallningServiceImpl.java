@@ -21,12 +21,14 @@ package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
 import java.lang.invoke.MethodHandles;
 import java.util.List;
-import io.vavr.control.Try;
+
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import io.vavr.control.Try;
 import se.inera.intyg.infra.integration.hsa.exception.HsaServiceCallException;
 import se.inera.intyg.infra.integration.hsa.services.HsaOrganizationsService;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
@@ -42,7 +44,7 @@ import se.inera.intyg.intygsbestallning.integration.pu.PatientService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
 
 @Service
-@Transactional
+@Transactional(noRollbackFor = IbResponderValidationException.class)
 public class CreateBestallningServiceImpl implements CreateBestallningService {
 
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().getClass());
@@ -87,8 +89,9 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
                 createBestallningRequest.getSyfte(),
                 createBestallningRequest.getPlaneradeInsatser(),
                 handlaggare,
+                createBestallningRequest.getTyp(),
                 createBestallningRequest.getIntygTyp(),
-                createBestallningRequest.getIntygVersion(),
+                createBestallningRequest.getIntygTypBeskrivning(),
                 getVardenhet(createBestallningRequest),
                 createBestallningRequest.getArendeReferens());
 

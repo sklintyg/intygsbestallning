@@ -33,12 +33,7 @@ data class MailContent(
 ) {
   companion object Template {
     fun toText(data: MailContent): String {
-      return """
-        ${data.texter.halsning.text}
-        ${data.texter.body.text1}
-        ${data.url}
-        ${data.texter.body.text2}
-      """.trimIndent().trim()
+      return "${data.texter.halsning.text}\n\r\n\r${data.texter.body.text1}\n\r${data.url}\n\r${data.texter.body.text2}"
     }
 
     @Suppress("LongMethod")
@@ -88,7 +83,7 @@ data class MailContent(
                                             <p>${data.texter.body.text1}</p>
 
                                             <p>
-                                                <a href="${data.url}</a>
+                                                <a href="${data.url}"</a>
                                             </p>
 
                                             <p>${data.texter.body.text2}</p

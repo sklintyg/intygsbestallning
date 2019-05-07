@@ -95,7 +95,7 @@ const BestallningHeader = ({ props }) => {
           </Link>
           {!props.error && (
             <Fragment>
-              <span>Avser {props.bestallning.intygTyp}</span>
+              <span>Avser {props.bestallning.intygTypBeskrivning}</span>
               <span>
                 {getStatusIcon()}
                 Status {props.bestallning.status}
@@ -111,9 +111,19 @@ const BestallningHeader = ({ props }) => {
           <ButtonRow>
             <div className="left">
               <IbTypo04 color={IbColors.IB_COLOR_19}>{props.bestallning.id}</IbTypo04>
-              <IbTypo01 color={IbColors.IB_COLOR_19}>
-                {props.bestallning.invanare.personId} - {props.bestallning.invanare.name}
-              </IbTypo01>
+
+              {
+                props.bestallning.invanare.sekretessMarkering
+                  ? (
+                    <IbTypo01 color={IbColors.IB_COLOR_19}>
+                      {props.bestallning.invanare.personId}
+                    </IbTypo01>)
+                  : (
+                    <IbTypo01 color={IbColors.IB_COLOR_19}>
+                      {props.bestallning.invanare.personId} {props.bestallning.invanare.headerName}
+                    </IbTypo01>)
+              }
+
               {props.bestallning.invanare.sekretessMarkering ? (
                 <IbAlert type={alertType.SEKRETESS}>Patienten har sekretessmarkering</IbAlert>
               ) : null}

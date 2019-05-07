@@ -14,7 +14,7 @@ dependencies {
     implementation("org.apache.camel:camel-jms:${Dependencies.camelVersion}")
 
     // External test dependencies
-    testImplementation("com.jayway.awaitility:awaitility:${TestDependencies.awaitilityVersion}")
+    testImplementation("org.awaitility:awaitility:${TestDependencies.awaitilityVersion}")
     testImplementation("org.apache.camel:camel-test-spring:${Dependencies.camelVersion}")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("junit:junit:${TestDependencies.junit4Version}")

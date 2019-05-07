@@ -180,7 +180,8 @@ class CreateBestallningServiceImplTest {
                 new CreateBestallningRequestInvanare(createPersonnummer("191212121212").get(), "Test"),
                 new CreateBestallningRequestHandlaggare("", "", "", "",
                         new CreateBestallningRequestKontor("", "", "", "", "")),
-                "syfte", "insatser", "intygsTyp", 1.0, "hsa-id", "referens");
+                "syfte", "insatser", "typ", "AF00213",
+                "detta är beskrivningen", "hsa-id", "referens");
     }
 
     private Optional<Person> buildPerson() {
@@ -205,7 +206,7 @@ class CreateBestallningServiceImplTest {
     }
 
     private Bestallning buildBestallning() {
-        return Bestallning.Factory.newBestallning(buildInvanare(), "syfte", "insats", buildHandlaggare(), "intygsTyp", 1.0, buildVardenhet().get(), "ref");
+        return Bestallning.Factory.newBestallning(buildInvanare(), "syfte", "insats", buildHandlaggare(), "intygsTyp", "AF00213", "detta är beskrivningen",buildVardenhet().get(), "ref");
     }
 
     private se.inera.intyg.infra.integration.hsa.model.Vardenhet buildVardenhetFromHsa() {

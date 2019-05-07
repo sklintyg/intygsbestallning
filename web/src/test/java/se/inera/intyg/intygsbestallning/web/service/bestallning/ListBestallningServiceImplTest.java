@@ -142,13 +142,13 @@ class ListBestallningServiceImplTest {
 
     private Pair<PageDto, List<Bestallning>> createBestallningarList(List<BestallningStatus> statusar) {
         var bestallningar = List.of(
-                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", 1.0, buildVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(buildInvanare("20121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", 1.0, buildVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", 1.0, buildVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(buildInvanare("20121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", 1.0, buildVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", 1.0, buildVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", 1.0, buildVardenhet(), "ref"),
-                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "AF00213", 1.0, buildVardenhet(), "ref")
+                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "F1.0_AF00213", "AF00213", "detta är beskrivningen", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("20121212-1212"), "syfte", "insatser", buildHandlaggare(), "F1.0_AF00213", "AF00213", "detta är beskrivningen", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "F1.0_AF00213", "AF00213", "detta är beskrivningen", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("20121212-1212"), "syfte", "insatser", buildHandlaggare(), "F1.0_AF00213", "AF00213", "detta är beskrivningen", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "F1.0_AF00213", "AF00213", "detta är beskrivningen", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "F1.0_AF00213", "AF00213", "detta är beskrivningen", buildVardenhet(), "ref"),
+                Bestallning.Factory.newBestallning(buildInvanare("19121212-1212"), "syfte", "insatser", buildHandlaggare(), "F1.0_AF00213", "AF00213", "detta är beskrivningen", buildVardenhet(), "ref")
         );
 
         var randomIndex = new Random().nextInt(statusar.size());
