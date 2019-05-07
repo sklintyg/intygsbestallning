@@ -42,17 +42,17 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
 
     private MailService mailService;
     private MailTextService mailTextService;
-    private NotifieringMailBodyFactory notifieringMailBodyFactory;
+    private MailBodyFactory mailBodyFactory;
     private MailProperties mailProperties;
 
     public NotifieringSendServiceImpl(
             MailService mailService,
             MailTextService mailTextService,
-            NotifieringMailBodyFactory notifieringMailBodyFactory,
+            MailBodyFactory mailBodyFactory,
             MailProperties mailProperties) {
         this.mailService = mailService;
         this.mailTextService = mailTextService;
-        this.notifieringMailBodyFactory = notifieringMailBodyFactory;
+        this.mailBodyFactory = mailBodyFactory;
         this.mailProperties = mailProperties;
     }
 
@@ -66,7 +66,7 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
         var notifieringTyp = NotifieringTyp.NY_BESTALLNING;
         var mailTexter = mailTextService.getMailContent(notifieringTyp, bestallning.getTyp());
         var mailLink = getMailLinkRedirect(bestallning.getId());
-        return notifieringMailBodyFactory.buildBodyRawText(bestallning, mailTexter, mailLink);
+        return mailBodyFactory.buildBodyRawText(bestallning, mailTexter, mailLink);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
 
     private String buildMailBody(Bestallning bestallning, MailTexter mailTexter) {
         var mailLink = getMailLinkRedirect(bestallning.getId());
-        return notifieringMailBodyFactory.buildBody(bestallning, mailTexter, mailLink);
+        return mailBodyFactory.buildBody(bestallning, mailTexter, mailLink);
     }
 
     private String getMailLinkRedirect(Long bestallningId) {

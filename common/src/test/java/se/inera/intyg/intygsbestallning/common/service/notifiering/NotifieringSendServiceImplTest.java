@@ -70,7 +70,7 @@ class NotifieringSendServiceImplTest {
     private MailProperties mailProperties;
 
     @Mock
-    private NotifieringMailBodyFactory notifieringMailBodyFactory;
+    private MailBodyFactory mailBodyFactory;
 
     @Mock
     private MailService mailService;
@@ -95,12 +95,12 @@ class NotifieringSendServiceImplTest {
         var bestallning = buildBestallning(bestallningTyp);
 
         when(mailTextService.getMailContent(eq(notifieringTyp), eq(bestallningTyp))).thenReturn(bestallningTexter);
-        when(notifieringMailBodyFactory.buildBody(eq(bestallning), eq(bestallningTexter), anyString())).thenReturn(mockedMailBody);
+        when(mailBodyFactory.buildBody(eq(bestallning), eq(bestallningTexter), anyString())).thenReturn(mockedMailBody);
 
         notifieringSendService.nyBestallning(bestallning);
 
         verify(mailTextService, times(1)).getMailContent(eq(notifieringTyp), eq(bestallningTyp));
-        verify(notifieringMailBodyFactory, times(1)).buildBody(eq(bestallning), eq(bestallningTexter), anyString());
+        verify(mailBodyFactory, times(1)).buildBody(eq(bestallning), eq(bestallningTexter), anyString());
         verify(mailService, times(1)).sendNotifieringToVardenhet(
                 eq(bestallning.getVardenhet().getEpost()),
                 eq(bestallningTexter.getArendeRad().getArende()),
@@ -121,7 +121,7 @@ class NotifieringSendServiceImplTest {
                 .hasMessage("notifieringList may not be null or empty");
 
         verifyZeroInteractions(mailTextService);
-        verifyZeroInteractions(notifieringMailBodyFactory);
+        verifyZeroInteractions(mailBodyFactory);
         verifyZeroInteractions(mailService);
     }
 
@@ -135,12 +135,12 @@ class NotifieringSendServiceImplTest {
         var bestallning = buildBestallning(bestallningTyp);
 
         when(mailTextService.getMailContent(eq(notifieringTyp), eq(bestallningTyp))).thenReturn(bestallningTexter);
-        when(notifieringMailBodyFactory.buildBodyRawText(eq(bestallning), eq(bestallningTexter), anyString())).thenReturn(mockedMailBody);
+        when(mailBodyFactory.buildBodyRawText(eq(bestallning), eq(bestallningTexter), anyString())).thenReturn(mockedMailBody);
 
         notifieringSendService.vidarebefordrad(bestallning);
 
         verify(mailTextService, times(1)).getMailContent(eq(notifieringTyp), eq(bestallningTyp));
-        verify(notifieringMailBodyFactory, times(1)).buildBodyRawText(eq(bestallning), eq(bestallningTexter), anyString());
+        verify(mailBodyFactory, times(1)).buildBodyRawText(eq(bestallning), eq(bestallningTexter), anyString());
         verifyZeroInteractions(mailService);
 
     }
@@ -155,12 +155,12 @@ class NotifieringSendServiceImplTest {
         var bestallning = buildBestallning(bestallningTyp);
 
         when(mailTextService.getMailContent(eq(notifieringTyp), eq(bestallningTyp))).thenReturn(bestallningTexter);
-        when(notifieringMailBodyFactory.buildBody(eq(bestallning), eq(bestallningTexter), anyString())).thenReturn(mockedMailBody);
+        when(mailBodyFactory.buildBody(eq(bestallning), eq(bestallningTexter), anyString())).thenReturn(mockedMailBody);
 
         notifieringSendService.paminnelse(bestallning, notifieringTyp);
 
         verify(mailTextService, times(1)).getMailContent(eq(notifieringTyp), eq(bestallningTyp));
-        verify(notifieringMailBodyFactory, times(1)).buildBody(eq(bestallning), eq(bestallningTexter), anyString());
+        verify(mailBodyFactory, times(1)).buildBody(eq(bestallning), eq(bestallningTexter), anyString());
         verify(mailService, times(1)).sendNotifieringToVardenhet(
                 eq(bestallning.getVardenhet().getEpost()),
                 eq(bestallningTexter.getArendeRad().getArende()),
@@ -178,12 +178,12 @@ class NotifieringSendServiceImplTest {
         var bestallning = buildBestallning(bestallningTyp);
 
         when(mailTextService.getMailContent(eq(notifieringTyp), eq(bestallningTyp))).thenReturn(bestallningTexter);
-        when(notifieringMailBodyFactory.buildBody(eq(bestallning), eq(bestallningTexter), anyString())).thenReturn(mockedMailBody);
+        when(mailBodyFactory.buildBody(eq(bestallning), eq(bestallningTexter), anyString())).thenReturn(mockedMailBody);
 
         notifieringSendService.paminnelse(bestallning, notifieringTyp);
 
         verify(mailTextService, times(1)).getMailContent(eq(notifieringTyp), eq(bestallningTyp));
-        verify(notifieringMailBodyFactory, times(1)).buildBody(eq(bestallning), eq(bestallningTexter), anyString());
+        verify(mailBodyFactory, times(1)).buildBody(eq(bestallning), eq(bestallningTexter), anyString());
         verify(mailService, times(1)).sendNotifieringToVardenhet(
                 eq(bestallning.getVardenhet().getEpost()),
                 eq(bestallningTexter.getArendeRad().getArende()),
