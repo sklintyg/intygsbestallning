@@ -75,6 +75,11 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
     }
 
     private void doEmail(Bestallning bestallning, NotifieringTyp notifieringTyp) {
+
+        if (bestallning.getNotifieringar() == null || bestallning.getNotifieringar().isEmpty()) {
+            throw new IllegalArgumentException("notifieringList may not be null or empty");
+        }
+
         var mailTexter = mailTextService.getMailContent(notifieringTyp, bestallning.getTyp());
         var mailBody = buildMailBody(bestallning, mailTexter);
         var subject = mailTexter.getArendeRad().getArende();
@@ -106,12 +111,7 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
     }
 
     private void setSkickadTimestamp(Bestallning bestallning) {
-
         var notifieringar = bestallning.getNotifieringar();
-
-        if (notifieringar == null || notifieringar.isEmpty()) {
-            throw new IllegalArgumentException("notifieringList may not be null or empty");
-        }
 
         Collections.max(notifieringar, Comparator.comparing(Notifiering::getId)).setSkickad(LocalDateTime.now());
     }
