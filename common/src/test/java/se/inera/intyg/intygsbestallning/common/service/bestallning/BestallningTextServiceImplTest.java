@@ -18,9 +18,6 @@
  */
 package se.inera.intyg.intygsbestallning.common.service.bestallning;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -34,10 +31,13 @@ import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
 import se.inera.intyg.schemas.contract.Personnummer;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 @ActiveProfiles("test")
-@TestPropertySource("classpath:test.properties")
 @EnableAutoConfiguration
 @SpringJUnitConfig(classes = {CommonConfig.class})
+@TestPropertySource("classpath:test.properties")
 class BestallningTextServiceImplTest {
 
     private static final String SUPPORTED_BESTALLNING_TYP = "TEST";

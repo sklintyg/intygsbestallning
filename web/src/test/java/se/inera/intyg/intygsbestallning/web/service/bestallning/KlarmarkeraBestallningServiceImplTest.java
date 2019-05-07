@@ -41,8 +41,6 @@ import se.inera.intyg.intygsbestallning.web.service.pdl.LogService;
 import se.inera.intyg.schemas.contract.Personnummer;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;

@@ -24,6 +24,8 @@ import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.web.pdl.LogEvent;
 
 public interface LogService {
+    void log(String bestallningId, String patientId, String enhetsId, String vardgivareId, LogEvent logEvent);
+
     void log(Bestallning bestallning, LogEvent logEvent);
 
     void logList(List<? extends Bestallning> bestallningListItems, LogEvent logEvent);

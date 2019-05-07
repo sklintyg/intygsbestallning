@@ -19,7 +19,6 @@
 
 package se.inera.intyg.intygsbestallning.web.pdl;
 
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import se.inera.intyg.infra.logmessages.Enhet;
 import se.inera.intyg.infra.logmessages.Patient;
@@ -31,12 +30,14 @@ import se.inera.intyg.intygsbestallning.web.auth.IbSelectableHsaEntityType;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
 import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
 
+import java.util.stream.Collectors;
+
 @Service
-public class PdlLogMessageFactoryImpl implements PdlLogMessageFactory {
+public class PdlLoggingMessageFactoryImpl implements PdlLoggingMessageFactory {
 
     private PdlLoggingProperties pdlLoggingProperties;
 
-    public PdlLogMessageFactoryImpl(PdlLoggingProperties pdlLoggingProperties) {
+    public PdlLoggingMessageFactoryImpl(PdlLoggingProperties pdlLoggingProperties) {
         this.pdlLoggingProperties = pdlLoggingProperties;
     }
 
@@ -58,7 +59,50 @@ public class PdlLogMessageFactoryImpl implements PdlLogMessageFactory {
                 logMessage.getResources().stream()
                         .map(logResource -> buildPdlLogResource(logResource, logUser))
                         .collect(Collectors.toList()));
+
+        // Unset values due to regulations
+        unsetValues(pdlLogMessage);
+
         return pdlLogMessage;
+    }
+
+    private PdlResource buildPdlLogResource(LogResource logResource, LogUser logUser) {
+        PdlResource pdlResource = new PdlResource();
+        pdlResource.setPatient(getPatient(logResource));
+        pdlResource.setResourceOwner(getCareUnit(logUser));
+        pdlResource.setResourceType(logResource.getResourceType().getResourceTypeName());
+
+        return pdlResource;
+    }
+
+    private Enhet createCareUnit(String enhetsId, String enhetsNamn, String vardgivareId, String vardgivareNamn) {
+        return new Enhet(enhetsId, enhetsNamn, vardgivareId, vardgivareNamn);
+    }
+
+    private Patient createPatient(String patientId, String patientName) {
+        return new Patient(patientId, patientName);
+    }
+
+    private Enhet getCareUnit(LogUser logUser) {
+        return createCareUnit(logUser.getEnhetsId(), logUser.getEnhetsNamn(), logUser.getVardgivareId(), logUser.getVardgivareNamn());
+    }
+
+    private LogUser getLogUser(IntygsbestallningUser ibUser) {
+        IbSelectableHsaEntity loggedInAt = ibUser.getUnitContext();
+
+        if (loggedInAt != null && loggedInAt.type() == IbSelectableHsaEntityType.VE) {
+            IbVardenhet ve = (IbVardenhet) loggedInAt;
+            LogUser logUser = new LogUser(ibUser.getHsaId(), ve.getId(), ve.getParentHsaId());
+            logUser.setUserAssignment(ibUser.getSelectedMedarbetarUppdragNamn());
+            logUser.setUserTitle(ibUser.getTitel());
+            logUser.setEnhetsNamn(ve.getName());
+            logUser.setVardgivareNamn(ve.getParentHsaName());
+            return logUser;
+        } else {
+            // TODO: Make better error message
+            throw new IllegalStateException("There cannot be any PDL logging for Vårdadministratör given that they should never "
+                    + "see any PDL-eligible information.");
+        }
     }
 
     private PdlLogMessage getPdlLogMessage(LogActivity logActivity) {
@@ -72,49 +116,29 @@ public class PdlLogMessageFactoryImpl implements PdlLogMessageFactory {
         return pdlLogMessage;
     }
 
-    private LogUser getLogUser(IntygsbestallningUser ibUser) {
-        IbSelectableHsaEntity loggedInAt = ibUser.getUnitContext();
-
-        if (loggedInAt != null && loggedInAt.type() == IbSelectableHsaEntityType.VE) {
-            IbVardenhet ve = (IbVardenhet) loggedInAt;
-            LogUser logUser = new LogUser(ibUser.getHsaId(), ve.getId(), ve.getParentHsaId());
-            logUser.setUserName(ibUser.getNamn());
-            logUser.setUserAssignment(ibUser.getSelectedMedarbetarUppdragNamn());
-            logUser.setUserTitle(ibUser.getTitel());
-            logUser.setEnhetsNamn(ve.getName());
-            logUser.setVardgivareNamn(ve.getParentHsaName());
-            return logUser;
-        } else {
-            // TODO: Make better error message
-            throw new IllegalStateException("There cannot be any PDL logging for Vårdadministratör given that they should never "
-                    + "see any PDL-eligible information.");
-        }
-    }
-
     private void populateWithCurrentUserAndCareUnit(PdlLogMessage pdlLogMsg, LogUser logUser) {
         pdlLogMsg.setUserId(logUser.getUserId());
         pdlLogMsg.setUserName(logUser.getUserName());
         pdlLogMsg.setUserAssignment(logUser.getUserAssignment());
         pdlLogMsg.setUserTitle(logUser.getUserTitle());
 
-        Enhet vardenhet = new Enhet(logUser.getEnhetsId(), logUser.getEnhetsNamn(), logUser.getVardgivareId(), logUser.getVardgivareNamn());
+        Enhet vardenhet = getCareUnit(logUser);
         pdlLogMsg.setUserCareUnit(vardenhet);
     }
 
     private Patient getPatient(LogResource logResource) {
-        return new Patient(
+        return createPatient(
                 logResource.getPatientId().replace("-", "").replace("+", ""),
-                "");
+                logResource.getPatientNamn());
     }
 
-    private PdlResource buildPdlLogResource(LogResource logResource, LogUser logUser) {
-        PdlResource pdlResource = new PdlResource();
-        pdlResource.setPatient(getPatient(logResource));
-        pdlResource.setResourceOwner(
-                new Enhet(logUser.getEnhetsId(), logUser.getEnhetsNamn(), logUser.getVardgivareId(), logUser.getVardgivareNamn()));
-        pdlResource.setResourceType(logResource.getResourceType().getResourceTypeName());
+    private void unsetValues(final PdlLogMessage logMessage) {
+        // Inget användarnamn vid PDL-logging
+        logMessage.setUserName("");
 
-        return pdlResource;
+        // Inget patientnamn vid PDL-logging
+        logMessage.getPdlResourceList().forEach(pdlResource ->
+                pdlResource.setPatient(createPatient(pdlResource.getPatient().getPatientId(), "")));
     }
 
 }

@@ -14,7 +14,6 @@ plugins {
 }
 
 dependencies {
-
   // Project dependencies
   implementation(project(":${rootProject.name}-common"))
   implementation(project(":${rootProject.name}-integration"))

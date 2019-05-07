@@ -19,14 +19,9 @@
 
 package se.inera.intyg.intygsbestallning.web.service.pdl;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +38,19 @@ import se.inera.intyg.intygsbestallning.common.json.CustomObjectMapper;
 import se.inera.intyg.intygsbestallning.web.pdl.LogActivity;
 import se.inera.intyg.intygsbestallning.web.pdl.LogEvent;
 import se.inera.intyg.intygsbestallning.web.pdl.LogMessage;
-import se.inera.intyg.intygsbestallning.web.pdl.PdlLogMessageFactory;
+import se.inera.intyg.intygsbestallning.web.pdl.LogResource;
+import se.inera.intyg.intygsbestallning.web.pdl.PdlLoggingMessageFactory;
 import se.inera.intyg.intygsbestallning.web.service.user.UserService;
+
+import javax.annotation.PostConstruct;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Implementation of service for logging user actions according to PDL requirements.
@@ -56,12 +62,14 @@ public class LogServiceImpl implements LogService {
 
     private static final Logger LOG = LoggerFactory.getLogger(LogServiceImpl.class);
 
+    private static final String ACTIVITY_LEVEL = "Översikt";
+
     @Autowired(required = false)
-    @Qualifier("jmsPDLLogTemplate")
+    @Qualifier("jmsPdlLoggingTemplate")
     private JmsTemplate jmsTemplate;
 
     @Autowired
-    private PdlLogMessageFactory pdlLogMessageFactory;
+    private PdlLoggingMessageFactory pdlLoggingMessageFactory;
 
     @Autowired
     private UserService userService;
@@ -69,54 +77,67 @@ public class LogServiceImpl implements LogService {
     @PostConstruct
     public void checkJmsTemplate() {
         if (jmsTemplate == null) {
-            LOG.error("PDL logging is disabled!");
+            LOG.error("INTYGSBESTALLNING: PDL-logging is disabled!");
         }
     }
 
     @Override
-    public void log(Bestallning bestallning, LogEvent logEvent) {
-        LogMessage logMessage = getLogMessage(bestallning, logEvent);
-        PdlLogMessage pdlLogMessage = pdlLogMessageFactory.buildLogMessage(logMessage, userService.getUser());
+    public void log(final String bestallningId, final String patientId,
+                    final String enhetsId, final String vardgivareId, final LogEvent logEvent) {
+
+        String activityLevel = logEvent.equals(LogEvent.PERSONINFORMATION_VISAS_I_LISTA) ? ACTIVITY_LEVEL : bestallningId;
+
+        LogActivity logActivity = new LogActivity(activityLevel, logEvent);
+        LogResource logResource = new LogResource(patientId, enhetsId, vardgivareId);
+        LogMessage logMessage = new LogMessage(logActivity, ImmutableList.of(logResource));
+
+        PdlLogMessage pdlLogMessage = pdlLoggingMessageFactory.buildLogMessage(logMessage, userService.getUser());
         send(pdlLogMessage);
+    }
+
+    @Override
+    public void log(Bestallning bestallning, LogEvent logEvent) {
+        if (bestallning == null) {
+            LOG.debug("INTYGSBESTALLNING: Argument bestallning was null - no PDL-logging.");
+            return;
+        }
+
+        log(bestallning.getId().toString(),
+            bestallning.getInvanare().getPersonId().getPersonnummer(),
+            bestallning.getVardenhet().getHsaId(),
+            bestallning.getVardenhet().getVardgivareHsaId(),
+            logEvent);
     }
 
     @Override
     public void logList(List<? extends Bestallning> bestallningListItems, LogEvent logEvent) {
         if (bestallningListItems == null) {
-            LOG.debug("No bestallningar for PDL logging, no logging.");
-            return;
-        }
-        LogMessage logMessage = getLogMessage(bestallningListItems, logEvent);
-        PdlLogMessage pdlLogMessage = pdlLogMessageFactory.buildLogMessage(logMessage, userService.getUser());
-        send(pdlLogMessage);
-    }
-
-    private LogMessage getLogMessage(List<? extends Bestallning> bestallningListItems, LogEvent logEvent) {
-        return null;
-    }
-
-    private LogMessage getLogMessage(Bestallning bestallning, LogEvent logEvent) {
-        LogMessage logMessage = new LogMessage(new LogActivity("", logEvent), new ArrayList<>());
-        return logMessage;
-    }
-
-    private void send(PdlLogMessage pdlLogMessage) {
-
-        if (jmsTemplate == null) {
-            LOG.error("Could not log list of IntygsData, PDL logging is disabled or JMS sender template is null.");
+            LOG.debug("INTYGSBESTALLNING: Argument bestallningListItems was null - no PDL-logging.");
             return;
         }
 
-        LOG.info("Logging SjukfallIntygsData for activityType {} having {}", pdlLogMessage.getActivityType().name(),
-                pdlLogMessage.getPdlResourceList().size());
+        bestallningListItems.stream()
+                .filter(distinctByKey(b -> b.getInvanare().getPersonId().getPersonnummer()))
+                .forEach(b -> log(b, logEvent));
+    }
+
+    void send(PdlLogMessage pdlLogMessage) {
+        LOG.info("INTYGSBESTALLNING: PDL-logging for activity '{}' by user {}",
+                pdlLogMessage.getActivityArgs(),
+                pdlLogMessage.getUserId());
+
         try {
             jmsTemplate.send(new MC(pdlLogMessage));
         } catch (JmsException e) {
-            LOG.error("Could not log list of IntygsData", e);
+            LOG.error("INTYGSBESTALLNING: Unsuccessful to perform PDL-logging", e);
             throw new IbJMSException(IbErrorCodeEnum.UNKNOWN_INTERNAL_PROBLEM,
                     "Error connecting to JMS broker when performing PDL-logging. This is probably a configuration error.");
         }
+    }
 
+    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        final Set<Object> seen = new HashSet<>();
+        return t -> seen.add(keyExtractor.apply(t));
     }
 
     private static final class MC implements MessageCreator {
@@ -132,8 +153,10 @@ public class LogServiceImpl implements LogService {
             try {
                 return session.createTextMessage(objectMapper.writeValueAsString(this.logMsg));
             } catch (JsonProcessingException e) {
-                throw new IllegalArgumentException("Could not serialize log message of type '" + logMsg.getClass().getName()
-                        + "' into JSON, message: " + e.getMessage(), e);
+                throw new IllegalArgumentException(
+                        "INTYGSBESTALLNING: Could not serialize log message of type '"
+                                + logMsg.getClass().getName()
+                                + "' into JSON, message: " + e.getMessage(), e);
             }
         }
     }

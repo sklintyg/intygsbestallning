@@ -19,24 +19,50 @@
 
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarResult;
+import se.inera.intyg.intygsbestallning.common.dto.PageDto;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
+import se.inera.intyg.intygsbestallning.web.pdl.LogEvent;
+import se.inera.intyg.intygsbestallning.web.service.pdl.LogService;
+
+import java.util.List;
 
 @Service
 public class ListBestallningServiceImpl implements ListBestallningService {
 
     private BestallningPersistenceService bestallningPersistenceService;
 
-    public ListBestallningServiceImpl(BestallningPersistenceService bestallningPersistenceService) {
+    private LogService pdlLogService;
+
+    public ListBestallningServiceImpl(
+            BestallningPersistenceService bestallningPersistenceService,
+            LogService pdlLogService) {
         this.bestallningPersistenceService = bestallningPersistenceService;
+        this.pdlLogService = pdlLogService;
     }
 
     @Override
     @Transactional(readOnly = true)
     public ListBestallningarResult listByQuery(ListBestallningarQuery query) {
-        return bestallningPersistenceService.listBestallningar(query);
+        Pair<PageDto, List<Bestallning>> result = bestallningPersistenceService.listBestallningar(query);
+
+        PageDto pageDto = result.getFirst();
+        List<Bestallning> bestallningar = result.getSecond();
+
+        // Do the mandatory PDL-logging
+        pdlLogService.logList(bestallningar, LogEvent.PERSONINFORMATION_VISAS_I_LISTA);
+
+        return ListBestallningarResult.Factory.toDto(
+                query.getTextSearch() != null,
+                bestallningar,
+                pageDto,
+                query.getSortColumn(),
+                query.getSortDirection());
     }
+
 }

@@ -1,6 +1,13 @@
+activemq:
+  broker:
+    url: vm://localhost?broker.persistent=false
+    password:
+    username:
+
 pdl:
   system-id: dev-id
   system-name: dev-name
+  queue-name: ib.pdllogging.queue
 
 spring:
   main:

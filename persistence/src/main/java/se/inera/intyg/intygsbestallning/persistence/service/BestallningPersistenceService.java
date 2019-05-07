@@ -19,13 +19,15 @@
 
 package se.inera.intyg.intygsbestallning.persistence.service;
 
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.util.Pair;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.dto.CountBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarBasedOnStatusQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
-import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarResult;
+import se.inera.intyg.intygsbestallning.common.dto.PageDto;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface BestallningPersistenceService {
     Bestallning saveNewBestallning(Bestallning bestallning);
@@ -36,7 +38,7 @@ public interface BestallningPersistenceService {
 
     long countBestallningar(CountBestallningarQuery query);
 
-    ListBestallningarResult listBestallningar(ListBestallningarQuery query);
+    Pair<PageDto, List<Bestallning>> listBestallningar(ListBestallningarQuery query);
 
     Optional<Bestallning> getBestallningByIdAndHsaIdAndOrgId(Long id, String hsaId, String orgNrVardgivare);
 

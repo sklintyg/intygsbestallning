@@ -66,5 +66,4 @@ enum class LogEvent private constructor(val activityArgs: String, val activityTy
   PERSONINFORMATION_VISAS_I_LISTA("Visad i lista", ActivityType.READ);
 
   val id: String = this.name
-
 }

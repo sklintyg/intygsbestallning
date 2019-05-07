@@ -20,7 +20,6 @@ package se.inera.intyg.intygsbestallning.mailsender;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.camel.test.spring.CamelSpringJUnit4ClassRunner;
 import org.apache.camel.test.spring.CamelSpringRunner;
 import org.junit.Before;
 import org.junit.Test;

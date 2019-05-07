@@ -19,28 +19,16 @@
 package se.inera.intyg.intygsbestallning.persistence.service;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.Collectors;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
 import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
-import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDto;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningSortColumn;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
@@ -51,6 +39,18 @@ import se.inera.intyg.intygsbestallning.persistence.TestSupport;
 import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
 import se.inera.intyg.intygsbestallning.persistence.repository.BestallningRepository;
 import se.inera.intyg.schemas.contract.Personnummer;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @TestContext
@@ -96,15 +96,15 @@ public class BestallningPersistenceServiceTest extends TestSupport {
 
         var query = search(entity, entity.getInvanare().getPersonId());
         var result = bestallningPersistenceService.listBestallningar(query);
-        assertFalse(result.getBestallningar().isEmpty());
+        assertFalse(result.getSecond().isEmpty());
 
         query = search(entity, entity.getStatus().getBeskrivning().toLowerCase());
         result = bestallningPersistenceService.listBestallningar(query);
-        assertFalse(result.getBestallningar().isEmpty());
+        assertFalse(result.getSecond().isEmpty());
 
         query = search(entity, entity.getAnkomstDatum().format(DateTimeFormatter.ISO_DATE));
         result = bestallningPersistenceService.listBestallningar(query);
-        assertFalse(result.getBestallningar().isEmpty());
+        assertFalse(result.getSecond().isEmpty());
     }
 
     @Test
@@ -117,17 +117,17 @@ public class BestallningPersistenceServiceTest extends TestSupport {
 
         // page 0
         var result = bestallningPersistenceService.listBestallningar(query);
-        assertEquals(pageSize, result.getBestallningar().size());
-        assertEquals(0, result.getPageIndex());
-        assertEquals(pageSize, result.getNumberOfElements());
+        assertEquals(pageSize, result.getSecond().size());
+        assertEquals(0, result.getFirst().getPageIndex());
+        assertEquals(pageSize, result.getFirst().getNumberOfElements());
 
         // page 1
         Mockito.when(query.getPageIndex()).thenReturn(1);
         result = bestallningPersistenceService.listBestallningar(query);
-        assertEquals(pageSize, result.getBestallningar().size());
-        assertEquals(1, result.getPageIndex());
-        assertEquals(total / pageSize, result.getTotalPages());
-        assertEquals(total, result.getTotalElements());
+        assertEquals(pageSize, result.getSecond().size());
+        assertEquals(1, result.getFirst().getPageIndex());
+        assertEquals(total / pageSize, result.getFirst().getTotalPages());
+        assertEquals(total, result.getFirst().getTotalElements());
     }
 
     @Test
@@ -140,9 +140,9 @@ public class BestallningPersistenceServiceTest extends TestSupport {
         Mockito.when(query.getSortColumn()).thenReturn(ListBestallningSortColumn.ID);
         Mockito.when(query.getSortDirection()).thenReturn(ListBestallningDirection.ASC);
         var id1 = bestallningPersistenceService.listBestallningar(query)
-                .getBestallningar()
+                .getSecond()
                 .stream()
-                .map(ListBestallningDto::getId)
+                .map(Bestallning::getId)
                 .collect(Collectors.toList());
         var id2 = Lists.newArrayList(id1);
         id2.sort(Long::compareTo);
@@ -153,9 +153,9 @@ public class BestallningPersistenceServiceTest extends TestSupport {
         Mockito.when(query.getSortDirection()).thenReturn(ListBestallningDirection.DESC);
 
         var p1 = bestallningPersistenceService.listBestallningar(query)
-                .getBestallningar()
+                .getSecond()
                 .stream()
-                .map(b -> b.getInvanare().getPersonId())
+                .map(b -> b.getInvanare().getPersonId().getPersonnummer())
                 .collect(Collectors.toList());
         var p2 = Lists.newArrayList(p1);
         p2.sort(String::compareTo);
@@ -226,7 +226,7 @@ public class BestallningPersistenceServiceTest extends TestSupport {
 
          var result = bestallningPersistenceService.listBestallningar(query);
 
-        assertThat(result.getBestallningar()).hasSize(2);
+        assertThat(result.getSecond()).hasSize(2);
 
     }
 
@@ -249,7 +249,7 @@ public class BestallningPersistenceServiceTest extends TestSupport {
 
         var result = bestallningPersistenceService.listBestallningar(query);
 
-        assertThat(result.getBestallningar()).hasSize(1);
+        assertThat(result.getSecond()).hasSize(1);
     }
 
     @Test
@@ -271,7 +271,7 @@ public class BestallningPersistenceServiceTest extends TestSupport {
 
         var result = bestallningPersistenceService.listBestallningar(query);
 
-        assertThat(result.getBestallningar()).hasSize(1);
+        assertThat(result.getSecond()).hasSize(1);
     }
 
     @Test
@@ -293,7 +293,7 @@ public class BestallningPersistenceServiceTest extends TestSupport {
 
         var result = bestallningPersistenceService.listBestallningar(query);
 
-        assertThat(result.getBestallningar()).hasSize(2);
+        assertThat(result.getSecond()).hasSize(2);
     }
 
     private List<Bestallning> createBestallningar() {

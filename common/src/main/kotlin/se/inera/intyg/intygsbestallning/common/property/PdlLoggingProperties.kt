@@ -26,4 +26,5 @@ import org.springframework.context.annotation.Configuration
 open class PdlLoggingProperties {
   lateinit var systemId: String
   lateinit var systemName: String
+  lateinit var queueName: String
 }
