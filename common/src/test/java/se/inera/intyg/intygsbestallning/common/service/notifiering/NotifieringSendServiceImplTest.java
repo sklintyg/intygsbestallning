@@ -90,20 +90,20 @@ class NotifieringSendServiceImplTest {
         var notifieringTyp = NotifieringTyp.NY_BESTALLNING;
         var bestallningTyp = "F1.0_AF00213";
 
-        var bestallningTexter = buildMailTexter(bestallningTyp, notifieringTyp);
+        var mailTexter = buildMailTexter(bestallningTyp, notifieringTyp);
         var mockedMailBody = "<p>detta är en mailbody</p>";
         var bestallning = buildBestallning(bestallningTyp);
 
-        when(mailTextService.getMailContent(eq(notifieringTyp), eq(bestallningTyp))).thenReturn(bestallningTexter);
-        when(mailBodyFactory.buildBody(eq(bestallning), eq(bestallningTexter), anyString())).thenReturn(mockedMailBody);
+        when(mailTextService.getMailContent(eq(notifieringTyp), eq(bestallningTyp))).thenReturn(mailTexter);
+        when(mailBodyFactory.buildBody(eq(bestallning), eq(mailTexter), anyString())).thenReturn(mockedMailBody);
 
         notifieringSendService.nyBestallning(bestallning);
 
         verify(mailTextService, times(1)).getMailContent(eq(notifieringTyp), eq(bestallningTyp));
-        verify(mailBodyFactory, times(1)).buildBody(eq(bestallning), eq(bestallningTexter), anyString());
+        verify(mailBodyFactory, times(1)).buildBody(eq(bestallning), eq(mailTexter), anyString());
         verify(mailService, times(1)).sendNotifieringToVardenhet(
                 eq(bestallning.getVardenhet().getEpost()),
-                eq(bestallningTexter.getArendeRad().getArende()),
+                eq(mailTexter.getArendeRad().getArende()),
                 eq(mockedMailBody)
         );
     }
@@ -130,17 +130,17 @@ class NotifieringSendServiceImplTest {
         var notifieringTyp = NotifieringTyp.NY_BESTALLNING;
         var bestallningTyp = "F1.0_AF00213";
 
-        var bestallningTexter = buildMailTexter(bestallningTyp, notifieringTyp);
+        var mailTexter = buildMailTexter(bestallningTyp, notifieringTyp);
         var mockedMailBody = "<p>detta är en mailbody</p>";
         var bestallning = buildBestallning(bestallningTyp);
 
-        when(mailTextService.getMailContent(eq(notifieringTyp), eq(bestallningTyp))).thenReturn(bestallningTexter);
-        when(mailBodyFactory.buildBodyRawText(eq(bestallning), eq(bestallningTexter), anyString())).thenReturn(mockedMailBody);
+        when(mailTextService.getMailContent(eq(notifieringTyp), eq(bestallningTyp))).thenReturn(mailTexter);
+        when(mailBodyFactory.buildBodyRawText(eq(bestallning), eq(mailTexter), anyString())).thenReturn(mockedMailBody);
 
         notifieringSendService.vidarebefordrad(bestallning);
 
         verify(mailTextService, times(1)).getMailContent(eq(notifieringTyp), eq(bestallningTyp));
-        verify(mailBodyFactory, times(1)).buildBodyRawText(eq(bestallning), eq(bestallningTexter), anyString());
+        verify(mailBodyFactory, times(1)).buildBodyRawText(eq(bestallning), eq(mailTexter), anyString());
         verifyZeroInteractions(mailService);
 
     }
@@ -150,20 +150,20 @@ class NotifieringSendServiceImplTest {
         var notifieringTyp = NotifieringTyp.NY_BESTALLNING_PAMINNELSE_1;
         var bestallningTyp = "F1.0_AF00213";
 
-        var bestallningTexter = buildMailTexter(bestallningTyp, notifieringTyp);
+        var mailTexter = buildMailTexter(bestallningTyp, notifieringTyp);
         var mockedMailBody = "<p>detta är en mailbody</p>";
         var bestallning = buildBestallning(bestallningTyp);
 
-        when(mailTextService.getMailContent(eq(notifieringTyp), eq(bestallningTyp))).thenReturn(bestallningTexter);
-        when(mailBodyFactory.buildBody(eq(bestallning), eq(bestallningTexter), anyString())).thenReturn(mockedMailBody);
+        when(mailTextService.getMailContent(eq(notifieringTyp), eq(bestallningTyp))).thenReturn(mailTexter);
+        when(mailBodyFactory.buildBody(eq(bestallning), eq(mailTexter), anyString())).thenReturn(mockedMailBody);
 
         notifieringSendService.paminnelse(bestallning, notifieringTyp);
 
         verify(mailTextService, times(1)).getMailContent(eq(notifieringTyp), eq(bestallningTyp));
-        verify(mailBodyFactory, times(1)).buildBody(eq(bestallning), eq(bestallningTexter), anyString());
+        verify(mailBodyFactory, times(1)).buildBody(eq(bestallning), eq(mailTexter), anyString());
         verify(mailService, times(1)).sendNotifieringToVardenhet(
                 eq(bestallning.getVardenhet().getEpost()),
-                eq(bestallningTexter.getArendeRad().getArende()),
+                eq(mailTexter.getArendeRad().getArende()),
                 eq(mockedMailBody)
         );
     }
@@ -173,20 +173,20 @@ class NotifieringSendServiceImplTest {
         var notifieringTyp = NotifieringTyp.NY_BESTALLNING_PAMINNELSE_2;
         var bestallningTyp = "F1.0_AF00213";
 
-        var bestallningTexter = buildMailTexter(bestallningTyp, notifieringTyp);
+        var mailTexter = buildMailTexter(bestallningTyp, notifieringTyp);
         var mockedMailBody = "<p>detta är en mailbody</p>";
         var bestallning = buildBestallning(bestallningTyp);
 
-        when(mailTextService.getMailContent(eq(notifieringTyp), eq(bestallningTyp))).thenReturn(bestallningTexter);
-        when(mailBodyFactory.buildBody(eq(bestallning), eq(bestallningTexter), anyString())).thenReturn(mockedMailBody);
+        when(mailTextService.getMailContent(eq(notifieringTyp), eq(bestallningTyp))).thenReturn(mailTexter);
+        when(mailBodyFactory.buildBody(eq(bestallning), eq(mailTexter), anyString())).thenReturn(mockedMailBody);
 
         notifieringSendService.paminnelse(bestallning, notifieringTyp);
 
         verify(mailTextService, times(1)).getMailContent(eq(notifieringTyp), eq(bestallningTyp));
-        verify(mailBodyFactory, times(1)).buildBody(eq(bestallning), eq(bestallningTexter), anyString());
+        verify(mailBodyFactory, times(1)).buildBody(eq(bestallning), eq(mailTexter), anyString());
         verify(mailService, times(1)).sendNotifieringToVardenhet(
                 eq(bestallning.getVardenhet().getEpost()),
-                eq(bestallningTexter.getArendeRad().getArende()),
+                eq(mailTexter.getArendeRad().getArende()),
                 eq(mockedMailBody)
         );
     }
