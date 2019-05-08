@@ -47,15 +47,15 @@ describe('beställning reducer', () => {
   })
 
   test('should contain modal title and message if delete fails', () => {
-    const errorMessage = { message: 'ANY', errorCode: 0 }
+    const errorMessage = { message: 'ANY', errorCode: 0, logId:'aaa' }
     const action = {
       type: actions.DELETE_BESTALLNING_FAILURE,
-      payload: errorMessage,
+      payload: { error: errorMessage },
     }
     const stateAfter = {
       ...stateBefore,
       bestallning: {},
-      errorMessage: { ...errorMessage, modal: { message: '', title: DELETE_FAIL_MODAL_HEADER } },
+      errorMessage: { error: errorMessage, modal: { message: '', title: DELETE_FAIL_MODAL_HEADER,  errorCode: 0, logId:'aaa' } },
     }
     expect(reducer({}, action)).toEqual(stateAfter)
   })

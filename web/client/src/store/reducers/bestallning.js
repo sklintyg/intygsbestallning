@@ -43,7 +43,7 @@ const errorMessage = (state = null, action) => {
     case ActionConstants.COMPLETE_BESTALLNING_FAILURE:
       return { ...action.payload, modal: buildClientError(action.payload) }
     case ActionConstants.DELETE_BESTALLNING_FAILURE:
-      if (action.payload.error.logId) {
+      if (action.payload.error && action.payload.error.logId) {
         return { ...action.payload, modal: { ...action.payload.error, title: DELETE_FAIL_MODAL_HEADER, message:'' } }
       }
       return {...action.payload, modal: {...buildClientError(action.payload), title: DELETE_FAIL_MODAL_HEADER}}
