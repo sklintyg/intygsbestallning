@@ -168,7 +168,7 @@ public class RequestErrorController implements ErrorController {
     }
 
     /**
-     * Map type of auth exception to error codes
+     * Map type of auth exception to error codesz§
      *
      * @param e exception
      * @return description
