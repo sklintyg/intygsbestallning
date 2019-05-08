@@ -32,9 +32,18 @@ inera:
 
 activemq:
   broker:
-    url: vm://localhost?broker.persistent=false
-    username:
-    password:
+    url: tcp://localhost:61616
+    username: admin
+    password: admin
+#    url: vm://localhost?broker.persistent=false
+#    username:
+#    password:
+
+pdl:
+  logging:
+    system-id: dev-id
+    system-name: dev-name
+    queue-name: ib.pdllogging.queue
 
 mailsender:
   maximum-redeliveries: 5
@@ -50,7 +59,3 @@ bestallning:
 mail:
   host: http://localhost:8080
 
-pdl:
-  system-id: dev-id
-  system-name: dev-name
-  queue-name: ib.pdllogging.queue
