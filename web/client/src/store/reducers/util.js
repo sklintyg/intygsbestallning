@@ -6,8 +6,8 @@ export const buildClientError = (errorResponse, prefix) => {
   let titleKey, messageKey, logId;
 
   if (!error || !error.hasOwnProperty('errorCode')) {
-    messageKey = 'error.common.unknown.message';
-    titleKey = 'error.common.unknown.title';
+    messageKey = 'error.common.bestallning_fel004_tekniskt_fel.message';
+    titleKey = 'error.common.bestallning_fel004_tekniskt_fel.title';
     logId = null;
   } else {
     const errorKey = error.errorCode.toLowerCase();
@@ -20,8 +20,8 @@ export const buildClientError = (errorResponse, prefix) => {
       titleKey = `error.common.${errorKey}.title`;
       messageKey = `error.common.${errorKey}.message`;
       if (!haveMessage(messageKey)) {
-        titleKey = `error.common.unknown.title`;
-        messageKey = `error.common.unknown.message`;
+        titleKey = `error.common.bestallning_fel004_tekniskt_fel.title`;
+        messageKey = `error.common.bestallning_fel004_tekniskt_fel.message`;
       }
     }
   }

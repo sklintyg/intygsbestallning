@@ -20,7 +20,7 @@ describe('util test', () => {
 
       const result = util.buildClientError(errorResponse, 'error.user');
 
-      expect(result).toEqual({title: 'error.common.unknown.title', message: 'error.common.unknown.message', logId: null})
+      expect(result).toEqual({title: 'error.common.bestallning_fel004_tekniskt_fel.title', message: 'error.common.bestallning_fel004_tekniskt_fel.message', logId: null})
     });
 
     it('missing errorCode', () => {
@@ -30,7 +30,7 @@ describe('util test', () => {
 
       const result = util.buildClientError(errorResponse, 'error.user');
 
-      expect(result).toEqual({title: 'error.common.unknown.title', message: 'error.common.unknown.message', logId: null})
+      expect(result).toEqual({title: 'error.common.bestallning_fel004_tekniskt_fel.title', message: 'error.common.bestallning_fel004_tekniskt_fel.message', logId: null})
     });
 
     it('errorCode found', () => {
@@ -42,7 +42,7 @@ describe('util test', () => {
 
       const result = util.buildClientError(errorResponse, 'error.user');
 
-      expect(result).toEqual({title: 'error.common.unknown.title', message: 'error.common.unknown.message', logId: null})
+      expect(result).toEqual({title: 'error.common.bestallning_fel004_tekniskt_fel.title', message: 'error.common.bestallning_fel004_tekniskt_fel.message', logId: null})
     });
 
     it('errorCode fallback', () => {
@@ -66,7 +66,7 @@ describe('util test', () => {
 
       const result = util.buildClientError(errorResponse, 'error.user');
 
-      expect(result).toEqual({title: 'error.common.unknown.title', message: 'error.common.unknown.message', logId: null})
+      expect(result).toEqual({title: 'error.common.bestallning_fel004_tekniskt_fel.title', message: 'error.common.bestallning_fel004_tekniskt_fel.message', logId: null})
     });
   })
 });
