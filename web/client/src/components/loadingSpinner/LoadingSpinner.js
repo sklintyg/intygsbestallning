@@ -17,7 +17,7 @@ const SpinnerWrapper = styled.div`
   display: flex;
 `
 
-const LoadingSpinner = ({ loading, message }) => {
+const LoadingSpinner = ({ loading, message, color }) => {
   const [showSpinner, setShowSpinner] = useState(false)
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const LoadingSpinner = ({ loading, message }) => {
     return (
       <SpinnerWrapper>
         <SpinnerBox>
-          <Spinner color="secondary" />
+          <Spinner color={color ? color : "secondary"} />
           <div>{message}</div>
         </SpinnerBox>
       </SpinnerWrapper>
