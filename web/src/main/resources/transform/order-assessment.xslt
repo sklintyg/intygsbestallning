@@ -55,8 +55,8 @@
         <core:errorId>VALIDATION_ERROR</core:errorId>
       </xsl:when>
       <xsl:otherwise>
-        <!-- 'soap:Server' is transformed to APPLICATION_ERROR -->
-        <core:errorId>APPLICATION_ERROR</core:errorId>
+        <!-- 'soap:Server' is transformed to TECHNICAL_ERROR -->
+        <core:errorId>TECHNICAL_ERROR</core:errorId>
       </xsl:otherwise>
     </xsl:choose>
 
