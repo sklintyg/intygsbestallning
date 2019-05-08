@@ -9,8 +9,6 @@ dependencies {
 
 
   // External dependencies
-  compile("org.apache.cxf:cxf-spring-boot-starter-jaxws:${Dependencies.cxfBootStarterVersion}")
-
   implementation("jakarta.jws:jakarta.jws-api:${Dependencies.jakartaJwsVersion}")
   implementation("javax.xml.ws:jaxws-api:${Dependencies.jaxWsVersion}")
   implementation("javax.servlet:javax.servlet-api:${Dependencies.jaxServletApiVersion}")
