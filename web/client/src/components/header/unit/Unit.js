@@ -29,7 +29,8 @@ const Unit = ({ vg, ve }) => {
       <VerticalContainer>
         <SingleTextRowContainer>
           <VardgivarTitle id="currentVardgivarTitle">{vg}</VardgivarTitle>
-          <VardenhetTitle id="currentVardenhetTitle">&nbsp;-&nbsp;{ve}</VardenhetTitle>
+          &nbsp;-&nbsp;
+          <VardenhetTitle id="currentVardenhetTitle">{ve}</VardenhetTitle>
         </SingleTextRowContainer>
       </VerticalContainer>
     </UnitComponentWrapper>

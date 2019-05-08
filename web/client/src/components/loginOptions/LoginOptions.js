@@ -16,7 +16,7 @@ const LoginOptions = ({ settings, isFetching, errorMessage }) => {
           <Spinner size="sm" color="secondary" /> Hämtar konfiguration...{' '}
         </span>
       )}
-      {!isFetching && !errorMessage && <IbButton6 onClick={doLogin(settings.loginUrl)} label="Logga in med SITHS-kort" />}
+      {!isFetching && !errorMessage && <IbButton6 id="loginSithsBtn" onClick={doLogin(settings.loginUrl)} label="Logga in med SITHS-kort" />}
       {errorMessage && (
         <IbAlert type={alertType.ERROR}>
           {' '}

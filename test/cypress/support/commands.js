@@ -24,10 +24,13 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add("login", loginId => {
+Cypress.Commands.add("login", (loginId, acceptCookies = true) => {
   cy.visit("/welcome.html");
   cy.get("#jsonSelect").select(loginId);
   cy.get("#loginBtn").click();
+  if (acceptCookies) {
+    cy.get('#cookiesAcceptBtn').click();
+  }
 });
 
 Cypress.Commands.add("addBestallning", () => {

@@ -18,3 +18,8 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+// Cypress does not support cy.route() with fetch, set it to null and expect the polyfill to use XMLHttpRequest
+Cypress.on('window:before:load', win => {
+  win.fetch = null;
+});

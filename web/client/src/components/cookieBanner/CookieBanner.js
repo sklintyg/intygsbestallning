@@ -44,16 +44,16 @@ const CookieBanner = ({ openModal, acceptCookieBanner, cookieBannerAccepted }) =
   }
   return (
     <Fragment>
-      <CookieBannerWrapper>
+      <CookieBannerWrapper id="cookieBanner">
         <div>
           Vi använder kakor (cookies) för att den här webbplatsen ska fungera på ett bra sätt för dig. Genom att logga in accepterar du vår
           användning av kakor.{' '}
-          <Button color="link" onClick={openCookieModal}>
+          <Button id="cookiesReadMoreBtn" color="link" onClick={openCookieModal}>
             Läs mer om kakor
           </Button>
         </div>
         <div className="cookieButton">
-          <Button color={'success'} onClick={() => onBannerButtonClick()}>Jag godkänner</Button>
+          <Button id="cookiesAcceptBtn" color={'success'} onClick={() => onBannerButtonClick()}>Jag godkänner</Button>
         </div>
       </CookieBannerWrapper>
     </Fragment>

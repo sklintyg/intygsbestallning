@@ -15,7 +15,7 @@ const CookieModal = ({ handleClose, isOpen, acceptCookieBanner, cookieBannerAcce
 
   return (
     <Fragment>
-      <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
+      <Modal id="cookieModal" isOpen={isOpen} size={'md'} backdrop={true} toggle={handleClose}>
         <ModalHeader toggle={handleClose}>Om kakor (cookies)</ModalHeader>
         <ModalBody>
           <p>
@@ -50,11 +50,12 @@ const CookieModal = ({ handleClose, isOpen, acceptCookieBanner, cookieBannerAcce
         </ModalBody>
         <ModalFooter>
           {cookieBannerAccepted !== 'true' && (
-            <Button color={'success'} onClick={accept}>
+            <Button id="cookieModalAcceptBtn" color={'success'} onClick={accept}>
               Jag godkänner
             </Button>
           )}
           <Button
+            id="cookieModalAbortBtn"
             color={'default'}
             onClick={() => {
               handleClose()

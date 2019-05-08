@@ -67,7 +67,7 @@ const Vardgivare = ({ initiallyExpanded, vg, unitContext, handleSelect }) => {
 
           return (
             <Vardenhet key={ve.id}>
-              <VeButton color="link" onClick={onSelect(ve.id)} disabled={activeEnhet}>
+              <VeButton id={'selectUnitBtn-' + ve.id} color="link" onClick={onSelect(ve.id)} disabled={activeEnhet}>
                 {ve.name} {activeEnhet && <span>(nuvarande enhet)</span>}
               </VeButton>
             </Vardenhet>
