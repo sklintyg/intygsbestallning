@@ -19,7 +19,11 @@ import './commands'
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-// Cypress does not support cy.route() with fetch, set it to null and expect the polyfill to use XMLHttpRequest
 Cypress.on('window:before:load', win => {
+
+  // Cypress does not support cy.route() with fetch, set it to null and expect the polyfill to use XMLHttpRequest
   win.fetch = null;
+
+  // Stub window.open for pdf file download tests
+  cy.stub(win, 'open').as('windowOpen');
 });

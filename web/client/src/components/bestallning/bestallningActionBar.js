@@ -95,14 +95,14 @@ const BestallningActionBar = ({
         <Reply color={IbColors.IB_COLOR_00} /> Vidarebefodra
       </StyledButton>
       <ButtonDropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
-        <DropdownToggle color={'primary'}>
+        <DropdownToggle id="skrivUtBtn" color={'primary'}>
           <Print color={IbColors.IB_COLOR_00} /> Skriv ut <StyledToggler color={IbColors.IB_COLOR_00} expanded={dropdownOpen} />
         </DropdownToggle>
         <DropdownMenu right={true}>
-          <DropdownItem onClick={bestallning.invanare.sekretessMarkering ? openSkrivUtDialog : () => printBestallning('forfragan')}>
+          <DropdownItem id="skrivUtForfraganBtn" onClick={bestallning.invanare.sekretessMarkering ? openSkrivUtDialog : () => printBestallning('forfragan')}>
             Förfrågan/Beställning
           </DropdownItem>
-          <DropdownItem onClick={() => printBestallning('faktureringsunderlag')}>Fakturaunderlag</DropdownItem>
+          <DropdownItem id="skrivUtFakturaunderlagBtn" onClick={() => printBestallning('faktureringsunderlag')}>Fakturaunderlag</DropdownItem>
         </DropdownMenu>
       </ButtonDropdown>
       <BorttagenBestallning onClose={goBack} />
