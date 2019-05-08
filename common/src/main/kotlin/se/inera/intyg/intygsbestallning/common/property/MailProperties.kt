@@ -26,4 +26,14 @@ import org.springframework.context.annotation.Configuration
 open class MailProperties {
   lateinit var host: String
   lateinit var textResourcePath: String
+  lateinit var admin: String
+  lateinit var from: String
+  lateinit var username: String
+  lateinit var password: String
+  lateinit var defaultEncoding: String
+  lateinit var protocol: String
+  lateinit var port: String
+  lateinit var smtpsAuth: String
+  lateinit var smtpsStarttlsEnable: String
+  lateinit var smtpsDebug: String
 }

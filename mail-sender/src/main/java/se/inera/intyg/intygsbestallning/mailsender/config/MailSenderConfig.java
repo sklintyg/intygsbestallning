@@ -19,16 +19,26 @@
 
 package se.inera.intyg.intygsbestallning.mailsender.config;
 
+import java.lang.invoke.MethodHandles;
+import java.util.Properties;
+import com.google.common.primitives.Ints;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.camel.spring.javaconfig.CamelConfiguration;
 import org.apache.camel.spring.spi.SpringTransactionPolicy;
+import org.apache.logging.log4j.util.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import se.inera.intyg.intygsbestallning.common.property.ActiveMqProperties;
+import se.inera.intyg.intygsbestallning.common.property.MailProperties;
 import se.inera.intyg.intygsbestallning.common.property.MailSenderProperties;
 
 import javax.jms.ConnectionFactory;
@@ -41,14 +51,19 @@ import javax.jms.ConnectionFactory;
         "se.inera.intyg.intygsbestallning.mailsender"})
 public class MailSenderConfig extends CamelConfiguration {
 
+    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().getClass());
+
     private final ActiveMqProperties activeMqProperties;
     private final MailSenderProperties mailSenderProperties;
+    private final MailProperties mailProperties;
 
     public MailSenderConfig(
             ActiveMqProperties activeMqProperties,
-            MailSenderProperties mailSenderProperties) {
+            MailSenderProperties mailSenderProperties,
+            MailProperties mailProperties) {
         this.activeMqProperties = activeMqProperties;
         this.mailSenderProperties = mailSenderProperties;
+        this.mailProperties = mailProperties;
     }
 
     @Bean
@@ -70,5 +85,34 @@ public class MailSenderConfig extends CamelConfiguration {
         jmsTemplate.setSessionTransacted(true);
         jmsTemplate.setDefaultDestinationName(mailSenderProperties.getQueueName());
         return jmsTemplate;
+    }
+
+    @Bean
+    @Profile(value = {"demo", "qa", "prod"})
+    public JavaMailSender mailSender() {
+        var mailSender = new JavaMailSenderImpl();
+        mailSender.setHost(mailProperties.getHost());
+        mailSender.setDefaultEncoding(mailProperties.getDefaultEncoding());
+        mailSender.setProtocol(mailProperties.getProtocol());
+        mailSender.setPort(Ints.tryParse(mailProperties.getPort()));
+
+        if (Strings.isNotEmpty(mailProperties.getUsername())) {
+            mailSender.setUsername(mailProperties.getUsername());
+        }
+        if (Strings.isNotEmpty(mailProperties.getPassword())) {
+            mailSender.setPassword(mailProperties.getPassword());
+        }
+
+        Properties javaMailProperties = new Properties();
+        javaMailProperties.put("mail." + mailProperties.getProtocol() + ".auth", mailProperties.getSmtpsAuth());
+        javaMailProperties.put("mail." + mailProperties.getProtocol() + ".port", mailProperties.getHost());
+        javaMailProperties.put("mail." + mailProperties.getProtocol() + ".starttls.enable", mailProperties.getSmtpsStarttlsEnable());
+        javaMailProperties.put("mail." + mailProperties.getProtocol() + ".debug", mailProperties.getSmtpsDebug());
+        javaMailProperties.put("mail." + mailProperties.getProtocol() + ".socketFactory.fallback", true);
+
+        mailSender.setJavaMailProperties(javaMailProperties);
+        LOG.info("Mailsender initialized with: [port: {}, protocol: {}, host: {}]",
+                mailProperties.getPort(), mailProperties.getProtocol(), mailProperties.getHost());
+        return mailSender;
     }
 }
