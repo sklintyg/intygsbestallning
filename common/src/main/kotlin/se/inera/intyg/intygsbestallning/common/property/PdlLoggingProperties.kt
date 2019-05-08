@@ -22,7 +22,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ConfigurationProperties(prefix = "pdl")
+@ConfigurationProperties(prefix = "pdl.logging")
 open class PdlLoggingProperties {
   lateinit var systemId: String
   lateinit var systemName: String

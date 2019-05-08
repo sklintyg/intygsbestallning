@@ -5,9 +5,10 @@ activemq:
     username:
 
 pdl:
-  system-id: dev-id
-  system-name: dev-name
-  queue-name: ib.pdllogging.queue
+  logging:
+    system-id: devtest-id
+    system-name: devtest-name
+    queue-name: ib.pdllogging.queue
 
 spring:
   main:

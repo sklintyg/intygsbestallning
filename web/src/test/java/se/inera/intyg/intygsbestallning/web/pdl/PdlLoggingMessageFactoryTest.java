@@ -18,10 +18,10 @@
  */
 package se.inera.intyg.intygsbestallning.web.pdl;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
 import se.inera.intyg.infra.logmessages.ActivityPurpose;
 import se.inera.intyg.infra.logmessages.ActivityType;
 import se.inera.intyg.infra.logmessages.ResourceType;
@@ -32,7 +32,6 @@ import se.inera.intyg.infra.security.common.model.RequestOrigin;
 import se.inera.intyg.infra.security.common.model.Role;
 import se.inera.intyg.infra.security.common.model.UserOriginType;
 import se.inera.intyg.intygsbestallning.common.property.PdlLoggingProperties;
-import se.inera.intyg.intygsbestallning.web.WebTestConfig;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardgivare;
 import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
@@ -48,7 +47,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @RunWith(JUnitPlatform.class)
-@ContextConfiguration(classes = WebTestConfig.class)
 public class PdlLoggingMessageFactoryTest {
 
     private static final String USER_ID = "SE2321000198-016965";
@@ -63,23 +61,23 @@ public class PdlLoggingMessageFactoryTest {
 
     private static final String ACTIVITY_LEVEL = UUID.randomUUID().toString();
 
-    private PdlLoggingMessageFactoryImpl testee;
+    private static final String PDL_LOGGING_SYSTEMID = "devtest-id";
+    private static final String PDL_LOGGING_SYSTEMNAME = "devtest-name";
+    private static final String PDL_LOGGING_QUEUENAME = "ib.pdllogging.queue";
 
-    public PdlLoggingMessageFactoryTest() {
-        PdlLoggingProperties props = new PdlLoggingProperties();
-        props.setSystemId("IB12345");
-        props.setSystemName("Intygsbeställning");
-        props.setQueueName("pdl.logging.queue");
+    PdlLoggingMessageFactoryImpl testee;
 
-        testee = new PdlLoggingMessageFactoryImpl(props);
+    @BeforeEach
+    public void setup() {
+      testee = new PdlLoggingMessageFactoryImpl(getPdlLoggingProperties());
     }
 
     @Test
     public void buildPdlLogMessage() {
         var pdlLogMessage = testee.buildLogMessage(buildLogMessage(), createIbUser());
 
-        assertEquals("IB12345", pdlLogMessage.getSystemId());
-        assertEquals("Intygsbeställning", pdlLogMessage.getSystemName());
+        assertEquals(PDL_LOGGING_SYSTEMID, pdlLogMessage.getSystemId());
+        assertEquals(PDL_LOGGING_SYSTEMNAME, pdlLogMessage.getSystemName());
 
         // verify activity
         assertEquals(ActivityType.READ, pdlLogMessage.getActivityType());
@@ -181,6 +179,14 @@ public class PdlLoggingMessageFactoryTest {
     private IbVardenhet createIbVardenhet() {
         final IbVardgivare ibVardgivare = createIbVardgivare();
         return new IbVardenhet(VE_ID, VE_NAME, ibVardgivare.getId(), ibVardgivare.getName(), VG_ORGNR);
+    }
+
+    private PdlLoggingProperties getPdlLoggingProperties() {
+        return new PdlLoggingProperties() {{
+            setSystemId(PDL_LOGGING_SYSTEMID);
+            setSystemName(PDL_LOGGING_SYSTEMNAME);
+            setQueueName(PDL_LOGGING_QUEUENAME);
+        }};
     }
 
 }
