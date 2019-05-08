@@ -49,7 +49,7 @@ public class PatientServiceImpl implements PatientService {
                 return Optional.empty();
             case ERROR:
             default:
-                throw new IbServiceException(IbErrorCodeEnum.PU_ERROR, "Could not get uppslag from PU");
+                throw new IbServiceException(IbErrorCodeEnum.BESTALLNING_FEL005_PU_ERROR, "Could not get uppslag from PU");
         }
     }
 
@@ -64,14 +64,14 @@ public class PatientServiceImpl implements PatientService {
                 return Optional.empty();
             case ERROR:
             default:
-                throw new IbServiceException(IbErrorCodeEnum.PU_ERROR, "Could not get uppslag from PU");
+                throw new IbServiceException(IbErrorCodeEnum.BESTALLNING_FEL005_PU_ERROR, "Could not get uppslag from PU");
         }
     }
 
     private PersonSvar puLookup(Personnummer personnummer) {
         var personSvar = Try.of(() -> puService.getPerson(personnummer));
         if (personSvar.isFailure()) {
-            throw new IbServiceException(IbErrorCodeEnum.PU_ERROR, "Could not get uppslag from PU");
+            throw new IbServiceException(IbErrorCodeEnum.BESTALLNING_FEL005_PU_ERROR, "Could not get uppslag from PU");
         }
         return personSvar.get();
     }

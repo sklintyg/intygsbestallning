@@ -7,7 +7,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     authoritiesTree: state.user.authoritiesTree,
     unitContext: state.user.unitContext,
-    activeError: state.user.activeError
+    activeError: state.user.activeError,
+    setEnhetPending: state.user.setEnhetPending
   }
 };
 // expose selected dispatchable methods to App props

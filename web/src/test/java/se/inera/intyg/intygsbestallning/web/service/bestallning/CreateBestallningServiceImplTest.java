@@ -160,7 +160,7 @@ class CreateBestallningServiceImplTest {
         var request = buildBestallningRequest();
 
         when(patientService.lookupPersonnummerFromPU(eq(request.getInvanare().getPersonnummer())))
-                .thenThrow(new IbServiceException(IbErrorCodeEnum.PU_ERROR, "Could not get uppslag from PU"));
+                .thenThrow(new IbServiceException(IbErrorCodeEnum.BESTALLNING_FEL005_PU_ERROR, "Could not get uppslag from PU"));
 
         assertThatThrownBy(() -> createBestallningService.create(request)).isEqualTo(expextedException);
     }

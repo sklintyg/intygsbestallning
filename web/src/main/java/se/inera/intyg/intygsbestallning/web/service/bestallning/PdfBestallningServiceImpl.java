@@ -119,7 +119,7 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
         var personSvar = patientService.lookupPersonnummerFromPU(bestallning.get().getInvanare().getPersonId());
 
         if (personSvar.isEmpty()) {
-            throw new IbServiceException(IbErrorCodeEnum.PU_ERROR, "Person was not found in PU");
+            throw new IbServiceException(IbErrorCodeEnum.BESTALLNING_FEL005_PU_ERROR, "Person was not found in PU");
         }
 
         var invanareDto = BestallningInvanareDto.Factory.toDto(

@@ -130,7 +130,7 @@ public class LogServiceImpl implements LogService {
             jmsTemplate.send(new MC(pdlLogMessage));
         } catch (JmsException e) {
             LOG.error("INTYGSBESTALLNING: Unsuccessful to perform PDL-logging", e);
-            throw new IbJMSException(IbErrorCodeEnum.UNKNOWN_INTERNAL_PROBLEM,
+            throw new IbJMSException(IbErrorCodeEnum.BESTALLNING_FEL004_TEKNISKT_FEL,
                     "Error connecting to JMS broker when performing PDL-logging. This is probably a configuration error.");
         }
     }

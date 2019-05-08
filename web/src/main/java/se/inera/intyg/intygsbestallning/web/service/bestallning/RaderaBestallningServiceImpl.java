@@ -24,7 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import se.inera.intyg.intygsbestallning.common.domain.Handelse;
 import se.inera.intyg.intygsbestallning.common.dto.RaderaBestallningRequest;
+import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.integration.client.RespondToOrderService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
 import se.inera.intyg.intygsbestallning.web.service.util.BestallningUtil;
@@ -33,13 +35,16 @@ import se.inera.intyg.intygsbestallning.web.service.util.BestallningUtil;
 public class RaderaBestallningServiceImpl implements RaderaBestallningService {
     private BestallningPersistenceService bestallningPersistenceService;
     private RespondToOrderService respondToOrderService;
+    private BestallningStatusResolver bestallningStatusResolver;
 
     private static final Logger LOG = LoggerFactory.getLogger(RaderaBestallningServiceImpl.class);
 
     public RaderaBestallningServiceImpl(BestallningPersistenceService bestallningPersistenceService,
-                                        RespondToOrderService respondToOrderService) {
+                                        RespondToOrderService respondToOrderService,
+                                        BestallningStatusResolver bestallningStatusResolver) {
         this.bestallningPersistenceService = bestallningPersistenceService;
         this.respondToOrderService = respondToOrderService;
+        this.bestallningStatusResolver = bestallningStatusResolver;
     }
 
     @Override
@@ -57,6 +62,9 @@ public class RaderaBestallningServiceImpl implements RaderaBestallningService {
         if (bestallning.isEmpty()) {
             throw new IllegalArgumentException("bestallning with id: " + id.get() + " was not found");
         }
+
+        bestallning.get().getHandelser().add(Handelse.Factory.avvisaRadera());
+        bestallningStatusResolver.setStatus(bestallning.get());
 
         bestallningPersistenceService.deleteBestallning(bestallning.get());
 

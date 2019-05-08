@@ -29,7 +29,7 @@ spring:
   liquibase:
     change-log: classpath:/changelog/db-changelog-master.xml
   profiles:
-    active: default, myndighet-stub, dev, caching-enabled, wc-hsa-stub, fake, saml, supermail
+    active: default, myndighet-stub, dev, caching-enabled, wc-hsa-stub, fake, saml
   main:
     allow-bean-definition-overriding: true
 
@@ -45,9 +45,9 @@ mail:
   protocol: smtps
   port: 25
   defaultEncoding: UTF-8
-  smtps-auth: true
-  smtps-starttls-enable: true
-  smtps-debug: false
+  auth: true
+  starttls-enable: true
+  debug: false
 
 bestallning:
   text-resource-path: ${resources.folder}/intygsbestallning/texts/bestallning/*.xml

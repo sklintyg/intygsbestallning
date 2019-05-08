@@ -1,7 +1,7 @@
 import React from 'react';
 import {Redirect, Route} from 'react-router-dom';
 import {connect} from 'react-redux'
-import Loading from './Loading';
+import LoadingSpinner from '../loadingSpinner'
 
 const mapStateToProps = (state) => {
   return {
@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
 const SecuredRoute = ({component: Component, isAuthenticated, isLoading, hasCurrentUnit, allowMissingUnit, ...rest}) => {
 
   if (!isAuthenticated && isLoading){
-    return <Loading />
+    return <LoadingSpinner loading={true} message={'Laddar sida...'} />
   }
 
   return (

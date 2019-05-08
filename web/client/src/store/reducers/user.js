@@ -10,6 +10,7 @@ import { buildClientError } from "./util";
 
 const INITIAL_STATE = {
   isLoading: true,
+  setEnhetPending: false,
   isAuthenticated: false,
   activeError: null
 };
@@ -40,11 +41,11 @@ export default (state = INITIAL_STATE, action) => {
     }
 
   case SET_ENHET:
-    return {...state, isLoading: true}
+    return {...state, setEnhetPending: true}
   case SET_ENHET_SUCCESS:
     return {
       ...state,
-      isLoading: false,
+      setEnhetPending: false,
       isAuthenticated: true,
       activeError: null,
       namn: action.payload.namn,
@@ -56,7 +57,7 @@ export default (state = INITIAL_STATE, action) => {
   case SET_ENHET_FAILURE:
     return {
       ...state,
-      isLoading: false,
+      setEnhetPending: false,
       activeError: buildClientError(action.payload, 'error.user')
     }
   default:

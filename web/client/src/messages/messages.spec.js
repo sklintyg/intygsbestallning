@@ -3,7 +3,7 @@ import *  as messages from "./messages";
 jest.mock('./messages.json', () => ({
   "error": {
     "common": {
-      "unknown": "Unknown error"
+      "bestallning_fel004_tekniskt_fel": "Unknown error"
     }
   }
 }), { virtual: true })
@@ -18,7 +18,7 @@ describe('messages test', () => {
     });
 
     it('found message', () => {
-      const result = messages.haveMessage('error.common.unknown');
+      const result = messages.haveMessage('error.common.bestallning_fel004_tekniskt_fel');
 
       expect(result).toBeTruthy();
     })
@@ -32,7 +32,7 @@ describe('messages test', () => {
     });
 
     it('found message', () => {
-      const result = messages.getMessage('error.common.unknown');
+      const result = messages.getMessage('error.common.bestallning_fel004_tekniskt_fel');
 
       expect(result).toEqual('Unknown error');
     })

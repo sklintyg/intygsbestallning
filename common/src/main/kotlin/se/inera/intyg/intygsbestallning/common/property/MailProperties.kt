@@ -33,7 +33,7 @@ open class MailProperties {
   lateinit var defaultEncoding: String
   lateinit var protocol: String
   lateinit var port: String
-  lateinit var smtpsAuth: String
-  lateinit var smtpsStarttlsEnable: String
-  lateinit var smtpsDebug: String
+  lateinit var auth: String
+  lateinit var starttlsEnable: String
+  lateinit var debug: String
 }

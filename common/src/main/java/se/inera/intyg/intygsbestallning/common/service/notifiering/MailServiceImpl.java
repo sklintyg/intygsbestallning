@@ -49,7 +49,7 @@ public class MailServiceImpl implements MailService {
                 return session
                         .createTextMessage(objectMapper.writeValueAsString(new NotificationEmail(mailAddress, subject, body)));
             } catch (JsonProcessingException e) {
-                throw new IbServiceException(IbErrorCodeEnum.UNKNOWN_INTERNAL_PROBLEM,
+                throw new IbServiceException(IbErrorCodeEnum.BESTALLNING_FEL004_TEKNISKT_FEL,
                         "Unable to marshal notification message, reason: " + e.getMessage());
             }
         });

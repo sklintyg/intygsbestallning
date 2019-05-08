@@ -192,7 +192,7 @@ public class BestallningPersistenceServiceTest extends TestSupport {
         assertThatThrownBy(() -> bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(entity.getId(),
                 "other-vardenhet", entity.getVardenhet().getOrganisationId()))
                 .isExactlyInstanceOf(IbServiceException.class)
-                .hasFieldOrPropertyWithValue("errorCode", IbErrorCodeEnum.UNAUTHORIZED);
+                .hasFieldOrPropertyWithValue("errorCode", IbErrorCodeEnum.BESTALLNING_FEL008_ATKOMST_NEKAD);
     }
 
     @Test
