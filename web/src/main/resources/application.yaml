@@ -45,9 +45,9 @@ mail:
   protocol: smtps
   port: 25
   defaultEncoding: UTF-8
-  smtps-auth: true
-  smtps-starttls-enable: true
-  smtps-debug: false
+  auth: true
+  starttls-enable: true
+  debug: false
 
 bestallning:
   text-resource-path: ${resources.folder}/intygsbestallning/texts/bestallning/*.xml

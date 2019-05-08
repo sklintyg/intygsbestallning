@@ -104,10 +104,10 @@ public class MailSenderConfig extends CamelConfiguration {
         }
 
         Properties javaMailProperties = new Properties();
-        javaMailProperties.put("mail." + mailProperties.getProtocol() + ".auth", mailProperties.getSmtpsAuth());
+        javaMailProperties.put("mail." + mailProperties.getProtocol() + ".auth", mailProperties.getAuth());
         javaMailProperties.put("mail." + mailProperties.getProtocol() + ".port", mailProperties.getHost());
-        javaMailProperties.put("mail." + mailProperties.getProtocol() + ".starttls.enable", mailProperties.getSmtpsStarttlsEnable());
-        javaMailProperties.put("mail." + mailProperties.getProtocol() + ".debug", mailProperties.getSmtpsDebug());
+        javaMailProperties.put("mail." + mailProperties.getProtocol() + ".starttls.enable", mailProperties.getStarttlsEnable());
+        javaMailProperties.put("mail." + mailProperties.getProtocol() + ".debug", mailProperties.getDebug());
         javaMailProperties.put("mail." + mailProperties.getProtocol() + ".socketFactory.fallback", true);
 
         mailSender.setJavaMailProperties(javaMailProperties);
