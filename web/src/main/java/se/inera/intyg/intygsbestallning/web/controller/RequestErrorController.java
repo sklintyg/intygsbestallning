@@ -162,7 +162,8 @@ public class RequestErrorController implements ErrorController {
             return new ApiErrorResponse(
                     error.getMessage(), getErrorCodeFromAuthException((AuthenticationException) error), UUID.randomUUID().toString());
         } else {
-            return new ApiErrorResponse(error.getMessage(), IbErrorCodeEnum.UNKNOWN_INTERNAL_PROBLEM.name(), UUID.randomUUID().toString());
+            return new ApiErrorResponse(
+                    error.getMessage(), IbErrorCodeEnum.BESTALLNING_FEL004_TEKNISKT_FEL.name(), UUID.randomUUID().toString());
         }
     }
 
@@ -178,7 +179,7 @@ public class RequestErrorController implements ErrorController {
         } else if (e instanceof HsaServiceException) {
             return IbErrorCodeEnum.LOGIN_FEL004.name();
         } else if (e instanceof AuthoritiesException) {
-            return IbErrorCodeEnum.UNAUTHORIZED.name();
+            return IbErrorCodeEnum.BESTALLNING_FEL008_ATKOMST_NEKAD.name();
         } else {
             //Generic tech error during login
             return IbErrorCodeEnum.LOGIN_FEL001.name();
@@ -187,10 +188,10 @@ public class RequestErrorController implements ErrorController {
 
 
     private ApiErrorResponse fromHttpStatus(final HttpStatus statusCode) {
-        IbErrorCodeEnum errorCode = IbErrorCodeEnum.UNKNOWN_INTERNAL_PROBLEM;
+        IbErrorCodeEnum errorCode = IbErrorCodeEnum.BESTALLNING_FEL004_TEKNISKT_FEL;
 
         if (statusCode == HttpStatus.FORBIDDEN) {
-            errorCode = IbErrorCodeEnum.UNAUTHORIZED;
+            errorCode = IbErrorCodeEnum.BESTALLNING_FEL008_ATKOMST_NEKAD;
         } else if (statusCode == HttpStatus.NOT_FOUND) {
             errorCode = IbErrorCodeEnum.NOT_FOUND;
         }

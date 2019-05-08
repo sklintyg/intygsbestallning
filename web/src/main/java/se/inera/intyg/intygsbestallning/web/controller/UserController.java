@@ -67,7 +67,7 @@ public class UserController {
 
         if (user == null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(new ApiErrorResponse("No user in session", IbErrorCodeEnum.UNAUTHORIZED.name(), ""));
+                    .body(new ApiErrorResponse("No user in session", IbErrorCodeEnum.BESTALLNING_FEL008_ATKOMST_NEKAD.name(), ""));
         } else {
             return ResponseEntity.ok(new GetUserResponse(user));
         }

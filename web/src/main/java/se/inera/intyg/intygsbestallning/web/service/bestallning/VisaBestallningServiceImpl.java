@@ -90,7 +90,7 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
         var personSvar = patientService.lookupPersonnummerFromPU(bestallning.get().getInvanare().getPersonId());
 
         if (personSvar.isEmpty()) {
-            throw new IbServiceException(IbErrorCodeEnum.PU_ERROR, "Person was not found in PU");
+            throw new IbServiceException(IbErrorCodeEnum.BESTALLNING_FEL005_PU_ERROR, "Person was not found in PU");
         }
 
         pdlLogService.log(bestallning.get(), LogEvent.BESTALLNING_OPPNAS_OCH_LASES);

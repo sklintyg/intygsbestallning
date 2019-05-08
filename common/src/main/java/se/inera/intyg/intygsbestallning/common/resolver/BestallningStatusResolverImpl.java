@@ -24,12 +24,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Objects;
 import javax.annotation.Nonnull;
+import com.sun.mail.util.BASE64EncoderStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.Handelse;
+import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
+import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
 
 @Component
 public class BestallningStatusResolverImpl implements BestallningStatusResolver {
@@ -60,38 +63,48 @@ public class BestallningStatusResolverImpl implements BestallningStatusResolver 
         switch (senasteHandelse.getEvent()) {
             case SKAPA:
                 if (nuvarandeStatus != BestallningStatus.UNDEFINED) {
-                    throw new IllegalStateException("Can not update state from UNDEFINED unless latest handelse is of typ SKAPA");
+                    throw new IbServiceException(IbErrorCodeEnum.GENERAL_FEL01_SPARA,
+                            "Can not update state from UNDEFINED unless latest handelse is of typ SKAPA");
                 }
                 bestallning.setStatus(BestallningStatus.OLAST);
                 break;
             case LAS:
                 if (nuvarandeStatus != BestallningStatus.OLAST) {
-                    throw new IllegalStateException("Can not update state from OLAST unless latest handelse is of typ LAST");
+                    throw new IbServiceException(IbErrorCodeEnum.GENERAL_FEL01_SPARA,
+                            "Can not update state from OLAST unless latest handelse is of typ LAST");
                 }
                 bestallning.setStatus(BestallningStatus.LAST);
                 break;
+            case AVVISA_RADERA:
+                if (nuvarandeStatus != BestallningStatus.LAST) {
+                    throw new IbServiceException(IbErrorCodeEnum.GENERAL_FEL01_SPARA,
+                            "Can not update state from LAST to AVVISAD_RADERAD unless latest handelse is of typ LAST");
+                }
+                // Do not set a new status here, the bestallning will actually be removed from the database
+                break;
             case AVVISA:
                 if (nuvarandeStatus != BestallningStatus.LAST) {
-                    throw new IllegalStateException("Can not update state from LAST to AVVISA unless latest handelse is of typ AVVISAD");
+                    throw new IbServiceException(IbErrorCodeEnum.GENERAL_FEL01_SPARA,
+                            "Can not update state from LAST to AVVISA unless latest handelse is of typ AVVISAD");
                 }
                 bestallning.setStatus(BestallningStatus.AVVISAD);
                 break;
             case ACCEPTERA:
                 if (nuvarandeStatus != BestallningStatus.LAST) {
-                    throw new IllegalStateException(
+                    throw new IbServiceException(IbErrorCodeEnum.GENERAL_FEL01_SPARA,
                             "Can not update state from LAST to ACCEPTERA unless latest handelse is of typ ACCEPTERAD");
                 }
                 bestallning.setStatus(BestallningStatus.ACCEPTERAD);
                 break;
             case KLARMARKERA:
                 if (nuvarandeStatus != BestallningStatus.ACCEPTERAD) {
-                    throw new IllegalStateException(
+                    throw new IbServiceException(IbErrorCodeEnum.GENERAL_FEL01_SPARA,
                             "Can not update state from ACCEPTEDAD to KLAR unless latest handelse is of typ KLARMARKERA");
                 }
                 bestallning.setStatus(BestallningStatus.KLAR);
                 break;
             default:
-                throw new IllegalArgumentException("Not a valid bestallningEvent: " + senasteHandelse);
+                throw new IbServiceException(IbErrorCodeEnum.GENERAL_FEL01_SPARA, "Not a valid bestallningEvent: " + senasteHandelse);
         }
     }
 }

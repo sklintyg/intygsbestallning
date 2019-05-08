@@ -32,7 +32,6 @@ import se.inera.intyg.intygsbestallning.common.dto.CountBestallningarQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningDirection;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarBasedOnStatusQuery;
 import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarQuery;
-import se.inera.intyg.intygsbestallning.common.dto.ListBestallningarResult;
 import se.inera.intyg.intygsbestallning.common.dto.PageDto;
 import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
 import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
@@ -156,7 +155,8 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
                         "Bestallning vardgivare organisationId doesn't match user orgNrVardgivare");
             }
             if (!bestallning.get().getVardenhet().getHsaId().equals(hsaId)) {
-                throw new IbServiceException(IbErrorCodeEnum.UNAUTHORIZED, "Bestallning vardenhet hsaid doesn't match user hsaid");
+                throw new IbServiceException(
+                        IbErrorCodeEnum.BESTALLNING_FEL008_ATKOMST_NEKAD, "Bestallning vardenhet hsaid doesn't match user hsaid");
             }
         }
 

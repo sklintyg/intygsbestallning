@@ -49,6 +49,11 @@ data class Handelse(
          event = BestallningEvent.AVVISA, skapad = LocalDateTime.now(), beskrivning = "Beställning avvisad")
     }
 
+    fun avvisaRadera(): Handelse {
+      return Handelse(
+         event = BestallningEvent.AVVISA_RADERA, skapad = LocalDateTime.now(), beskrivning = "Beställning raderad")
+    }
+
     fun klarmarkera(): Handelse {
       return Handelse(
        event = BestallningEvent.KLARMARKERA, skapad = LocalDateTime.now(), beskrivning = "Beställning klarmarkerad")
