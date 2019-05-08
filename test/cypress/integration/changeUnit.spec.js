@@ -20,7 +20,7 @@ context('Change unit', () => {
     cy.server();
     cy.route('/api/bestallningar*').as('listBestallningar');
 
-    cy.login('2');
+    cy.login('Harald Alltsson (Alla roller | Intygsbeställning)');
 
     cy.get('#selectUnitBtn-centrum-ost').click();
     cy.get('#currentUserTitle').should('contain.text', 'Harald Alltsson');

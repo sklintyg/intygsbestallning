@@ -2,7 +2,8 @@
 
 context('Login', () => {
   it('verify current user and cookiebanner', () => {
-    cy.login('1', false);
+    cy.login('Ingbritt Filt (Vårdadminstratör 1 | Intygsbeställning)', false);
+
     cy.get('#currentUserTitle').should('contain.text', 'Ingbritt Filt');
     cy.get('#currentVardgivarTitle').should('contain.text', 'WebCert-Vårdgivare1');
     cy.get('#currentVardenhetTitle').should('contain.text', 'WebCert-Enhet1');

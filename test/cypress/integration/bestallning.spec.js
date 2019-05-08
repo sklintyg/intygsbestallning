@@ -4,7 +4,7 @@ context("Bestallning", () => {
   let bestallningId;
 
   beforeEach(() => {
-    cy.login("0");
+    cy.login("Simona Samordnare (Samordnare 1 | Intygsbeställning)");
     cy.addBestallning().then(response => {
       expect(response.body.entity).to.have.property("id");
       bestallningId = response.body.entity.id;
