@@ -49,10 +49,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 @RunWith(JUnitPlatform.class)
 @ContextConfiguration(classes = WebTestConfig.class)
-public class PdlLogMessageFactoryTest {
+public class PdlLoggingMessageFactoryTest {
 
     private static final String USER_ID = "SE2321000198-016965";
-    private static final String USER_NAME = "Helma Svensson";
+    private static final String USER_NAME = "";
     private static final String USER_TITLE = "Vårdadministratör";
     private static final String VG_ID = "vardgivare-1";
     private static final String VG_NAME = "vardgivare-namn";
@@ -63,14 +63,15 @@ public class PdlLogMessageFactoryTest {
 
     private static final String ACTIVITY_LEVEL = UUID.randomUUID().toString();
 
-    private PdlLogMessageFactoryImpl testee;
+    private PdlLoggingMessageFactoryImpl testee;
 
-    public PdlLogMessageFactoryTest() {
+    public PdlLoggingMessageFactoryTest() {
         PdlLoggingProperties props = new PdlLoggingProperties();
         props.setSystemId("IB12345");
         props.setSystemName("Intygsbeställning");
+        props.setQueueName("pdl.logging.queue");
 
-        testee = new PdlLogMessageFactoryImpl(props);
+        testee = new PdlLoggingMessageFactoryImpl(props);
     }
 
     @Test
@@ -135,13 +136,6 @@ public class PdlLogMessageFactoryTest {
                         Collections.EMPTY_LIST),
                 Collections.EMPTY_MAP,
                 UserOriginType.NORMAL.name());
-    }
-
-    private RequestOrigin createRequestOrigin(String name, List<String> intygstyper) {
-        RequestOrigin o = new RequestOrigin();
-        o.setName(name);
-        o.setIntygstyper(intygstyper);
-        return o;
     }
 
     private Privilege createPrivilege(String name, List<String> intygsTyper, List<RequestOrigin> requestOrigins) {

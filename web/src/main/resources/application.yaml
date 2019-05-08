@@ -84,10 +84,6 @@ infrastructure:
         endpoint:
           url: ${ntjp.base.url}/infrastructure/directory/authorizationmanagement/GetCredentialsForPersonIncludingProtectedPerson/1/rivtabp21
 
-pdlLogging:
-  systemName: Intygsbestallning
-  systemId: 12345
-
 putjanst:
   endpoint:
     url: ${ntjp.base.url}/strategicresourcemanagement/persons/person/GetPersonsForProfile/3/rivtabp21
@@ -139,8 +135,9 @@ integration:
   source-system-hsa-id: dev-hsaid
 
 pdl:
-  system-id: dev-id
-  system-name: dev-name
+  system-id: sys-id
+  system-name: sys-name
+  queue-name: ib.pdllogging.queue
 
 ################################################
 #

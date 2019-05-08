@@ -18,9 +18,6 @@
  */
 package se.inera.intyg.intygsbestallning.common.service.notifiering;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -30,15 +27,18 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import se.inera.intyg.intygsbestallning.common.CommonConfig;
 import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 @ActiveProfiles("test")
-@TestPropertySource("classpath:test.properties")
 @EnableAutoConfiguration
 @SpringJUnitConfig(classes = {CommonConfig.class})
+@TestPropertySource("classpath:test.properties")
 class MailTextServiceImplTest {
 
     private static final NotifieringTyp SUPPORTED_TYP = NotifieringTyp.NY_BESTALLNING;
-    private static final String SUPPORTED_INTYG_TYP = "TEST_INTYG";
 
+    private static final String SUPPORTED_INTYG_TYP = "TEST_INTYG";
     private static final String UNSUPPORTED_INTYG_TYP = "UNSUPPORTED_INTYG";
 
     @Autowired

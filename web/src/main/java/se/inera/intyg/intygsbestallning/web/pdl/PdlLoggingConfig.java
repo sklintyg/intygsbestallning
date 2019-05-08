@@ -17,43 +17,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.inera.intyg.intygsbestallning.mailsender.config;
+package se.inera.intyg.intygsbestallning.web.pdl;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.camel.spring.javaconfig.CamelConfiguration;
-import org.apache.camel.spring.spi.SpringTransactionPolicy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
-import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.jms.core.JmsTemplate;
 import se.inera.intyg.intygsbestallning.common.property.ActiveMqProperties;
-import se.inera.intyg.intygsbestallning.common.property.MailSenderProperties;
+import se.inera.intyg.intygsbestallning.common.property.PdlLoggingProperties;
 
 import javax.jms.ConnectionFactory;
+
+/**
+ * @author Magnus Ekstrand on 2019-05-01.
+ */
 
 @EnableJms
 @Configuration
 @ComponentScan(basePackages = {
-        "org.springframework.mail.javamail",
-        "se.inera.intyg.intygsbestallning.common",
-        "se.inera.intyg.intygsbestallning.mailsender"})
-public class MailSenderConfig extends CamelConfiguration {
+        "se.inera.intyg.intygsbestallning.common"})
+public class PdlLoggingConfig {
 
     private final ActiveMqProperties activeMqProperties;
-    private final MailSenderProperties mailSenderProperties;
+    private final PdlLoggingProperties pdlLoggingProperties;
 
-    public MailSenderConfig(
-            ActiveMqProperties activeMqProperties,
-            MailSenderProperties mailSenderProperties) {
+    public PdlLoggingConfig(ActiveMqProperties activeMqProperties, PdlLoggingProperties pdlLoggingProperties) {
         this.activeMqProperties = activeMqProperties;
-        this.mailSenderProperties = mailSenderProperties;
-    }
-
-    @Bean
-    public SpringTransactionPolicy myTxPolicy() {
-        return new SpringTransactionPolicy(new JmsTransactionManager(connectionFactory()));
+        this.pdlLoggingProperties = pdlLoggingProperties;
     }
 
     @Bean
@@ -65,10 +57,11 @@ public class MailSenderConfig extends CamelConfiguration {
     }
 
     @Bean
-    public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
+    public JmsTemplate jmsPdlLoggingTemplate(ConnectionFactory connectionFactory) {
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
         jmsTemplate.setSessionTransacted(true);
-        jmsTemplate.setDefaultDestinationName(mailSenderProperties.getQueueName());
+        jmsTemplate.setDefaultDestinationName(pdlLoggingProperties.getQueueName());
         return jmsTemplate;
     }
+
 }

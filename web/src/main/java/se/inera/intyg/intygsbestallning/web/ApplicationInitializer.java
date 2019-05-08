@@ -19,10 +19,6 @@
 
 package se.inera.intyg.intygsbestallning.web;
 
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -37,6 +33,12 @@ import se.inera.intyg.intygsbestallning.integration.IntegrationConfig;
 import se.inera.intyg.intygsbestallning.mailsender.config.MailSenderConfig;
 import se.inera.intyg.intygsbestallning.persistence.PersistenceConfig;
 import se.inera.intyg.intygsbestallning.web.auth.SecurityConfig;
+import se.inera.intyg.intygsbestallning.web.pdl.PdlLoggingConfig;
+
+import javax.servlet.FilterRegistration;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
 
 public class ApplicationInitializer implements WebApplicationInitializer {
 
@@ -45,13 +47,14 @@ public class ApplicationInitializer implements WebApplicationInitializer {
         AnnotationConfigWebApplicationContext appContext = new AnnotationConfigWebApplicationContext();
 
         appContext.register(
-                IntegrationConfig.class,
                 CommonConfig.class,
+                IntegrationConfig.class,
                 MailSenderConfig.class,
+                PdlLoggingConfig.class,
                 PersistenceConfig.class,
-                WebConfig.class,
+                SecurityConfig.class,
                 SwaggerConfig.class,
-                SecurityConfig.class);
+                WebConfig.class);
 
         servletContext.addListener(new ContextLoaderListener(appContext));
 

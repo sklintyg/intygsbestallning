@@ -37,7 +37,10 @@ import javax.jms.ConnectionFactory;
 
 @EnableJms
 @Configuration
-@ComponentScan(value = "se.inera.intyg.intygsbestallning.mailsender")
+@ComponentScan(basePackages = {
+        "se.inera.intyg.intygsbestallning.common",
+        "se.inera.intyg.intygsbestallning.mailsender"
+})
 @PropertySource("classpath:test.properties")
 public class MailSenderTestConfig extends CamelConfiguration {
 

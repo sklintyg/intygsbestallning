@@ -19,18 +19,12 @@
 
 package se.inera.intyg.intygsbestallning.persistence.service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-import javax.transaction.Transactional;
 import com.google.common.primitives.Longs;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
@@ -47,6 +41,14 @@ import se.inera.intyg.intygsbestallning.persistence.entity.InvanareEntity;
 import se.inera.intyg.intygsbestallning.persistence.entity.QBestallningEntity;
 import se.inera.intyg.intygsbestallning.persistence.entity.VardenhetEntity;
 import se.inera.intyg.intygsbestallning.persistence.repository.BestallningRepository;
+
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
@@ -97,7 +99,7 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
     }
 
     @Override
-    public ListBestallningarResult listBestallningar(ListBestallningarQuery query) {
+    public Pair<PageDto, List<Bestallning>> listBestallningar(ListBestallningarQuery query) {
 
         var pb = new BooleanBuilder();
         var qe = QBestallningEntity.bestallningEntity;
@@ -125,19 +127,17 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
 
         var pageResult = bestallningRepository.findAll(pb.getValue(), PageRequest.of(query.getPageIndex(), query.getLimit(), sortRequest));
 
-        var bestallningar = pageResult.get().map(BestallningEntity.Factory::toDomain).collect(Collectors.toList());
-
-        return ListBestallningarResult.Factory.toDto(
-                query.getTextSearch() != null,
-                bestallningar,
-                new PageDto(pageResult.getNumber(),
+        List<Bestallning> bestallningar = pageResult.get().map(BestallningEntity.Factory::toDomain).collect(Collectors.toList());
+        PageDto pageDto = new PageDto(
+                pageResult.getNumber(),
                 pageResult.getNumber() * pageResult.getSize() + 1,
                 pageResult.getNumber() * pageResult.getSize() + pageResult.getNumberOfElements(),
                 pageResult.getTotalPages(),
                 pageResult.getNumberOfElements(),
-                pageResult.getTotalElements()),
-                query.getSortColumn(),
-                query.getSortDirection());
+                pageResult.getTotalElements());
+
+
+        return Pair.of(pageDto, bestallningar);
     }
 
     @Override
