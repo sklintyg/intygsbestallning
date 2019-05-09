@@ -102,7 +102,7 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
         var result = Try.of(() -> {
             var createBestallningRequest = fromType(orderAssessmentType);
             var id = createBestallningService.create(createBestallningRequest);
-            OrderAssessmentResponseType response = new OrderAssessmentResponseType();
+            var response = new OrderAssessmentResponseType();
             response.setAssessmentId(RivtaUtil.createIIType(integrationProperties.getSourceSystemHsaId(), id.toString()));
             response.setResult(RivtaUtil.createResultTypeOk());
             return response;
@@ -112,18 +112,13 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
             return result.get();
         } else {
             LOG.error("Error in orderAssessment", result.getCause());
-            OrderAssessmentResponseType response = new OrderAssessmentResponseType();
-            response.setAssessmentId(RivtaUtil.createIIType(integrationProperties.getSourceSystemHsaId(), ""));
+            var response = new OrderAssessmentResponseType();
             response.setResult(RivtaUtil.createResultTypeError(result.getCause()));
             return response;
         }
     }
 
     private CreateBestallningRequest fromType(OrderAssessmentType request) {
-
-        if (request.getAssessmentId() != null) {
-            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL07, List.of());
-        }
 
         var personnummerString = Optional.ofNullable(request.getCitizen())
                 .map(CitizenType::getPersonalIdentity)

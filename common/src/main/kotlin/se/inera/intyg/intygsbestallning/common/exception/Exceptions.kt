@@ -83,7 +83,6 @@ enum class IbResponderValidationErrorCode(val errorMsgTemplate: String, val erro
   GTA_FEL04("Det uppstod ett fel när HSA Katalogen anropades. Beställningen kunde därför inte tas emot.", ErrorIdType.APPLICATION_ERROR),
   GTA_FEL05("{0} does not match expected format YYYYMMDDNNNN", ErrorIdType.VALIDATION_ERROR),
   GTA_FEL06("Vårdgivare saknar organisationsnummer", ErrorIdType.APPLICATION_ERROR),
-  GTA_FEL07("Unexpected use of assessmentId", ErrorIdType.VALIDATION_ERROR),
   GTA_FEL08("Angiven intygstyp går inte att beställa", ErrorIdType.APPLICATION_ERROR),
   GTA_FEL09("Vårdenheten saknar e-postadress", ErrorIdType.EMAIL_ERROR),
   GTA_FEL10("Received technical error from PU", ErrorIdType.TECHNICAL_ERROR),

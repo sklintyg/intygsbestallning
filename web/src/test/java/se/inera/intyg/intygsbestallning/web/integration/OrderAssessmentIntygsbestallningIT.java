@@ -88,8 +88,7 @@ public class OrderAssessmentIntygsbestallningIT extends BaseRestIntegrationTest 
         given().body(requestTemplate.render()).when().post(ORDER_ASSESSMENT_ENDPOINT).then()
                 .statusCode(200).rootPath(RESPONSE_BASE)
                 .body("result.resultCode", is("ERROR"))
-                .body("result.errorId", is("APPLICATION_ERROR"))
-                .body("assessmentId.extension", is(""));
+                .body("result.errorId", is("APPLICATION_ERROR"));
     }
 
     private static class RequestOrderAssessment {

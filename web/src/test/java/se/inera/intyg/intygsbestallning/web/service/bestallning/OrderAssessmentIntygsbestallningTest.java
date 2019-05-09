@@ -40,7 +40,10 @@ import static se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAsse
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
-
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
+import io.vavr.control.Try;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,22 +53,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.util.ReflectionUtils;
-
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
-
-import io.vavr.control.Try;
+import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentResponseType;
+import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentType;
+import se.riv.intygsbestallning.certificate.order.v1.ErrorIdType;
+import se.riv.intygsbestallning.certificate.order.v1.ResultCodeType;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.exception.IbResponderValidationErrorCode;
 import se.inera.intyg.intygsbestallning.common.exception.IbResponderValidationException;
 import se.inera.intyg.intygsbestallning.common.property.IntegrationProperties;
 import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTextService;
 import se.inera.intyg.intygsbestallning.common.text.bestallning.BestallningTexter;
-import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentResponseType;
-import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentType;
-import se.riv.intygsbestallning.certificate.order.v1.ErrorIdType;
-import se.riv.intygsbestallning.certificate.order.v1.ResultCodeType;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(JUnitPlatform.class)
@@ -237,20 +234,6 @@ class OrderAssessmentIntygsbestallningTest {
 
         verify(bestallningTextService, times(0)).getBestallningTexter(type.getOrderFormType().getCode());
         verify(createBestallningService, times(0)).create(any(CreateBestallningRequest.class));
-
-        assertThat(response).isNotNull();
-        assertThat(response.getResult()).isNotNull();
-        assertThat(response.getResult().getResultCode()).isEqualTo(ResultCodeType.ERROR);
-        assertThat(response.getResult().getErrorId().get(0)).isEqualTo(ErrorIdType.VALIDATION_ERROR);
-        assertThat(response.getResult().getResultText()).isEqualTo(expectedError.getMessage());
-    }
-
-    @Test
-    void test_GTA_FEL07_AssessmentIdExists() {
-        var type = getXmlRequestAndMapToObject("gta_fel07_bestallningid");
-
-        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL07, List.of());
-        var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
 
         assertThat(response).isNotNull();
         assertThat(response.getResult()).isNotNull();
