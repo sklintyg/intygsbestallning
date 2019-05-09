@@ -19,12 +19,21 @@
 
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
+import java.lang.invoke.MethodHandles;
+import java.util.List;
+import java.util.Optional;
 import com.google.common.base.Strings;
 import io.vavr.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentResponseType;
+import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentType;
+import se.riv.intygsbestallning.certificate.order.orderassessment.v1.rivtabp21.OrderAssessmentResponderInterface;
+import se.riv.intygsbestallning.certificate.order.v1.CVType;
+import se.riv.intygsbestallning.certificate.order.v1.CitizenType;
+import se.riv.intygsbestallning.certificate.order.v1.IIType;
 import se.inera.intyg.infra.integration.pu.util.PersonIdUtil;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequestHandlaggare;
@@ -36,16 +45,6 @@ import se.inera.intyg.intygsbestallning.common.property.IntegrationProperties;
 import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTextService;
 import se.inera.intyg.intygsbestallning.common.util.RivtaUtil;
 import se.inera.intyg.schemas.contract.Personnummer;
-import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentResponseType;
-import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentType;
-import se.riv.intygsbestallning.certificate.order.orderassessment.v1.rivtabp21.OrderAssessmentResponderInterface;
-import se.riv.intygsbestallning.certificate.order.v1.CVType;
-import se.riv.intygsbestallning.certificate.order.v1.CitizenType;
-import se.riv.intygsbestallning.certificate.order.v1.IIType;
-
-import java.lang.invoke.MethodHandles;
-import java.util.List;
-import java.util.Optional;
 
 @Component
 @Transactional(noRollbackFor = IbResponderValidationException.class)
@@ -71,13 +70,16 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
             = "authorityAdministrativeOfficial.officeAddress.postalCode";
     protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_CITY
             = "authorityAdministrativeOfficial.officeAddress.postalCity";
+
     private static final String KV_FORMULAR = "fe11ea2d-9c5f-4786-b98f-bd5e6c93ea72";
     private static final String KV_MYNDIGHET = "769bb12b-bd9f-4203-a5cd-fd14f2eb3b80";
     private static final String HSA_ID_ROOT = "1.2.752.129.2.1.4.1";
-    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
     private static final int STRING_64_CHARS = 64;
     private static final int STRING_4000_CHARS = 4000;
     private static final int STRING_255_CHARS = 255;
+
+    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private CreateBestallningService createBestallningService;
     private IntegrationProperties integrationProperties;
@@ -143,7 +145,7 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
                     List.of(personnummerString));
         }
 
-        if (!personnummerRoot.equals(PersonIdUtil.getPersonnummerRoot())
+        if ((!PersonIdUtil.isSamordningsNummer(personnummer) && !personnummerRoot.equals(PersonIdUtil.getPersonnummerRoot()))
                 || (PersonIdUtil.isSamordningsNummer(personnummer) && !personnummerRoot.equals(PersonIdUtil.getSamordningsNummerRoot()))) {
             throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(personnummerRoot));
         }
@@ -228,8 +230,7 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
             validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getPhoneNumber(),
                     ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_PHONE_NUMBER, STRING_64_CHARS);
             validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getEmail(),
-                    ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_EMAIL,
-                    STRING_255_CHARS);
+                    ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_EMAIL, STRING_255_CHARS);
             if (request.getAuthorityAdministrativeOfficial().getOfficeAddress() != null) {
                 validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getOfficeAddress().getPostalAddress(),
                         ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_ADDRESS, STRING_255_CHARS);

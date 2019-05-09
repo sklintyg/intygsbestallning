@@ -134,6 +134,23 @@ class OrderAssessmentIntygsbestallningTest {
     }
 
     @Test
+    void test_GTA_FEL01_IncorrectSamordningsnummerRoot() {
+        var type = getXmlRequestAndMapToObject("gta_fel01_samordningsnummer");
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01,
+                List.of(type.getCitizen().getPersonalIdentity().getRoot()));
+        var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
+
+        verify(bestallningTextService, times(0)).getBestallningTexter(type.getOrderFormType().getCode());
+        verify(createBestallningService, times(0)).create(any(CreateBestallningRequest.class));
+
+        assertThat(response).isNotNull();
+        assertThat(response.getResult()).isNotNull();
+        assertThat(response.getResult().getResultCode()).isEqualTo(ResultCodeType.ERROR);
+        assertThat(response.getResult().getErrorId().get(0)).isEqualTo(ErrorIdType.VALIDATION_ERROR);
+        assertThat(response.getResult().getResultText()).isEqualTo(expectedError.getMessage());
+    }
+
+    @Test
     void test_GTA_FEL01_IncorrectHSARoot() {
         var type = getXmlRequestAndMapToObject("gta_fel01_hsa");
         var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01,
