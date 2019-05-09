@@ -19,18 +19,12 @@
 
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
-import java.lang.invoke.MethodHandles;
-import java.util.List;
-import java.util.Optional;
-
+import com.google.common.base.Strings;
+import io.vavr.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.base.Strings;
-
-import io.vavr.control.Try;
 import se.inera.intyg.infra.integration.pu.util.PersonIdUtil;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequestHandlaggare;
@@ -49,27 +43,38 @@ import se.riv.intygsbestallning.certificate.order.v1.CVType;
 import se.riv.intygsbestallning.certificate.order.v1.CitizenType;
 import se.riv.intygsbestallning.certificate.order.v1.IIType;
 
+import java.lang.invoke.MethodHandles;
+import java.util.List;
+import java.util.Optional;
+
 @Component
 @Transactional(noRollbackFor = IbResponderValidationException.class)
 public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponderInterface {
-
-    private static final String KV_FORMULAR = "fe11ea2d-9c5f-4786-b98f-bd5e6c93ea72";
-    private static final String KV_MYNDIGHET = "769bb12b-bd9f-4203-a5cd-fd14f2eb3b80";
-    private static final String HSA_ID_ROOT = "1.2.752.129.2.1.4.1";
-
-    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     protected static final String ATTR_PURPOSE = "purpose";
     protected static final String ATTR_PLANNED_ACTIONS = "plannedActions";
     protected static final String ATTR_CASE_REFERENCE = "CaseReference";
-    protected static final String ATTR_CITIZEN_SITUATION_BACKGROUND = "citizen.situationBackground";
-    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_COST_CENTER = "authorityAdministrativeOfficial.officeCostCenter";
-    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_NAME = "authorityAdministrativeOfficial.officeName";
-    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_FULL_NAME = "authorityAdministrativeOfficial.fullName";
-    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_PHONE_NUMBER = "authorityAdministrativeOfficial.phoneNumber";
-    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_EMAIL = "authorityAdministrativeOfficial.email";
-    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_ADDRESS = "authorityAdministrativeOfficial.officeAddress.postalAddress";
-    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_CODE = "authorityAdministrativeOfficial.officeAddress.postalCode";
-    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_CITY = "authorityAdministrativeOfficial.officeAddress.postalCity";
+    protected static final String ATTR_CITIZEN_SITUATION_BACKGROUND
+            = "citizen.situationBackground";
+    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_COST_CENTER
+            = "authorityAdministrativeOfficial.officeCostCenter";
+    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_NAME
+            = "authorityAdministrativeOfficial.officeName";
+    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_FULL_NAME
+            = "authorityAdministrativeOfficial.fullName";
+    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_PHONE_NUMBER
+            = "authorityAdministrativeOfficial.phoneNumber";
+    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_EMAIL
+            = "authorityAdministrativeOfficial.email";
+    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_ADDRESS
+            = "authorityAdministrativeOfficial.officeAddress.postalAddress";
+    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_CODE
+            = "authorityAdministrativeOfficial.officeAddress.postalCode";
+    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_CITY
+            = "authorityAdministrativeOfficial.officeAddress.postalCity";
+    private static final String KV_FORMULAR = "fe11ea2d-9c5f-4786-b98f-bd5e6c93ea72";
+    private static final String KV_MYNDIGHET = "769bb12b-bd9f-4203-a5cd-fd14f2eb3b80";
+    private static final String HSA_ID_ROOT = "1.2.752.129.2.1.4.1";
+    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private static final int STRING_64_CHARS = 64;
     private static final int STRING_4000_CHARS = 4000;
     private static final int STRING_255_CHARS = 255;
@@ -222,7 +227,8 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
                     ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_FULL_NAME, STRING_255_CHARS);
             validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getPhoneNumber(),
                     ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_PHONE_NUMBER, STRING_64_CHARS);
-            validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getEmail(), ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_EMAIL,
+            validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getEmail(),
+                    ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_EMAIL,
                     STRING_255_CHARS);
             if (request.getAuthorityAdministrativeOfficial().getOfficeAddress() != null) {
                 validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getOfficeAddress().getPostalAddress(),
