@@ -28,6 +28,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Strings;
+
 import io.vavr.control.Try;
 import se.inera.intyg.infra.integration.pu.util.PersonIdUtil;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequest;
@@ -56,6 +58,21 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
     private static final String HSA_ID_ROOT = "1.2.752.129.2.1.4.1";
 
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    protected static final String ATTR_PURPOSE = "purpose";
+    protected static final String ATTR_PLANNED_ACTIONS = "plannedActions";
+    protected static final String ATTR_CASE_REFERENCE = "CaseReference";
+    protected static final String ATTR_CITIZEN_SITUATION_BACKGROUND = "citizen.situationBackground";
+    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_COST_CENTER = "authorityAdministrativeOfficial.officeCostCenter";
+    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_NAME = "authorityAdministrativeOfficial.officeName";
+    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_FULL_NAME = "authorityAdministrativeOfficial.fullName";
+    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_PHONE_NUMBER = "authorityAdministrativeOfficial.phoneNumber";
+    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_EMAIL = "authorityAdministrativeOfficial.email";
+    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_ADDRESS = "authorityAdministrativeOfficial.officeAddress.postalAddress";
+    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_CODE = "authorityAdministrativeOfficial.officeAddress.postalCode";
+    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_CITY = "authorityAdministrativeOfficial.officeAddress.postalCity";
+    private static final int STRING_64_CHARS = 64;
+    private static final int STRING_4000_CHARS = 4000;
+    private static final int STRING_255_CHARS = 255;
 
     private CreateBestallningService createBestallningService;
     private IntegrationProperties integrationProperties;
@@ -139,6 +156,8 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
             throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(typCodeSystem));
         }
 
+        validateStringAttributeLengths(request);
+
         var texter = bestallningTextService.getBestallningTexter(typ);
         if (texter.isEmpty()) {
             throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL08, List.of());
@@ -186,6 +205,41 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
                 texter.get().getIntygTypBeskrivning(),
                 vardenhet,
                 request.getCaseReference());
+    }
+
+    private void validateStringAttributeLengths(OrderAssessmentType request) {
+        validateTextAttributeMaxLength(request.getPurpose(), ATTR_PURPOSE, STRING_4000_CHARS);
+        validateTextAttributeMaxLength(request.getPlannedActions(), ATTR_PLANNED_ACTIONS, STRING_4000_CHARS);
+        validateTextAttributeMaxLength(request.getCaseReference(), ATTR_CASE_REFERENCE, STRING_64_CHARS);
+        validateTextAttributeMaxLength(request.getCitizen().getSituationBackground(), ATTR_CITIZEN_SITUATION_BACKGROUND, STRING_4000_CHARS);
+
+        if (request.getAuthorityAdministrativeOfficial() != null) {
+            validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getOfficeCostCenter(),
+                    ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_COST_CENTER, STRING_64_CHARS);
+            validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getOfficeName(),
+                    ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_NAME, STRING_255_CHARS);
+            validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getFullName(),
+                    ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_FULL_NAME, STRING_255_CHARS);
+            validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getPhoneNumber(),
+                    ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_PHONE_NUMBER, STRING_64_CHARS);
+            validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getEmail(), ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_EMAIL,
+                    STRING_255_CHARS);
+            if (request.getAuthorityAdministrativeOfficial().getOfficeAddress() != null) {
+                validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getOfficeAddress().getPostalAddress(),
+                        ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_ADDRESS, STRING_255_CHARS);
+                validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getOfficeAddress().getPostalCode(),
+                        ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_CODE, STRING_64_CHARS);
+                validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getOfficeAddress().getPostalCity(),
+                        ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_CITY, STRING_255_CHARS);
+            }
+        }
+    }
+
+    private void validateTextAttributeMaxLength(String attributeValue, String attributeName, int validMaxLength) {
+        if (Strings.nullToEmpty(attributeValue).length() > validMaxLength) {
+            throw new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL13, List.of(attributeName));
+        }
+
     }
 
     private enum MyndighetTyp {

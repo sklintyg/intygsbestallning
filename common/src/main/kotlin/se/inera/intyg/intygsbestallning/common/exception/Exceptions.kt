@@ -87,5 +87,7 @@ enum class IbResponderValidationErrorCode(val errorMsgTemplate: String, val erro
   GTA_FEL08("Angiven intygstyp går inte att beställa", ErrorIdType.APPLICATION_ERROR),
   GTA_FEL09("Vårdenheten saknar e-postadress", ErrorIdType.EMAIL_ERROR),
   GTA_FEL10("Received technical error from PU", ErrorIdType.TECHNICAL_ERROR),
-  GTA_FEL11("Angivet personnummer eller samordningsnummer finns inte i personuppgiftsregistret", ErrorIdType.APPLICATION_ERROR)
+  GTA_FEL11("Angivet personnummer eller samordningsnummer finns inte i personuppgiftsregistret", ErrorIdType.APPLICATION_ERROR),
+  //GTA_FEL12 is missing here because it's the generic TECHNICAL_ERROR for unknown exceptions that's handled by soapFaultInterceptor
+  GTA_FEL13("{0} överskrider teckenbegränsningen för fältet.", ErrorIdType.VALIDATION_ERROR)
 }

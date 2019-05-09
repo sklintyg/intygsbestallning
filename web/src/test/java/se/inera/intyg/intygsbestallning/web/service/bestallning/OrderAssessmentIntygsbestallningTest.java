@@ -24,14 +24,23 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning.ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_EMAIL;
+import static se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning.ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_FULL_NAME;
+import static se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning.ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_ADDRESS;
+import static se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning.ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_CITY;
+import static se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning.ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_CODE;
+import static se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning.ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_COST_CENTER;
+import static se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning.ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_NAME;
+import static se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning.ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_PHONE_NUMBER;
+import static se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning.ATTR_CASE_REFERENCE;
+import static se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning.ATTR_CITIZEN_SITUATION_BACKGROUND;
+import static se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning.ATTR_PLANNED_ACTIONS;
+import static se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning.ATTR_PURPOSE;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
-import io.vavr.control.Try;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,21 +50,28 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.util.ReflectionUtils;
-import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentType;
-import se.riv.intygsbestallning.certificate.order.v1.ErrorIdType;
-import se.riv.intygsbestallning.certificate.order.v1.ResultCodeType;
+
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
+
+import io.vavr.control.Try;
 import se.inera.intyg.intygsbestallning.common.dto.CreateBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.exception.IbResponderValidationErrorCode;
 import se.inera.intyg.intygsbestallning.common.exception.IbResponderValidationException;
 import se.inera.intyg.intygsbestallning.common.property.IntegrationProperties;
 import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTextService;
 import se.inera.intyg.intygsbestallning.common.text.bestallning.BestallningTexter;
+import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentResponseType;
+import se.riv.intygsbestallning.certificate.order.orderassessment.v1.OrderAssessmentType;
+import se.riv.intygsbestallning.certificate.order.v1.ErrorIdType;
+import se.riv.intygsbestallning.certificate.order.v1.ResultCodeType;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(JUnitPlatform.class)
 class OrderAssessmentIntygsbestallningTest {
 
-    //CHECKSTYLE:OFF MethodName
+    // CHECKSTYLE:OFF MethodName
 
     private static final String LOGICAL_ADDRESS = "123456789";
     private static final String SOURCE_SYSTEM_HSA_ID = "9876543421";
@@ -103,7 +119,8 @@ class OrderAssessmentIntygsbestallningTest {
     @Test
     void test_GTA_FEL01_IncorrectPersonnummerRoot() {
         var type = getXmlRequestAndMapToObject("gta_fel01_personnummer");
-        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(type.getCitizen().getPersonalIdentity().getRoot()));
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01,
+                List.of(type.getCitizen().getPersonalIdentity().getRoot()));
         var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
 
         verify(bestallningTextService, times(0)).getBestallningTexter(type.getOrderFormType().getCode());
@@ -119,7 +136,8 @@ class OrderAssessmentIntygsbestallningTest {
     @Test
     void test_GTA_FEL01_IncorrectHSARoot() {
         var type = getXmlRequestAndMapToObject("gta_fel01_hsa");
-        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(type.getCareUnitId().getRoot()));
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01,
+                List.of(type.getCareUnitId().getRoot()));
         var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
 
         verify(bestallningTextService, times(0)).getBestallningTexter(type.getOrderFormType().getCode());
@@ -135,7 +153,8 @@ class OrderAssessmentIntygsbestallningTest {
     @Test
     void test_GTA_FEL01_IncorrectOrderFormTypeCodeSystem() {
         var type = getXmlRequestAndMapToObject("gta_fel01_intygtyp");
-        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01, List.of(type.getOrderFormType().getCodeSystem()));
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL01,
+                List.of(type.getOrderFormType().getCodeSystem()));
         var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
 
         verify(bestallningTextService, times(0)).getBestallningTexter(type.getOrderFormType().getCode());
@@ -195,7 +214,8 @@ class OrderAssessmentIntygsbestallningTest {
     @Test
     void test_GTA_FEL05_IncorrectPersonnummerFormat() {
         var type = getXmlRequestAndMapToObject("gta_fel05_personnummer");
-        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL05, List.of(type.getCitizen().getPersonalIdentity().getExtension()));
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL05,
+                List.of(type.getCitizen().getPersonalIdentity().getExtension()));
         var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
 
         verify(bestallningTextService, times(0)).getBestallningTexter(type.getOrderFormType().getCode());
@@ -242,7 +262,144 @@ class OrderAssessmentIntygsbestallningTest {
         assertThat(response.getResult().getResultText()).isEqualTo(expectedError.getMessage());
     }
 
-    //CHECKSTYLE:ON MethodName
+    @Test
+    void test_GTA_FEL13_Maxlength_Purpose() {
+        var type = getXmlRequestAndMapToObject("gta_fel13_purpose");
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL13, List.of(ATTR_PURPOSE));
+
+        var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
+
+        assertGTA13Response(response, expectedError);
+    }
+
+    @Test
+    void test_GTA_FEL13_Maxlength_PlannedActions() {
+        var type = getXmlRequestAndMapToObject("gta_fel13_plannedactions");
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL13, List.of(ATTR_PLANNED_ACTIONS));
+
+        var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
+
+        assertGTA13Response(response, expectedError);
+    }
+
+    @Test
+    void test_GTA_FEL13_Maxlength_CaseReference() {
+        var type = getXmlRequestAndMapToObject("gta_fel13_casereference");
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL13, List.of(ATTR_CASE_REFERENCE));
+
+        var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
+
+        assertGTA13Response(response, expectedError);
+    }
+
+    @Test
+    void test_GTA_FEL13_Maxlength_CitizenBackground() {
+        var type = getXmlRequestAndMapToObject("gta_fel13_citizenbackground");
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL13,
+                List.of(ATTR_CITIZEN_SITUATION_BACKGROUND));
+
+        var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
+
+        assertGTA13Response(response, expectedError);
+    }
+
+    @Test
+    void test_GTA_FEL13_Maxlength_OfficeCostcenter() {
+        var type = getXmlRequestAndMapToObject("gta_fel13_officecostcenter");
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL13,
+                List.of(ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_COST_CENTER));
+
+        var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
+
+        assertGTA13Response(response, expectedError);
+    }
+
+    @Test
+    void test_GTA_FEL13_Maxlength_Officename() {
+        var type = getXmlRequestAndMapToObject("gta_fel13_officename");
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL13,
+                List.of(ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_NAME));
+
+        var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
+
+        assertGTA13Response(response, expectedError);
+    }
+
+    @Test
+    void test_GTA_FEL13_Maxlength_fullname() {
+        var type = getXmlRequestAndMapToObject("gta_fel13_fullname");
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL13,
+                List.of(ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_FULL_NAME));
+
+        var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
+
+        assertGTA13Response(response, expectedError);
+    }
+
+    @Test
+    void test_GTA_FEL13_Maxlength_phone() {
+        var type = getXmlRequestAndMapToObject("gta_fel13_phone");
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL13,
+                List.of(ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_PHONE_NUMBER));
+
+        var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
+
+        assertGTA13Response(response, expectedError);
+    }
+
+    @Test
+    void test_GTA_FEL13_Maxlength_email() {
+        var type = getXmlRequestAndMapToObject("gta_fel13_email");
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL13,
+                List.of(ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_EMAIL));
+
+        var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
+
+        assertGTA13Response(response, expectedError);
+    }
+
+    @Test
+    void test_GTA_FEL13_Maxlength_officepostaddress() {
+        var type = getXmlRequestAndMapToObject("gta_fel13_postadress");
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL13,
+                List.of(ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_ADDRESS));
+
+        var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
+
+        assertGTA13Response(response, expectedError);
+    }
+
+    @Test
+    void test_GTA_FEL13_Maxlength_officepostalcode() {
+        var type = getXmlRequestAndMapToObject("gta_fel13_postkod");
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL13,
+                List.of(ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_CODE));
+
+        var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
+
+        assertGTA13Response(response, expectedError);
+    }
+
+    @Test
+    void test_GTA_FEL13_Maxlength_officepostalcity() {
+        var type = getXmlRequestAndMapToObject("gta_fel13_city");
+        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL13,
+                List.of(ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_CITY));
+
+        var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
+
+        assertGTA13Response(response, expectedError);
+    }
+
+    private void assertGTA13Response(OrderAssessmentResponseType response, IbResponderValidationException expectedError) {
+        assertThat(response).isNotNull();
+        assertThat(response.getResult()).isNotNull();
+        assertThat(response.getResult().getResultCode()).isEqualTo(ResultCodeType.ERROR);
+        assertThat(response.getResult().getErrorId().get(0)).isEqualTo(ErrorIdType.VALIDATION_ERROR);
+        assertThat(response.getResult().getResultText()).isEqualTo(expectedError.getMessage());
+    }
+
+    // CHECKSTYLE:ON MethodName
     private OrderAssessmentType getXmlRequestAndMapToObject(String fileName) {
         var resource = Resources.getResource("orderAssessment/" + fileName + ".xml");
         var xmlResult = Try.of(() -> Resources.toString(resource, Charsets.UTF_8));
@@ -274,8 +431,8 @@ class OrderAssessmentIntygsbestallningTest {
         ReflectionUtils.setField(intygTypField, bestallningTexter, "INTYG_TYP");
 
         Field intygTypBeskrivningField = ReflectionUtils.findField(BestallningTexter.class, "intygTypBeskrivning");
-        ReflectionUtils.makeAccessible(intygTypBeskrivningField );
-        ReflectionUtils.setField(intygTypBeskrivningField , bestallningTexter, "INTYG_TYP_BESKRIVNING");
+        ReflectionUtils.makeAccessible(intygTypBeskrivningField);
+        ReflectionUtils.setField(intygTypBeskrivningField, bestallningTexter, "INTYG_TYP_BESKRIVNING");
 
         return bestallningTexter;
     }

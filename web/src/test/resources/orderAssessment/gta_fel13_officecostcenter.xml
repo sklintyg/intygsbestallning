@@ -1,0 +1,36 @@
+<OrderAssessment>
+  <careUnitId>
+    <root>1.2.752.129.2.1.4.1</root>
+    <extension>IFV1239877878-1042</extension>
+  </careUnitId>
+  <orderFormType>
+    <code>F1.0_AF00213</code>
+    <codeSystem>fe11ea2d-9c5f-4786-b98f-bd5e6c93ea72</codeSystem>
+  </orderFormType>
+  <purpose>purpose</purpose>
+  <plannedActions>plannedactions</plannedActions>
+  <caseReference>0123456789012345</caseReference>
+  <authorityAdministrativeOfficial>
+    <fullName>Handlaggaren Andersson</fullName>
+    <phoneNumber>0733-123123123</phoneNumber>
+    <email>handlaggaren@mail.se</email>
+    <authority>
+      <code>AF</code>
+      <codeSystem>769bb12b-bd9f-4203-a5cd-fd14f2eb3b80</codeSystem>
+    </authority>
+    <officeName>Kontoret</officeName>
+    <officeCostCenter>769bb12b-bd9f-4203-a5cd-fd14f2eb3b80769bb12b-bd9f-4203-a5cd-fd14f2eb3b80</officeCostCenter>
+    <officeAddress>
+      <postalAddress>Kontorsadressen</postalAddress>
+      <postalCode>12345</postalCode>
+      <postalCity>Storstaden</postalCity>
+    </officeAddress>
+  </authorityAdministrativeOfficial>
+  <citizen>
+    <personalIdentity>
+      <root>1.2.752.129.2.1.3.1</root>
+      <extension>191212121212</extension>
+    </personalIdentity>
+    <situationBackground>Invånaren är mycket sjuk</situationBackground>
+  </citizen>
+</OrderAssessment>

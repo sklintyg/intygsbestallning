@@ -28,13 +28,13 @@
       <column name="AVSLUT_DATUM" type="datetime">
         <constraints nullable="true"/>
       </column>
-      <column name="SYFTE" type="varchar(64)">
+      <column name="SYFTE" type="varchar(4000)">
         <constraints nullable="true"/>
       </column>
       <column name="ARENDE_REFERENS" type="varchar(64)">
         <constraints nullable="true"/>
       </column>
-      <column name="PLANERADE_AKTIVITETER" type="varchar(64)">
+      <column name="PLANERADE_AKTIVITETER" type="varchar(4000)">
         <constraints nullable="true"/>
       </column>
       <column name="STATUS" type="varchar(64)">
@@ -46,7 +46,7 @@
       <column name="INVANARE_PERSON_ID" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
-      <column name="INVANARE_BAKGRUND_NULAGE" type="varchar(64)">
+      <column name="INVANARE_BAKGRUND_NULAGE" type="varchar(4000)">
         <constraints nullable="true"/>
       </column>
       <column name="HANDLAGGARE_ID" type="bigint">
@@ -61,10 +61,10 @@
       <column name="VARDENHET_ORGANISATION_ID" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
-      <column name="VARDENHET_NAMN" type="varchar(64)">
+      <column name="VARDENHET_NAMN" type="varchar(255)">
         <constraints nullable="false"/>
       </column>
-      <column name="VARDENHET_EPOST" type="varchar(64)">
+      <column name="VARDENHET_EPOST" type="varchar(255)">
         <constraints nullable="true"/>
       </column>
     </createTable>
@@ -73,28 +73,28 @@
       <column name="ID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="FULLSTANDIGT_NAMN" type="varchar(64)">
+      <column name="FULLSTANDIGT_NAMN" type="varchar(255)">
         <constraints nullable="true"/>
       </column>
       <column name="TELEFONNUMMER" type="varchar(64)">
         <constraints nullable="true"/>
       </column>
-      <column name="EMAIL" type="varchar(64)">
+      <column name="EMAIL" type="varchar(255)">
         <constraints nullable="true"/>
       </column>
       <column name="MYNDIGHET" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
-      <column name="KONTOR" type="varchar(64)">
+      <column name="KONTOR" type="varchar(255)">
         <constraints nullable="true"/>
       </column>
-      <column name="ADRESS" type="varchar(64)">
+      <column name="ADRESS" type="varchar(255)">
         <constraints nullable="true"/>
       </column>
       <column name="POSTNUMMER" type="varchar(64)">
         <constraints nullable="true"/>
       </column>
-      <column name="STAD" type="varchar(64)">
+      <column name="STAD" type="varchar(255)">
         <constraints nullable="true"/>
       </column>
       <column name="KOSTNADSSTALLE" type="varchar(64)">
@@ -128,7 +128,7 @@
       <column name="BESKRIVNING" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
-      <column name="KOMMENTAR" type="varchar(64)">
+      <column name="KOMMENTAR" type="varchar(4000)">
         <constraints nullable="true"/>
       </column>
     </createTable>
