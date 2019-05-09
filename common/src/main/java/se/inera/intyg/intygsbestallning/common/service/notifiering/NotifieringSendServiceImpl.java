@@ -24,7 +24,6 @@ import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Objects;
 import javax.mail.MessagingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,7 @@ import org.springframework.stereotype.Service;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.Notifiering;
 import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
-import se.inera.intyg.intygsbestallning.common.property.MailProperties;
+import se.inera.intyg.intygsbestallning.common.property.BestallningProperties;
 import se.inera.intyg.intygsbestallning.common.text.mail.MailTexter;
 
 @Service
@@ -43,17 +42,17 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
     private MailService mailService;
     private MailTextService mailTextService;
     private MailBodyFactory mailBodyFactory;
-    private MailProperties mailProperties;
+    private BestallningProperties bestallningProperties;
 
     public NotifieringSendServiceImpl(
             MailService mailService,
             MailTextService mailTextService,
             MailBodyFactory mailBodyFactory,
-            MailProperties mailProperties) {
+            BestallningProperties bestallningProperties) {
         this.mailService = mailService;
         this.mailTextService = mailTextService;
         this.mailBodyFactory = mailBodyFactory;
-        this.mailProperties = mailProperties;
+        this.bestallningProperties = bestallningProperties;
     }
 
     @Override
@@ -94,7 +93,7 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
     }
 
     private String getMailLinkRedirect(Long bestallningId) {
-        return mailProperties.getHost() + "/maillink/" + bestallningId;
+        return bestallningProperties.getHost() + "/maillink/" + bestallningId;
     }
 
     private String getEmailAddress(Bestallning bestallning) {

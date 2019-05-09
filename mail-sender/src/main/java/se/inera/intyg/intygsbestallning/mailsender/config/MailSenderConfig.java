@@ -91,7 +91,7 @@ public class MailSenderConfig extends CamelConfiguration {
     @Profile(value = {"demo", "qa", "prod"})
     public JavaMailSender mailSender() {
         var mailSender = new JavaMailSenderImpl();
-        mailSender.setHost(mailProperties.getHost());
+        mailSender.setHost(mailProperties.getServerHost());
         mailSender.setDefaultEncoding(mailProperties.getDefaultEncoding());
         mailSender.setProtocol(mailProperties.getProtocol());
         mailSender.setPort(Ints.tryParse(mailProperties.getPort()));
@@ -105,14 +105,14 @@ public class MailSenderConfig extends CamelConfiguration {
 
         Properties javaMailProperties = new Properties();
         javaMailProperties.put("mail." + mailProperties.getProtocol() + ".auth", mailProperties.getAuth());
-        javaMailProperties.put("mail." + mailProperties.getProtocol() + ".port", mailProperties.getHost());
+        javaMailProperties.put("mail." + mailProperties.getProtocol() + ".port", mailProperties.getPort());
         javaMailProperties.put("mail." + mailProperties.getProtocol() + ".starttls.enable", mailProperties.getStarttlsEnable());
         javaMailProperties.put("mail." + mailProperties.getProtocol() + ".debug", mailProperties.getDebug());
         javaMailProperties.put("mail." + mailProperties.getProtocol() + ".socketFactory.fallback", true);
 
         mailSender.setJavaMailProperties(javaMailProperties);
         LOG.info("Mailsender initialized with: [port: {}, protocol: {}, host: {}]",
-                mailProperties.getPort(), mailProperties.getProtocol(), mailProperties.getHost());
+                mailProperties.getPort(), mailProperties.getProtocol(), mailProperties.getServerHost());
         return mailSender;
     }
 }

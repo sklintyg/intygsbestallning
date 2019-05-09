@@ -48,6 +48,7 @@ import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.intygsbestallning.common.domain.Notifiering;
 import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
+import se.inera.intyg.intygsbestallning.common.property.BestallningProperties;
 import se.inera.intyg.intygsbestallning.common.property.MailProperties;
 import se.inera.intyg.intygsbestallning.common.text.mail.ArendeRad;
 import se.inera.intyg.intygsbestallning.common.text.mail.Body;
@@ -67,7 +68,7 @@ class NotifieringSendServiceImplTest {
     private MailTextService mailTextService;
 
     @Mock
-    private MailProperties mailProperties;
+    private BestallningProperties bestallningProperties;
 
     @Mock
     private MailBodyFactory mailBodyFactory;
@@ -82,7 +83,7 @@ class NotifieringSendServiceImplTest {
     void setup() {
         Field hostField = ReflectionUtils.findField(MailProperties.class, "host");
         ReflectionUtils.makeAccessible(hostField);
-        ReflectionUtils.setField(hostField, mailProperties, "host");
+        ReflectionUtils.setField(hostField, bestallningProperties, "host");
     }
 
     @Test

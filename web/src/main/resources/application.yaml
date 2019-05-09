@@ -37,7 +37,7 @@ spring:
 # Mail notifications
 mail:
   text-resource-path: ${resources.folder}/intygsbestallning/texts/mail/*.xml
-  host: ib-host
+  server-host: mail-server-host
   admin: ib-notifications@inera.se
   from: ib-notifications@inera.se
   username:
