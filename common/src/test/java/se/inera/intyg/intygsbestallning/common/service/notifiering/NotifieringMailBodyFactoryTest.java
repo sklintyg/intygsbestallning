@@ -81,7 +81,7 @@ class NotifieringMailBodyFactoryTest {
 
         assertThat(html).contains("<h1>" + mailTexter.getHalsning().getText() + "</h1>");
         assertThat(html).contains("<p>" + mailTexter.getBody().getText1() + "</p>");
-        assertThat(html).contains("<a href=\"" + "url" +  "\"</a>");
+        assertThat(html).contains("<a href=\"" + "url" +  "\">url</a>");
         assertThat(html).contains("src=\"" + "host/images/" + mailTexter.getLogo() +  "\"");
         assertThat(html).contains("<p>" + mailTexter.getFooter().getText() + "</p>");
     }

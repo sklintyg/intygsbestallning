@@ -83,7 +83,7 @@ data class MailContent(
                                             <p>${data.texter.body.text1}</p>
 
                                             <p>
-                                                <a href="${data.url}"</a>
+                                                <a href="${data.url}">${data.url}</a>
                                             </p>
 
                                             <p>${data.texter.body.text2}</p
