@@ -18,15 +18,12 @@
  */
 package se.inera.intyg.intygsbestallning.common.service.notifiering;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
 import static se.inera.intyg.schemas.contract.Personnummer.createPersonnummer;
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.List;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,7 +41,7 @@ import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.intygsbestallning.common.domain.Notifiering;
 import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
-import se.inera.intyg.intygsbestallning.common.property.MailProperties;
+import se.inera.intyg.intygsbestallning.common.property.BestallningProperties;
 import se.inera.intyg.intygsbestallning.common.text.mail.ArendeRad;
 import se.inera.intyg.intygsbestallning.common.text.mail.Body;
 import se.inera.intyg.intygsbestallning.common.text.mail.Footer;
@@ -60,16 +57,16 @@ class NotifieringMailBodyFactoryTest {
     private static final LocalDateTime ANKOMST_DATUM = LocalDateTime.now().minusDays(2L);
 
     @Mock
-    private MailProperties mailProperties;
+    private BestallningProperties bestallningProperties;
 
     @InjectMocks
     private NotifieringMailBodyFactory notifieringMailBodyFactory;
 
     @BeforeEach
     void setup() {
-        Field hostField = ReflectionUtils.findField(MailProperties.class, "host");
+        Field hostField = ReflectionUtils.findField(BestallningProperties.class, "host");
         ReflectionUtils.makeAccessible(hostField);
-        ReflectionUtils.setField(hostField, mailProperties, "host");
+        ReflectionUtils.setField(hostField, bestallningProperties, "host");
     }
 
     @Test

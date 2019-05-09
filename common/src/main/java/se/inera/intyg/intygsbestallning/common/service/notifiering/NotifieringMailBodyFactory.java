@@ -24,26 +24,26 @@ import java.time.temporal.ChronoUnit;
 import org.springframework.stereotype.Component;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.mail.MailContent;
-import se.inera.intyg.intygsbestallning.common.property.MailProperties;
+import se.inera.intyg.intygsbestallning.common.property.BestallningProperties;
 import se.inera.intyg.intygsbestallning.common.text.mail.MailTexter;
 
 @Component
 public class NotifieringMailBodyFactory implements MailBodyFactory {
 
-    private MailProperties mailProperties;
+    private BestallningProperties bestallningProperties;
 
-    public NotifieringMailBodyFactory(MailProperties mailProperties) {
-        this.mailProperties = mailProperties;
+    public NotifieringMailBodyFactory(BestallningProperties bestallningProperties) {
+        this.bestallningProperties = bestallningProperties;
     }
 
     public String buildBody(Bestallning bestallning, MailTexter texter, String url) {
         enrichInkomstDatum(bestallning, texter);
-        return MailContent.Template.toHtml(new MailContent(mailProperties.host, texter, url));
+        return MailContent.Template.toHtml(new MailContent(bestallningProperties.host, texter, url));
     }
 
     public String buildBodyRawText(Bestallning bestallning, MailTexter texter, String url) {
         enrichInkomstDatum(bestallning, texter);
-        return MailContent.Template.toText(new MailContent(mailProperties.host, texter, url));
+        return MailContent.Template.toText(new MailContent(bestallningProperties.host, texter, url));
     }
 
     private void enrichInkomstDatum(Bestallning bestallning, MailTexter mailTexter) {
