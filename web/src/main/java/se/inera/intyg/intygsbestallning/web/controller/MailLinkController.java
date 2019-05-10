@@ -19,10 +19,6 @@
 
 package se.inera.intyg.intygsbestallning.web.controller;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,9 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
-import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
-import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
 import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
 import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
@@ -55,28 +49,18 @@ public class MailLinkController {
     public RedirectView maillink(@PathVariable String id) throws IbServiceException {
         LOG.debug("Maillink-controller received request with bestallning-id {}", id);
 
-        Optional<Bestallning> bestallningOptional =
-                bestallningPersistenceService.getBestallningById(Long.parseLong(id));
-
-        if (!bestallningOptional.isPresent()) {
-            LOG.error("Bestallning with id {} not found", id);
-            return new RedirectView("/#/exit/" + IbErrorCodeEnum.NOT_FOUND.name());
-            // Maybe throw exception and let RequestErrorController handle this?
-            //throw new IbServiceException(IbErrorCodeEnum.NOT_FOUND, "Beställningen kunde inte hittas");
-        }
+        Bestallning bestallning =
+                bestallningPersistenceService.getBestallningById(Long.parseLong(id))
+                        .orElseThrow(() -> new IbServiceException(IbErrorCodeEnum.NOT_FOUND, "Bestallning with id " + id + " not found"));
 
         String redirectString;
         IntygsbestallningUser user = userService.getUser();
 
-        List<String> orgNummer = user.getVardgivare().stream().map(Vardgivare::getOrgId).collect(Collectors.toList());
-
-        Vardenhet vardenhetFromBestallning = bestallningOptional.get().getVardenhet();
-        if (!user.changeValdVardenhet(vardenhetFromBestallning.getHsaId())
-                && !orgNummer.contains(vardenhetFromBestallning.getOrganisationId())) {
-            LOG.error("User lacks MIU on the care unit on which the Bestallning was issued");
-            redirectString = "/#/exit/" + IbErrorCodeEnum.LOGIN_FEL002.name();
-            // Maybe throw exception and let RequestErrorController handle this?
-            //throw new IbServiceException(IbErrorCodeEnum.LOGIN_FEL002, "Behörighet saknas");
+        String bestallningEnhetsId = bestallning.getVardenhet().getHsaId();
+        if (!user.changeValdVardenhet(bestallningEnhetsId)) {
+            throw new IbServiceException(
+                    IbErrorCodeEnum.LOGIN_FEL002,
+                    "User lacks MIU on the care unit on which the Bestallning was issued (" + bestallningEnhetsId + ")");
         } else {
             LOG.debug("All good, redirecting to bestallning {}", id);
             redirectString = "/#/bestallning/" + id;

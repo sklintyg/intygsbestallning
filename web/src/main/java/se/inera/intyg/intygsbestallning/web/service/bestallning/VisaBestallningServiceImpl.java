@@ -76,7 +76,7 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
         var bestallning = bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(id, hsaId, orgNrVardgivare);
 
         if (bestallning.isEmpty()) {
-            throw new IbServiceException(IbErrorCodeEnum.NOT_FOUND, MessageFormat.format("Bestallning with id '{0}' was not found", id));
+            throw new IbServiceException(IbErrorCodeEnum.NOT_FOUND, MessageFormat.format("Bestallning with id {0} was not found", id));
         }
 
         if (bestallning.get().getStatus() == BestallningStatus.OLAST) {

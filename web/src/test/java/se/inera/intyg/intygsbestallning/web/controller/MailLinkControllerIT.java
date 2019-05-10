@@ -19,10 +19,15 @@
 
 package se.inera.intyg.intygsbestallning.web.controller;
 
-import static com.jayway.restassured.RestAssured.given;
-import org.junit.jupiter.api.Test;
 import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.http.ContentType;
+import org.apache.http.HttpHeaders;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Test;
 import se.inera.intyg.intygsbestallning.web.BaseRestIntegrationTest;
+
+import static com.jayway.restassured.RestAssured.given;
+import static se.inera.intyg.intygsbestallning.web.controller.RequestErrorController.IB_CLIENT_EXIT_BOOT_PATH;
 
 class MailLinkControllerIT extends BaseRestIntegrationTest {
     private static final String MAILLINK_API_ENDPOINT = "/maillink/";
@@ -32,8 +37,9 @@ class MailLinkControllerIT extends BaseRestIntegrationTest {
         Integer id = createBestallning(loadJson("integrationtests/bestallning.json"));
         RestAssured.sessionId = getAuthSession(DEFAULT_USER);
 
-        given().redirects().follow(false).expect().statusCode(FOUND).when().get(MAILLINK_API_ENDPOINT + id)
-                .then().assertThat().header("Location", RestAssured.baseURI + "/#/bestallning/" + id);
+        given().header(HttpHeaders.ACCEPT, ContentType.HTML).redirects().follow(false)
+                .expect().statusCode(FOUND).when().get(MAILLINK_API_ENDPOINT + id)
+                .then().header("Location", Matchers.containsString(RestAssured.baseURI + "/#/bestallning/" + id));
 
         deleteBestallning(id);
     }
@@ -44,29 +50,24 @@ class MailLinkControllerIT extends BaseRestIntegrationTest {
 
         RestAssured.sessionId = getAuthSession(DEFAULT_USER);
 
-        given().redirects().follow(false).expect().statusCode(FOUND)
+        given().header(HttpHeaders.ACCEPT, ContentType.HTML).redirects().follow(false)
+                .expect().statusCode(FOUND)
                 .when().get(MAILLINK_API_ENDPOINT + id)
-                .then().assertThat().header("Location", RestAssured.baseURI + "/#/exit/LOGIN_FEL002");
+                .then().header("Location", Matchers.containsString(RestAssured.baseURI + IB_CLIENT_EXIT_BOOT_PATH + "LOGIN_FEL002/"));
 
         deleteBestallning(id);
     }
-
-/*    @Test
-    void testMaillinkWithoutAuthRedirectsToLogin() {
-        Integer id = createBestallning(loadJson("integrationtests/bestallning.json"));
-
-        given().redirects().follow(false).expect().statusCode(FOUND).when().get(MAILLINK_API_ENDPOINT + id)
-                .then().assertThat().header("Location", RestAssured.baseURI + "/welcome.html");
-
-        deleteBestallning(id);
-    }*/
 
     @Test
     void testMaillinkRedirectToUnknownBestallning() {
         RestAssured.sessionId = getAuthSession(DEFAULT_USER);
 
-        given().redirects().follow(false).expect().statusCode(FOUND).when().get(MAILLINK_API_ENDPOINT + 1337)
-                .then().assertThat().header("Location", RestAssured.baseURI + "/#/exit/NOT_FOUND");
+        given().header(HttpHeaders.ACCEPT, ContentType.HTML)
+                .redirects().follow(false)
+                .expect()
+                .statusCode(FOUND)
+                .when().get(MAILLINK_API_ENDPOINT + 1337)
+                .then().header("Location", Matchers.containsString(RestAssured.baseURI + IB_CLIENT_EXIT_BOOT_PATH + "NOT_FOUND/"));
     }
 
 }
