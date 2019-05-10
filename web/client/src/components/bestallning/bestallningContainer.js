@@ -63,7 +63,7 @@ const BestallningContainer = ({ error, bestallning, history, fetching }) => {
 
   return bestallningIsEmpty ? null : (
     <FlexColumnContainer>
-      <BestallningHeader props={{ bestallning, history }} />
+      <BestallningHeader bestallning={bestallning} history={history} error={error} />
       <CustomScrollingContainer>
         <WorkareaContainer>
           {bestallning.fragor.map((b, i) => (

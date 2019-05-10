@@ -7,6 +7,11 @@ import IbColors from '../styles/IbColors'
 import { ArrowBack, EventAvailableIcon, Block, Check, Create, InfoIcon } from '../styles/IbSvgIcons'
 import IbAlert, { alertType } from '../alert/Alert.js'
 import { Link } from 'react-router-dom'
+import { compose } from 'recompose'
+import { connect } from 'react-redux'
+import { openModal } from '../../store/actions/modal'
+import { Button } from 'reactstrap'
+import SekretessInfo, { SekretessInfoDialogId } from './dialogs/sekretessInfo'
 
 const CenterContainer = styled.div`
   margin: auto;
@@ -60,10 +65,21 @@ const ButtonRow = styled.div`
   align-items: center;
   justify-content: space-between;
 `
+const InternLank = styled(Button)`
+  color: ${IbColors.IB_COLOR_17} !important;
+  text-decoration: underline !important;
+  &:hover {
+    color: ${IbColors.IB_COLOR_21} !important;
+  }
+`
 
-const BestallningHeader = ({ props }) => {
+const BestallningHeader = ({ bestallning, history, error, openModal }) => {
+  const openSekretessInfoDialog = () => {
+    return openModal(SekretessInfoDialogId)
+  }
+
   const getStatusIcon = () => {
-    switch (props.bestallning.status) {
+    switch (bestallning.status) {
       case 'Oläst':
         return <InfoIcon color={IbColors.IB_COLOR_21} />
       case 'Läst':
@@ -79,8 +95,8 @@ const BestallningHeader = ({ props }) => {
   }
 
   let backPath = '/bestallningar/'
-  if (props.history && props.history.location && props.history.location.state && props.history.location.state.fromList) {
-    backPath += props.history.location.state.fromList
+  if (history && history.location && history.location.state && history.location.state.fromList) {
+    backPath += history.location.state.fromList
   } else {
     backPath += 'AKTUELLA'
   }
@@ -93,42 +109,43 @@ const BestallningHeader = ({ props }) => {
             <ArrowBack />
             Tillbaka till lista
           </Link>
-          {!props.error && (
+          {!error && (
             <Fragment>
-              <span>Avser {props.bestallning.intygTypBeskrivning}</span>
+              <span>Avser {bestallning.intygTypBeskrivning}</span>
               <span>
                 {getStatusIcon()}
-                Status {props.bestallning.status}
+                Status {bestallning.status}
               </span>
               <span>
                 <EventAvailableIcon />
-                Inkom {props.bestallning.ankomstDatum}
+                Inkom {bestallning.ankomstDatum}
               </span>
             </Fragment>
           )}
         </div>
-        {!props.error && (
+        {!error && (
           <ButtonRow>
             <div className="left">
-              <IbTypo04 color={IbColors.IB_COLOR_19}>{props.bestallning.id}</IbTypo04>
+              <IbTypo04 color={IbColors.IB_COLOR_19}>{bestallning.id}</IbTypo04>
 
-              {
-                props.bestallning.invanare.sekretessMarkering
-                  ? (
-                    <IbTypo01 color={IbColors.IB_COLOR_19}>
-                      {props.bestallning.invanare.personId}
-                    </IbTypo01>)
-                  : (
-                    <IbTypo01 color={IbColors.IB_COLOR_19}>
-                      {props.bestallning.invanare.personId} {props.bestallning.invanare.headerName}
-                    </IbTypo01>)
-              }
+              {bestallning.invanare.sekretessMarkering ? (
+                <IbTypo01 color={IbColors.IB_COLOR_19}>{bestallning.invanare.personId}</IbTypo01>
+              ) : (
+                <IbTypo01 color={IbColors.IB_COLOR_19}>
+                  {bestallning.invanare.personId} {bestallning.invanare.headerName}
+                </IbTypo01>
+              )}
 
-              {props.bestallning.invanare.sekretessMarkering ? (
-                <IbAlert type={alertType.SEKRETESS}>Patienten har sekretessmarkering</IbAlert>
+              {bestallning.invanare.sekretessMarkering ? (
+                <IbAlert type={alertType.SEKRETESS}>
+                  <InternLank color="link" onClick={openSekretessInfoDialog}>
+                    Patienten har sekretessmarkering
+                  </InternLank>
+                  <SekretessInfo />
+                </IbAlert>
               ) : null}
             </div>
-            <BestallningActionBar bestallning={props.bestallning} goBack={props.history.goBack} />
+            <BestallningActionBar bestallning={bestallning} goBack={history.goBack} />
           </ButtonRow>
         )}
       </CenterContainer>
@@ -136,4 +153,9 @@ const BestallningHeader = ({ props }) => {
   )
 }
 
-export default BestallningHeader
+export default compose(
+  connect(
+    null,
+    { openModal }
+  )
+)(BestallningHeader)
