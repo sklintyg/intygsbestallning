@@ -174,7 +174,6 @@ class VisaBestallningServiceImplTest {
         return Handlaggare.Factory.newHandlaggare(
                 "namn",
                 "073-000",
-                "e@mail-se",
                 "myndigheten",
                 "kontor",
                 "kostställe",

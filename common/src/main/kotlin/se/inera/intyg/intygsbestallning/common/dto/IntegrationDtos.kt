@@ -40,8 +40,7 @@ data class CreateBestallningRequestInvanare(
 
 data class CreateBestallningRequestHandlaggare(
    val namn: String? = null,
-   val telefonNummer: String,
-   val email: String? = null,
+   val telefonNummer: String? = null,
    val myndighet: String,
    val kontor: CreateBestallningRequestKontor
 )

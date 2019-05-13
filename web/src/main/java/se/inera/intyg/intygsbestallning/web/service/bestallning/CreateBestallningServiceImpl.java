@@ -76,7 +76,6 @@ public class CreateBestallningServiceImpl implements CreateBestallningService {
         var handlaggare = Handlaggare.Factory.newHandlaggare(
                 createBestallningRequest.getHandlaggare().getNamn(),
                 createBestallningRequest.getHandlaggare().getTelefonNummer(),
-                createBestallningRequest.getHandlaggare().getEmail(),
                 createBestallningRequest.getHandlaggare().getMyndighet(),
                 createBestallningRequest.getHandlaggare().getKontor().getNamn(),
                 createBestallningRequest.getHandlaggare().getKontor().getKostnadsStalle(),

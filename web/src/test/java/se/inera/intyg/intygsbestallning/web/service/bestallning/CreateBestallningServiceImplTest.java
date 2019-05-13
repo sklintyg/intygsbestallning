@@ -178,7 +178,7 @@ class CreateBestallningServiceImplTest {
     private CreateBestallningRequest buildBestallningRequest() {
         return new CreateBestallningRequest(
                 new CreateBestallningRequestInvanare(createPersonnummer("191212121212").get(), "Test"),
-                new CreateBestallningRequestHandlaggare("", "", "", "",
+                new CreateBestallningRequestHandlaggare("", "", "",
                         new CreateBestallningRequestKontor("", "", "", "", "")),
                 "syfte", "insatser", "typ", "AF00213",
                 "detta är beskrivningen", "hsa-id", "referens");

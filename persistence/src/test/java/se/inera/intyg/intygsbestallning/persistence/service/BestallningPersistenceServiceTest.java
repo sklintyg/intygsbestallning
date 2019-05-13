@@ -315,7 +315,7 @@ public class BestallningPersistenceServiceTest extends TestSupport {
 
     private Handlaggare buildHandlaggare() {
         return Handlaggare.Factory.newHandlaggare(
-                "Handlaggaren", "073-123", "e@mail.com", "myndigheten", "kontor", "kostnadsställe", "adress", "12345", "Staden");
+                "Handlaggaren", "073-123", "myndigheten", "kontor", "kostnadsställe", "adress", "12345", "Staden");
     }
 
     private Invanare buildInvanare(String personnummer) {

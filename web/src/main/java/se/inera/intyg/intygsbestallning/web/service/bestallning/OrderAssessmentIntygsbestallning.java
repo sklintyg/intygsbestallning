@@ -62,8 +62,6 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
             = "authorityAdministrativeOfficial.fullName";
     protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_PHONE_NUMBER
             = "authorityAdministrativeOfficial.phoneNumber";
-    protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_EMAIL
-            = "authorityAdministrativeOfficial.email";
     protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_ADDRESS
             = "authorityAdministrativeOfficial.officeAddress.postalAddress";
     protected static final String ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_CODE
@@ -183,7 +181,6 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
         var auktoritet = new CreateBestallningRequestHandlaggare(
                 request.getAuthorityAdministrativeOfficial().getFullName(),
                 request.getAuthorityAdministrativeOfficial().getPhoneNumber(),
-                request.getAuthorityAdministrativeOfficial().getEmail(),
                 request.getAuthorityAdministrativeOfficial().getAuthority().getCode(),
                 kontor);
 
@@ -224,8 +221,6 @@ public class OrderAssessmentIntygsbestallning implements OrderAssessmentResponde
                     ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_FULL_NAME, STRING_255_CHARS);
             validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getPhoneNumber(),
                     ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_PHONE_NUMBER, STRING_64_CHARS);
-            validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getEmail(),
-                    ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_EMAIL, STRING_255_CHARS);
             if (request.getAuthorityAdministrativeOfficial().getOfficeAddress() != null) {
                 validateTextAttributeMaxLength(request.getAuthorityAdministrativeOfficial().getOfficeAddress().getPostalAddress(),
                         ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_ADDRESS, STRING_255_CHARS);
