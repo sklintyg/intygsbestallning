@@ -24,7 +24,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning.ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_EMAIL;
 import static se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning.ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_FULL_NAME;
 import static se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning.ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_ADDRESS;
 import static se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning.ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_OFFICE_ADDRESS_POSTAL_CITY;
@@ -341,17 +340,6 @@ class OrderAssessmentIntygsbestallningTest {
         var type = getXmlRequestAndMapToObject("gta_fel13_phone");
         var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL13,
                 List.of(ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_PHONE_NUMBER));
-
-        var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
-
-        assertGTA13Response(response, expectedError);
-    }
-
-    @Test
-    void test_GTA_FEL13_Maxlength_email() {
-        var type = getXmlRequestAndMapToObject("gta_fel13_email");
-        var expectedError = new IbResponderValidationException(IbResponderValidationErrorCode.GTA_FEL13,
-                List.of(ATTR_AUTHORITY_ADMINISTRATIVE_OFFICIAL_EMAIL));
 
         var response = orderAssessment.orderAssessment(LOGICAL_ADDRESS, type);
 

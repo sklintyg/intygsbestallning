@@ -41,9 +41,6 @@ class HandlaggareEntity private constructor(builder: Builder) {
   @Column(name = "TELEFONNUMMER")
   private val telefonnummer: String?
 
-  @Column(name = "EMAIL")
-  private val email: String?
-
   @Column(name = "MYNDIGHET")
   private val myndighet: String
 
@@ -66,7 +63,6 @@ class HandlaggareEntity private constructor(builder: Builder) {
     this.id = builder.id
     this.fullstandigtNamn = builder.fullstandigtNamn
     this.telefonnummer = builder.telefonnummer
-    this.email = builder.email
     this.myndighet = builder.myndighet ?: throw IllegalArgumentException("myndighet may not be null")
     this.kontor = builder.kontor
     this.kostnadsstalle = builder.kostnadsstalle
@@ -91,7 +87,6 @@ class HandlaggareEntity private constructor(builder: Builder) {
     fun id(id: Long?) = apply { this.id = id }
     fun fullstandigtNamn(fullstandigtNamn: String?) = apply { this.fullstandigtNamn = fullstandigtNamn }
     fun telefonnummer(telefonnummer: String?) = apply { this.telefonnummer = telefonnummer }
-    fun email(email: String?) = apply { this.email = email }
     fun myndighet(myndighet: String?) = apply { this.myndighet = myndighet }
     fun kontor(kontor: String?) = apply { this.kontor = kontor }
     fun kostnadsstalle(kostnadsstalle: String?) = apply { this.kostnadsstalle = kostnadsstalle }
@@ -108,7 +103,6 @@ class HandlaggareEntity private constructor(builder: Builder) {
          .id(handlaggare.id)
          .fullstandigtNamn(handlaggare.fullstandigtNamn)
          .telefonnummer(handlaggare.telefonnummer)
-         .email(handlaggare.email)
          .myndighet(handlaggare.myndighet)
          .kontor(handlaggare.kontor)
          .kostnadsstalle(handlaggare.kostnadsstalle)
@@ -123,7 +117,6 @@ class HandlaggareEntity private constructor(builder: Builder) {
          id = handlaggareEntity.id,
          fullstandigtNamn = handlaggareEntity.fullstandigtNamn,
          telefonnummer = handlaggareEntity.telefonnummer,
-         email = handlaggareEntity.email,
          myndighet = handlaggareEntity.myndighet,
          kontor = handlaggareEntity.kontor,
          kostnadsstalle = handlaggareEntity.kostnadsstalle,

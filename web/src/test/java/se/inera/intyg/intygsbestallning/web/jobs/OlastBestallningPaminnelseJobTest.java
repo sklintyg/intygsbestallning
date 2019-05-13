@@ -177,7 +177,7 @@ class OlastBestallningPaminnelseJobTest {
                 "detta är beskrivningen", LocalDate.now().atStartOfDay().minusDays(daysAgo), LocalDateTime.now().plusDays(1L),
                 "syfte", "planeradeAktiviteter", BestallningStatus.OLAST,
                 Invanare.Factory.newInvanare(Personnummer.createPersonnummer("191212121212").get(), ""),
-                Handlaggare.Factory.newHandlaggare("", "", "", "", "", "", "", "", ""),
+                Handlaggare.Factory.newHandlaggare("", "", "", "", "", "", "", ""),
                 Vardenhet.Factory.newVardenhet("hsaId", "vardgivareHsaId", "orgNr", "vardenhet", "a@b.c"),
                 "ärendeReferens",
                 null,

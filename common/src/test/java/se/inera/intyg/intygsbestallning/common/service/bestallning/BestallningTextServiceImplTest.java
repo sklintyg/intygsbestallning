@@ -18,6 +18,9 @@
  */
 package se.inera.intyg.intygsbestallning.common.service.bestallning;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -30,9 +33,6 @@ import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
 import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
 import se.inera.intyg.schemas.contract.Personnummer;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ActiveProfiles("test")
 @EnableAutoConfiguration
@@ -86,7 +86,6 @@ class BestallningTextServiceImplTest {
                 Handlaggare.Factory.newHandlaggare(
                         "namn",
                         "073-000",
-                        "e@mail-se",
                         "myndigheten",
                         "kontor",
                         "kostställe",

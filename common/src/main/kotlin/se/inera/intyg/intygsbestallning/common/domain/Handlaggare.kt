@@ -36,7 +36,6 @@ data class Handlaggare(
     fun newHandlaggare(
        fullstandigtNam: String?,
        telefonnummer: String?,
-       email: String?,
        myndighet: String,
        kontor: String?,
        kostnadsstalle: String?,
@@ -46,7 +45,6 @@ data class Handlaggare(
       return Handlaggare(
          fullstandigtNamn = fullstandigtNam,
          telefonnummer = telefonnummer,
-         email = email,
          myndighet = myndighet,
          kontor = kontor,
          kostnadsstalle = kostnadsstalle,

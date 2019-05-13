@@ -79,9 +79,6 @@
       <column name="TELEFONNUMMER" type="varchar(64)">
         <constraints nullable="true"/>
       </column>
-      <column name="EMAIL" type="varchar(255)">
-        <constraints nullable="true"/>
-      </column>
       <column name="MYNDIGHET" type="varchar(64)">
         <constraints nullable="false"/>
       </column>
