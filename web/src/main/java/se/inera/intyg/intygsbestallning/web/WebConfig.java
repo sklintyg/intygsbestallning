@@ -19,18 +19,13 @@
 
 package se.inera.intyg.intygsbestallning.web;
 
-import static se.inera.intyg.intygsbestallning.web.controller.SessionStatController.SESSION_STATUS_CHECK_URI;
-import static se.inera.intyg.intygsbestallning.web.controller.UserController.API_ANVANDARE;
-import static se.inera.intyg.intygsbestallning.web.controller.UserController.API_UNIT_CONTEXT;
-
-import java.time.LocalDateTime;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import org.apache.cxf.Bus;
+import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.feature.transform.XSLTOutInterceptor;
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,11 +46,20 @@ import se.inera.intyg.intygsbestallning.web.interceptor.IbSoapFaultInterceptor;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.OrderAssessmentIntygsbestallning;
 import se.inera.intyg.intygsbestallning.web.service.user.UserService;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static se.inera.intyg.intygsbestallning.web.controller.SessionStatController.SESSION_STATUS_CHECK_URI;
+import static se.inera.intyg.intygsbestallning.web.controller.UserController.API_ANVANDARE;
+import static se.inera.intyg.intygsbestallning.web.controller.UserController.API_UNIT_CONTEXT;
+
 @Configuration
 @EnableAutoConfiguration
 @EnableTransactionManagement
 @ComponentScan(basePackages = "se.inera.intyg.intygsbestallning.web")
 public class WebConfig implements WebMvcConfigurer {
+
+    private static final int LOGGING_LIMIT = 1024 * 1024;
 
     private Bus bus;
     private OrderAssessmentIntygsbestallning orderAssessment;
@@ -92,6 +96,7 @@ public class WebConfig implements WebMvcConfigurer {
         EndpointImpl endpoint = new EndpointImpl(bus, orderAssessment);
         endpoint.publish("/order-assessment-responder");
         endpoint.getOutFaultInterceptors().add(soapInterceptor());
+        endpoint.getFeatures().add(loggingFeature());
         return endpoint;
     }
 
@@ -128,4 +133,11 @@ public class WebConfig implements WebMvcConfigurer {
         return registrationBean;
     }
 
+    private LoggingFeature loggingFeature() {
+        LoggingFeature loggingFeature = new LoggingFeature();
+        loggingFeature.setLimit(LOGGING_LIMIT); // Size of the log message before it is truncated
+        loggingFeature.setPrettyLogging(true);
+
+        return loggingFeature;
+    }
 }

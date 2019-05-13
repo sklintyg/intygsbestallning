@@ -8,6 +8,7 @@ dependencies {
   compile("org.apache.cxf:cxf-spring-boot-starter-jaxws:${Dependencies.cxfBootStarterVersion}")
   compile("org.apache.cxf:cxf-rt-frontend-jaxws:${Dependencies.cxfBootStarterVersion}") { isForce = true }
   compile("org.apache.cxf:cxf-rt-transports-http:${Dependencies.cxfBootStarterVersion}") { isForce = true }
+  compile("org.apache.cxf:cxf-rt-features-logging:${Dependencies.cxfBootStarterVersion}") { isForce = true }
 
   // External dependencies
   compile("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
