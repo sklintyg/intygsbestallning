@@ -94,9 +94,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public EndpointImpl orderAssessmentEndpoint() {
         EndpointImpl endpoint = new EndpointImpl(bus, orderAssessment);
-        endpoint.publish("/order-assessment-responder");
         endpoint.getOutFaultInterceptors().add(soapInterceptor());
         endpoint.getFeatures().add(loggingFeature());
+        endpoint.publish("/order-assessment-responder");
         return endpoint;
     }
 
