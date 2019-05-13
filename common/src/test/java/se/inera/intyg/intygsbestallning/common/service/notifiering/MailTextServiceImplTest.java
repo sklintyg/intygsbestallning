@@ -64,7 +64,8 @@ class MailTextServiceImplTest {
         assertThat(mailContent.getHalsning().getText()).isNotNull();
 
         assertThat(mailContent.getFooter()).isNotNull();
-        assertThat(mailContent.getFooter().getText()).isNotNull();
+        assertThat(mailContent.getFooter().getText1()).isNotNull();
+        assertThat(mailContent.getFooter().getText2()).isNotNull();
     }
 
     @Test

@@ -45,5 +45,6 @@ data class Body(
 )
 
 data class Footer(
-   @JsonProperty(value = "text") val text: String
+   @JsonProperty(value = "text1") val text1: String,
+   @JsonProperty(value = "text2") val text2: String
 )

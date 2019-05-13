@@ -15,6 +15,7 @@
     <text2>detta är text 2</text2>
   </body>
   <footer>
-    <text>text</text>
+    <text1>text</text1>
+    <text2>text</text2>
   </footer>
 </mail>

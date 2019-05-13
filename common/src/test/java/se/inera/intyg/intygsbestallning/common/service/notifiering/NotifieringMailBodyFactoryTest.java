@@ -83,7 +83,8 @@ class NotifieringMailBodyFactoryTest {
         assertThat(html).contains("<p>" + mailTexter.getBody().getText1() + "</p>");
         assertThat(html).contains("<a href=\"" + "url" +  "\">url</a>");
         assertThat(html).contains("src=\"" + "host/images/" + mailTexter.getLogo() +  "\"");
-        assertThat(html).contains("<p>" + mailTexter.getFooter().getText() + "</p>");
+        assertThat(html).contains("<p>" + mailTexter.getFooter().getText1() + "</p>");
+        assertThat(html).contains("<p>" + mailTexter.getFooter().getText2() + "</p>");
     }
 
     private MailTexter buildMailTexter(String bestallningTyp, NotifieringTyp notifieringTyp) {
@@ -94,7 +95,7 @@ class NotifieringMailBodyFactoryTest {
                 new ArendeRad("detta är ett ärende"),
                 new Halsning("detta är en hälsning"),
                 new Body("text1", "text2"),
-                new Footer("detta är en footer")
+                new Footer("detta är en footer", "detta är en footer")
         );
     }
 

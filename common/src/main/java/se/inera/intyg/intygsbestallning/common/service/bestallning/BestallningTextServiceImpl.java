@@ -22,6 +22,8 @@ package se.inera.intyg.intygsbestallning.common.service.bestallning;
 import static java.lang.invoke.MethodHandles.lookup;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,6 +48,8 @@ public class BestallningTextServiceImpl implements BestallningTextService {
 
     private static final Logger LOG = LoggerFactory.getLogger(lookup().lookupClass());
     private static final String ACTION = "Initiate Intygsbestallning Bestallning Text Resources";
+    protected static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_DATE;
+
 
     private List<BestallningTexter> bestallningTexterList = List.of();
     private BestallningProperties bestallningProperties;
@@ -90,6 +94,7 @@ public class BestallningTextServiceImpl implements BestallningTextService {
     private Optional<BestallningTexter> getTexter(String intygTyp) {
         return bestallningTexterList.stream()
                 .filter(texter -> texter.getTyp().equals(intygTyp))
+                .filter(texter -> LocalDate.parse(texter.getGiltigFrom(), FORMATTER).isBefore(LocalDate.now()))
                 .collect(MoreCollectors.toOptional());
     }
 

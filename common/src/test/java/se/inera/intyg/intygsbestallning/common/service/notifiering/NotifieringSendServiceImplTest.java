@@ -231,7 +231,7 @@ class NotifieringSendServiceImplTest {
                 new ArendeRad("detta är ett ärende"),
                 new Halsning("detta är en hälsning"),
                 new Body("text1", "text2"),
-                new Footer("detta är en footer")
+                new Footer("detta är en footer", "detta är en footer")
         );
     }
 }

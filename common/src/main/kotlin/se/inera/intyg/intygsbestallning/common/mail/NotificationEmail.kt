@@ -33,7 +33,9 @@ data class MailContent(
 ) {
   companion object Template {
     fun toText(data: MailContent): String {
-      return "${data.texter.halsning.text}\n\r\n\r${data.texter.body.text1}\n\r${data.url}\n\r${data.texter.body.text2}"
+      return data.texter.halsning.text +
+         "\n\r\n\r${data.texter.body.text1}\n\r${data.url}\n\r${data.texter.body.text2}" +
+         "\n\r\n\r" + "${data.texter.footer.text1}\n\r${data.texter.footer.text2}"
     }
 
     @Suppress("LongMethod")
@@ -97,7 +99,8 @@ data class MailContent(
                                                height="30"
                                                width="221">
                                         <br>
-                                        <p>${data.texter.footer.text}</p>
+                                        <p>${data.texter.footer.text1}</p>
+                                        <p>${data.texter.footer.text2}</p>
                                     </td>
                                 </tr>
                             </table>
