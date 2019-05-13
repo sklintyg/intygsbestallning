@@ -29,14 +29,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
+import se.inera.intyg.intygsbestallning.common.domain.BestallningEvent;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningSvar;
+import se.inera.intyg.intygsbestallning.common.domain.Handelse;
 import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
 import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
-import se.inera.intyg.intygsbestallning.common.dto.AvvisaBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.dto.RaderaBestallningRequest;
-import se.inera.intyg.intygsbestallning.common.dto.SimpleBestallningRequest;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.integration.client.RespondToOrderService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
@@ -45,10 +45,9 @@ import se.inera.intyg.intygsbestallning.web.service.pdl.LogService;
 import se.inera.intyg.schemas.contract.Personnummer;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -78,19 +77,28 @@ class RaderaBestallningServiceImplTest {
     @InjectMocks
     private RaderaBestallningServiceImpl raderaBestallningService;
 
+    private Optional<Bestallning> bestallning;
+
     @BeforeEach
     void setup() {
-        Mockito.when(bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(anyLong(), anyString(), anyString())).thenReturn(buildBestallning());
+        bestallning = buildBestallning();
+        Mockito.when(bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(anyLong(), anyString(), anyString())).thenReturn(bestallning);
     }
 
     @Test
     void testRaderaBestallning() {
-        RaderaBestallningRequest request = new RaderaBestallningRequest("1", "hsaId", "orgNr", BestallningSvar.RADERAT, "Kommentar");
+        RaderaBestallningRequest request = new RaderaBestallningRequest("user1","1", "hsaId", "orgNr", BestallningSvar.RADERAT, "Kommentar");
         raderaBestallningService.raderaBestallning(request);
 
         verify(bestallningPersistenceService, times(1)).deleteBestallning(any(Bestallning.class));
         verify(pdlLogService, times(0)).log(any(Bestallning.class), Mockito.eq(LogEvent.BESTALLNING_AVVISAS));
         verify(respondToOrderService, times(1)).sendRespondToOrder(any(RaderaBestallningRequest.class));
+
+        assertEquals(1, bestallning.get().getHandelser().size());
+        Handelse handelse = bestallning.get().getHandelser().get(0);
+        assertEquals(BestallningEvent.AVVISA_RADERA, handelse.getEvent());
+        assertEquals("user1", handelse.getAnvandare());
+        assertEquals("Kommentar", handelse.getKommentar());
 
     }
 

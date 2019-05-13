@@ -21,42 +21,42 @@ package se.inera.intyg.intygsbestallning.common.domain
 import java.time.LocalDateTime
 
 data class Handelse(
-   val id: Long? = null,
-   val event: BestallningEvent,
-   val skapad: LocalDateTime,
-   val anvandare: String? = null,
-   val beskrivning: String,
-   val kommentar: String? = null
+        val id: Long? = null,
+        val event: BestallningEvent,
+        val skapad: LocalDateTime,
+        val anvandare: String? = null,
+        val beskrivning: String,
+        val kommentar: String? = null
 ) {
-  companion object Factory {
-    fun skapa(): Handelse {
-      return Handelse(
-         event = BestallningEvent.SKAPA, skapad = LocalDateTime.now(), beskrivning = "Beställning mottagen")
-    }
+    companion object Factory {
+        fun skapa(): Handelse {
+            return Handelse(
+                    event = BestallningEvent.SKAPA, skapad = LocalDateTime.now(), beskrivning = "Beställning mottagen")
+        }
 
-    fun las(): Handelse {
-      return Handelse(
-         event = BestallningEvent.LAS, skapad = LocalDateTime.now(), beskrivning = "Beställning läst")
-    }
+        fun las(userHsaId: String): Handelse {
+            return Handelse(
+                    event = BestallningEvent.LAS, skapad = LocalDateTime.now(), anvandare = userHsaId, beskrivning = "Beställning läst")
+        }
 
-    fun acceptera(): Handelse {
-      return Handelse(
-         event = BestallningEvent.ACCEPTERA, skapad = LocalDateTime.now(), beskrivning = "Beställning accepterad")
-    }
+        fun acceptera(userHsaId: String, kommentar: String?): Handelse {
+            return Handelse(
+                    event = BestallningEvent.ACCEPTERA, skapad = LocalDateTime.now(), anvandare = userHsaId, beskrivning = "Beställning accepterad", kommentar = kommentar)
+        }
 
-    fun avvisa(): Handelse {
-      return Handelse(
-         event = BestallningEvent.AVVISA, skapad = LocalDateTime.now(), beskrivning = "Beställning avvisad")
-    }
+        fun avvisa(userHsaId: String, kommentar: String?): Handelse {
+            return Handelse(
+                    event = BestallningEvent.AVVISA, skapad = LocalDateTime.now(), anvandare = userHsaId, beskrivning = "Beställning avvisad", kommentar = kommentar)
+        }
 
-    fun avvisaRadera(): Handelse {
-      return Handelse(
-         event = BestallningEvent.AVVISA_RADERA, skapad = LocalDateTime.now(), beskrivning = "Beställning raderad")
-    }
+        fun avvisaRadera(userHsaId: String, kommentar: String?): Handelse {
+            return Handelse(
+                    event = BestallningEvent.AVVISA_RADERA, skapad = LocalDateTime.now(), anvandare = userHsaId, beskrivning = "Beställning raderad", kommentar = kommentar)
+        }
 
-    fun klarmarkera(): Handelse {
-      return Handelse(
-       event = BestallningEvent.KLARMARKERA, skapad = LocalDateTime.now(), beskrivning = "Beställning klarmarkerad")
+        fun klarmarkera(userHsaId: String): Handelse {
+            return Handelse(
+                    event = BestallningEvent.KLARMARKERA, skapad = LocalDateTime.now(), anvandare = userHsaId, beskrivning = "Beställning klarmarkerad")
+        }
     }
-  }
 }

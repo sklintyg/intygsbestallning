@@ -97,6 +97,7 @@ class HandelseEntity private constructor(builder: Builder) {
          id = handelseEntity.id,
          event = handelseEntity.event,
          skapad = handelseEntity.skapad,
+         anvandare = handelseEntity.anvandare,
          beskrivning = handelseEntity.beskrivning,
          kommentar = handelseEntity.kommentar)
     }

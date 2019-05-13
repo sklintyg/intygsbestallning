@@ -66,7 +66,7 @@ public class AccepteraBestallningServiceImpl implements AccepteraBestallningServ
             throw new IllegalArgumentException("bestallning with id: " + id.get() + " was not found");
         }
 
-        bestallning.get().getHandelser().add(Handelse.Factory.acceptera());
+        bestallning.get().getHandelser().add(Handelse.Factory.acceptera(request.getUserHsaId(), request.getFritextForklaring()));
         bestallningStatusResolver.setStatus(bestallning.get());
         bestallningPersistenceService.updateBestallning(bestallning.get());
 

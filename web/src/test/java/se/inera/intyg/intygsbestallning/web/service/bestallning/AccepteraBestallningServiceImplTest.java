@@ -18,13 +18,6 @@
  */
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static se.inera.intyg.schemas.contract.Personnummer.createPersonnummer;
-
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,13 +28,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
+import se.inera.intyg.intygsbestallning.common.domain.BestallningEvent;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningSvar;
+import se.inera.intyg.intygsbestallning.common.domain.Handelse;
 import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
 import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
@@ -52,6 +43,17 @@ import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersisten
 import se.inera.intyg.intygsbestallning.web.pdl.LogEvent;
 import se.inera.intyg.intygsbestallning.web.service.pdl.LogService;
 import se.inera.intyg.schemas.contract.Personnummer;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static se.inera.intyg.schemas.contract.Personnummer.createPersonnummer;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(JUnitPlatform.class)
@@ -75,19 +77,29 @@ class AccepteraBestallningServiceImplTest {
     @InjectMocks
     private AccepteraBestallningServiceImpl accepteraBestallningService;
 
+    private Optional<Bestallning> bestallning;
+
     @BeforeEach
     void setup() {
-        Mockito.when(bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(anyLong(), anyString(), anyString())).thenReturn(buildBestallning());
+        bestallning = buildBestallning();
+        Mockito.when(bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(anyLong(), anyString(), anyString())).thenReturn(bestallning);
     }
 
     @Test
     void testAvvisaBestallning() {
-        AccepteraBestallningRequest request = new AccepteraBestallningRequest("1", "hsaId", "orgNr", BestallningSvar.ACCEPTERAT, "Kommentar");
+        AccepteraBestallningRequest request = new AccepteraBestallningRequest("user1", "1", "hsaId", "orgNr", BestallningSvar.ACCEPTERAT, "Kommentar");
         accepteraBestallningService.accepteraBestallning(request);
 
         verify(bestallningStatusResolver, times(1)).setStatus(any(Bestallning.class));
         verify(pdlLogService, times(1)).log(any(Bestallning.class), Mockito.eq(LogEvent.BESTALLNING_ACCEPTERAS));
         verify(respondToOrderService, times(1)).sendRespondToOrder(any(AccepteraBestallningRequest.class));
+
+        assertEquals(1, bestallning.get().getHandelser().size());
+        Handelse handelse = bestallning.get().getHandelser().get(0);
+        assertEquals(BestallningEvent.ACCEPTERA, handelse.getEvent());
+        assertEquals("user1", handelse.getAnvandare());
+        assertEquals("Kommentar", handelse.getKommentar());
+
 
     }
 
@@ -116,7 +128,7 @@ class AccepteraBestallningServiceImplTest {
     }
 
     private Vardenhet buildVardenhet() {
-        return new Vardenhet("hsa-id", "", "", "","");
+        return new Vardenhet("hsa-id", "", "", "", "");
     }
 
     private Handlaggare buildHandlaggare() {

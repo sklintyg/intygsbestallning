@@ -29,7 +29,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
+import se.inera.intyg.intygsbestallning.common.domain.BestallningEvent;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
+import se.inera.intyg.intygsbestallning.common.domain.Handelse;
 import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
 import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
@@ -43,6 +45,7 @@ import se.inera.intyg.schemas.contract.Personnummer;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -69,19 +72,26 @@ class KlarmarkeraBestallningServiceImplTest {
     @InjectMocks
     private KlarmarkeraBestallningServiceImpl klarmarkeraBestallningService;
 
+    private Optional<Bestallning> bestallning;
+
     @BeforeEach
     void setup() {
-        Mockito.when(bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(anyLong(), anyString(), anyString())).thenReturn(buildBestallning());
+        bestallning = buildBestallning();
+        Mockito.when(bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(anyLong(), anyString(), anyString())).thenReturn(bestallning);
     }
 
     @Test
     void testKlarmarkeraBestallning() {
-        KlarmarkeraBestallningRequest request = new KlarmarkeraBestallningRequest("1", "hsaId", "orgNr");
+        KlarmarkeraBestallningRequest request = new KlarmarkeraBestallningRequest("user1","1", "hsaId", "orgNr");
         klarmarkeraBestallningService.klarmarkeraBestallning(request);
 
         verify(bestallningStatusResolver, times(1)).setStatus(any(Bestallning.class));
         verify(pdlLogService, times(1)).log(any(Bestallning.class), Mockito.eq(LogEvent.BESTALLNING_KLARMARKERAS));
 
+        assertEquals(1, bestallning.get().getHandelser().size());
+        Handelse handelse = bestallning.get().getHandelser().get(0);
+        assertEquals(BestallningEvent.KLARMARKERA, handelse.getEvent());
+        assertEquals("user1", handelse.getAnvandare());
     }
 
     private Invanare buildInvanare() {

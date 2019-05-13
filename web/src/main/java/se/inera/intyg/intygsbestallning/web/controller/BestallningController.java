@@ -19,12 +19,12 @@
 
 package se.inera.intyg.intygsbestallning.web.controller;
 
-import java.util.Collections;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,6 +51,8 @@ import se.inera.intyg.intygsbestallning.web.service.bestallning.PdfBestallningSe
 import se.inera.intyg.intygsbestallning.web.service.bestallning.RaderaBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.bestallning.VisaBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.user.UserService;
+
+import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/bestallningar")
@@ -144,15 +146,17 @@ public class BestallningController {
         var hsaId = user.getUnitContext().getId();
         var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
 
-        return ResponseEntity.ok(visaBestallningService.getBestallningByIdAndHsaIdAndOrgId(idLong, hsaId, orgNrVardgivare));
+        return ResponseEntity.ok(
+                visaBestallningService.getBestallningByIdAndHsaIdAndOrgId(user.getHsaId(), idLong, hsaId, orgNrVardgivare));
     }
 
     @PostMapping("/{id}/acceptera")
-    public ResponseEntity accepteraBestallning(@PathVariable String id, AccepteraBestallning accepteraBestallning) {
+    public ResponseEntity accepteraBestallning(@PathVariable String id, @RequestBody AccepteraBestallning accepteraBestallning) {
         var user = userService.getUser();
         var hsaId = user.getUnitContext().getId();
         var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
         accepteraBestallningService.accepteraBestallning(new AccepteraBestallningRequest(
+                user.getHsaId(),
                 id,
                 hsaId,
                 orgNrVardgivare,
@@ -163,11 +167,12 @@ public class BestallningController {
     }
 
     @PostMapping("/{id}/avvisa")
-    public ResponseEntity avvisaBestallning(@PathVariable String id, AvvisaBestallning avvisaBestallning) {
+    public ResponseEntity avvisaBestallning(@PathVariable String id, @RequestBody AvvisaBestallning avvisaBestallning) {
         var user = userService.getUser();
         var hsaId = user.getUnitContext().getId();
         var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
         avvisaBestallningService.avvisaBestallning(new AvvisaBestallningRequest(
+                user.getHsaId(),
                 id,
                 hsaId,
                 orgNrVardgivare,
@@ -177,11 +182,12 @@ public class BestallningController {
     }
 
     @PostMapping("/{id}/radera")
-    public ResponseEntity raderaBestallning(@PathVariable String id, RaderaBestallning raderaBestallning) {
+    public ResponseEntity raderaBestallning(@PathVariable String id, @RequestBody RaderaBestallning raderaBestallning) {
         var user = userService.getUser();
         var hsaId = user.getUnitContext().getId();
         var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
         raderaBestallningService.raderaBestallning(new RaderaBestallningRequest(
+                user.getHsaId(),
                 id,
                 hsaId,
                 orgNrVardgivare,
@@ -196,6 +202,7 @@ public class BestallningController {
         var hsaId = user.getUnitContext().getId();
         var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
         klarmarkeraBestallningService.klarmarkeraBestallning(new KlarmarkeraBestallningRequest(
+                user.getHsaId(),
                 id,
                 hsaId,
                 orgNrVardgivare));

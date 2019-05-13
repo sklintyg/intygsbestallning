@@ -67,7 +67,7 @@ public class AvvisaBestallningServiceImpl implements AvvisaBestallningService {
         if (bestallning.isEmpty()) {
             throw new IllegalArgumentException("bestallning with id: " + id.get() + " was not found");
         }
-        bestallning.get().getHandelser().add(Handelse.Factory.avvisa());
+        bestallning.get().getHandelser().add(Handelse.Factory.avvisa(request.getUserHsaId(), request.getFritextForklaring()));
         bestallningStatusResolver.setStatus(bestallning.get());
         bestallningPersistenceService.updateBestallning(bestallning.get());
 

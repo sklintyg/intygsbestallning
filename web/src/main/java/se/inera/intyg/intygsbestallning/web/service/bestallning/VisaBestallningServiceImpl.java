@@ -71,7 +71,8 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
     }
 
     @Override
-    public Optional<VisaBestallningDto> getBestallningByIdAndHsaIdAndOrgId(Long id, String hsaId, String orgNrVardgivare) {
+    public Optional<VisaBestallningDto> getBestallningByIdAndHsaIdAndOrgId(
+            String userHsaId, Long id, String hsaId, String orgNrVardgivare) {
 
         var bestallning = bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(id, hsaId, orgNrVardgivare);
 
@@ -80,7 +81,7 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
         }
 
         if (bestallning.get().getStatus() == BestallningStatus.OLAST) {
-            bestallning.get().getHandelser().add(Handelse.Factory.las());
+            bestallning.get().getHandelser().add(Handelse.Factory.las(userHsaId));
             bestallningStatusResolver.setStatus(bestallning.get());
             bestallningPersistenceService.updateBestallning(bestallning.get());
         }

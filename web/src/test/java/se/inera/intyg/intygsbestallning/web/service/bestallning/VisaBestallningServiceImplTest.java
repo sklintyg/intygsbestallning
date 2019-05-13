@@ -18,16 +18,6 @@
  */
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.Optional;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import com.google.common.collect.Lists;
@@ -43,7 +33,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
 import se.inera.intyg.infra.integration.pu.model.Person;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
+import se.inera.intyg.intygsbestallning.common.domain.BestallningEvent;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
+import se.inera.intyg.intygsbestallning.common.domain.Handelse;
 import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
 import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
@@ -58,9 +50,22 @@ import se.inera.intyg.intygsbestallning.web.pdl.LogEvent;
 import se.inera.intyg.intygsbestallning.web.service.pdl.LogService;
 import se.inera.intyg.schemas.contract.Personnummer;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 @RunWith(JUnitPlatform.class)
 class VisaBestallningServiceImplTest {
+    private static final String USER_HSA_ID = "userhsaid";
     private static final String ORG_ID = "org_id";
     private static final Long ID_OLAST = 1L;
     private static final Long ID_LAST = 2L;
@@ -115,14 +120,19 @@ class VisaBestallningServiceImplTest {
 
     @Test
     void testVisaBestallningWithOlastStatusChangesStatus() {
+        final Optional<Bestallning> bestallning = buildBestallning(ID_OLAST, BestallningStatus.OLAST);
         when(bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(eq(ID_OLAST), anyString(), anyString()))
-                .thenReturn(buildBestallning(ID_OLAST, BestallningStatus.OLAST));
+                .thenReturn(bestallning);
 
-        visaBestallningService.getBestallningByIdAndHsaIdAndOrgId(ID_OLAST, HSA_ID, ORG_ID);
+        visaBestallningService.getBestallningByIdAndHsaIdAndOrgId(USER_HSA_ID, ID_OLAST, HSA_ID, ORG_ID);
 
         verify(bestallningStatusResolver, times(1)).setStatus(any(Bestallning.class));
         verify(pdlLogService, times(1)).log(any(Bestallning.class), eq(LogEvent.BESTALLNING_OPPNAS_OCH_LASES));
 
+        assertEquals(1, bestallning.get().getHandelser().size());
+        Handelse handelse = bestallning.get().getHandelser().get(0);
+        assertEquals(BestallningEvent.LAS, handelse.getEvent());
+        assertEquals(USER_HSA_ID, handelse.getAnvandare());
     }
 
     @Test
@@ -130,7 +140,7 @@ class VisaBestallningServiceImplTest {
         when(bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(eq(ID_LAST), anyString(), anyString()))
                 .thenReturn(buildBestallning(ID_LAST, BestallningStatus.LAST));
 
-        visaBestallningService.getBestallningByIdAndHsaIdAndOrgId(ID_LAST, HSA_ID, ORG_ID);
+        visaBestallningService.getBestallningByIdAndHsaIdAndOrgId(USER_HSA_ID, ID_LAST, HSA_ID, ORG_ID);
 
         verify(pdlLogService, times(1)).log(any(Bestallning.class), eq(LogEvent.BESTALLNING_OPPNAS_OCH_LASES));
 

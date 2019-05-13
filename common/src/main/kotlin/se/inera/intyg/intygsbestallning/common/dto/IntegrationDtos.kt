@@ -54,6 +54,7 @@ data class CreateBestallningRequestKontor(
 )
 
 abstract class SimpleBestallningRequest {
+    abstract val userHsaId: String
     abstract val bestallningId: String
     abstract val hsaId: String
     abstract val orgNrVardgivare: String
@@ -63,6 +64,7 @@ abstract class SimpleBestallningRequest {
 
 
 data class AccepteraBestallningRequest(
+        override val userHsaId: String,
         override val bestallningId: String,
         override val hsaId: String,
         override val orgNrVardgivare: String,
@@ -71,6 +73,7 @@ data class AccepteraBestallningRequest(
 ) : SimpleBestallningRequest()
 
 data class AvvisaBestallningRequest(
+        override val userHsaId: String,
         override val bestallningId: String,
         override val hsaId: String,
         override val orgNrVardgivare: String,
@@ -79,6 +82,7 @@ data class AvvisaBestallningRequest(
 ) : SimpleBestallningRequest()
 
 data class RaderaBestallningRequest(
+        override val userHsaId: String,
         override val bestallningId: String,
         override val hsaId: String,
         override val orgNrVardgivare: String,
@@ -87,6 +91,7 @@ data class RaderaBestallningRequest(
 ) : SimpleBestallningRequest()
 
 data class KlarmarkeraBestallningRequest(
+    val userHsaId: String,
     val bestallningId: String,
     val hsaId: String,
     val orgNrVardgivare: String

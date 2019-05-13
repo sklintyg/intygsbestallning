@@ -18,18 +18,6 @@
  */
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static se.inera.intyg.schemas.contract.Personnummer.createPersonnummer;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,10 +28,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
+import se.inera.intyg.intygsbestallning.common.domain.BestallningEvent;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningStatus;
 import se.inera.intyg.intygsbestallning.common.domain.BestallningSvar;
+import se.inera.intyg.intygsbestallning.common.domain.Handelse;
 import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
 import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
@@ -54,6 +43,17 @@ import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersisten
 import se.inera.intyg.intygsbestallning.web.pdl.LogEvent;
 import se.inera.intyg.intygsbestallning.web.service.pdl.LogService;
 import se.inera.intyg.schemas.contract.Personnummer;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static se.inera.intyg.schemas.contract.Personnummer.createPersonnummer;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(JUnitPlatform.class)
@@ -77,19 +77,28 @@ class AvvisaBestallningServiceImplTest {
     @InjectMocks
     private AvvisaBestallningServiceImpl avvisaBestallningService;
 
+    private Optional<Bestallning> bestallning;
+
     @BeforeEach
     void setup() {
-        Mockito.when(bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(anyLong(), anyString(), anyString())).thenReturn(buildBestallning());
+        bestallning = buildBestallning();
+        Mockito.when(bestallningPersistenceService.getBestallningByIdAndHsaIdAndOrgId(anyLong(), anyString(), anyString())).thenReturn(bestallning);
     }
 
     @Test
     void testAvvisaBestallning() {
-        AvvisaBestallningRequest request = new AvvisaBestallningRequest("1", "hsaId", "orgNr", BestallningSvar.AVVISAT, "Kommentar");
+        AvvisaBestallningRequest request = new AvvisaBestallningRequest("user1","1", "hsaId", "orgNr", BestallningSvar.AVVISAT, "Kommentar");
         avvisaBestallningService.avvisaBestallning(request);
 
         verify(bestallningStatusResolver, times(1)).setStatus(any(Bestallning.class));
         verify(pdlLogService, times(1)).log(any(Bestallning.class), Mockito.eq(LogEvent.BESTALLNING_AVVISAS));
         verify(respondToOrderService, times(1)).sendRespondToOrder(any(AvvisaBestallningRequest.class));
+
+        assertEquals(1, bestallning.get().getHandelser().size());
+        Handelse handelse = bestallning.get().getHandelser().get(0);
+        assertEquals(BestallningEvent.AVVISA, handelse.getEvent());
+        assertEquals("user1", handelse.getAnvandare());
+        assertEquals("Kommentar", handelse.getKommentar());
 
     }
 

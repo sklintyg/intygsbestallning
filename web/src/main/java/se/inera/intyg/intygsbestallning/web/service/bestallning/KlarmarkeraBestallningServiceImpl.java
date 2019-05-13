@@ -64,7 +64,7 @@ public class KlarmarkeraBestallningServiceImpl implements KlarmarkeraBestallning
             throw new IllegalArgumentException("bestallning with id: " + id.get() + " was not found");
         }
 
-        bestallning.get().getHandelser().add(Handelse.Factory.klarmarkera());
+        bestallning.get().getHandelser().add(Handelse.Factory.klarmarkera(request.getUserHsaId()));
         bestallningStatusResolver.setStatus(bestallning.get());
         bestallningPersistenceService.updateBestallning(bestallning.get());
 

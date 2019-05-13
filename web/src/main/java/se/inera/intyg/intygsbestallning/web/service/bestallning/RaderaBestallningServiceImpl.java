@@ -63,7 +63,7 @@ public class RaderaBestallningServiceImpl implements RaderaBestallningService {
             throw new IllegalArgumentException("bestallning with id: " + id.get() + " was not found");
         }
 
-        bestallning.get().getHandelser().add(Handelse.Factory.avvisaRadera());
+        bestallning.get().getHandelser().add(Handelse.Factory.avvisaRadera(request.getUserHsaId(), request.getFritextForklaring()));
         bestallningStatusResolver.setStatus(bestallning.get());
 
         bestallningPersistenceService.deleteBestallning(bestallning.get());
