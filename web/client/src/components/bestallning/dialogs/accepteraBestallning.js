@@ -1,20 +1,16 @@
-import React, { Fragment, useState } from 'react'
-import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
-import styled from 'styled-components'
+import React, {Fragment, useState} from 'react'
+import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import modalContainer from '../../modalContainer/modalContainer'
-import { compose } from 'recompose'
+import {compose} from 'recompose'
 import SpinnerButton from '../../spinnerButton'
+import IbTextarea from '../../styles/IbTexarea'
 
-const Textarea = styled.textarea`
-  width: 100%;
-  resize: none;
-`
 
 const AccepteraBestallning = ({ handleClose, isOpen, accept }) => {
   const [fritextForklaring, setFritextForklaring] = useState('')
 
-  const handleChange = (e) => {
-    setFritextForklaring(e.target.value)
+  const handleChange = (value) => {
+    setFritextForklaring(value)
   }
 
   return (
@@ -30,7 +26,7 @@ const AccepteraBestallning = ({ handleClose, isOpen, accept }) => {
             Observera att patientrelaterad information inte får lämnas ut utan stöd i patientdatalagen (2008:355), patientsäkerhetslagen
             (2010:659) eller Offentlighets- och sekretesslagen (2009:400).
           </p>
-          <Textarea rows={5} onChange={handleChange} />
+          <IbTextarea placeholder={''} minRows={3} maxRows={6} maxLength={4000} onChange={handleChange}/>
         </ModalBody>
         <ModalFooter>
           <SpinnerButton color={'primary'} accept={() => accept(fritextForklaring).then(handleClose)} id={'AcceptDialogConfirmButton'}>

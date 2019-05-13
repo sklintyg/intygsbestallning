@@ -1,22 +1,17 @@
-import React, { Fragment, useState } from 'react'
-import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
-import styled from 'styled-components'
+import React, {Fragment, useState} from 'react'
+import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import modalContainer from '../../modalContainer/modalContainer'
-import { compose } from 'recompose'
+import {compose} from 'recompose'
 import RadioButton from '../../radioButton'
 import SpinnerButton from '../../spinnerButton'
-
-const Textarea = styled.textarea`
-  width: 100%;
-  resize: none;
-`
+import IbTextarea from '../../styles/IbTexarea'
 
 const AvvisaBestallning = ({ handleClose, isOpen, accept }) => {
   const [fritextForklaring, setFritextForklaring] = useState('')
   const [avvisa, setAvvisa] = useState(undefined)
 
-  const handleTextareaChange = (e) => {
-    setFritextForklaring(e.target.value)
+  const handleTextareaChange = (value) => {
+    setFritextForklaring(value)
   }
 
   const handleRadioChange = (e) => {
@@ -40,7 +35,7 @@ const AvvisaBestallning = ({ handleClose, isOpen, accept }) => {
             Observera att patientrelaterad information inte får lämnas ut utan stöd i patientdatalagen (2008:355), patientsäkerhetslagen
             (2010:659) eller Offentlighets- och sekretesslagen (2009:400).
           </p>
-          <Textarea rows={5} onChange={handleTextareaChange} />
+          <IbTextarea placeholder={''} minRows={3} maxRows={6} maxLength={4000} onChange={handleTextareaChange}/>
         </ModalBody>
         <ModalFooter>
           <SpinnerButton
