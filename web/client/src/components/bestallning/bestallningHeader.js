@@ -66,10 +66,10 @@ const ButtonRow = styled.div`
   justify-content: space-between;
 `
 const InternLank = styled(Button)`
-  color: ${IbColors.IB_COLOR_17} !important;
+  color: ${IbColors.IB_COLOR_05} !important;
   text-decoration: underline !important;
   &:hover {
-    color: ${IbColors.IB_COLOR_21} !important;
+    color: ${IbColors.IB_COLOR_05} !important;
   }
 `
 
