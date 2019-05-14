@@ -55,8 +55,9 @@ const BestallningActionBar = ({
   const complete = () => completeBestallning(bestallning.id, 'COMPLETED')
 
   const vidarebefodra = () => {
-    window.location.href = `mailto:?subject=${encodeURIComponent('Vidarebefordrad beställning')}&body=${encodeURIComponent(
-      bestallning.metaData.filter((metaData) => metaData.typ === 'MAIL_VIDAREBEFORDRA')[0].text
+    window.location.href = `mailto:?subject=${encodeURIComponent(
+      bestallning.metaData.filter((metaData) => metaData.typ === 'MAIL_VIDAREBEFORDRA_SUBJECT')[0].text)}&body=${encodeURIComponent(
+      bestallning.metaData.filter((metaData) => metaData.typ === 'MAIL_VIDAREBEFORDRA_BODY')[0].text
     )}`
   }
 

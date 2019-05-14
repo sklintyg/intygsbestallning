@@ -39,6 +39,7 @@ import se.inera.intyg.intygsbestallning.common.domain.Handelse;
 import se.inera.intyg.intygsbestallning.common.domain.Handlaggare;
 import se.inera.intyg.intygsbestallning.common.domain.Invanare;
 import se.inera.intyg.intygsbestallning.common.domain.Vardenhet;
+import se.inera.intyg.intygsbestallning.common.mail.NotificationEmail;
 import se.inera.intyg.intygsbestallning.common.property.BestallningProperties;
 import se.inera.intyg.intygsbestallning.common.resolver.BestallningStatusResolver;
 import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTextService;
@@ -115,7 +116,7 @@ class VisaBestallningServiceImplTest {
 
         when(bestallningTextService.getBestallningTexter(any(Bestallning.class))).thenReturn(bestallningTexter);
         when(patientService.lookupPersonnummerFromPU(any(Personnummer.class))).thenReturn(Optional.of(person));
-        when(notifieringSendService.vidarebefordrad(any(Bestallning.class))).thenReturn("bra mail-text");
+        when(notifieringSendService.vidarebefordrad(any(Bestallning.class))).thenReturn(new NotificationEmail(null, "bra mail-subject", "bra mail-text"));
     }
 
     @Test

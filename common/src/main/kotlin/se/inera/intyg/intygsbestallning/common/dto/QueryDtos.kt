@@ -294,7 +294,7 @@ data class Delfraga(
 )
 
 enum class BestallningMetadataTyp {
-  MAIL_VIDAREBEFORDRA
+  MAIL_VIDAREBEFORDRA_BODY, MAIL_VIDAREBEFORDRA_SUBJECT
 }
 
 data class BestallningMetaData(val typ: BestallningMetadataTyp, val text: String)
