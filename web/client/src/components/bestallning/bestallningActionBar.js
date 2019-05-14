@@ -14,17 +14,11 @@ import {
   SkrivUtBestallning,
   SkrivUtBestallningId,
 } from './dialogs'
-import {Block, Check, Print, Reply} from '../styles/IbSvgIcons'
+import {Block, Check, CollapseIcon, ExpandIcon, Print, Reply} from '../styles/IbSvgIcons'
 import IbColors from '../styles/IbColors'
 import * as modalActions from '../../store/actions/modal'
-import Toggler from '../toggler/Toggler'
+import {OPTION_AVVISA} from './dialogs/avvisaBestallning'
 
-
-const StyledToggler = styled(Toggler)`
-  button {
-  padding: 0;
-  }
-`
 const StyledButton = styled(Button)`
   margin-right: 16px;
 `
@@ -40,15 +34,16 @@ const BestallningActionBar = ({
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
-  const accept = (fritextForklaring) => accepteraBestallning(bestallning.id, { fritextForklaring })
+  const accept = (fritextForklaring) => accepteraBestallning(bestallning.id, {fritextForklaring})
 
-  const reject = (fritextForklaring, avvisa) => {
-    if (avvisa === 'true') {
-      return rejectBestallning(bestallning.id, { fritextForklaring })
+  const reject = (fritextForklaring, avvisaSelection) => {
+    if (avvisaSelection === OPTION_AVVISA) {
+      return rejectBestallning(bestallning.id, {fritextForklaring})
     } else {
-      return deleteBestallning(bestallning.id, { fritextForklaring })
+      return deleteBestallning(bestallning.id, {fritextForklaring})
         .then(openBorttagenDialog)
-        .catch(() => {})
+        .catch(() => {
+        })
     }
   }
 
@@ -97,13 +92,16 @@ const BestallningActionBar = ({
       </StyledButton>
       <ButtonDropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
         <DropdownToggle id="skrivUtBtn" color={'primary'}>
-          <Print color={IbColors.IB_COLOR_00} /> Skriv ut <StyledToggler color={IbColors.IB_COLOR_00} expanded={dropdownOpen} />
+          <Print color={IbColors.IB_COLOR_00} /> Skriv ut {dropdownOpen ? <ExpandIcon color={IbColors.IB_COLOR_00} /> :
+          <CollapseIcon color={IbColors.IB_COLOR_00} />}
         </DropdownToggle>
         <DropdownMenu right={true}>
-          <DropdownItem id="skrivUtForfraganBtn" onClick={bestallning.invanare.sekretessMarkering ? openSkrivUtDialog : () => printBestallning('forfragan')}>
+          <DropdownItem id="skrivUtForfraganBtn"
+                        onClick={bestallning.invanare.sekretessMarkering ? openSkrivUtDialog : () => printBestallning('forfragan')}>
             Förfrågan/Beställning
           </DropdownItem>
-          <DropdownItem id="skrivUtFakturaunderlagBtn" onClick={() => printBestallning('faktureringsunderlag')}>Fakturaunderlag</DropdownItem>
+          <DropdownItem id="skrivUtFakturaunderlagBtn"
+                        onClick={() => printBestallning('faktureringsunderlag')}>Fakturaunderlag</DropdownItem>
         </DropdownMenu>
       </ButtonDropdown>
       <BorttagenBestallning onClose={goBack} />
@@ -117,6 +115,6 @@ const BestallningActionBar = ({
 export default compose(
   connect(
     null,
-    { ...actions, ...modalActions }
+    {...actions, ...modalActions}
   )
 )(BestallningActionBar)

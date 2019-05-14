@@ -53,6 +53,10 @@ context("Bestallning", () => {
 
     cy.get("#BestallningAvvisaActionButton").click();
     cy.get("#AvvisaDialogRadioDelete").click();
+
+    cy.get("#confirmAvvisaRaderaCheckbox").should("be.visible");
+    cy.get("#confirmAvvisaRaderaCheckbox").click();
+
     cy.get("#AvvisaDialogConfirmButton").should("be.visible");
     cy.get("#AvvisaDialogConfirmButton").click();
 

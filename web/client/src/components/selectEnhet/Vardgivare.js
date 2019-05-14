@@ -16,9 +16,7 @@ const VardgivarTitle = styled(IbTypo05)`
   padding: 4px 4px 4px 16px;
   display: flex;
   align-items: center;
-  span {
-    flex:1 0 auto;
-  }
+  justify-content: space-between;
   margin-top: 10px;
 `
 
@@ -67,7 +65,7 @@ const Vardgivare = ({ initiallyExpanded, vg, unitContext, handleSelect }) => {
 
           return (
             <Vardenhet key={ve.id}>
-              <VeButton id={'selectUnitBtn-' + ve.id} color="link" onClick={onSelect(ve.id)} disabled={activeEnhet}>
+              <VeButton id={'selectUnitBtn-' + ve.id} color="link" onClick={onSelect(ve.id)} disabled={activeEnhet} tabIndex="0">
                 {ve.name} {activeEnhet && <span>(nuvarande enhet)</span>}
               </VeButton>
             </Vardenhet>
