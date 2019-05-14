@@ -19,7 +19,8 @@
 
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
-import static se.inera.intyg.intygsbestallning.common.dto.BestallningMetadataTyp.MAIL_VIDAREBEFORDRA;
+import static se.inera.intyg.intygsbestallning.common.dto.BestallningMetadataTyp.MAIL_VIDAREBEFORDRA_BODY;
+import static se.inera.intyg.intygsbestallning.common.dto.BestallningMetadataTyp.MAIL_VIDAREBEFORDRA_SUBJECT;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -103,8 +104,11 @@ public class VisaBestallningServiceImpl implements VisaBestallningService {
                 personSvar.get().getEfternamn(),
                 personSvar.get().isSekretessmarkering());
 
+        var mailVidarebefordra = notifieringSendService.vidarebefordrad(bestallning.get());
+
         var metaDataList = List.of(
-                new BestallningMetaData(MAIL_VIDAREBEFORDRA, notifieringSendService.vidarebefordrad(bestallning.get()))
+                new BestallningMetaData(MAIL_VIDAREBEFORDRA_BODY, mailVidarebefordra.getBody()),
+                new BestallningMetaData(MAIL_VIDAREBEFORDRA_SUBJECT, mailVidarebefordra.getSubject())
         );
 
         return Optional.of(VisaBestallningDto.Factory.toDto(

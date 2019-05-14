@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.common.domain.Notifiering;
 import se.inera.intyg.intygsbestallning.common.domain.NotifieringTyp;
+import se.inera.intyg.intygsbestallning.common.mail.NotificationEmail;
 import se.inera.intyg.intygsbestallning.common.property.BestallningProperties;
 import se.inera.intyg.intygsbestallning.common.text.mail.MailTexter;
 
@@ -61,11 +62,15 @@ public class NotifieringSendServiceImpl implements NotifieringSendService {
     }
 
     @Override
-    public String vidarebefordrad(Bestallning bestallning) {
+    public NotificationEmail vidarebefordrad(Bestallning bestallning) {
         var notifieringTyp = NotifieringTyp.NY_BESTALLNING;
         var mailTexter = mailTextService.getMailContent(notifieringTyp, bestallning.getTyp());
         var mailLink = getMailLinkRedirect(bestallning.getId());
-        return mailBodyFactory.buildBodyRawText(bestallning, mailTexter, mailLink);
+
+        return new NotificationEmail(
+                null,
+                mailTexter.getArendeRad().getArende(),
+                mailBodyFactory.buildBodyRawText(bestallning, mailTexter, mailLink));
     }
 
     @Override
