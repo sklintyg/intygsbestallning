@@ -51,7 +51,7 @@ const BestallningContainer = ({ error, bestallning, history, fetching }) => {
   if (error && !error.modal) {
     return (
       <FlexColumnContainer>
-        <BestallningHeader props={{ error, bestallning, history }} />
+        <BestallningHeader  bestallning={bestallning} history={history} error={error} />
         <ErrorContainer>
           <ErrorPageIcon />
           <br />
