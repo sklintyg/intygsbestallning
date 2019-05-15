@@ -20,7 +20,8 @@
 package se.inera.intyg.intygsbestallning.web.service.bestallning;
 
 import se.inera.intyg.intygsbestallning.common.dto.PdfBestallningRequest;
+import se.inera.intyg.intygsbestallning.common.dto.PdfBestallningResponse;
 
 public interface PdfBestallningService {
-    byte[] pdf(PdfBestallningRequest request);
+    PdfBestallningResponse pdf(PdfBestallningRequest request);
 }

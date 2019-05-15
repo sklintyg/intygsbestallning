@@ -109,3 +109,8 @@ data class PdfBestallningRequest(
         val orgNrVardgivare: String,
         val scope: VisaBestallningScope
 )
+
+data class PdfBestallningResponse(
+        val data: ByteArray,
+        val filename: String
+)

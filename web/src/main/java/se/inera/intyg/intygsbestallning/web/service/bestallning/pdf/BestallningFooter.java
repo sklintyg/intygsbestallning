@@ -31,8 +31,10 @@ import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfPage;
+import com.itextpdf.kernel.pdf.action.PdfAction;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.layout.Canvas;
+import com.itextpdf.layout.element.Link;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.VerticalAlignment;
@@ -74,7 +76,9 @@ public class BestallningFooter implements IEventHandler {
     }
 
     private void renderFooterText(Rectangle pageSize, Canvas canvas) {
-        Paragraph p = new Paragraph("Intygsbeställning är en tjänst från Inera AB som myndigheter kan använda för att skicka förfrågan för medicinska utlåtanden och intyg till vården. Mer information finns på https://www.inera.se/");
+        Paragraph p = new Paragraph("Intygsbeställning är en tjänst från Inera AB som myndigheter kan använda för att skicka förfrågan "
+                + "för medicinska utlåtanden och intyg till vården. Mer information finns på");
+        p.add(new Link("www.inera.se", PdfAction.createURI("https://www.inera.se/")));
         p.setWidth(pageSize.getWidth() - PAGE_MARGIN_LEFT - PAGE_MARGIN_RIGHT);
         canvas.showTextAligned(p,
                 PAGE_MARGIN_LEFT,

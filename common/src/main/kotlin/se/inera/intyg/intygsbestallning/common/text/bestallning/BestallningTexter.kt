@@ -34,6 +34,9 @@ class BestallningTexter {
   @JacksonXmlProperty(localName = "intygTypBeskrivning", isAttribute = true)
   val intygTypBeskrivning: String = ""
 
+  @JacksonXmlProperty(localName = "intygTypPdfFilename", isAttribute = true)
+  val intygTypPdfFilename: String = ""
+
   @JacksonXmlProperty(localName = "giltigFrom", isAttribute = true)
   val giltigFrom: String = ""
 

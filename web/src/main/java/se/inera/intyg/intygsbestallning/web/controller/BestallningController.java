@@ -52,7 +52,11 @@ import se.inera.intyg.intygsbestallning.web.service.bestallning.RaderaBestallnin
 import se.inera.intyg.intygsbestallning.web.service.bestallning.VisaBestallningService;
 import se.inera.intyg.intygsbestallning.web.service.user.UserService;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+
+import static javax.ws.rs.core.HttpHeaders.CONTENT_DISPOSITION;
 
 @RestController
 @RequestMapping("/api/bestallningar")
@@ -214,12 +218,12 @@ public class BestallningController {
         var user = userService.getUser();
         var hsaId = user.getUnitContext().getId();
         var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
-        byte[] pdf = pdfBestallningService.pdf(new PdfBestallningRequest(
+        var pdf = pdfBestallningService.pdf(new PdfBestallningRequest(
                 id,
                 hsaId,
                 orgNrVardgivare,
                 VisaBestallningScope.FORFRAGAN));
-        return ResponseEntity.ok(pdf);
+        return ResponseEntity.ok().header(CONTENT_DISPOSITION, "attachment; filename=" + pdf.getFilename()).body(pdf.getData());
     }
 
     @GetMapping(value = "/{id}/pdf/faktureringsunderlag", produces = MediaType.APPLICATION_PDF_VALUE)
@@ -227,11 +231,12 @@ public class BestallningController {
         var user = userService.getUser();
         var hsaId = user.getUnitContext().getId();
         var orgNrVardgivare = ((IbVardenhet) user.getUnitContext()).getOrgNrVardgivare();
-        byte[] pdf = pdfBestallningService.pdf(new PdfBestallningRequest(
+        var pdf = pdfBestallningService.pdf(new PdfBestallningRequest(
                 id,
                 hsaId,
                 orgNrVardgivare,
                 VisaBestallningScope.FAKTURERINGSUNDERLAG));
-        return ResponseEntity.ok(pdf);
+        return ResponseEntity.ok().header(CONTENT_DISPOSITION, "attachment; filename=" + pdf.getFilename()).body(pdf.getData());
     }
+
 }

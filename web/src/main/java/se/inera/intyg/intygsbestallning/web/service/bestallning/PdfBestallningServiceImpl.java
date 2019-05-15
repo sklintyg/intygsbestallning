@@ -23,6 +23,8 @@ import static se.inera.intyg.intygsbestallning.web.service.util.PdfUtil.millimet
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
@@ -43,12 +45,14 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import se.inera.intyg.intygsbestallning.common.dto.BestallningInvanareDto;
 import se.inera.intyg.intygsbestallning.common.dto.PdfBestallningRequest;
+import se.inera.intyg.intygsbestallning.common.dto.PdfBestallningResponse;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningDto;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningMetadata;
 import se.inera.intyg.intygsbestallning.common.dto.VisaBestallningScope;
 import se.inera.intyg.intygsbestallning.common.exception.IbErrorCodeEnum;
 import se.inera.intyg.intygsbestallning.common.exception.IbServiceException;
 import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTextService;
+import se.inera.intyg.intygsbestallning.common.text.bestallning.BestallningTexter;
 import se.inera.intyg.intygsbestallning.integration.pu.PatientService;
 import se.inera.intyg.intygsbestallning.persistence.service.BestallningPersistenceService;
 import se.inera.intyg.intygsbestallning.web.pdl.LogEvent;
@@ -100,7 +104,7 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
     }
 
     @Override
-    public byte[] pdf(PdfBestallningRequest request) {
+    public PdfBestallningResponse pdf(PdfBestallningRequest request) {
         if (request == null) {
             throw new IllegalArgumentException("request may not be null");
         }
@@ -144,7 +148,7 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
             pdlLogService.log(bestallning.get(), LogEvent.BESTALLNING_SKRIV_UT);
         }
 
-        return data;
+        return new PdfBestallningResponse(data, generatePdfFilename(request.getScope(), bestallningTexter));
     }
 
     private byte[] generatePdf(VisaBestallningDto bestallning) {
@@ -280,4 +284,22 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
         }
     }
 
+    private String generatePdfFilename(VisaBestallningScope scope, BestallningTexter bestallningTexter) {
+
+        String scopeString;
+        switch (scope) {
+            case FORFRAGAN:
+                scopeString = "Forfragan_";
+                break;
+            case FAKTURERINGSUNDERLAG:
+                scopeString = "Fakturaunderlag_";
+                break;
+            default:
+                scopeString = "";
+        }
+
+        String utskriftsTidpunkt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yy_MM_dd_HHmm"));
+
+        return String.format("%s%s_%s.pdf", scopeString, bestallningTexter.getIntygTypPdfFilename(), utskriftsTidpunkt);
+    }
 }
