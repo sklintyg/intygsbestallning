@@ -170,7 +170,7 @@ public class PdfBestallningServiceImpl implements PdfBestallningService {
         pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new BestallningHeader(lightFont, loadImage(IB_LOGOTYPE_CLASSPATH_URI),
                 bestallning.getId()));
 
-        pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new BestallningFooter(lightFont));
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new BestallningFooter(lightFont));
         PageNumberEvent pageNumberEvent = new PageNumberEvent(lightFont);
         pdf.addEventHandler(PdfDocumentEvent.END_PAGE, pageNumberEvent);
 
