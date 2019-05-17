@@ -88,7 +88,7 @@ const BestallningActionBar = ({
         </StyledButton>
       )}
       <StyledButton onClick={vidarebefodra} color={'primary'}>
-        <Reply color={IbColors.IB_COLOR_00} /> Vidarebefodra
+        <Reply color={IbColors.IB_COLOR_00} /> Vidarebefordra
       </StyledButton>
       <ButtonDropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
         <DropdownToggle id="skrivUtBtn" color={'primary'}>
