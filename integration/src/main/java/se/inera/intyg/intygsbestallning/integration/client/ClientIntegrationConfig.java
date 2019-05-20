@@ -20,12 +20,11 @@
 package se.inera.intyg.intygsbestallning.integration.client;
 
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import se.riv.intygsbestallning.certificate.order.respondtoorder.v1.rivtabp21.RespondToOrderResponderService;
+import se.riv.intygsbestallning.certificate.order.respondtoorder.v1.rivtabp21.RespondToOrderResponderInterface;
 import se.inera.intyg.intygsbestallning.common.property.IntegrationProperties;
 
 @Configuration
@@ -40,10 +39,10 @@ public class ClientIntegrationConfig {
     }
 
     @Bean
-    public RespondToOrderResponderService respondToOrderClient() {
+    public RespondToOrderResponderInterface respondToOrderClient() {
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
         proxyFactoryBean.setAddress(properties.getMyndighetIntegrationUrl() + properties.getRespondToOrderUrl());
-        proxyFactoryBean.setServiceClass(RespondToOrderResponderService.class);
-        return (RespondToOrderResponderService) proxyFactoryBean.create();
+        proxyFactoryBean.setServiceClass(RespondToOrderResponderInterface.class);
+        return (RespondToOrderResponderInterface) proxyFactoryBean.create();
     }
 }
