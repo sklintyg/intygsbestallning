@@ -23,6 +23,7 @@ import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import se.riv.intygsbestallning.certificate.order.respondtoorder.v1.rivtabp21.RespondToOrderResponderInterface;
 import se.inera.intyg.intygsbestallning.common.property.IntegrationProperties;
@@ -30,6 +31,7 @@ import se.inera.intyg.intygsbestallning.common.property.IntegrationProperties;
 @Configuration
 @ComponentScan(basePackages = "se.inera.intyg.intygsbestallning.integration.client")
 @Profile("!myndighet-stub")
+@Import({IntegrationProperties.class})
 public class ClientIntegrationConfig {
 
     private final IntegrationProperties properties;
