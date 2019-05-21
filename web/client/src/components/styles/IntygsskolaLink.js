@@ -21,7 +21,7 @@ const IntygsskolaLink = () => {
   return (
     <Wrapper>
       <School color={colors.IB_COLOR_31} />
-      <ExternalLink href="https://www.inera.se/aktuellt/utbildningar/intygsskolan/intygsbestallning/">
+      <ExternalLink color={colors.IB_COLOR_31} href="https://www.inera.se/aktuellt/utbildningar/intygsskolan/intygsbestallning/">
         Hitta svar på dina frågor i Ineras Intygsskola
       </ExternalLink>
     </Wrapper>

@@ -18,11 +18,11 @@ const Link = styled.a`
   }
 `
 
-export default ({ href, children }) => (
+export default ({ href, children, color=colors.IB_COLOR_17 }) => (
   <Fragment>
     <Link href={href} rel="noopener noreferrer" target="_blank">
       {children}
-      <ExternalIcon color={colors.IB_COLOR_17} />
+      <ExternalIcon color={color} />
     </Link>
   </Fragment>
 )
