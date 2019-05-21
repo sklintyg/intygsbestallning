@@ -24,16 +24,23 @@ const PageContainer = styled(WorkareaContainer)`
     padding-bottom: 20px;
   }
 `
+
+const SelectEnhetPageHeader = styled.div`
+  max-width: 500px;
+`
+
 const SelectEnhetPage = () => {
   return (
     <FlexColumnContainer>
       <CustomScrollingContainer>
         <PageContainer>
-          <IbTypo02 as="h1" color={IbColors.IB_COLOR_07}>
-            Välj enhet
-          </IbTypo02>
-          <p>Du har behörighet för flera vårdenheter. Välj den du vill logga in på nu. Du kan byta enhet även efter inloggning.</p>
-          <SelectEnhet />
+          <SelectEnhetPageHeader>
+            <IbTypo02 as="h1" color={IbColors.IB_COLOR_07}>
+              Välj enhet
+            </IbTypo02>
+            <p>Du har behörighet för flera vårdenheter. Välj den du vill logga in på nu. Du kan byta enhet även efter inloggning.</p>
+            <SelectEnhet />
+          </SelectEnhetPageHeader>
         </PageContainer>
         <AppFooter />
       </CustomScrollingContainer>
