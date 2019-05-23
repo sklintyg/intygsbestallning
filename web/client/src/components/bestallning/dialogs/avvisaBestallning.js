@@ -67,7 +67,7 @@ const AvvisaBestallning = ({ handleClose, isOpen, accept }) => {
           />
           {avvisaSelection !== undefined && (
             <MotivationSection>
-              <p>Vänligen förtydliga skälet till varför beställningen avvisas eller raderas.</p>
+              <p>Vänligen berätta för avsändaren varför förfrågan avvisas eller raderas.</p>
               <IbTypo11 as="p">
                 Observera att patientrelaterad information inte får lämnas ut utan stöd i patientdatalagen (2008:355), patientsäkerhetslagen
                 (2010:659) eller Offentlighets- och sekretesslagen (2009:400).
