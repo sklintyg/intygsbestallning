@@ -18,12 +18,9 @@
  */
 package se.inera.intyg.intygsbestallning.mailsender;
 
-import static org.awaitility.Awaitility.await;
-
 import java.util.concurrent.TimeUnit;
 import javax.jms.JMSException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.apache.camel.test.spring.CamelSpringRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,10 +29,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import se.inera.intyg.intygsbestallning.common.json.CustomObjectMapper;
 import se.inera.intyg.intygsbestallning.common.mail.NotificationEmail;
 import se.inera.intyg.intygsbestallning.mailsender.config.MailSenderTestConfig;
 import se.inera.intyg.intygsbestallning.mailsender.service.stub.MailServiceStub;
+
+import static org.awaitility.Awaitility.await;
 
 @RunWith(CamelSpringRunner.class)
 @ContextConfiguration(classes = MailSenderTestConfig.class)

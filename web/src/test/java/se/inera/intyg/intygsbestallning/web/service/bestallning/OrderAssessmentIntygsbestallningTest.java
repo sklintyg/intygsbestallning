@@ -47,7 +47,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -64,7 +63,6 @@ import se.inera.intyg.intygsbestallning.common.service.bestallning.BestallningTe
 import se.inera.intyg.intygsbestallning.common.text.bestallning.BestallningTexter;
 
 @ExtendWith(MockitoExtension.class)
-@RunWith(JUnitPlatform.class)
 class OrderAssessmentIntygsbestallningTest {
 
     // CHECKSTYLE:OFF MethodName

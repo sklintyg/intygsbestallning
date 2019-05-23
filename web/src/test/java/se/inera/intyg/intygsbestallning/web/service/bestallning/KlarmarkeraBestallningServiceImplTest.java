@@ -23,7 +23,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -54,7 +53,6 @@ import static org.mockito.Mockito.verify;
 import static se.inera.intyg.schemas.contract.Personnummer.createPersonnummer;
 
 @ExtendWith(MockitoExtension.class)
-@RunWith(JUnitPlatform.class)
 class KlarmarkeraBestallningServiceImplTest {
     private static final Long BESTALLNING_ID = 1L;
     private static final LocalDateTime ANKOMST_DATUM = LocalDateTime.now().minusDays(2L);

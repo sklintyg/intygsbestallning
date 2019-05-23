@@ -21,7 +21,6 @@ package se.inera.intyg.intygsbestallning.web.pdl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
 import se.inera.intyg.infra.logmessages.ActivityPurpose;
 import se.inera.intyg.infra.logmessages.ActivityType;
 import se.inera.intyg.infra.logmessages.ResourceType;
@@ -46,7 +45,6 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-@RunWith(JUnitPlatform.class)
 public class PdlLoggingMessageFactoryTest {
 
     private static final String USER_ID = "SE2321000198-016965";

@@ -21,7 +21,6 @@ package se.inera.intyg.intygsbestallning.web;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
@@ -39,7 +38,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(JUnitPlatform.class)
 @ExtendWith(MockitoExtension.class)
 class UnitContextSelectedAssuranceFilterTest {
 
