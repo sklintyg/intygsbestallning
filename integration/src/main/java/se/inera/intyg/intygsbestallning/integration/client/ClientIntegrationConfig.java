@@ -19,32 +19,114 @@
 
 package se.inera.intyg.intygsbestallning.integration.client;
 
+import org.apache.cxf.configuration.jsse.TLSClientParameters;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.transport.http.HttpConduitConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
-import se.riv.intygsbestallning.certificate.order.respondtoorder.v1.rivtabp21.RespondToOrderResponderInterface;
 import se.inera.intyg.intygsbestallning.common.property.IntegrationProperties;
+import se.inera.intyg.intygsbestallning.common.property.NtjpWsProperties;
+import se.riv.intygsbestallning.certificate.order.respondtoorder.v1.rivtabp21.RespondToOrderResponderInterface;
+
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 
 @Configuration
 @ComponentScan(basePackages = "se.inera.intyg.intygsbestallning.integration.client")
 @Profile("!myndighet-stub")
-@Import({IntegrationProperties.class})
+@EnableConfigurationProperties({ NtjpWsProperties.class, IntegrationProperties.class })
 public class ClientIntegrationConfig {
 
-    private final IntegrationProperties properties;
+    private static final Logger LOG = LoggerFactory.getLogger(ClientIntegrationConfig.class);
 
-    public ClientIntegrationConfig(IntegrationProperties properties) {
-        this.properties = properties;
+    private final IntegrationProperties integrationProperties;
+    private final NtjpWsProperties ntjpWsProperties;
+
+    public ClientIntegrationConfig(IntegrationProperties integrationProperties, NtjpWsProperties ntjpWsProperties) {
+        this.integrationProperties = integrationProperties;
+        this.ntjpWsProperties = ntjpWsProperties;
     }
 
     @Bean
-    public RespondToOrderResponderInterface respondToOrderClient() {
+    public RespondToOrderResponderInterface respondToOrderClient(
+            @Qualifier("ntjpConduitConfig") final HttpConduitConfig ntjpConduitConfig) {
+        LOG.info("Instantiating respondToOrderClient");
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
-        proxyFactoryBean.setAddress(properties.getMyndighetIntegrationUrl() + properties.getRespondToOrderUrl());
+        proxyFactoryBean.setAddress(integrationProperties.getMyndighetIntegrationUrl() + integrationProperties.getRespondToOrderUrl());
         proxyFactoryBean.setServiceClass(RespondToOrderResponderInterface.class);
-        return (RespondToOrderResponderInterface) proxyFactoryBean.create();
+
+        RespondToOrderResponderInterface respondToOrderResponderInterface = (RespondToOrderResponderInterface) proxyFactoryBean.create();
+
+        final Client client = ClientProxy.getClient(respondToOrderResponderInterface);
+        final HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
+        ntjpConduitConfig.apply(httpConduit);
+
+        return respondToOrderResponderInterface;
+    }
+
+    @Bean("ntjpConduitConfig")
+    public HttpConduitConfig ntjpConduitConfig(@Qualifier("ntjpKeyManager") final KeyManager[] ntjpKeyManagers,
+            @Qualifier("ntjpTrustManager") final TrustManager[] ntjpTrustManager) {
+
+        LOG.info("Instantiating ntjpConduitConfig");
+        final HttpConduitConfig config = new HttpConduitConfig();
+
+        final TLSClientParameters tlsClientParameters = new TLSClientParameters();
+        tlsClientParameters.setTrustManagers(ntjpTrustManager);
+        tlsClientParameters.setKeyManagers(ntjpKeyManagers);
+
+        config.setTlsClientParameters(tlsClientParameters);
+
+        return config;
+    }
+
+    @Bean("ntjpKeyManager")
+    public KeyManager[] ntjpKeyManager()
+            throws NoSuchAlgorithmException, UnrecoverableKeyException, KeyStoreException, IOException, CertificateException {
+        NtjpWsProperties.NtjpCertificate certificate = ntjpWsProperties.getCertificate();
+        KeyStore keyStore = KeyStore.getInstance(certificate.getType());
+        try (InputStream is = certificate.getFile().getInputStream()) {
+            char[] password = certificate.getPassword().toCharArray();
+            keyStore.load(is, password);
+
+            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+            keyManagerFactory.init(keyStore, password);
+
+            return keyManagerFactory.getKeyManagers();
+
+        }
+    }
+
+    @Bean("ntjpTrustManager")
+    public TrustManager[] ntjpTrustManager() throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
+        NtjpWsProperties.NtjpTruststore truststore = ntjpWsProperties.getTruststore();
+        KeyStore keyStore = KeyStore.getInstance(truststore.getType());
+        try (InputStream is = truststore.getFile().getInputStream()) {
+            char[] password = truststore.getPassword().toCharArray();
+            keyStore.load(is, password);
+
+            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init(keyStore);
+
+            return trustManagerFactory.getTrustManagers();
+        }
     }
 }
