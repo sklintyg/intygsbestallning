@@ -28,13 +28,13 @@ open class NtjpWsProperties {
 
   class NtjpCertificate {
     lateinit var type: String
-    lateinit var file: Resource
+    lateinit var file: String
     lateinit var password: String
   }
 
   class NtjpTruststore {
     lateinit var type: String
-    lateinit var file: Resource
+    lateinit var file: String
     lateinit var password: String
   }
 }
