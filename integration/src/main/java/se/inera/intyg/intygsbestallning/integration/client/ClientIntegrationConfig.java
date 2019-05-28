@@ -42,8 +42,8 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -70,7 +70,7 @@ public class ClientIntegrationConfig {
     public RespondToOrderResponderInterface respondToOrderClient(
             @Qualifier("ntjpConduitConfig") final HttpConduitConfig ntjpConduitConfig) {
 
-        LOG.info("Instantiating respondToOrderClient");
+        LOG.info("RespondToOrderClient initiated");
 
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
         proxyFactoryBean.setAddress(integrationProperties.getMyndighetIntegrationUrl() + integrationProperties.getRespondToOrderUrl());
@@ -89,7 +89,7 @@ public class ClientIntegrationConfig {
     public HttpConduitConfig ntjpConduitConfig(@Qualifier("ntjpKeyManager") final KeyManager[] ntjpKeyManager,
             @Qualifier("ntjpTrustManager") final TrustManager[] ntjpTrustManager) {
 
-        LOG.info("Instantiating ntjpConduitConfig");
+        LOG.info("NtjpConduitConfig initiated");
 
         final TLSClientParameters tlsClientParameters = new TLSClientParameters();
         tlsClientParameters.setTrustManagers(ntjpTrustManager);
@@ -110,12 +110,14 @@ public class ClientIntegrationConfig {
         NtjpWsProperties.NtjpCertificate certificate = ntjpWsProperties.getCertificate();
         char[] password = certificate.getPassword().toCharArray();
 
-        try (InputStream is = certificate.getFile().getInputStream()) {
+        try (FileInputStream fis = new FileInputStream(certificate.getFile())) {
             KeyStore keyStore = KeyStore.getInstance(certificate.getType());
-            keyStore.load(is, password);
+            keyStore.load(fis, password);
 
             KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
             keyManagerFactory.init(keyStore, password);
+
+            LOG.info("NtjpConduitConfig KeyManager loaded with keystore {}", certificate.getFile());
 
             return keyManagerFactory.getKeyManagers();
         }
@@ -129,12 +131,14 @@ public class ClientIntegrationConfig {
         NtjpWsProperties.NtjpTruststore truststore = ntjpWsProperties.getTruststore();
         char[] password = truststore.getPassword().toCharArray();
 
-        try (InputStream is = truststore.getFile().getInputStream()) {
+        try (FileInputStream fis = new FileInputStream(truststore.getFile())) {
             KeyStore keyStore = KeyStore.getInstance(truststore.getType());
-            keyStore.load(is, password);
+            keyStore.load(fis, password);
 
             TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
             trustManagerFactory.init(keyStore);
+
+            LOG.info("NtjpConduitConfig TrustManager loaded with truststore {}", truststore.getFile());
 
             return trustManagerFactory.getTrustManagers();
         }
