@@ -67,6 +67,9 @@ subprojects {
   dependencies {
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
+    compileOnly("net.jcip:jcip-annotations:${Dependencies.jcipAnnotationsVersion}")
+    compileOnly("com.github.spotbugs:spotbugs-annotations:${Dependencies.spotbugsAnnotationsVersion}")
+
     compile("javax.xml.bind:jaxb-api:${Dependencies.jaxVersion}")
     compile("com.sun.xml.bind:jaxb-core:${Dependencies.jaxVersion}")
     compile("com.sun.xml.bind:jaxb-impl:${Dependencies.jaxVersion}")
