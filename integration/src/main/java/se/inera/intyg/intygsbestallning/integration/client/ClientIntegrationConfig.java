@@ -19,6 +19,7 @@
 
 package se.inera.intyg.intygsbestallning.integration.client;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
@@ -68,7 +69,9 @@ public class ClientIntegrationConfig {
     @Bean
     public RespondToOrderResponderInterface respondToOrderClient(
             @Qualifier("ntjpConduitConfig") final HttpConduitConfig ntjpConduitConfig) {
+
         LOG.info("Instantiating respondToOrderClient");
+
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
         proxyFactoryBean.setAddress(integrationProperties.getMyndighetIntegrationUrl() + integrationProperties.getRespondToOrderUrl());
         proxyFactoryBean.setServiceClass(RespondToOrderResponderInterface.class);
@@ -83,44 +86,51 @@ public class ClientIntegrationConfig {
     }
 
     @Bean("ntjpConduitConfig")
-    public HttpConduitConfig ntjpConduitConfig(@Qualifier("ntjpKeyManager") final KeyManager[] ntjpKeyManagers,
+    public HttpConduitConfig ntjpConduitConfig(@Qualifier("ntjpKeyManager") final KeyManager[] ntjpKeyManager,
             @Qualifier("ntjpTrustManager") final TrustManager[] ntjpTrustManager) {
 
         LOG.info("Instantiating ntjpConduitConfig");
-        final HttpConduitConfig config = new HttpConduitConfig();
 
         final TLSClientParameters tlsClientParameters = new TLSClientParameters();
         tlsClientParameters.setTrustManagers(ntjpTrustManager);
-        tlsClientParameters.setKeyManagers(ntjpKeyManagers);
+        tlsClientParameters.setKeyManagers(ntjpKeyManager);
 
+        final HttpConduitConfig config = new HttpConduitConfig();
         config.setTlsClientParameters(tlsClientParameters);
 
         return config;
     }
 
     @Bean("ntjpKeyManager")
+    // Needed to due bug in Spotbugs. https://github.com/spotbugs/spotbugs/issues/756
+    @SuppressFBWarnings("RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE")
     public KeyManager[] ntjpKeyManager()
             throws NoSuchAlgorithmException, UnrecoverableKeyException, KeyStoreException, IOException, CertificateException {
+
         NtjpWsProperties.NtjpCertificate certificate = ntjpWsProperties.getCertificate();
-        KeyStore keyStore = KeyStore.getInstance(certificate.getType());
+        char[] password = certificate.getPassword().toCharArray();
+
         try (InputStream is = certificate.getFile().getInputStream()) {
-            char[] password = certificate.getPassword().toCharArray();
+            KeyStore keyStore = KeyStore.getInstance(certificate.getType());
             keyStore.load(is, password);
 
             KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
             keyManagerFactory.init(keyStore, password);
 
             return keyManagerFactory.getKeyManagers();
-
         }
     }
 
     @Bean("ntjpTrustManager")
+    // Needed to due bug in Spotbugs. https://github.com/spotbugs/spotbugs/issues/756
+    @SuppressFBWarnings("RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE")
     public TrustManager[] ntjpTrustManager() throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
+
         NtjpWsProperties.NtjpTruststore truststore = ntjpWsProperties.getTruststore();
-        KeyStore keyStore = KeyStore.getInstance(truststore.getType());
+        char[] password = truststore.getPassword().toCharArray();
+
         try (InputStream is = truststore.getFile().getInputStream()) {
-            char[] password = truststore.getPassword().toCharArray();
+            KeyStore keyStore = KeyStore.getInstance(truststore.getType());
             keyStore.load(is, password);
 
             TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
