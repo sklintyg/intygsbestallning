@@ -46,10 +46,10 @@ const AvvisaBestallning = ({ handleClose, isOpen, accept }) => {
       <Modal isOpen={isOpen} size={'md'} backdrop={true} toggle={onClose}>
         <ModalHeader toggle={onClose}>Avvisa</ModalHeader>
         <ModalBody>
-          <p>Du kan välja att bara avvisa beställningen eller att även radera den.</p>
+          <p>Du kan välja att bara avvisa förfrågan eller att även radera den.</p>
           <p>
-            Radering får endast ske om beställningen har skickats till fel vårdenhet och någon journalanteckning med anledning av
-            beställningen inte har upprättats.
+            Radering får endast ske om förfrågan har skickats till fel vårdenhet och någon journalanteckning med anledning av
+            förfrågan inte har upprättats.
           </p>
           <RadioButton
             onChange={handleRadioChange}
