@@ -68,7 +68,9 @@ public class ClientIntegrationConfig {
     @Bean
     public RespondToOrderResponderInterface respondToOrderClient(
             @Qualifier("ntjpConduitConfig") final HttpConduitConfig ntjpConduitConfig) {
+
         LOG.info("Instantiating respondToOrderClient");
+
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
         proxyFactoryBean.setAddress(integrationProperties.getMyndighetIntegrationUrl() + integrationProperties.getRespondToOrderUrl());
         proxyFactoryBean.setServiceClass(RespondToOrderResponderInterface.class);
@@ -87,12 +89,12 @@ public class ClientIntegrationConfig {
             @Qualifier("ntjpTrustManager") final TrustManager[] ntjpTrustManager) {
 
         LOG.info("Instantiating ntjpConduitConfig");
-        final HttpConduitConfig config = new HttpConduitConfig();
 
         final TLSClientParameters tlsClientParameters = new TLSClientParameters();
         tlsClientParameters.setTrustManagers(ntjpTrustManager);
         tlsClientParameters.setKeyManagers(ntjpKeyManagers);
 
+        final HttpConduitConfig config = new HttpConduitConfig();
         config.setTlsClientParameters(tlsClientParameters);
 
         return config;
@@ -101,32 +103,33 @@ public class ClientIntegrationConfig {
     @Bean("ntjpKeyManager")
     public KeyManager[] ntjpKeyManager()
             throws NoSuchAlgorithmException, UnrecoverableKeyException, KeyStoreException, IOException, CertificateException {
+
         NtjpWsProperties.NtjpCertificate certificate = ntjpWsProperties.getCertificate();
+        InputStream is = certificate.getFile().getInputStream();
+        char[] password = certificate.getPassword().toCharArray();
+
         KeyStore keyStore = KeyStore.getInstance(certificate.getType());
-        try (InputStream is = certificate.getFile().getInputStream()) {
-            char[] password = certificate.getPassword().toCharArray();
-            keyStore.load(is, password);
+        keyStore.load(is, password);
 
-            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-            keyManagerFactory.init(keyStore, password);
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        keyManagerFactory.init(keyStore, password);
 
-            return keyManagerFactory.getKeyManagers();
-
-        }
+        return keyManagerFactory.getKeyManagers();
     }
 
     @Bean("ntjpTrustManager")
     public TrustManager[] ntjpTrustManager() throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
+
         NtjpWsProperties.NtjpTruststore truststore = ntjpWsProperties.getTruststore();
+        InputStream is = truststore.getFile().getInputStream();
+        char[] password = truststore.getPassword().toCharArray();
+
         KeyStore keyStore = KeyStore.getInstance(truststore.getType());
-        try (InputStream is = truststore.getFile().getInputStream()) {
-            char[] password = truststore.getPassword().toCharArray();
-            keyStore.load(is, password);
+        keyStore.load(is, password);
 
-            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-            trustManagerFactory.init(keyStore);
+        TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        trustManagerFactory.init(keyStore);
 
-            return trustManagerFactory.getTrustManagers();
-        }
+        return trustManagerFactory.getTrustManagers();
     }
 }
