@@ -32,6 +32,7 @@ context('Change unit', () => {
 
     cy.get('#changeUnitBtn').click();
     cy.get('#selectUnitBtn-IFV1239877878-1042').click();
+    cy.wait(500);
     cy.get('#currentUserTitle').should('contain.text', 'Harald Alltsson');
     cy.get('#currentVardgivarTitle').should('contain.text', 'WebCert-Vårdgivare1');
     cy.get('#currentVardenhetTitle').should('contain.text', 'WebCert-Enhet1');
