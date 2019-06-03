@@ -18,28 +18,26 @@
  */
 package se.inera.intyg.intygsbestallning.web;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.http.ContentType;
-import com.jayway.restassured.response.Response;
-import com.jayway.restassured.response.ResponseBodyExtractionOptions;
+import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import io.restassured.response.ResponseBodyExtractionOptions;
 import se.inera.intyg.intygsbestallning.common.json.CustomObjectMapper;
 import se.inera.intyg.intygsbestallning.web.auth.fake.FakeCredentials;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-import static com.jayway.restassured.RestAssured.given;
+import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertNotNull;
 
 public abstract class BaseRestIntegrationTest {
-    private static final Logger LOG = LoggerFactory.getLogger(BaseRestIntegrationTest.class);
 
     private static final String USER_JSON_FORM_PARAMETER = "userJsonDisplay";
     private static final String FAKE_LOGIN_URI = "/fake";

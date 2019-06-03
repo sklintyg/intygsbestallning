@@ -51,8 +51,11 @@ dependencies {
   // FIXME: shall not be bundled with app!
   implementation("se.inera.intyg.refdata:refdata:${extra["refDataVersion"]}")
 
-  testImplementation("com.jayway.restassured:rest-assured:${TestDependencies.restAssuredVersion}")
-  testImplementation("com.jayway.restassured:json-schema-validator:${TestDependencies.restAssuredVersion}")
+  testImplementation("io.rest-assured:rest-assured:${TestDependencies.restAssuredVersion}")
+  testImplementation("io.rest-assured:json-schema-validator:${TestDependencies.restAssuredVersion}")
+  testImplementation("io.rest-assured:json-schema-validator:${TestDependencies.restAssuredVersion}")
+  testImplementation("io.rest-assured:json-path:${TestDependencies.restAssuredVersion}")
+  testImplementation("io.rest-assured:xml-path:${TestDependencies.restAssuredVersion}")
   testImplementation("org.antlr:ST4:${TestDependencies.stAntlr4Version}")
 
 }
