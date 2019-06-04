@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (C) 2019 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
@@ -28,13 +28,13 @@ open class NtjpWsProperties {
 
   class NtjpCertificate {
     lateinit var type: String
-    lateinit var file: Resource
+    lateinit var file: String
     lateinit var password: String
   }
 
   class NtjpTruststore {
     lateinit var type: String
-    lateinit var file: Resource
+    lateinit var file: String
     lateinit var password: String
   }
 }

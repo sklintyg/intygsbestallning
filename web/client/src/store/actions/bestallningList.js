@@ -1,5 +1,5 @@
 import * as api from '../../api/bestallningListApi'
-import { getIsFetching } from '../reducers/bestallningList'
+import { getIsFetching, getSortOrder } from '../reducers/bestallningList'
 
 export const FETCH_BESTALLNINGAR_REQUEST = 'FETCH_BESTALLNINGAR_REQUEST'
 export const FETCH_BESTALLNINGAR_SUCCESS = 'FETCH_BESTALLNINGAR_SUCCESS'
@@ -17,7 +17,18 @@ export const fetchBestallningList = (bestallningRequest) => (dispatch, getState)
     categoryFilter,
   })
 
-  return api.fetchBestallningList(bestallningRequest).then(
+  let requestParams = bestallningRequest;
+
+  if (!bestallningRequest || !bestallningRequest.sortColumn) {
+    const sortOrder = getSortOrder(getState(), categoryFilter)
+
+    requestParams = {
+      ...bestallningRequest,
+      ...sortOrder
+    }
+  }
+
+  return api.fetchBestallningList(requestParams).then(
     (response) => {
       dispatch({
         type: 'FETCH_BESTALLNINGAR_SUCCESS',

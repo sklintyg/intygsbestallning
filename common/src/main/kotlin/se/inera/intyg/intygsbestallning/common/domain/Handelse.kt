@@ -31,32 +31,52 @@ data class Handelse(
     companion object Factory {
         fun skapa(): Handelse {
             return Handelse(
-                    event = BestallningEvent.SKAPA, skapad = LocalDateTime.now(), beskrivning = "Beställning mottagen")
+                event = BestallningEvent.SKAPA,
+                skapad = LocalDateTime.now(),
+                beskrivning = "Beställning mottagen")
         }
 
         fun las(userHsaId: String): Handelse {
             return Handelse(
-                    event = BestallningEvent.LAS, skapad = LocalDateTime.now(), anvandare = userHsaId, beskrivning = "Beställning läst")
+                event = BestallningEvent.LAS,
+                skapad = LocalDateTime.now(),
+                anvandare = userHsaId,
+                beskrivning = "Beställning läst")
         }
 
         fun acceptera(userHsaId: String, kommentar: String?): Handelse {
             return Handelse(
-                    event = BestallningEvent.ACCEPTERA, skapad = LocalDateTime.now(), anvandare = userHsaId, beskrivning = "Beställning accepterad", kommentar = kommentar)
+                event = BestallningEvent.ACCEPTERA,
+                skapad = LocalDateTime.now(),
+                anvandare = userHsaId,
+                beskrivning = "Beställning accepterad",
+                kommentar = kommentar)
         }
 
         fun avvisa(userHsaId: String, kommentar: String?): Handelse {
             return Handelse(
-                    event = BestallningEvent.AVVISA, skapad = LocalDateTime.now(), anvandare = userHsaId, beskrivning = "Beställning avvisad", kommentar = kommentar)
+                event = BestallningEvent.AVVISA,
+                skapad = LocalDateTime.now(),
+                anvandare = userHsaId,
+                beskrivning = "Beställning avvisad",
+                kommentar = kommentar)
         }
 
         fun avvisaRadera(userHsaId: String, kommentar: String?): Handelse {
             return Handelse(
-                    event = BestallningEvent.AVVISA_RADERA, skapad = LocalDateTime.now(), anvandare = userHsaId, beskrivning = "Beställning raderad", kommentar = kommentar)
+                event = BestallningEvent.AVVISA_RADERA,
+                skapad = LocalDateTime.now(),
+                anvandare = userHsaId,
+                beskrivning = "Beställning raderad",
+                kommentar = kommentar)
         }
 
         fun klarmarkera(userHsaId: String): Handelse {
             return Handelse(
-                    event = BestallningEvent.KLARMARKERA, skapad = LocalDateTime.now(), anvandare = userHsaId, beskrivning = "Beställning klarmarkerad")
+                event = BestallningEvent.KLARMARKERA,
+                skapad = LocalDateTime.now(),
+                anvandare = userHsaId,
+                beskrivning = "Beställning klarmarkerad")
         }
     }
 }

@@ -18,18 +18,19 @@
  */
 package se.inera.intyg.intygsbestallning.web.integration;
 
-import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.builder.RequestSpecBuilder;
-import com.jayway.restassured.response.ResponseBodyExtractionOptions;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
+
+import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.response.ResponseBodyExtractionOptions;
 import se.inera.intyg.intygsbestallning.web.BaseRestIntegrationTest;
 
-import static com.jayway.restassured.RestAssured.given;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.Is.is;
 
 public class OrderAssessmentIntygsbestallningIT extends BaseRestIntegrationTest {
@@ -70,7 +71,7 @@ public class OrderAssessmentIntygsbestallningIT extends BaseRestIntegrationTest 
                 .body("assessmentId.extension", Matchers.notNullValue())
                 .extract();
 
-        deleteBestallning(body.xmlPath().setRoot(RESPONSE_BASE).getInt( "assessmentId.extension"));
+        deleteBestallning(body.xmlPath().setRootPath(RESPONSE_BASE).getInt( "assessmentId.extension"));
     }
 
     @Test

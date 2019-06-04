@@ -19,14 +19,15 @@
 
 package se.inera.intyg.intygsbestallning.web.controller;
 
-import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.http.ContentType;
 import org.apache.http.HttpHeaders;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import se.inera.intyg.intygsbestallning.web.BaseRestIntegrationTest;
 
-import static com.jayway.restassured.RestAssured.given;
+import static io.restassured.RestAssured.given;
 import static se.inera.intyg.intygsbestallning.web.controller.RequestErrorController.IB_CLIENT_EXIT_BOOT_PATH;
 
 class MailLinkControllerIT extends BaseRestIntegrationTest {

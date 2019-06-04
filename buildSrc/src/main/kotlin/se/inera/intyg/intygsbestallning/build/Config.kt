@@ -12,18 +12,18 @@ object Config {
   object Dependencies {
 
     //Project dependencies
-    const val intygPluginVersion = "3.0.5"
+    const val intygPluginVersion = "3.0.6"
     const val intygsbestallningCertificateOrderSchemasVersion = "1.0.0-RELEASE"
     const val schemasContractVersion = "2.1.8"
 
     //External dependencies
-    const val nodePluginVersion = "1.2.0"
+    const val nodePluginVersion = "1.3.1"
     const val nodeVersion = "10.15.1"
 
     const val kotlinVersion = "1.3.31"
 
-    const val springVersion = "5.1.6.RELEASE"
-    const val springBootVersion = "2.1.4.RELEASE"
+    const val springVersion = "5.1.7.RELEASE"
+    const val springBootVersion = "2.1.5.RELEASE"
     const val springDependencyManagementVersion = "1.0.7.RELEASE"
     const val springSecuritySaml2Version = "1.0.3.RELEASE"
 
@@ -41,6 +41,10 @@ object Config {
     const val itext7Version = "7.1.5"
     const val swaggerVersion = "2.9.2"
     const val jakartaJwsVersion = "1.1.1"
+
+    // Spotbugs annotations
+    const val spotbugsAnnotationsVersion = "3.1.12"
+    const val jcipAnnotationsVersion = "1.0"
   }
 
   object TestDependencies {
@@ -49,7 +53,7 @@ object Config {
     const val junit5Version = "5.4.2"
     const val awaitilityVersion = "3.1.6"
     const val randomBeansVersion = "3.9.0"
-    const val restAssuredVersion = "2.9.0"
+    const val restAssuredVersion = "4.0.0"
     const val stAntlr4Version = "4.0.8"
   }
 }

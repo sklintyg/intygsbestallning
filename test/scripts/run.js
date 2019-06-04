@@ -7,7 +7,7 @@ const fs = require('fs');
 const dir = 'build/test-results';
 
 if (!fs.existsSync(dir)){
-  fs.mkdirSync(dir);
+  fs.mkdirSync(dir, { recursive: true });
 }
 
 // https://github.com/cypress-io/cypress/issues/1946
@@ -33,11 +33,13 @@ const cypressOption = {
 cypress.run(cypressOption).then(
   (results) => {
     //console.log(results);
-    generateReport(options);
-
-    if (results.totalFailed > 0) {
-      process.exit(1)
-    }
+    generateReport(options).finally(
+      () => {
+        if (results.totalFailed > 0) {
+          process.exit(1)
+        }
+      }
+    );
   }
 ).catch(error => {
   generateReport(options);
@@ -46,5 +48,5 @@ cypress.run(cypressOption).then(
 });
 
 function generateReport(options) {
-    return merge(options).then(report => marge.create(report, options))
+  return merge(options).then(report => marge.create(report, options))
 }

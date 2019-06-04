@@ -18,12 +18,13 @@
  */
 package se.inera.intyg.intygsbestallning.web.controller;
 
-import com.jayway.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
+
+import io.restassured.RestAssured;
 import se.inera.intyg.intygsbestallning.web.BaseRestIntegrationTest;
 
-import static com.jayway.restassured.RestAssured.given;
-import static com.jayway.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static se.inera.intyg.intygsbestallning.web.controller.UserController.API_ANVANDARE;
 
 public class UserControllerIT extends BaseRestIntegrationTest {

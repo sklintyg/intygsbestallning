@@ -9,11 +9,11 @@ ntjp:
     url: http://localhost:8080/services/stubs
   ws:
     certificate:
-      file: file:///${certificate.folder}/localhost.p12
+      file: ${certificate.folder}/localhost.p12
       password: password
       type: PKCS12
     truststore:
-      file: file:///${certificate.folder}/truststore.jks
+      file: ${certificate.folder}/truststore.jks
       password: password
       type: JKS
 

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React  from 'react'
 import PropTypes from 'prop-types'
 import { compose, lifecycle } from 'recompose'
 import { connect } from 'react-redux'
@@ -28,12 +28,10 @@ const BestallningarListContainer = (props) => {
   }
 
   return (
-    <Fragment>
-      <ListWrapper>
-        <BestallningList bestallningList={bestallningList} categoryFilter={categoryFilter} errorMessage={errorMessage} onSort={handleSort} />
-        {isFetching && !bestallningList.length && <LoadingSpinner loading={isFetching} message={'Laddar beställningar'} />}
-      </ListWrapper>
-    </Fragment>
+    <ListWrapper>
+      <BestallningList bestallningList={bestallningList} categoryFilter={categoryFilter} errorMessage={errorMessage} onSort={handleSort} />
+      {isFetching && !bestallningList.length && <LoadingSpinner loading={isFetching} message={'Laddar beställningar'} />}
+    </ListWrapper>
   )
 }
 

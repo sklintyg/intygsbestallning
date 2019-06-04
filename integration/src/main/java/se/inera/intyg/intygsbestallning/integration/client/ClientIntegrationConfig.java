@@ -19,6 +19,7 @@
 
 package se.inera.intyg.intygsbestallning.integration.client;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
@@ -41,8 +42,8 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -68,7 +69,9 @@ public class ClientIntegrationConfig {
     @Bean
     public RespondToOrderResponderInterface respondToOrderClient(
             @Qualifier("ntjpConduitConfig") final HttpConduitConfig ntjpConduitConfig) {
-        LOG.info("Instantiating respondToOrderClient");
+
+        LOG.info("RespondToOrderClient initiated");
+
         JaxWsProxyFactoryBean proxyFactoryBean = new JaxWsProxyFactoryBean();
         proxyFactoryBean.setAddress(integrationProperties.getMyndighetIntegrationUrl() + integrationProperties.getRespondToOrderUrl());
         proxyFactoryBean.setServiceClass(RespondToOrderResponderInterface.class);
@@ -83,48 +86,59 @@ public class ClientIntegrationConfig {
     }
 
     @Bean("ntjpConduitConfig")
-    public HttpConduitConfig ntjpConduitConfig(@Qualifier("ntjpKeyManager") final KeyManager[] ntjpKeyManagers,
+    public HttpConduitConfig ntjpConduitConfig(@Qualifier("ntjpKeyManager") final KeyManager[] ntjpKeyManager,
             @Qualifier("ntjpTrustManager") final TrustManager[] ntjpTrustManager) {
 
-        LOG.info("Instantiating ntjpConduitConfig");
-        final HttpConduitConfig config = new HttpConduitConfig();
+        LOG.info("NtjpConduitConfig initiated");
 
         final TLSClientParameters tlsClientParameters = new TLSClientParameters();
         tlsClientParameters.setTrustManagers(ntjpTrustManager);
-        tlsClientParameters.setKeyManagers(ntjpKeyManagers);
+        tlsClientParameters.setKeyManagers(ntjpKeyManager);
 
+        final HttpConduitConfig config = new HttpConduitConfig();
         config.setTlsClientParameters(tlsClientParameters);
 
         return config;
     }
 
     @Bean("ntjpKeyManager")
+    // Needed to due bug in Spotbugs. https://github.com/spotbugs/spotbugs/issues/756
+    @SuppressFBWarnings("RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE")
     public KeyManager[] ntjpKeyManager()
             throws NoSuchAlgorithmException, UnrecoverableKeyException, KeyStoreException, IOException, CertificateException {
+
         NtjpWsProperties.NtjpCertificate certificate = ntjpWsProperties.getCertificate();
-        KeyStore keyStore = KeyStore.getInstance(certificate.getType());
-        try (InputStream is = certificate.getFile().getInputStream()) {
-            char[] password = certificate.getPassword().toCharArray();
-            keyStore.load(is, password);
+        char[] password = certificate.getPassword().toCharArray();
+
+        try (FileInputStream fis = new FileInputStream(certificate.getFile())) {
+            KeyStore keyStore = KeyStore.getInstance(certificate.getType());
+            keyStore.load(fis, password);
 
             KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
             keyManagerFactory.init(keyStore, password);
 
-            return keyManagerFactory.getKeyManagers();
+            LOG.info("NtjpConduitConfig KeyManager loaded with keystore {}", certificate.getFile());
 
+            return keyManagerFactory.getKeyManagers();
         }
     }
 
     @Bean("ntjpTrustManager")
+    // Needed to due bug in Spotbugs. https://github.com/spotbugs/spotbugs/issues/756
+    @SuppressFBWarnings("RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE")
     public TrustManager[] ntjpTrustManager() throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
+
         NtjpWsProperties.NtjpTruststore truststore = ntjpWsProperties.getTruststore();
-        KeyStore keyStore = KeyStore.getInstance(truststore.getType());
-        try (InputStream is = truststore.getFile().getInputStream()) {
-            char[] password = truststore.getPassword().toCharArray();
-            keyStore.load(is, password);
+        char[] password = truststore.getPassword().toCharArray();
+
+        try (FileInputStream fis = new FileInputStream(truststore.getFile())) {
+            KeyStore keyStore = KeyStore.getInstance(truststore.getType());
+            keyStore.load(fis, password);
 
             TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
             trustManagerFactory.init(keyStore);
+
+            LOG.info("NtjpConduitConfig TrustManager loaded with truststore {}", truststore.getFile());
 
             return trustManagerFactory.getTrustManagers();
         }
