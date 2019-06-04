@@ -10,9 +10,8 @@ import {
   getVisibleBestallningList
 } from "../../store/reducers/bestallningList";
 
-const FilterListContainer = (props) => {
+const FilterListContainer = ({ categoryFilter, bestallningList, fetchBestallningList }) => {
   const [textFilter, setTextFilter] = useState("");
-  const { categoryFilter, bestallningList } = props;
 
   const handleFilterChange = (textFilter) => {
     setTextFilter(textFilter);
@@ -25,7 +24,7 @@ const FilterListContainer = (props) => {
 
   const fetchList = (pageIndex) => {
     const pageIndexZeroBased = pageIndex - 1
-    props.fetchBestallningList({categoryFilter, textFilter, pageIndex: pageIndexZeroBased});
+    fetchBestallningList({categoryFilter, textFilter, pageIndex: pageIndexZeroBased});
   }
   
   return (

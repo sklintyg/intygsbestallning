@@ -8,7 +8,7 @@ describe('beställningList actions', () => {
   beforeEach(() => {
     store = mockStore({
       bestallningList: {
-        listBestallningarByFilter: { AKTUELLA: { isFetching: false } },
+        listBestallningarByFilter: { AKTUELLA: { isFetching: false, bestallningList: {sortColumn: 'tid', sortDirection: 'ASC'} } },
       },
     })
   })
@@ -28,7 +28,26 @@ describe('beställningList actions', () => {
 
       return functionToTest(
         store,
-        () => actions.fetchBestallningList({ categoryFilter: 'AKTUELLA', textFilter: '', sortColumn: '', sortDirection: '' }),
+        () => actions.fetchBestallningList({ categoryFilter: 'AKTUELLA', textFilter: '', sortColumn: 'tid', sortDirection: 'ASC' }),
+        expectedActions
+      )
+    })
+
+    test('load sort from store', () => {
+      const response = [{}]
+
+      api.fetchBestallningList = () => {
+        return Promise.resolve(response)
+      }
+
+      const expectedActions = [
+        { type: actions.FETCH_BESTALLNINGAR_REQUEST, categoryFilter: 'AKTUELLA' },
+        { type: actions.FETCH_BESTALLNINGAR_SUCCESS, categoryFilter: 'AKTUELLA', response },
+      ]
+
+      return functionToTest(
+        store,
+        () => actions.fetchBestallningList({ categoryFilter: 'AKTUELLA', textFilter: '' }),
         expectedActions
       )
     })
@@ -47,7 +66,7 @@ describe('beställningList actions', () => {
 
       return functionToTest(
         store,
-        () => actions.fetchBestallningList({ categoryFilter: 'AKTUELLA', textFilter: '', sortColumn: '', sortDirection: '' }),
+        () => actions.fetchBestallningList({ categoryFilter: 'AKTUELLA', textFilter: '', sortColumn: 'tid', sortDirection: 'ASC' }),
         expectedActions
       )
     })

@@ -2,7 +2,15 @@ import { combineReducers } from 'redux';
 import { buildClientError } from './util';
 import * as ActionConstants from '../actions/bestallningList'
 
-export const BestallningListDefaultState = { bestallningar: [], 'pageIndex': 0, 'totalPages': 0, 'numberOfElements': 0, 'totalElements': 0, 'sortColumn': 'ID', 'sortDirection': 'ASC' }
+export const BestallningListDefaultState = {
+  bestallningar: [],
+  pageIndex: 0,
+  totalPages: 0,
+  numberOfElements: 0,
+  totalElements: 0,
+  sortColumn: 'ID',
+  sortDirection: 'ASC'
+}
 
 const createBestallningarList = filter => {
   const bestallningList = (
@@ -76,3 +84,11 @@ export const getIsFetching = (state, filter) =>
 
 export const getErrorMessage = (state, filter) =>
   state.bestallningList.listBestallningarByFilter[filter].errorMessage;
+
+export const getSortOrder = (state, filter) => {
+  const store = getVisibleBestallningList(state, filter);
+  return {
+    sortColumn: store.sortColumn,
+    sortDirection: store.sortDirection
+  }
+}
