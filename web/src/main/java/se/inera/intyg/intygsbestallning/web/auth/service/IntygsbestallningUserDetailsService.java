@@ -121,7 +121,7 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
     protected void decorateIntygUserWithRoleAndAuthorities(IntygUser intygUser,
                                                            List<PersonInformationType> personInfo,
                                                            UserCredentials userCredentials) {
-        decorateIntygUserWithRoleAndAuthorities(intygUser);
+        setUserRoleAndAuthorities(intygUser);
     }
 
     /**
@@ -157,7 +157,7 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
     /**
      * @param intygUser       - user in session
      */
-    private void decorateIntygUserWithRoleAndAuthorities(IntygUser intygUser) {
+    private void setUserRoleAndAuthorities(IntygUser intygUser) {
         Role role = commonAuthoritiesResolver.getRole(AuthoritiesConstants.ROLE_VARDADMIN);
         LOG.debug("User role is set to {}", role);
         intygUser.setRoles(AuthoritiesResolverUtil.toMap(role));

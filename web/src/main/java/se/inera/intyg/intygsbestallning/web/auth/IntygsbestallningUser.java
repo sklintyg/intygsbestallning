@@ -39,10 +39,11 @@ import static se.inera.intyg.intygsbestallning.web.auth.authorities.AuthoritiesC
 
 /**
  * Intygsbeställning overrides a lot of the default user's behaviour.
- *
+ * <p>
  * Since users can be logged in on both Vårdgivare (VG) and on Vårdenhet (VE), where
  * the VG level doesn't require a Medarbetaruppdrag, some data structures are not used
  * while others have been added.
+ * </p>
  */
 public class IntygsbestallningUser extends IntygUser implements Serializable {
 
@@ -251,8 +252,8 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
     @Override
     @JsonIgnore
     public SelectableVardenhet getValdVardenhet() {
-        LOG.debug("Method getValdVardenhet() is not implemented. 'null' will be returned and it is by purpose." +
-                "Please use getUnitContext() instead.");
+        LOG.debug("Method getValdVardenhet() is not implemented. 'null' will be returned and it is by purpose."
+                + "Please use getUnitContext() instead.");
         return null;
     }
 
