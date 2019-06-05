@@ -19,8 +19,6 @@
 
 package se.inera.intyg.intygsbestallning.web.auth.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.opensaml.saml2.core.Assertion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +27,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.stereotype.Service;
-import se.riv.infrastructure.directory.v1.PersonInformationType;
 import se.inera.intyg.infra.integration.hsa.model.UserCredentials;
 import se.inera.intyg.infra.integration.hsa.model.Vardenhet;
 import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
@@ -45,6 +42,11 @@ import se.inera.intyg.intygsbestallning.web.auth.IbVardenhet;
 import se.inera.intyg.intygsbestallning.web.auth.IbVardgivare;
 import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
 import se.inera.intyg.intygsbestallning.web.auth.authorities.AuthoritiesConstants;
+import se.riv.infrastructure.directory.v1.PersonInformationType;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class IntygsbestallningUserDetailsService extends BaseUserDetailsService implements UserDetailsService {
@@ -62,12 +64,12 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
 
     @Override
     protected IntygsbestallningUser buildUserPrincipal(SAMLCredential credential) {
-        // All IB customization is done in overridden decorateXXX methods, so just return a new IbUSer
+        // All IB customization is done by overriding decorateXXX methods
         IntygUser intygUser = super.buildUserPrincipal(credential);
+
         IntygsbestallningUser ibUser = new IntygsbestallningUser(intygUser);
         ibUser.setPossibleRoles(commonAuthoritiesResolver.getRoles());
-
-        buildSystemAuthoritiesTree(ibUser);
+        ibUser.setSystemAuthorities(buildSystemAuthoritiesTree(intygUser.getVardgivare()));
 
         if (ibUser.getSystemAuthorities().size() == 0) {
             throw new MissingMedarbetaruppdragException(ibUser.getHsaId());
@@ -79,23 +81,32 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
         return ibUser;
     }
 
-    protected void buildSystemAuthoritiesTree(IntygsbestallningUser user) {
+    protected List<IbVardgivare> buildSystemAuthoritiesTree(List<Vardgivare> vardgivareList) {
         List<IbVardgivare> authSystemTree = new ArrayList<>();
 
-        for (Vardgivare vg : user.getVardgivare()) {
+        for (Vardgivare vg : vardgivareList) {
             IbVardgivare ibVardgivare = new IbVardgivare(vg.getId(), vg.getNamn());
             for (Vardenhet ve : vg.getVardenheter()) {
                 ibVardgivare.getVardenheter().add(
-                        new IbVardenhet(ve.getId(), ve.getNamn(), ibVardgivare.getId(), ibVardgivare.getName(), ve.getVardgivareOrgnr()));
+                        new IbVardenhet(ve.getId(), ve.getNamn(), ibVardgivare.getId(), ibVardgivare.getName(), getOrgNr(vg, ve)));
             }
             authSystemTree.add(ibVardgivare);
         }
-        user.setSystemAuthorities(authSystemTree);
+        return authSystemTree;
     }
 
     protected void tryToSelectHsaEntity(IntygsbestallningUser ibUser) {
         if (ibUser.getTotaltAntalVardenheter() == 1) {
-            ibUser.changeValdVardenhet(ibUser.getVardgivare().get(0).getVardenheter().get(0).getId());
+            ibUser.changeContext(ibUser.getVardgivare().get(0).getVardenheter().get(0).getId());
+        }
+    }
+
+    @Override
+    protected void decorateIntygUserWithDefaultVardenhet(IntygUser intygUser) {
+        // Only set a default enhet if there is only one (mottagningar doesn't count).
+        // If no default vardenhet can be determined - let it be null and force user to select one.
+        if (getTotaltAntalVardenheterExcludingMottagningar(intygUser) == 1) {
+            super.decorateIntygUserWithDefaultVardenhet(intygUser);
         }
     }
 
@@ -110,20 +121,7 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
     protected void decorateIntygUserWithRoleAndAuthorities(IntygUser intygUser,
                                                            List<PersonInformationType> personInfo,
                                                            UserCredentials userCredentials) {
-
-        Role role = commonAuthoritiesResolver.getRole(AuthoritiesConstants.ROLE_VARDADMIN);
-        LOG.debug("User role is set to {}", role);
-        intygUser.setRoles(AuthoritiesResolverUtil.toMap(role));
-        intygUser.setAuthorities(AuthoritiesResolverUtil.toMap(role.getPrivileges(), Privilege::getName));
-    }
-
-    @Override
-    protected void decorateIntygUserWithDefaultVardenhet(IntygUser intygUser) {
-        // Only set a default enhet if there is only one (mottagningar doesnt count).
-        // If no default vardenhet can be determined - let it be null and force user to select one.
-        if (getTotaltAntalVardenheterExcludingMottagningar(intygUser) == 1) {
-            super.decorateIntygUserWithDefaultVardenhet(intygUser);
-        }
+        decorateIntygUserWithRoleAndAuthorities(intygUser);
     }
 
     /**
@@ -134,7 +132,7 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
      */
     @Override
     protected void decorateIntygUserWithSystemRoles(IntygUser intygUser, UserCredentials userCredentials) {
-        // Do nothing;
+        intygUser.setSystemRoles(Collections.emptyList());
     }
 
     @Override
@@ -149,7 +147,25 @@ public class IntygsbestallningUserDetailsService extends BaseUserDetailsService 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        LOG.warn("The method loadUserByUsername(String) shall not be used. It is overriden and will always return 'null'.");
         return null;
+    }
+
+
+    // private methods
+
+    /**
+     * @param intygUser       - user in session
+     */
+    private void decorateIntygUserWithRoleAndAuthorities(IntygUser intygUser) {
+        Role role = commonAuthoritiesResolver.getRole(AuthoritiesConstants.ROLE_VARDADMIN);
+        LOG.debug("User role is set to {}", role);
+        intygUser.setRoles(AuthoritiesResolverUtil.toMap(role));
+        intygUser.setAuthorities(AuthoritiesResolverUtil.toMap(role.getPrivileges(), Privilege::getName));
+    }
+
+    private String getOrgNr(Vardgivare vg, Vardenhet ve) {
+        return ve.getVardgivareOrgnr() == null ? vg.getOrgId() : ve.getVardgivareOrgnr();
     }
 
     private int getTotaltAntalVardenheterExcludingMottagningar(IntygUser intygUser) {

@@ -19,31 +19,35 @@
 
 package se.inera.intyg.intygsbestallning.web.auth;
 
-import static se.inera.intyg.infra.security.authorities.AuthoritiesResolverUtil.toMap;
-import static se.inera.intyg.intygsbestallning.web.auth.authorities.AuthoritiesConstants.ROLE_VARDADMIN;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.inera.intyg.infra.integration.hsa.model.SelectableVardenhet;
 import se.inera.intyg.infra.security.common.model.IntygUser;
 import se.inera.intyg.infra.security.common.model.Privilege;
 import se.inera.intyg.infra.security.common.model.Role;
 import se.inera.intyg.intygsbestallning.web.pdl.PdlActivityEntry;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static se.inera.intyg.infra.security.authorities.AuthoritiesResolverUtil.toMap;
+import static se.inera.intyg.intygsbestallning.web.auth.authorities.AuthoritiesConstants.ROLE_VARDADMIN;
+
 /**
- * The IB user overrides a lot of the default behaviour. Since users can be logged in on both Vårdgivare and on Vårdenhet
- * where the VG level doesn't require a Medarbetaruppdrag (IB uses system roles), some data structures are quite
- * unused while others have been added.
+ * Intygsbeställning overrides a lot of the default user's behaviour.
  *
- * @author eriklupander
+ * Since users can be logged in on both Vårdgivare (VG) and on Vårdenhet (VE), where
+ * the VG level doesn't require a Medarbetaruppdrag, some data structures are not used
+ * while others have been added.
  */
 public class IntygsbestallningUser extends IntygUser implements Serializable {
 
     private static final long serialVersionUID = 8711015219408194075L;
+    private static final Logger LOG = LoggerFactory.getLogger(IntygsbestallningUser.class);
 
     // Tree for handling which VG and VE the user has access to
     private List<IbVardgivare> systemAuthorities = new ArrayList<>();
@@ -51,6 +55,7 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
     // An IB-user must always have a current role and a current IbSelectableHsaEntity
     private Role currentRole;
 
+    // An IB-user must always have a current IbSelectableHsaEntity
     private IbSelectableHsaEntity unitContext;
 
     // Handles PDL logging state
@@ -103,14 +108,6 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
         this.miuNamnPerEnhetsId = intygUser.getMiuNamnPerEnhetsId();
     }
 
-    public List<IbVardgivare> getSystemAuthorities() {
-        return systemAuthorities;
-    }
-
-    public void setSystemAuthorities(List<IbVardgivare> systemAuthorities) {
-        this.systemAuthorities = systemAuthorities;
-    }
-
     public Role getCurrentRole() {
         return currentRole;
     }
@@ -119,12 +116,9 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
         this.currentRole = currentRole;
     }
 
-    public IbSelectableHsaEntity getUnitContext() {
-        return unitContext;
-    }
-
-    public void setUnitContext(IbSelectableHsaEntity unitContext) {
-        this.unitContext = unitContext;
+    // Do not expose, only set method is allowed
+    public void setPossibleRoles(List<Role> possibleRoles) {
+        this.possibleRoles = possibleRoles;
     }
 
     public Map<String, List<PdlActivityEntry>> getStoredActivities() {
@@ -135,57 +129,77 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
         this.storedActivities = storedActivities;
     }
 
-    // Do not expose, only set method is allowed
-    public void setPossibleRoles(List<Role> possibleRoles) {
-        this.possibleRoles = possibleRoles;
+    public List<IbVardgivare> getSystemAuthorities() {
+        return systemAuthorities;
     }
 
-
-    // Overridden stuff not used by IB
-
-    @Override
-    @JsonIgnore
-    public SelectableVardenhet getValdVardgivare() {
-        return null;
+    public void setSystemAuthorities(List<IbVardgivare> systemAuthorities) {
+        this.systemAuthorities = systemAuthorities;
     }
 
-    @Override
-    @JsonIgnore
-    public SelectableVardenhet getValdVardenhet() {
-        return null;
+    public IbSelectableHsaEntity getUnitContext() {
+        return unitContext;
     }
 
-    @Override
-    @JsonIgnore
-    public List<String> getSpecialiseringar() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    @JsonIgnore
-    public List<String> getBefattningar() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    @JsonIgnore
-    public List<String> getLegitimeradeYrkesgrupper() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public String getSelectedMedarbetarUppdragNamn() {
-        return null;
+    public void setUnitContext(IbSelectableHsaEntity unitContext) {
+        this.unitContext = unitContext;
     }
 
     /**
-     * IB users are never lakare, override this for compatibility reasons.
+     * <p>For IB, we select from the systemAuthorities tree rather than the traditional VG -> VE -> E tree.</p>
+     * <p>We also set the currentRole and privileges based on the selection.</p>
      *
-     * @return false, always false...
+     * @param hsaIdVardenhet hsaId of the vardenhet
+     * @return boolean - if vardenehet is changed
+     */
+    public boolean changeContext(String hsaIdVardenhet) {
+        for (IbVardgivare ibVg : systemAuthorities) {
+            for (IbVardenhet ibVardenhet : ibVg.getVardenheter()) {
+                if (ibVardenhet.getId().equalsIgnoreCase(hsaIdVardenhet)) {
+                    this.unitContext = ibVardenhet;
+                    this.currentRole = selectRole(possibleRoles, ROLE_VARDADMIN);
+                    this.authorities = toMap(currentRole.getPrivileges(), Privilege::getName);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @see IntygsbestallningUser#changeContext(String)
      */
     @Override
-    public boolean isLakare() {
-        return false;
+    public boolean changeValdVardenhet(String hsaIdVardenhet) {
+        return super.changeValdVardenhet(hsaIdVardenhet) && changeContext(hsaIdVardenhet);
+    }
+
+    /**
+     * Utility method to get the "medarbetaruppdrag" name that user has on the currently selected vårdenhet.
+     *
+     * @return The name of the medarbetaruppdrag. (Derived from infrastructure:directory:authorizationmanagement
+     *         CommissionType#commissionName)
+     * @throws IllegalStateException
+     *             if no vardenhet is selected or if the map that maps enhetsId to commissionName hasn't been
+     *             initialized.
+     */
+    @JsonIgnore
+    @Override
+    public String getSelectedMedarbetarUppdragNamn() {
+        if (unitContext == null) {
+            throw new IllegalStateException("Cannot resolve current medarbetaruppdrag name, no HSA entity is selected.");
+        }
+        if (miuNamnPerEnhetsId == null) {
+            throw new IllegalStateException("Cannot resolve current medarbetaruppdrag name, map of MiU's is not initialized.");
+        }
+
+        // Lookup commissionName from the selected care unit.
+        if (miuNamnPerEnhetsId.containsKey(unitContext.getId())) {
+            return miuNamnPerEnhetsId.get(unitContext.getId());
+        } else {
+            LOG.warn("Unable to resolve the 'medarbetaruppdrag' name. Returning null.");
+            return null;
+        }
     }
 
     /**
@@ -199,30 +213,60 @@ public class IntygsbestallningUser extends IntygUser implements Serializable {
     }
 
     /**
-     * <p>For IB, we select from the systemAuthorities tree rather than the traditional VG -> VE -> E tree.</p>
+     * IB users are never lakare, override this for compatibility reasons.
      *
-     * <p>We also sets the currentRole based on the selection.</p>
-     *
-     * @param vgOrVeHsaId hsaId of the vardenhet
-     * @return boolean - if vardenehet is changed
+     * @return false, always false...
      */
     @Override
-    public boolean changeValdVardenhet(String vgOrVeHsaId) {
-        for (IbVardgivare ibVg : systemAuthorities) {
-            for (IbVardenhet ibVardenhet : ibVg.getVardenheter()) {
-                if (ibVardenhet.getId().equalsIgnoreCase(vgOrVeHsaId)) {
-                    this.unitContext = ibVardenhet;
-                    this.currentRole = selectRole(possibleRoles, ROLE_VARDADMIN);
-                    this.authorities = toMap(currentRole.getPrivileges(), Privilege::getName);
-                    return true;
-                }
-            }
-        }
+    public boolean isLakare() {
         return false;
     }
 
 
+    //
+    // overridden methods not used by IB
+    //
+
+    @Override
+    @JsonIgnore
+    public List<String> getSpecialiseringar() {
+        LOG.debug("Method getSpecialiseringar() is not implemented. Empty list will be returned and it is by purpose.");
+        return new ArrayList<>();
+    }
+
+    @Override
+    @JsonIgnore
+    public List<String> getBefattningar() {
+        LOG.debug("Method getBefattningar() is not implemented. Empty list will be returned and it is by purpose.");
+        return new ArrayList<>();
+    }
+
+    @Override
+    @JsonIgnore
+    public List<String> getLegitimeradeYrkesgrupper() {
+        LOG.debug("Method getLegitimeradeYrkesgrupper() is not implemented. Empty list will be returned and it is by purpose.");
+        return new ArrayList<>();
+    }
+
+    @Override
+    @JsonIgnore
+    public SelectableVardenhet getValdVardenhet() {
+        LOG.debug("Method getValdVardenhet() is not implemented. 'null' will be returned and it is by purpose." +
+                "Please use getUnitContext() instead.");
+        return null;
+    }
+
+    @Override
+    @JsonIgnore
+    public SelectableVardenhet getValdVardgivare() {
+        LOG.debug("Method getValdVardgivare() is not implemented. 'null' will be returned and it is by purpose.");
+        return null;
+    }
+
+
+    //
     // private scope
+    //
 
     private Role selectRole(List<Role> roles, String roleName) {
         for (Role r : roles) {

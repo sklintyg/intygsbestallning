@@ -20,6 +20,7 @@ ntjp:
 infrastructure:
   directory:
     logicalAddress:
+
 ib:
   server: localhost:8990
   host:
