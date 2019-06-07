@@ -16,13 +16,13 @@
     "react-js-pagination": "3.0.2",
     "react-redux": "^7.0.3",
     "react-responsive-modal": "^4.0.1",
-    "react-router-dom": "^5.0.0",
+    "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "reactstrap": "^8.0.0",
     "recompose": "^0.30.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^4.2.1",
+    "styled-components": "^4.3.1",
     "typeface-roboto": "0.0.54"
   },
   "scripts": {
@@ -52,12 +52,12 @@
     "ie 11"
   ],
   "devDependencies": {
-    "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.13.2",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
     "eslint-plugin-react-hooks": "^1.6.0",
     "fetch-mock": "^7.3.3",
     "http-proxy-middleware": "^0.19.1",
-    "prettier": "^1.17.1",
+    "prettier": "^1.18.0",
     "redux-mock-store": "^1.5.3",
     "sinon": "^7.3.2",
     "uuid": "^3.3.2"

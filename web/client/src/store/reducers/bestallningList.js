@@ -8,8 +8,8 @@ export const BestallningListDefaultState = {
   totalPages: 0,
   numberOfElements: 0,
   totalElements: 0,
-  sortColumn: 'ID',
-  sortDirection: 'ASC'
+  sortColumn: 'ANKOMST_DATUM',
+  sortDirection: 'DESC'
 }
 
 const createBestallningarList = filter => {
