@@ -32,6 +32,8 @@ spring:
     active: default, myndighet-stub, dev, caching-enabled, wc-hsa-stub, fake, saml
   main:
     allow-bean-definition-overriding: true
+  session:
+    store-type: redis
 
 
 # Mail notifications
