@@ -1,7 +1,7 @@
 #!groovy
 
 node {
-    def buildVersion = "0.0.1.${BUILD_NUMBER}"
+    def buildVersion = "1.0.0.${BUILD_NUMBER}"
     def infraVersion = "3.10.0.+"
 
     def java11tool = tool name: 'jdk11', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
