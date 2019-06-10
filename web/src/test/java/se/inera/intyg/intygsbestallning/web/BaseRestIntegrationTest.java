@@ -28,6 +28,7 @@ import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.RestAssured;
+import io.restassured.config.SessionConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBodyExtractionOptions;
@@ -41,6 +42,7 @@ public abstract class BaseRestIntegrationTest {
 
     private static final String USER_JSON_FORM_PARAMETER = "userJsonDisplay";
     private static final String FAKE_LOGIN_URI = "/fake";
+    private static final String SESSION_COOKIE = "SESSION";
 
     protected static final FakeCredentials DEFAULT_USER = new FakeCredentials.FakeCredentialsBuilder(
             "ib-user-1", "IFV1239877878-1042")
@@ -65,6 +67,7 @@ public abstract class BaseRestIntegrationTest {
     @BeforeEach
     public void setup() {
         RestAssured.reset();
+        RestAssured.config = RestAssured.config().sessionConfig(new SessionConfig().sessionIdName(SESSION_COOKIE));
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         RestAssured.baseURI = System.getProperty("integration.tests.baseUrl", "http://localhost:8080");
     }
