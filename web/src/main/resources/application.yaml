@@ -34,6 +34,8 @@ spring:
     allow-bean-definition-overriding: true
   session:
     store-type: redis
+    redis:
+      namespace: ib:spring:session
 
 
 # Mail notifications
