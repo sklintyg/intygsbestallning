@@ -61,7 +61,7 @@ bestallning:
   text-resource-path: ${resources.folder}/intygsbestallning/texts/bestallning/*.xml
   host: ${ib.host.url}
   paminnelse:
-    cron: DUMMY
+    cron: 0 1/5 * * * MON-FRI
 #AUTH
 authorities:
   configuration:
@@ -138,6 +138,12 @@ pdl:
     system-id: sys-id
     system-name: sys-name
     queue-name: ib.pdllogging.queue
+
+mailsender:
+  maximum-redeliveries: 5
+  redelivery-delay: 100
+  back-off-multiplier: 1
+  queue-name: ib.mailsender.queue
 
 cxf:
   path: /services
