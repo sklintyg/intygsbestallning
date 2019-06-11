@@ -1,13 +1,15 @@
 apiVersion: v1
 data:
-  SPRING_PROFILES_ACTIVE: "default,dev,myndighet-stub,caching-enabled,wc-hsa-stub, fake, saml"
+  SPRING_PROFILES_ACTIVE: "default,myndighet-stub,caching-enabled,wc-hsa-stub, fake, saml"
   SPRING_DATASOURCE_URL: "jdbc:mysql://${mysql.service.host}:${mysql.service.port}/${database.name}?useSSL=false"
   REDIS_PORT: "${redis.service.port}"
   REDIS_HOST: "${redis.service.host}"
+  NTJP_BASE_URL: "http://localhost:8080/services/stubs"
   IB_HOST_URL: "https://intygsbestallning-demo-demointyg.app-test1.ind-ocp.sth.basefarm.net"
   CONFIG_FOLDER: "/opt/intygsbestallning-demo/config"
   CERTIFICATE_FOLDER: "/opt/intygsbestallning-demo/env"
   MAIL_HOST: "${ib.host.url}"
+  ACTIVEMQ_BROKER_URL: "${activemq.amq.tcp.port}?jms.nonBlockingRedelivery=true&jms.redeliveryPolicy.maximumRedeliveries=3&jms.redeliveryPolicy.maximumRedeliveryDelay=6000&jms.redeliveryPolicy.initialRedeliveryDelay=4000&jms.redeliveryPolicy.useExponentialBackOff=true&jms.redeliveryPolicy.backOffMultiplier=2"
 kind: ConfigMap
 metadata:
   name: intygsbestallning-demo-configmap-envvar
