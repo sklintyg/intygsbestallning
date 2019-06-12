@@ -19,6 +19,11 @@
 
 package se.inera.intyg.intygsbestallning.web;
 
+import javax.servlet.FilterRegistration;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
+
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -26,6 +31,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.DispatcherServlet;
+
 import se.inera.intyg.infra.security.filter.RequestContextHolderUpdateFilter;
 import se.inera.intyg.infra.security.filter.SecurityHeadersFilter;
 import se.inera.intyg.intygsbestallning.common.CommonConfig;
@@ -33,12 +39,10 @@ import se.inera.intyg.intygsbestallning.integration.IntegrationConfig;
 import se.inera.intyg.intygsbestallning.mailsender.config.MailSenderConfig;
 import se.inera.intyg.intygsbestallning.persistence.PersistenceConfig;
 import se.inera.intyg.intygsbestallning.web.auth.SecurityConfig;
+import se.inera.intyg.intygsbestallning.web.config.SessionConfig;
+import se.inera.intyg.intygsbestallning.web.config.SwaggerConfig;
+import se.inera.intyg.intygsbestallning.web.config.WebConfig;
 import se.inera.intyg.intygsbestallning.web.pdl.PdlLoggingConfig;
-
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
 
 public class ApplicationInitializer implements WebApplicationInitializer {
 
@@ -54,7 +58,8 @@ public class ApplicationInitializer implements WebApplicationInitializer {
                 PersistenceConfig.class,
                 SecurityConfig.class,
                 SwaggerConfig.class,
-                WebConfig.class);
+                WebConfig.class,
+                SessionConfig.class);
 
         servletContext.addListener(new ContextLoaderListener(appContext));
 
