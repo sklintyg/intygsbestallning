@@ -28,6 +28,8 @@ import se.inera.intyg.intygsbestallning.integration.IntegrationConfig;
 import se.inera.intyg.intygsbestallning.mailsender.config.MailSenderConfig;
 import se.inera.intyg.intygsbestallning.persistence.PersistenceConfig;
 import se.inera.intyg.intygsbestallning.web.auth.SecurityConfig;
+import se.inera.intyg.intygsbestallning.web.config.SwaggerConfig;
+import se.inera.intyg.intygsbestallning.web.config.WebConfig;
 import se.inera.intyg.intygsbestallning.web.pdl.PdlLoggingConfig;
 
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
