@@ -31,10 +31,20 @@ allprojects {
 
   repositories {
     mavenLocal()
+    maven {
+      url = uri("https://build-inera.nordicmedtest.se/nexus/repository/releases/")
+      mavenContent {
+        releasesOnly()
+      }
+    }
+    maven {
+      url = uri("https://build-inera.nordicmedtest.se/nexus/repository/snapshots/")
+      mavenContent {
+        snapshotsOnly()
+      }
+    }
     mavenCentral()
     jcenter()
-    maven("https://build-inera.nordicmedtest.se/nexus/repository/snapshots/")
-    maven("https://build-inera.nordicmedtest.se/nexus/repository/releases/")
   }
 }
 
