@@ -28,6 +28,7 @@ import se.inera.intyg.intygsbestallning.integration.IntegrationConfig;
 import se.inera.intyg.intygsbestallning.mailsender.config.MailSenderConfig;
 import se.inera.intyg.intygsbestallning.persistence.PersistenceConfig;
 import se.inera.intyg.intygsbestallning.web.auth.SecurityConfig;
+import se.inera.intyg.intygsbestallning.web.config.SessionConfig;
 import se.inera.intyg.intygsbestallning.web.config.SwaggerConfig;
 import se.inera.intyg.intygsbestallning.web.config.WebConfig;
 import se.inera.intyg.intygsbestallning.web.pdl.PdlLoggingConfig;
@@ -41,7 +42,8 @@ import se.inera.intyg.intygsbestallning.web.pdl.PdlLoggingConfig;
         PersistenceConfig.class,
         SecurityConfig.class,
         SwaggerConfig.class,
-        WebConfig.class
+        WebConfig.class,
+        SessionConfig.class
 })
 public class IntygsbestallningApplication {
     public static void main(String[] args) {
