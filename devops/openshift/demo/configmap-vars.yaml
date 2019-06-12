@@ -1,6 +1,6 @@
 apiVersion: v1
 data:
-  SPRING_PROFILES_ACTIVE: "default,myndighet-stub,caching-enabled,wc-hsa-stub, fake, saml"
+  SPRING_PROFILES_ACTIVE: "default,demo,myndighet-stub,caching-enabled,wc-hsa-stub, fake, saml"
   SPRING_DATASOURCE_URL: "jdbc:mysql://${mysql.service.host}:${mysql.service.port}/${database.name}?useSSL=false"
   REDIS_PORT: "${redis.service.port}"
   REDIS_HOST: "${redis.service.host}"
@@ -9,7 +9,7 @@ data:
   NTJP_WS_CERTIFICATE_FILE: "${certificate.folder}/localhost.p12"
   NTJP_WS_TRUSTSTORE_TYPE: "JKS"
   NTJP_WS_TRUSTSTORE_FILE: "${certificate.folder}/truststore.jks"
-  PUTJANST_LOGICALADDRESS: "PUDEV"
+  PUTJANST_LOGICALADDRESS: "SE165565594230-1000"
   INFRASTRUCTURE_DIRECTORY_LOGICALADDRESS: ""
   INERA_SAML_KEYSTORE_FILE: "file:///${certificate.folder}/localhost.p12"
   INERA_SAML_KEYSTORE_ALISA: "localhost"
