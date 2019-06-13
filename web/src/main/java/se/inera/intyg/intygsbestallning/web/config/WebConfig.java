@@ -26,8 +26,8 @@ import org.apache.cxf.Bus;
 import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.feature.transform.XSLTOutInterceptor;
 import org.apache.cxf.jaxws.EndpointImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -35,6 +35,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -42,7 +44,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import se.inera.intyg.infra.monitoring.logging.LogMDCServletFilter;
 import se.inera.intyg.infra.security.filter.PrincipalUpdatedFilter;
+import se.inera.intyg.infra.security.filter.RequestContextHolderUpdateFilter;
+import se.inera.intyg.infra.security.filter.SecurityHeadersFilter;
 import se.inera.intyg.infra.security.filter.SessionTimeoutFilter;
 import se.inera.intyg.intygsbestallning.web.UnitContextSelectedAssuranceFilter;
 import se.inera.intyg.intygsbestallning.web.controller.LocalDateTimeDeserializer;
@@ -108,17 +113,25 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public PrincipalUpdatedFilter principalUpdatedFilter() {
-        return new PrincipalUpdatedFilter();
+    public FilterRegistrationBean<RequestContextHolderUpdateFilter> requestContextHolderUpdateFilter() {
+        FilterRegistrationBean<RequestContextHolderUpdateFilter> registrationBean
+                = new FilterRegistrationBean<>();
+
+        registrationBean.setFilter(new RequestContextHolderUpdateFilter());
+        registrationBean.addUrlPatterns("/*");
+        registrationBean.setOrder(SecurityProperties.DEFAULT_FILTER_ORDER + 3);
+
+        return registrationBean;
     }
 
     @Bean
-    @Autowired
-    public FilterRegistrationBean<UnitContextSelectedAssuranceFilter> unitContextSelectedAssuranceFilter(UserService userService) {
-        FilterRegistrationBean<UnitContextSelectedAssuranceFilter> registrationBean = new FilterRegistrationBean<>();
+    public FilterRegistrationBean<LogMDCServletFilter> logMDCServletFilter() {
+        FilterRegistrationBean<LogMDCServletFilter> registrationBean
+                = new FilterRegistrationBean<>();
 
-        registrationBean.setFilter(new UnitContextSelectedAssuranceFilter(userService, List.of(API_ANVANDARE, API_UNIT_CONTEXT)));
-        registrationBean.addUrlPatterns("/api/*");
+        registrationBean.setFilter(new LogMDCServletFilter());
+        registrationBean.addUrlPatterns("/*");
+        registrationBean.setOrder(SecurityProperties.DEFAULT_FILTER_ORDER + 2);
 
         return registrationBean;
     }
@@ -130,6 +143,64 @@ public class WebConfig implements WebMvcConfigurer {
 
         FilterRegistrationBean<SessionTimeoutFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(sessionTimeoutFilter);
+        registrationBean.addUrlPatterns("/*");
+        registrationBean.setOrder(SecurityProperties.DEFAULT_FILTER_ORDER + 1);
+
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<PrincipalUpdatedFilter> principalUpdatedFilter() {
+        FilterRegistrationBean<PrincipalUpdatedFilter> registrationBean
+                = new FilterRegistrationBean<>();
+
+        registrationBean.setFilter(new PrincipalUpdatedFilter());
+        registrationBean.addUrlPatterns("/*");
+        registrationBean.setOrder(SecurityProperties.DEFAULT_FILTER_ORDER - 1);
+
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<UnitContextSelectedAssuranceFilter> unitContextSelectedAssuranceFilter(UserService userService) {
+        FilterRegistrationBean<UnitContextSelectedAssuranceFilter> registrationBean = new FilterRegistrationBean<>();
+
+        registrationBean.setFilter(new UnitContextSelectedAssuranceFilter(userService, List.of(API_ANVANDARE, API_UNIT_CONTEXT)));
+        registrationBean.addUrlPatterns("/api/*");
+        registrationBean.setOrder(SecurityProperties.DEFAULT_FILTER_ORDER - 2);
+
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<CharacterEncodingFilter> characterEncodingFilter() {
+        FilterRegistrationBean<CharacterEncodingFilter> registrationBean
+                = new FilterRegistrationBean<>();
+
+        registrationBean.setFilter(new CharacterEncodingFilter("UTF-8", true));
+        registrationBean.addUrlPatterns("/*");
+        registrationBean.setOrder(SecurityProperties.DEFAULT_FILTER_ORDER - 3);
+
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<HiddenHttpMethodFilter> hiddenHttpMethodFilter() {
+        FilterRegistrationBean<HiddenHttpMethodFilter> registrationBean
+                = new FilterRegistrationBean<>();
+
+        registrationBean.setFilter(new HiddenHttpMethodFilter());
+        registrationBean.addUrlPatterns("/*");
+
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<SecurityHeadersFilter> securityHeadersFilter() {
+        FilterRegistrationBean<SecurityHeadersFilter> registrationBean
+                = new FilterRegistrationBean<>();
+
+        registrationBean.setFilter(new SecurityHeadersFilter());
         registrationBean.addUrlPatterns("/*");
 
         return registrationBean;

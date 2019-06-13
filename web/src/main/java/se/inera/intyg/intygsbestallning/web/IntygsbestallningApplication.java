@@ -23,6 +23,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Import;
+
+import se.inera.intyg.infra.monitoring.MonitoringConfiguration;
 import se.inera.intyg.intygsbestallning.common.CommonConfig;
 import se.inera.intyg.intygsbestallning.integration.IntegrationConfig;
 import se.inera.intyg.intygsbestallning.mailsender.config.MailSenderConfig;
@@ -43,7 +45,8 @@ import se.inera.intyg.intygsbestallning.web.pdl.PdlLoggingConfig;
         SecurityConfig.class,
         SwaggerConfig.class,
         WebConfig.class,
-        SessionConfig.class
+        SessionConfig.class,
+        MonitoringConfiguration.class
 })
 public class IntygsbestallningApplication {
     public static void main(String[] args) {
