@@ -4,6 +4,7 @@ import se.inera.intyg.intygsbestallning.build.Config.Dependencies
 import se.inera.intyg.intygsbestallning.build.Config.TestDependencies
 
 val buildClient = project.hasProperty("client")
+val localBuild = project.gradle.startParameter.taskNames.contains("bootRun")
 
 plugins {
   id("org.springframework.boot")
@@ -48,8 +49,9 @@ dependencies {
   implementation("org.springframework.security.extensions:spring-security-saml2-core:${Dependencies.springSecuritySaml2Version}")
   implementation("com.querydsl:querydsl-core:${Dependencies.querydslVersion}")
 
-  // FIXME: shall not be bundled with app!
-  implementation("se.inera.intyg.refdata:refdata:${extra["refDataVersion"]}")
+  if (localBuild) {
+    implementation("se.inera.intyg.refdata:refdata:${extra["refDataVersion"]}")
+  }
 
   testImplementation("io.rest-assured:rest-assured:${TestDependencies.restAssuredVersion}")
   testImplementation("io.rest-assured:json-schema-validator:${TestDependencies.restAssuredVersion}")
