@@ -156,7 +156,6 @@ public class WebConfig implements WebMvcConfigurer {
 
         registrationBean.setFilter(new PrincipalUpdatedFilter());
         registrationBean.addUrlPatterns("/*");
-        registrationBean.setOrder(SecurityProperties.DEFAULT_FILTER_ORDER - 1);
 
         return registrationBean;
     }
@@ -167,7 +166,6 @@ public class WebConfig implements WebMvcConfigurer {
 
         registrationBean.setFilter(new UnitContextSelectedAssuranceFilter(userService, List.of(API_ANVANDARE, API_UNIT_CONTEXT)));
         registrationBean.addUrlPatterns("/api/*");
-        registrationBean.setOrder(SecurityProperties.DEFAULT_FILTER_ORDER - 2);
 
         return registrationBean;
     }
