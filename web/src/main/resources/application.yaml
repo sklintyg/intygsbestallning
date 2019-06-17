@@ -28,7 +28,7 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   h2:
     console:
-      enabled: true
+      enabled: false
   liquibase:
     change-log: classpath:/changelog/db-changelog-master.xml
   profiles:
