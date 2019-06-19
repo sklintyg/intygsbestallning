@@ -62,13 +62,7 @@ public class BestallningPersistenceServiceImpl implements BestallningPersistence
 
     @Override
     public Bestallning saveNewBestallning(Bestallning bestallning) {
-
-        var invanareEntity = InvanareEntity.Factory.toEntity(bestallning.getInvanare());
-
-        var vardenhetEntity = VardenhetEntity.Factory.toEntity(bestallning.getVardenhet());
-
-        var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning, invanareEntity, vardenhetEntity);
-
+        var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning);
         return BestallningEntity.Factory.toDomain(bestallningRepository.save(bestallningEntity));
     }
 

@@ -20,6 +20,7 @@
 package se.inera.intyg.intygsbestallning.web.controller.testability;
 
 import com.querydsl.core.BooleanBuilder;
+import javax.ws.rs.core.Response;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,13 +31,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import se.inera.intyg.intygsbestallning.common.domain.Bestallning;
 import se.inera.intyg.intygsbestallning.persistence.entity.BestallningEntity;
-import se.inera.intyg.intygsbestallning.persistence.entity.InvanareEntity;
 import se.inera.intyg.intygsbestallning.persistence.entity.QBestallningEntity;
-import se.inera.intyg.intygsbestallning.persistence.entity.VardenhetEntity;
 import se.inera.intyg.intygsbestallning.persistence.repository.BestallningRepository;
 import se.inera.intyg.intygsbestallning.web.service.util.EntityTxMapper;
-
-import javax.ws.rs.core.Response;
 
 @RestController
 @RequestMapping(BestallningResource.API_TEST_BESTALLNINGAR)
@@ -56,9 +53,7 @@ public class BestallningResource {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Response createBestallning(@RequestBody Bestallning bestallning) {
 
-        var invanareEntity = InvanareEntity.Factory.toEntity(bestallning.getInvanare());
-        var vardenhetEntity = VardenhetEntity.Factory.toEntity(bestallning.getVardenhet());
-        var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning, invanareEntity, vardenhetEntity);
+        var bestallningEntity = BestallningEntity.Factory.toEntity(bestallning);
 
         return entityTxMapper.jsonResponse(() -> bestallningRepository.save(bestallningEntity));
     }
