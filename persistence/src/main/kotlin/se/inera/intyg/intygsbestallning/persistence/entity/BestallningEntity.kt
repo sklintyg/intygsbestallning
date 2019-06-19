@@ -213,29 +213,5 @@ class BestallningEntity private constructor(builder: Builder) {
          .notifieringar(bestallning.notifieringar!!.map { NotifieringEntity.toEntity(it) })
          .build()
     }
-
-
-    fun toEntity(
-       bestallning: Bestallning,
-       invanareEntity: InvanareEntity,
-       vardenhetEntity: VardenhetEntity): BestallningEntity {
-      return BestallningEntity.Builder()
-         .id(bestallning.id)
-         .typ(bestallning.typ)
-         .intygTyp(bestallning.intygTyp)
-         .intygTypBeskrivning(bestallning.intygTypBeskrivning)
-         .ankomstDatum(bestallning.ankomstDatum)
-         .avslutDatum(bestallning.avslutDatum)
-         .syfte(bestallning.syfte)
-         .arendeReferens(bestallning.arendeReferens)
-         .planeradeAktiviteter(bestallning.planeradeAktiviteter)
-         .status(bestallning.status)
-         .invanare(invanareEntity)
-         .handlaggare(HandlaggareEntity.toEntity(bestallning.handlaggare))
-         .vardenhet(vardenhetEntity)
-         .handelser(bestallning.handelser!!.map { HandelseEntity.toEntity(it) })
-         .notifieringar(bestallning.notifieringar!!.map { NotifieringEntity.toEntity(it) })
-         .build()
-    }
   }
 }

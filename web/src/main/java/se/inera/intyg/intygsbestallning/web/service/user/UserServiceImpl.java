@@ -19,34 +19,20 @@
 
 package se.inera.intyg.intygsbestallning.web.service.user;
 
+import java.util.Objects;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import se.inera.intyg.infra.security.common.model.IntygUser;
-import se.inera.intyg.infra.security.common.service.CareUnitAccessHelper;
 import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Override
     public IntygsbestallningUser getUser() {
-        if (SecurityContextHolder.getContext().getAuthentication() == null
-                || !(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof IntygsbestallningUser)) {
-            return null;
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (Objects.nonNull(auth) && (auth.getPrincipal() instanceof IntygsbestallningUser)) {
+            return (IntygsbestallningUser) auth.getPrincipal();
         }
-
-        return (IntygsbestallningUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return null;
     }
-
-    /**
-     * Note - this is just a proxy for accessing {@link CareUnitAccessHelper#userIsLoggedInOnEnhetOrUnderenhet(IntygUser, String)}.
-     *
-     * @param enhetsId HSA-id of a vardenhet or mottagning.
-     * @return True if the current IntygUser has access to the specified enhetsId including mottagningsnivå.
-     */
-    @Override
-    public boolean isUserLoggedInOnEnhetOrUnderenhet(String enhetsId) {
-        IntygsbestallningUser user = getUser();
-        return CareUnitAccessHelper.userIsLoggedInOnEnhetOrUnderenhet(user, enhetsId);
-    }
-
 }

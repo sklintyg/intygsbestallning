@@ -23,19 +23,10 @@ import se.inera.intyg.intygsbestallning.web.auth.IntygsbestallningUser;
 
 public interface UserService {
 
-    IntygsbestallningUser getUser();
-
     /**
-     * Method determine if the supplied enhetsId is a Vardenhet or Mottagning identifier.
+     * Returns the current authenticated user.
      *
-     * <ul>
-     * <li>If the selectedVardenhet is a Vardenhet: The supplied enhetsId is for the Vardenhet or one of its Mottagningar.</li>
-     * <li>If the selcetedVardenhet is a Mottagning: The supplied enhetsId is the Mottagning,
-     * its parent Vardenhet or one of the sibling Mottagningar.</li>
-     * </ul>
-     *
-     * @param enhetsId HSA-id of a vardenhet or mottagning.
-     * @return true if match is found.
+     * @return the user or null if none has been authenticated.
      */
-    boolean isUserLoggedInOnEnhetOrUnderenhet(String enhetsId);
+    IntygsbestallningUser getUser();
 }
