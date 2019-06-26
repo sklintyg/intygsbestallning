@@ -23,8 +23,10 @@ node {
         }
     }
 
-    stage('tag') {
-        shgradle "tagRelease ${versionFlags}"
+    stage('tag and upload') {
+        node {
+            shgradle "uploadArchives tagRelease ${versionFlags}"
+        }
     }
 
     stage('propagate') {
