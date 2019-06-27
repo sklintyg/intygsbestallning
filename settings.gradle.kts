@@ -35,6 +35,7 @@ include(":integration")
 include(":persistence")
 include(":web")
 include(":test")
+include(":liquibase-runner")
 
 fun getProjectDirName(project: String): String {
 	return when(project) {
@@ -44,6 +45,7 @@ fun getProjectDirName(project: String): String {
 		"${rootProject.name}-persistence" ->"$rootDir/persistence"
 		"${rootProject.name}-web" ->"$rootDir/web"
 		"${rootProject.name}-test" ->"$rootDir/test"
+		"${rootProject.name}-liquibase-runner" ->"$rootDir/tools/liquibase-runner"
 		else -> throw IllegalArgumentException("Project module $project does not exist.")
 	}
 }
