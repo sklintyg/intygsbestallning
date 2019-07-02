@@ -21,6 +21,8 @@ allprojects {
   group = "se.inera.intyg.intygsbestallning"
   version = System.getProperty("buildVersion", "0-SNAPSHOT")
 
+  apply(plugin = "maven-publish")
+
   extra.apply {
     set("intygInfraVersion", System.getProperty("infraVersion", "0-SNAPSHOT"))
     set("refDataVersion", "1.0-SNAPSHOT")
@@ -45,6 +47,18 @@ allprojects {
     }
     mavenCentral()
     jcenter()
+  }
+
+  publishing {
+    repositories {
+      maven {
+        url = uri("https://build-inera.nordicmedtest.se/nexus/repository/releases/")
+        credentials {
+          username = System.getProperty("nexusUsername")
+          password = System.getProperty("nexusPassword")
+        }
+      }
+    }
   }
 }
 
@@ -123,18 +137,6 @@ subprojects {
 
 tasks {
   register<TagReleaseTask>("tagRelease")
-}
-
-publishing {
-  repositories {
-    maven {
-      url = uri("https://build-inera.nordicmedtest.se/nexus/repository/releases/")
-      credentials {
-        username = System.getProperty("nexusUsername")
-        password = System.getProperty("nexusPassword")
-      }
-    }
-  }
 }
 
 dependencies {
