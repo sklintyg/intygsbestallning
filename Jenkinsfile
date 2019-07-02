@@ -24,7 +24,7 @@ node {
     }
 
     stage('tag and upload') {
-        shgradle "uploadArchives tagRelease ${versionFlags}"
+        shgradle "publish tagRelease ${versionFlags}"
     }
 
     stage('propagate') {
