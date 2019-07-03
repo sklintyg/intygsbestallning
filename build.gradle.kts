@@ -110,7 +110,7 @@ subprojects {
     testImplementation("org.mockito:mockito-core:${TestDependencies.mockitoCoreVersion}")
     testImplementation("org.mockito:mockito-junit-jupiter:${TestDependencies.mockitoCoreVersion}")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("se.inera.intyg.refdata:refdata:${extra["refDataVersion"]}")
+    testImplementation("se.inera.intyg.refdata:refdata:${project.extra["refDataVersion"]}")
 
     testImplementation(kotlin("test"))
 
