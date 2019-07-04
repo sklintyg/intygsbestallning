@@ -4,8 +4,8 @@ dependencies {
   // Project dependencies
   implementation(project(":${rootProject.name}-common"))
 
-  implementation("${extra["infraGroupId"]}:hsa-integration:${extra["intygInfraVersion"]}")
-  implementation("${extra["infraGroupId"]}:pu-integration:${extra["intygInfraVersion"]}")
+  implementation("${project.extra["infraGroupId"]}:hsa-integration:${project.extra["intygInfraVersion"]}")
+  implementation("${project.extra["infraGroupId"]}:pu-integration:${project.extra["intygInfraVersion"]}")
 
 
   // External dependencies

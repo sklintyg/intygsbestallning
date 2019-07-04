@@ -18,14 +18,14 @@ dependencies {
   implementation(project(":${rootProject.name}-persistence"))
   implementation(project(":${rootProject.name}-mail-sender"))
 
-  implementation("${extra["infraGroupId"]}:hsa-integration:${extra["intygInfraVersion"]}")
-  implementation("${extra["infraGroupId"]}:log-messages:${extra["intygInfraVersion"]}")
-  implementation("${extra["infraGroupId"]}:monitoring:${extra["intygInfraVersion"]}")
-  implementation("${extra["infraGroupId"]}:pu-integration:${extra["intygInfraVersion"]}")
-  implementation("${extra["infraGroupId"]}:security-authorities:${extra["intygInfraVersion"]}")
-  implementation("${extra["infraGroupId"]}:security-common:${extra["intygInfraVersion"]}")
-  implementation("${extra["infraGroupId"]}:security-siths:${extra["intygInfraVersion"]}")
-  implementation("${extra["infraGroupId"]}:security-filter:${extra["intygInfraVersion"]}")
+  implementation("${project.extra["infraGroupId"]}:hsa-integration:${project.extra["intygInfraVersion"]}")
+  implementation("${project.extra["infraGroupId"]}:log-messages:${project.extra["intygInfraVersion"]}")
+  implementation("${project.extra["infraGroupId"]}:monitoring:${project.extra["intygInfraVersion"]}")
+  implementation("${project.extra["infraGroupId"]}:pu-integration:${project.extra["intygInfraVersion"]}")
+  implementation("${project.extra["infraGroupId"]}:security-authorities:${project.extra["intygInfraVersion"]}")
+  implementation("${project.extra["infraGroupId"]}:security-common:${project.extra["intygInfraVersion"]}")
+  implementation("${project.extra["infraGroupId"]}:security-siths:${project.extra["intygInfraVersion"]}")
+  implementation("${project.extra["infraGroupId"]}:security-filter:${project.extra["intygInfraVersion"]}")
 
   // External dependencies
   implementation("org.springframework.boot:spring-boot-starter-web")
